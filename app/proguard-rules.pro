@@ -1,0 +1,1 @@
+-keep class cs.min2phase.** { *; }
