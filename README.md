@@ -2,6 +2,27 @@
 
 离线运行的 Android 三阶魔方扫描与实时还原指引 App。
 
+## 克隆与 LFS
+
+仓库内的演示视频（`video_20260816_*.mp4`）通过 [Git LFS](https://git-lfs.github.com) 存储。克隆后默认看到的是 LFS 指针（约 130 字节），需要安装并拉取 LFS 对象才能拿到真实文件：
+
+```bash
+# 一次性安装
+sudo apt install git-lfs        # Debian/Ubuntu
+# brew install git-lfs           # macOS
+git lfs install
+
+# 克隆仓库并拉取 LFS 文件
+git clone git@github.com:zhangfeiyang/mofang.git
+cd mofang
+git lfs pull
+
+# 已克隆后单独刷新 LFS
+git lfs fetch && git lfs checkout
+```
+
+如果你只关心源码而不在意演示视频，可以不装 LFS；构建 APK 不依赖视频。
+
 ## 使用
 
 1. 安装 APK，允许相机权限。
