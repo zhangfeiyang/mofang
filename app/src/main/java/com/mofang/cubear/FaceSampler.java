@@ -19,15 +19,37 @@ import org.opencv.imgproc.Imgproc;
 public final class FaceSampler {
     private static final int WARP_SIZE = 300;
     /**
-     * Half-width of the patch read from each 100px cell. Kept well inside the sticker: a wider
-     * patch catches the black border as soon as the quad is a few percent off, and the resulting
-     * "not one flat colour" verdict threw away one detected frame in seven on real footage.
+     * Half-width of the patch read from each 100px cell. Calibrated on 60 real warped faces from
+     * a struggling session: radius 14 read a mean of 3.2/9 cells, radius 10 read 3.9 — worn,
+     * mottled stickers punish a wide patch, and a narrower one also stays clear of the black
+     * borders that the inset can drag towards the outer cells.
      */
-    private static final int SAMPLE_RADIUS = 14;
-    /** Above this share of pixels far from the median, the cell is a finger, an edge or glare. */
-    private static final float MAX_DISPERSION = 0.32f;
+    private static final int SAMPLE_RADIUS = 10;
+    /**
+     * Above this share of pixels far from the median, the cell is a finger, an edge or glare.
+     * 0.32 assumed factory-matte stickers; a real played-with cube's worn whites measured
+     * 0.39-0.66 and were thrown away wholesale. The median itself stays robust — a half-and-half
+     * straddle cell is what the margin is guarding against — so 0.45 buys worn stickers without
+     * inviting two-colour cells.
+     */
+    private static final float MAX_DISPERSION = 0.45f;
 
     private FaceSampler() {}
+
+    /** Pulls corners in toward the centre so sampling stays on stickers, not the black frame. */
+    static Point[] inset(Point[] corners, double scale) {
+        Point centre = new Point();
+        for (Point p : corners) { centre.x += p.x; centre.y += p.y; }
+        centre.x /= corners.length;
+        centre.y /= corners.length;
+        Point[] out = new Point[corners.length];
+        for (int i = 0; i < corners.length; i++) {
+            out[i] = new Point(
+                centre.x + scale * (corners[i].x - centre.x),
+                centre.y + scale * (corners[i].y - centre.y));
+        }
+        return out;
+    }
 
     /**
      * Puts four corners into the order the sampler expects: clockwise from the top-left-most.
@@ -60,7 +82,7 @@ public final class FaceSampler {
      * @param quality how well the face was localised, folded into the reported confidence
      */
     public static FaceSample sample(Mat rgba, Point[] corners, float quality) {
-        MatOfPoint2f source = new MatOfPoint2f(corners);
+        MatOfPoint2f source = new MatOfPoint2f(inset(corners, 0.84));
         MatOfPoint2f target = new MatOfPoint2f(new Point(0, 0), new Point(WARP_SIZE, 0),
             new Point(WARP_SIZE, WARP_SIZE), new Point(0, WARP_SIZE));
         Mat transform = Imgproc.getPerspectiveTransform(source, target);
@@ -78,16 +100,19 @@ public final class FaceSampler {
                     int cx = col * cell + cell / 2;
                     int cy = row * cell + cell / 2;
                     int index = row * 3 + col;
-                    Mat patch = new Mat();
-                    warped.submat(new Rect(cx - SAMPLE_RADIUS, cy - SAMPLE_RADIUS,
-                        SAMPLE_RADIUS * 2, SAMPLE_RADIUS * 2)).copyTo(patch);
+                    Mat patch = warped.submat(new Rect(cx - SAMPLE_RADIUS, cy - SAMPLE_RADIUS,
+                        SAMPLE_RADIUS * 2, SAMPLE_RADIUS * 2));
                     int[] median = medianRgb(patch);
                     boolean uniform = dispersion(patch, median) <= MAX_DISPERSION;
                     patch.release();
 
                     lab[index] = Lab.fromRgb(median[0], median[1], median[2]);
-                    reliable[index] = uniform;
-                    CubeColor color = uniform
+                    // A shadowed white sticker reads as dark grey — L 50-70 with near-zero chroma —
+                    // which is exactly what the cube's black body looks like only much darker.
+                    // The old L<78 cut devoured every white face that wasn't fully lit.
+                    boolean plastic = lab[index][0] < 45f && Lab.chroma(lab[index]) < 25f;
+                    reliable[index] = uniform && !plastic;
+                    CubeColor color = reliable[index]
                         ? CubeColor.classify(median[0], median[1], median[2])
                         : CubeColor.UNKNOWN;
                     colors[index] = color;

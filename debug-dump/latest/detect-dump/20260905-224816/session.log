@@ -1,0 +1,882 @@
+1788619696635 session start dir=/storage/emulated/0/Android/data/com.mofang.cubear/files/detect-dump/20260905-224816 threshold=0.85
+1788619696635 model ready
+1788619697267 analysis_frame 720x1280
+1788619697309 seq=1 src=cnn p=0.9865 reject=implausible_aspect img=frames/f00001_miss.jpg
+1788619697309 event cnn_decline_1
+1788619697376 seq=2 src=cnn p=0.9901 reject=implausible_aspect img=frames/f00002_miss.jpg
+1788619697377 event cnn_decline_2
+1788619697458 seq=3 src=cnn p=0.9924 reject=implausible_aspect img=frames/f00003_miss.jpg
+1788619697494 seq=4 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00004_miss.jpg
+1788619697557 seq=5 src=cnn p=0.9911 reject=implausible_aspect img=frames/f00005_miss.jpg
+1788619697557 event cnn_decline_1
+1788619697625 seq=6 src=cnn p=0.9916 reject=implausible_aspect img=frames/f00006_miss.jpg
+1788619697625 event cnn_decline_2
+1788619697694 seq=7 src=cnn p=0.9891 reject=implausible_aspect img=frames/f00007_miss.jpg
+1788619697718 seq=8 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00008_miss.jpg
+1788619697758 seq=9 src=cnn p=0.9912 reject=implausible_aspect img=frames/f00009_miss.jpg
+1788619697758 event cnn_decline_1
+1788619697841 seq=10 src=cnn p=0.9878 reject=ok known=7 bad=2 side=0.6201 c=WHITE img=frames/f00010_hit.jpg
+1788619697914 seq=11 src=cnn p=0.9940 reject=ok known=4 bad=5 side=0.3753 c=UNKNOWN img=frames/f00011_hit.jpg
+1788619698009 seq=12 src=cnn p=0.9980 reject=implausible_aspect img=frames/f00012_miss.jpg
+1788619698009 event cnn_decline_1
+1788619698075 seq=13 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.4967 c=UNKNOWN img=frames/f00013_hit.jpg
+1788619698175 seq=14 src=cnn p=0.9994 reject=ok known=6 bad=3 side=0.5996 c=UNKNOWN img=frames/f00014_hit.jpg
+1788619698242 seq=15 src=cnn p=0.9994 reject=ok known=6 bad=3 side=0.6486 c=UNKNOWN img=frames/f00015_hit.jpg
+1788619698346 seq=16 src=cnn p=0.9998 reject=ok known=4 bad=5 side=0.6476 c=UNKNOWN img=frames/f00016_hit.jpg
+1788619698405 seq=17 src=cnn p=0.9997 reject=ok known=4 bad=5 side=0.6868 c=UNKNOWN img=frames/f00017_hit.jpg
+1788619698496 seq=18 src=cnn p=0.9997 reject=ok known=4 bad=5 side=0.6688 c=UNKNOWN img=frames/f00018_hit.jpg
+1788619698584 seq=19 src=cnn p=0.9997 reject=ok known=4 bad=5 side=0.6669 c=UNKNOWN img=frames/f00019_hit.jpg
+1788619698653 seq=20 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.6963 c=UNKNOWN img=frames/f00020_hit.jpg
+1788619698750 seq=21 src=cnn p=0.9991 reject=ok known=6 bad=3 side=0.5458 c=UNKNOWN img=frames/f00021_hit.jpg
+1788619698856 seq=22 src=cnn p=0.9992 reject=ok known=2 bad=6 side=0.5537 c=UNKNOWN img=frames/f00022_hit.jpg
+1788619698924 seq=23 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.5092 c=UNKNOWN img=frames/f00023_hit.jpg
+1788619699004 seq=24 src=cnn p=0.9978 reject=ok known=4 bad=5 side=0.5348 c=UNKNOWN img=frames/f00024_hit.jpg
+1788619699088 seq=25 src=cnn p=0.9974 reject=ok known=7 bad=2 side=0.5131 c=GREEN img=frames/f00025_hit.jpg
+1788619699156 seq=26 src=cnn p=0.9976 reject=ok known=5 bad=4 side=0.4339 c=UNKNOWN img=frames/f00026_hit.jpg
+1788619699238 seq=27 src=cnn p=0.9975 reject=ok known=5 bad=4 side=0.4349 c=UNKNOWN img=frames/f00027_hit.jpg
+1788619699316 seq=28 src=cnn p=0.9986 reject=ok known=7 bad=2 side=0.4448 c=UNKNOWN img=frames/f00028_hit.jpg
+1788619699406 seq=29 src=cnn p=0.9985 reject=ok known=7 bad=2 side=0.4749 c=WHITE img=frames/f00029_hit.jpg
+1788619699500 seq=30 src=cnn p=0.9989 reject=ok known=4 bad=5 side=0.5002 c=BLUE img=frames/f00030_hit.jpg
+1788619699598 seq=31 src=cnn p=0.9992 reject=ok known=3 bad=6 side=0.5238 c=UNKNOWN img=frames/f00031_hit.jpg
+1788619699677 seq=32 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.4155 c=WHITE img=frames/f00032_hit.jpg
+1788619699753 seq=33 src=cnn p=0.9984 reject=ok known=3 bad=6 side=0.5089 c=UNKNOWN img=frames/f00033_hit.jpg
+1788619699834 seq=34 src=cnn p=0.9984 reject=ok known=6 bad=3 side=0.4956 c=BLUE img=frames/f00034_hit.jpg
+1788619699930 seq=35 src=cnn p=0.9985 reject=ok known=3 bad=6 side=0.4930 c=UNKNOWN img=frames/f00035_hit.jpg
+1788619700034 seq=36 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5163 c=BLUE img=frames/f00036_hit.jpg
+1788619700132 seq=37 src=cnn p=0.9988 reject=ok known=2 bad=7 side=0.4984 c=UNKNOWN img=frames/f00037_hit.jpg
+1788619700192 seq=38 src=cnn p=0.9985 reject=ok known=2 bad=7 side=0.4839 c=UNKNOWN img=frames/f00038_hit.jpg
+1788619700289 seq=39 src=cnn p=0.9981 reject=ok known=6 bad=3 side=0.4623 c=UNKNOWN img=frames/f00039_hit.jpg
+1788619700385 seq=40 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.4454 c=UNKNOWN img=frames/f00040_hit.jpg
+1788619700474 seq=41 src=cnn p=0.9992 reject=ok known=3 bad=6 side=0.4204 c=UNKNOWN img=frames/f00041_hit.jpg
+1788619700554 seq=42 src=cnn p=0.9988 reject=ok known=3 bad=6 side=0.4250 c=UNKNOWN img=frames/f00042_hit.jpg
+1788619700621 seq=43 src=cnn p=0.9987 reject=ok known=4 bad=5 side=0.4133 c=BLUE img=frames/f00043_hit.jpg
+1788619700687 seq=44 src=cnn p=0.9989 reject=ok known=6 bad=3 side=0.3927 c=BLUE img=frames/f00044_hit.jpg
+1788619700764 seq=45 src=cnn p=0.9988 reject=ok known=6 bad=3 side=0.3872 c=BLUE img=frames/f00045_hit.jpg
+1788619700864 seq=46 src=cnn p=0.9990 reject=ok known=6 bad=3 side=0.4032 c=UNKNOWN img=frames/f00046_hit.jpg
+1788619700962 seq=47 src=cnn p=0.9986 reject=ok known=6 bad=3 side=0.4116 c=UNKNOWN img=frames/f00047_hit.jpg
+1788619701032 seq=48 src=cnn p=0.9991 reject=ok known=6 bad=3 side=0.4352 c=UNKNOWN img=frames/f00048_hit.jpg
+1788619701134 seq=49 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.4448 c=UNKNOWN img=frames/f00049_hit.jpg
+1788619701216 seq=50 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.4675 c=UNKNOWN img=frames/f00050_hit.jpg
+1788619701355 seq=51 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.4750 c=UNKNOWN img=frames/f00051_hit.jpg
+1788619701423 seq=52 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.4912 c=UNKNOWN img=frames/f00052_hit.jpg
+1788619701523 seq=53 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.4918 c=UNKNOWN img=frames/f00053_hit.jpg
+1788619701608 seq=54 src=cnn p=0.9995 reject=ok known=3 bad=6 side=0.4972 c=UNKNOWN img=frames/f00054_hit.jpg
+1788619701707 seq=55 src=cnn p=0.9995 reject=ok known=5 bad=4 side=0.5059 c=UNKNOWN img=frames/f00055_hit.jpg
+1788619701805 seq=56 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5199 c=UNKNOWN img=frames/f00056_hit.jpg
+1788619701874 seq=57 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.5095 c=UNKNOWN img=frames/f00057_hit.jpg
+1788619701953 seq=58 src=cnn p=0.9991 reject=ok known=6 bad=3 side=0.4935 c=UNKNOWN img=frames/f00058_hit.jpg
+1788619702029 seq=59 src=cnn p=0.9986 reject=ok known=6 bad=3 side=0.4735 c=UNKNOWN img=frames/f00059_hit.jpg
+1788619702124 seq=60 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.4588 c=UNKNOWN img=frames/f00060_hit.jpg
+1788619702231 seq=61 src=cnn p=0.9987 reject=ok known=5 bad=4 side=0.4398 c=UNKNOWN img=frames/f00061_hit.jpg
+1788619702320 seq=62 src=cnn p=0.9985 reject=ok known=5 bad=4 side=0.4399 c=UNKNOWN img=frames/f00062_hit.jpg
+1788619702392 seq=63 src=cnn p=0.9988 reject=ok known=5 bad=4 side=0.4425 c=UNKNOWN img=frames/f00063_hit.jpg
+1788619702495 seq=64 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.4465 c=BLUE img=frames/f00064_hit.jpg
+1788619702605 seq=65 src=cnn p=0.9957 reject=ok known=6 bad=3 side=0.3532 c=BLUE img=frames/f00065_hit.jpg
+1788619702691 seq=66 src=cnn p=0.9942 reject=ok known=7 bad=2 side=0.4307 c=RED img=frames/f00066_hit.jpg
+1788619702779 seq=67 src=cnn p=0.9976 reject=ok known=7 bad=1 side=0.4254 c=RED
+1788619702889 seq=68 src=cnn p=0.9967 reject=ok known=7 bad=1 side=0.4258 c=UNKNOWN
+1788619702972 seq=69 src=cnn p=0.9977 reject=ok known=3 bad=6 side=0.4579 c=UNKNOWN img=frames/f00069_hit.jpg
+1788619703080 seq=70 src=cnn p=0.9980 reject=ok known=5 bad=4 side=0.4690 c=UNKNOWN img=frames/f00070_hit.jpg
+1788619703164 seq=71 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.4633 c=UNKNOWN img=frames/f00071_hit.jpg
+1788619703225 seq=72 src=cnn p=0.9985 reject=ok known=6 bad=3 side=0.4410 c=UNKNOWN img=frames/f00072_hit.jpg
+1788619703331 seq=73 src=cnn p=0.9985 reject=ok known=6 bad=3 side=0.4956 c=RED img=frames/f00073_hit.jpg
+1788619703438 seq=74 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5003 c=UNKNOWN img=frames/f00074_hit.jpg
+1788619703497 seq=75 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.4966 c=UNKNOWN img=frames/f00075_hit.jpg
+1788619703591 seq=76 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5041 c=UNKNOWN img=frames/f00076_hit.jpg
+1788619703680 seq=77 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5021 c=UNKNOWN img=frames/f00077_hit.jpg
+1788619703749 seq=78 src=cnn p=0.9987 reject=ok known=4 bad=5 side=0.5003 c=UNKNOWN img=frames/f00078_hit.jpg
+1788619703853 seq=79 src=cnn p=0.9988 reject=ok known=5 bad=4 side=0.4780 c=UNKNOWN img=frames/f00079_hit.jpg
+1788619703929 seq=80 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.4982 c=UNKNOWN img=frames/f00080_hit.jpg
+1788619704009 seq=81 src=cnn p=0.9984 reject=ok known=5 bad=4 side=0.4991 c=UNKNOWN img=frames/f00081_hit.jpg
+1788619704080 seq=82 src=cnn p=0.9983 reject=ok known=5 bad=4 side=0.5040 c=UNKNOWN img=frames/f00082_hit.jpg
+1788619704155 seq=83 src=cnn p=0.9981 reject=ok known=5 bad=4 side=0.5263 c=UNKNOWN img=frames/f00083_hit.jpg
+1788619704270 seq=84 src=cnn p=0.9980 reject=ok known=6 bad=3 side=0.5258 c=UNKNOWN img=frames/f00084_hit.jpg
+1788619704373 seq=85 src=cnn p=0.9983 reject=ok known=2 bad=7 side=0.5508 c=UNKNOWN img=frames/f00085_hit.jpg
+1788619704449 seq=86 src=cnn p=0.9997 reject=ok known=8 bad=1 side=0.6515 c=YELLOW
+1788619704562 seq=87 src=cnn p=0.9994 reject=ok known=6 bad=3 side=0.6491 c=UNKNOWN img=frames/f00087_hit.jpg
+1788619704621 seq=88 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.6408 c=UNKNOWN img=frames/f00088_hit.jpg
+1788619704725 seq=89 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.6711 c=YELLOW img=frames/f00089_hit.jpg
+1788619704826 seq=90 src=cnn p=0.9993 reject=ok known=7 bad=2 side=0.6610 c=YELLOW img=frames/f00090_hit.jpg
+1788619704919 seq=91 src=cnn p=0.9992 reject=ok known=7 bad=2 side=0.6676 c=YELLOW img=frames/f00091_hit.jpg
+1788619704919 event stable_capture side=0.6676
+1788619705012 seq=92 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.6555 c=YELLOW img=frames/f00092_hit.jpg
+1788619705083 seq=93 src=cnn p=0.9992 reject=ok known=7 bad=2 side=0.6687 c=YELLOW img=frames/f00093_hit.jpg
+1788619705163 seq=94 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.6861 c=UNKNOWN img=frames/f00094_hit.jpg
+1788619705254 seq=95 src=cnn p=0.9988 reject=ok known=8 bad=1 side=0.5143 c=YELLOW
+1788619705367 seq=96 src=cnn p=0.9994 reject=ok known=7 bad=2 side=0.5741 c=RED img=frames/f00096_hit.jpg
+1788619705450 seq=97 src=cnn p=0.9993 reject=ok known=7 bad=2 side=0.5439 c=RED img=frames/f00097_hit.jpg
+1788619705589 seq=98 src=cnn p=0.9989 reject=ok known=7 bad=2 side=0.5236 c=RED img=frames/f00098_hit.jpg
+1788619705589 event stable_capture side=0.5236
+1788619705663 seq=99 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5016 c=UNKNOWN img=frames/f00099_hit.jpg
+1788619705725 seq=100 src=cnn p=0.9992 reject=ok known=6 bad=3 side=0.4874 c=RED img=frames/f00100_hit.jpg
+1788619705846 seq=101 src=cnn p=0.9988 reject=ok known=5 bad=4 side=0.4731 c=UNKNOWN img=frames/f00101_hit.jpg
+1788619705908 seq=102 src=cnn p=0.9984 reject=ok known=6 bad=3 side=0.4895 c=RED img=frames/f00102_hit.jpg
+1788619705974 seq=103 src=cnn p=0.9983 reject=ok known=5 bad=4 side=0.5127 c=UNKNOWN img=frames/f00103_hit.jpg
+1788619706074 seq=104 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.4283 c=RED img=frames/f00104_hit.jpg
+1788619706074 event stable_capture side=0.4283
+1788619706178 seq=105 src=cnn p=0.9979 reject=ok known=4 bad=5 side=0.5004 c=UNKNOWN img=frames/f00105_hit.jpg
+1788619706267 seq=106 src=cnn p=0.9979 reject=ok known=4 bad=5 side=0.5122 c=UNKNOWN img=frames/f00106_hit.jpg
+1788619706378 seq=107 src=cnn p=0.9987 reject=ok known=7 bad=2 side=0.4933 c=YELLOW img=frames/f00107_hit.jpg
+1788619706467 seq=108 src=cnn p=0.9981 reject=ok known=6 bad=3 side=0.5012 c=YELLOW img=frames/f00108_hit.jpg
+1788619706560 seq=109 src=cnn p=0.9976 reject=ok known=3 bad=5 side=0.4857 c=UNKNOWN img=frames/f00109_hit.jpg
+1788619706646 seq=110 src=cnn p=0.9990 reject=ok known=8 bad=1 side=0.5416 c=YELLOW
+1788619706729 seq=111 src=cnn p=0.9983 reject=ok known=4 bad=5 side=0.5270 c=UNKNOWN img=frames/f00111_hit.jpg
+1788619706839 seq=112 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.5498 c=YELLOW img=frames/f00112_hit.jpg
+1788619706931 seq=113 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.5317 c=YELLOW img=frames/f00113_hit.jpg
+1788619707021 seq=114 src=cnn p=0.9998 reject=ok known=5 bad=4 side=0.5332 c=UNKNOWN img=frames/f00114_hit.jpg
+1788619707091 seq=115 src=cnn p=0.9997 reject=ok known=4 bad=5 side=0.5232 c=UNKNOWN img=frames/f00115_hit.jpg
+1788619707198 seq=116 src=cnn p=0.9997 reject=ok known=5 bad=4 side=0.5097 c=UNKNOWN img=frames/f00116_hit.jpg
+1788619707269 seq=117 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5241 c=UNKNOWN img=frames/f00117_hit.jpg
+1788619707371 seq=118 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.5351 c=UNKNOWN img=frames/f00118_hit.jpg
+1788619707464 seq=119 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5413 c=UNKNOWN img=frames/f00119_hit.jpg
+1788619707557 seq=120 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5464 c=UNKNOWN img=frames/f00120_hit.jpg
+1788619707665 seq=121 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.5423 c=UNKNOWN img=frames/f00121_hit.jpg
+1788619707772 seq=122 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.5351 c=UNKNOWN img=frames/f00122_hit.jpg
+1788619707879 seq=123 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.5510 c=UNKNOWN img=frames/f00123_hit.jpg
+1788619707958 seq=124 src=cnn p=0.9995 reject=ok known=4 bad=5 side=0.5222 c=UNKNOWN img=frames/f00124_hit.jpg
+1788619708068 seq=125 src=cnn p=0.9996 reject=ok known=4 bad=5 side=0.5171 c=UNKNOWN img=frames/f00125_hit.jpg
+1788619708153 seq=126 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5035 c=UNKNOWN img=frames/f00126_hit.jpg
+1788619708261 seq=127 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5031 c=UNKNOWN img=frames/f00127_hit.jpg
+1788619708375 seq=128 src=cnn p=0.9994 reject=ok known=7 bad=2 side=0.5137 c=GREEN img=frames/f00128_hit.jpg
+1788619708467 seq=129 src=cnn p=0.9988 reject=ok known=6 bad=3 side=0.5401 c=YELLOW img=frames/f00129_hit.jpg
+1788619708576 seq=130 src=cnn p=0.9986 reject=ok known=6 bad=3 side=0.5289 c=UNKNOWN img=frames/f00130_hit.jpg
+1788619708656 seq=131 src=cnn p=0.9970 reject=ok known=8 bad=0 side=0.5180 c=ORANGE
+1788619708739 seq=132 src=cnn p=0.9959 reject=ok known=8 bad=1 side=0.5151 c=ORANGE
+1788619708817 seq=133 src=cnn p=0.9952 reject=ok known=7 bad=2 side=0.5007 c=ORANGE img=frames/f00133_hit.jpg
+1788619708890 seq=134 src=cnn p=0.9969 reject=ok known=4 bad=5 side=0.5186 c=UNKNOWN img=frames/f00134_hit.jpg
+1788619708981 seq=135 src=cnn p=0.9987 reject=ok known=3 bad=6 side=0.5147 c=UNKNOWN img=frames/f00135_hit.jpg
+1788619709074 seq=136 src=cnn p=0.9975 reject=ok known=8 bad=1 side=0.5474 c=ORANGE img=frames/f00136_hit.jpg
+1788619709179 seq=137 src=cnn p=0.9971 reject=ok known=6 bad=3 side=0.5342 c=ORANGE img=frames/f00137_hit.jpg
+1788619709240 seq=138 src=cnn p=0.9970 reject=ok known=6 bad=3 side=0.5348 c=ORANGE img=frames/f00138_hit.jpg
+1788619709240 event stable_capture side=0.5348
+1788619709335 seq=139 src=cnn p=0.9978 reject=ok known=3 bad=6 side=0.5414 c=UNKNOWN img=frames/f00139_hit.jpg
+1788619709406 seq=140 src=cnn p=0.9975 reject=ok known=1 bad=8 side=0.5405 c=UNKNOWN img=frames/f00140_hit.jpg
+1788619709505 seq=141 src=cnn p=0.9980 reject=ok known=1 bad=8 side=0.5377 c=UNKNOWN img=frames/f00141_hit.jpg
+1788619709570 seq=142 src=cnn p=0.9987 reject=ok known=1 bad=8 side=0.5538 c=UNKNOWN img=frames/f00142_hit.jpg
+1788619709636 seq=143 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.5719 c=ORANGE img=frames/f00143_hit.jpg
+1788619709708 seq=144 src=cnn p=0.9985 reject=ok known=6 bad=3 side=0.5873 c=ORANGE img=frames/f00144_hit.jpg
+1788619709792 seq=145 src=cnn p=0.9985 reject=ok known=7 bad=2 side=0.5876 c=ORANGE img=frames/f00145_hit.jpg
+1788619709856 seq=146 src=cnn p=0.9982 reject=ok known=8 bad=1 side=0.5799 c=ORANGE
+1788619709856 event stable_capture side=0.5799
+1788619709948 seq=147 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.5890 c=ORANGE img=frames/f00147_hit.jpg
+1788619710064 seq=148 src=cnn p=0.9978 reject=ok known=5 bad=4 side=0.5321 c=UNKNOWN img=frames/f00148_hit.jpg
+1788619710158 seq=149 src=cnn p=0.9953 reject=ok known=3 bad=6 side=0.3916 c=ORANGE img=frames/f00149_hit.jpg
+1788619710228 seq=150 src=cnn p=0.9956 reject=ok known=5 bad=4 side=0.3856 c=YELLOW img=frames/f00150_hit.jpg
+1788619710301 seq=151 src=cnn p=0.9962 reject=ok known=5 bad=4 side=0.4799 c=UNKNOWN img=frames/f00151_hit.jpg
+1788619710395 seq=152 src=cnn p=0.9966 reject=ok known=4 bad=5 side=0.4467 c=UNKNOWN img=frames/f00152_hit.jpg
+1788619710455 seq=153 src=cnn p=0.9971 reject=ok known=3 bad=6 side=0.4795 c=UNKNOWN img=frames/f00153_hit.jpg
+1788619710562 seq=154 src=cnn p=0.9978 reject=ok known=4 bad=5 side=0.5053 c=UNKNOWN img=frames/f00154_hit.jpg
+1788619710628 seq=155 src=cnn p=0.9987 reject=ok known=4 bad=5 side=0.4913 c=UNKNOWN img=frames/f00155_hit.jpg
+1788619710715 seq=156 src=cnn p=0.9984 reject=ok known=2 bad=7 side=0.5480 c=UNKNOWN img=frames/f00156_hit.jpg
+1788619710779 seq=157 src=cnn p=0.9983 reject=ok known=6 bad=3 side=0.3998 c=WHITE img=frames/f00157_hit.jpg
+1788619710865 seq=158 src=cnn p=0.9984 reject=ok known=5 bad=4 side=0.4213 c=WHITE img=frames/f00158_hit.jpg
+1788619710965 seq=159 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.5485 c=UNKNOWN img=frames/f00159_hit.jpg
+1788619711032 seq=160 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5556 c=WHITE img=frames/f00160_hit.jpg
+1788619711108 seq=161 src=cnn p=0.9990 reject=ok known=8 bad=1 side=0.5693 c=WHITE
+1788619711179 seq=162 src=cnn p=0.9993 reject=ok known=8 bad=1 side=0.5531 c=WHITE
+1788619711263 seq=163 src=cnn p=0.9993 reject=ok known=7 bad=2 side=0.5569 c=WHITE img=frames/f00163_hit.jpg
+1788619711264 event stable_capture side=0.5569
+1788619711360 seq=164 src=cnn p=0.9996 reject=ok known=5 bad=4 side=0.5586 c=WHITE img=frames/f00164_hit.jpg
+1788619711449 seq=165 src=cnn p=0.9995 reject=ok known=4 bad=5 side=0.5600 c=WHITE img=frames/f00165_hit.jpg
+1788619711528 seq=166 src=cnn p=0.9993 reject=ok known=7 bad=2 side=0.5724 c=WHITE img=frames/f00166_hit.jpg
+1788619711619 seq=167 src=cnn p=0.9993 reject=ok known=8 bad=1 side=0.5754 c=WHITE
+1788619711715 seq=168 src=cnn p=0.9994 reject=ok known=8 bad=1 side=0.5685 c=WHITE img=frames/f00168_hit.jpg
+1788619711715 event stable_capture side=0.5685
+1788619711789 seq=169 src=cnn p=0.9994 reject=ok known=7 bad=2 side=0.5621 c=WHITE img=frames/f00169_hit.jpg
+1788619711884 seq=170 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5404 c=WHITE img=frames/f00170_hit.jpg
+1788619711950 seq=171 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5230 c=UNKNOWN img=frames/f00171_hit.jpg
+1788619712062 seq=172 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.5127 c=UNKNOWN img=frames/f00172_hit.jpg
+1788619712174 seq=173 src=cnn p=0.9996 reject=ok known=5 bad=4 side=0.5287 c=UNKNOWN img=frames/f00173_hit.jpg
+1788619712245 seq=174 src=cnn p=0.9996 reject=ok known=0 bad=9 side=0.5322 c=UNKNOWN img=frames/f00174_hit.jpg
+1788619712325 seq=175 src=cnn p=0.9995 reject=ok known=4 bad=5 side=0.5271 c=UNKNOWN img=frames/f00175_hit.jpg
+1788619712437 seq=176 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.5269 c=ORANGE img=frames/f00176_hit.jpg
+1788619712502 seq=177 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.5918 c=BLUE img=frames/f00177_hit.jpg
+1788619712610 seq=178 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.6193 c=BLUE img=frames/f00178_hit.jpg
+1788619712709 seq=179 src=cnn p=0.9994 reject=ok known=6 bad=3 side=0.6055 c=BLUE img=frames/f00179_hit.jpg
+1788619712791 seq=180 src=cnn p=0.9994 reject=ok known=7 bad=2 side=0.6011 c=BLUE img=frames/f00180_hit.jpg
+1788619712792 event stable_capture side=0.6011
+1788619712865 seq=181 src=cnn p=0.9993 reject=ok known=8 bad=1 side=0.5979 c=BLUE
+1788619712954 seq=182 src=cnn p=0.9992 reject=ok known=7 bad=2 side=0.5958 c=BLUE img=frames/f00182_hit.jpg
+1788619713046 seq=183 src=cnn p=0.9992 reject=ok known=7 bad=2 side=0.5972 c=BLUE img=frames/f00183_hit.jpg
+1788619713046 event stable_capture side=0.5972
+1788619713140 seq=184 src=cnn p=0.9991 reject=ok known=7 bad=2 side=0.5893 c=BLUE img=frames/f00184_hit.jpg
+1788619713240 seq=185 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5803 c=UNKNOWN img=frames/f00185_hit.jpg
+1788619713320 seq=186 src=cnn p=0.9993 reject=ok known=2 bad=7 side=0.5839 c=UNKNOWN img=frames/f00186_hit.jpg
+1788619713425 seq=187 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.5533 c=UNKNOWN img=frames/f00187_hit.jpg
+1788619713529 seq=188 src=cnn p=0.9986 reject=ok known=7 bad=2 side=0.5061 c=RED img=frames/f00188_hit.jpg
+1788619713607 seq=189 src=cnn p=0.9989 reject=ok known=7 bad=2 side=0.5681 c=WHITE img=frames/f00189_hit.jpg
+1788619713704 seq=190 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.5826 c=WHITE img=frames/f00190_hit.jpg
+1788619713776 seq=191 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.5454 c=UNKNOWN img=frames/f00191_hit.jpg
+1788619713858 seq=192 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5541 c=UNKNOWN img=frames/f00192_hit.jpg
+1788619713934 seq=193 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.5406 c=YELLOW img=frames/f00193_hit.jpg
+1788619714014 seq=194 src=cnn p=0.9984 reject=ok known=5 bad=4 side=0.5195 c=YELLOW img=frames/f00194_hit.jpg
+1788619714095 seq=195 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5702 c=YELLOW img=frames/f00195_hit.jpg
+1788619714188 seq=196 src=cnn p=0.9996 reject=ok known=5 bad=4 side=0.5808 c=YELLOW img=frames/f00196_hit.jpg
+1788619714260 seq=197 src=cnn p=0.9995 reject=ok known=4 bad=5 side=0.5753 c=UNKNOWN img=frames/f00197_hit.jpg
+1788619714363 seq=198 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5830 c=YELLOW img=frames/f00198_hit.jpg
+1788619714466 seq=199 src=cnn p=0.9994 reject=ok known=3 bad=6 side=0.5783 c=UNKNOWN img=frames/f00199_hit.jpg
+1788619714574 seq=200 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.5890 c=UNKNOWN img=frames/f00200_hit.jpg
+1788619714651 seq=201 src=cnn p=0.9988 reject=ok known=6 bad=3 side=0.5621 c=UNKNOWN img=frames/f00201_hit.jpg
+1788619714734 seq=202 src=cnn p=0.9989 reject=ok known=4 bad=5 side=0.5565 c=UNKNOWN img=frames/f00202_hit.jpg
+1788619714797 seq=203 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.5685 c=UNKNOWN img=frames/f00203_hit.jpg
+1788619714881 seq=204 src=cnn p=0.9994 reject=ok known=6 bad=3 side=0.5778 c=YELLOW img=frames/f00204_hit.jpg
+1788619714942 seq=205 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5949 c=UNKNOWN img=frames/f00205_hit.jpg
+1788619715026 seq=206 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5727 c=UNKNOWN img=frames/f00206_hit.jpg
+1788619715129 seq=207 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5774 c=UNKNOWN img=frames/f00207_hit.jpg
+1788619715226 seq=208 src=cnn p=0.9988 reject=ok known=6 bad=3 side=0.5579 c=UNKNOWN img=frames/f00208_hit.jpg
+1788619715331 seq=209 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5709 c=UNKNOWN img=frames/f00209_hit.jpg
+1788619715413 seq=210 src=cnn p=0.9995 reject=ok known=5 bad=4 side=0.5787 c=UNKNOWN img=frames/f00210_hit.jpg
+1788619715541 seq=211 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.5755 c=BLUE img=frames/f00211_hit.jpg
+1788619715614 seq=212 src=cnn p=0.9988 reject=ok known=5 bad=4 side=0.5753 c=BLUE img=frames/f00212_hit.jpg
+1788619715707 seq=213 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.5738 c=UNKNOWN img=frames/f00213_hit.jpg
+1788619715791 seq=214 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.5695 c=UNKNOWN img=frames/f00214_hit.jpg
+1788619715879 seq=215 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5618 c=UNKNOWN img=frames/f00215_hit.jpg
+1788619715982 seq=216 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5472 c=UNKNOWN img=frames/f00216_hit.jpg
+1788619716066 seq=217 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5314 c=UNKNOWN img=frames/f00217_hit.jpg
+1788619716170 seq=218 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5479 c=UNKNOWN img=frames/f00218_hit.jpg
+1788619716264 seq=219 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.5192 c=UNKNOWN img=frames/f00219_hit.jpg
+1788619716375 seq=220 src=cnn p=0.9986 reject=ok known=5 bad=4 side=0.5267 c=BLUE img=frames/f00220_hit.jpg
+1788619716469 seq=221 src=cnn p=0.9990 reject=ok known=3 bad=6 side=0.5323 c=UNKNOWN img=frames/f00221_hit.jpg
+1788619716552 seq=222 src=cnn p=0.9988 reject=ok known=2 bad=7 side=0.5430 c=UNKNOWN img=frames/f00222_hit.jpg
+1788619716625 seq=223 src=cnn p=0.9991 reject=ok known=3 bad=6 side=0.5476 c=UNKNOWN img=frames/f00223_hit.jpg
+1788619716733 seq=224 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.5562 c=YELLOW img=frames/f00224_hit.jpg
+1788619716818 seq=225 src=cnn p=0.9989 reject=ok known=8 bad=1 side=0.5454 c=YELLOW
+1788619716926 seq=226 src=cnn p=0.9993 reject=ok known=9 bad=0 side=0.5378 c=YELLOW
+1788619716926 event stable_capture side=0.5378
+1788619717042 seq=227 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.5235 c=UNKNOWN img=frames/f00227_hit.jpg
+1788619717140 seq=228 src=cnn p=0.9984 reject=ok known=3 bad=6 side=0.5317 c=UNKNOWN img=frames/f00228_hit.jpg
+1788619717223 seq=229 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.5195 c=UNKNOWN img=frames/f00229_hit.jpg
+1788619717287 seq=230 src=cnn p=0.9987 reject=ok known=3 bad=6 side=0.5683 c=YELLOW img=frames/f00230_hit.jpg
+1788619717402 seq=231 src=cnn p=0.9986 reject=ok known=6 bad=3 side=0.5086 c=ORANGE img=frames/f00231_hit.jpg
+1788619717465 seq=232 src=cnn p=0.9988 reject=ok known=2 bad=7 side=0.5226 c=UNKNOWN img=frames/f00232_hit.jpg
+1788619717530 seq=233 src=cnn p=0.9997 reject=ok known=5 bad=4 side=0.5297 c=GREEN img=frames/f00233_hit.jpg
+1788619717608 seq=234 src=cnn p=0.9994 reject=ok known=8 bad=1 side=0.5476 c=GREEN
+1788619717690 seq=235 src=cnn p=0.9995 reject=ok known=8 bad=1 side=0.5644 c=GREEN
+1788619717789 seq=236 src=cnn p=0.9993 reject=ok known=8 bad=1 side=0.5764 c=GREEN
+1788619717789 event stable_capture side=0.5764
+1788619717888 seq=237 src=cnn p=0.9988 reject=ok known=8 bad=1 side=0.5768 c=GREEN
+1788619717991 seq=238 src=cnn p=0.9988 reject=ok known=6 bad=3 side=0.5804 c=GREEN img=frames/f00238_hit.jpg
+1788619718040 seq=239 src=cnn p=0.9988 reject=ok known=8 bad=1 side=0.5821 c=GREEN
+1788619718041 event stable_capture side=0.5821
+1788619718167 seq=240 src=cnn p=0.9986 reject=ok known=7 bad=2 side=0.5703 c=GREEN img=frames/f00240_hit.jpg
+1788619718239 seq=241 src=cnn p=0.9985 reject=ok known=3 bad=6 side=0.5425 c=UNKNOWN img=frames/f00241_hit.jpg
+1788619718324 seq=242 src=cnn p=0.9976 reject=ok known=4 bad=5 side=0.5147 c=UNKNOWN img=frames/f00242_hit.jpg
+1788619718437 seq=243 src=cnn p=0.9988 reject=ok known=7 bad=2 side=0.5002 c=GREEN img=frames/f00243_hit.jpg
+1788619718501 seq=244 src=cnn p=0.9990 reject=ok known=9 bad=0 side=0.5153 c=GREEN
+1788619718585 seq=245 src=cnn p=0.9992 reject=ok known=7 bad=2 side=0.5298 c=GREEN img=frames/f00245_hit.jpg
+1788619718656 seq=246 src=cnn p=0.9984 reject=ok known=4 bad=5 side=0.4674 c=UNKNOWN img=frames/f00246_hit.jpg
+1788619718716 seq=247 src=cnn p=0.9980 reject=ok known=5 bad=4 side=0.4784 c=UNKNOWN img=frames/f00247_hit.jpg
+1788619718784 seq=248 src=cnn p=0.9971 reject=ok known=6 bad=3 side=0.4873 c=GREEN img=frames/f00248_hit.jpg
+1788619718841 seq=249 src=cnn p=0.9978 reject=ok known=8 bad=1 side=0.5167 c=GREEN
+1788619718939 seq=250 src=cnn p=0.9978 reject=ok known=9 bad=0 side=0.5440 c=GREEN
+1788619718940 event stable_capture side=0.5440
+1788619719039 seq=251 src=cnn p=0.9984 reject=ok known=8 bad=1 side=0.5780 c=GREEN
+1788619719154 seq=252 src=cnn p=0.9984 reject=ok known=6 bad=3 side=0.5022 c=UNKNOWN img=frames/f00252_hit.jpg
+1788619719247 seq=253 src=cnn p=0.9988 reject=ok known=6 bad=3 side=0.5103 c=GREEN img=frames/f00253_hit.jpg
+1788619719314 seq=254 src=cnn p=0.9988 reject=ok known=7 bad=2 side=0.5229 c=GREEN img=frames/f00254_hit.jpg
+1788619719385 seq=255 src=cnn p=0.9987 reject=ok known=7 bad=2 side=0.5209 c=GREEN img=frames/f00255_hit.jpg
+1788619719454 seq=256 src=cnn p=0.9989 reject=ok known=6 bad=3 side=0.5138 c=GREEN img=frames/f00256_hit.jpg
+1788619719518 seq=257 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5277 c=UNKNOWN img=frames/f00257_hit.jpg
+1788619719612 seq=258 src=cnn p=0.9995 reject=ok known=4 bad=5 side=0.5238 c=UNKNOWN img=frames/f00258_hit.jpg
+1788619719707 seq=259 src=cnn p=0.9996 reject=ok known=6 bad=3 side=0.5122 c=GREEN img=frames/f00259_hit.jpg
+1788619719778 seq=260 src=cnn p=0.9997 reject=ok known=7 bad=2 side=0.5149 c=GREEN img=frames/f00260_hit.jpg
+1788619719836 seq=261 src=cnn p=0.9995 reject=ok known=8 bad=1 side=0.4949 c=GREEN
+1788619719908 seq=262 src=cnn p=0.9997 reject=ok known=8 bad=1 side=0.4961 c=GREEN
+1788619720016 seq=263 src=cnn p=0.9994 reject=ok known=9 bad=0 side=0.5208 c=GREEN
+1788619720115 seq=264 src=cnn p=0.9993 reject=ok known=9 bad=0 side=0.5435 c=GREEN img=frames/f00264_hit.jpg
+1788619720185 seq=265 src=cnn p=0.9992 reject=ok known=9 bad=0 side=0.5486 c=GREEN
+1788619720284 seq=266 src=cnn p=0.9991 reject=ok known=9 bad=0 side=0.5433 c=GREEN
+1788619720384 seq=267 src=cnn p=0.9990 reject=ok known=6 bad=3 side=0.5402 c=GREEN img=frames/f00267_hit.jpg
+1788619720473 seq=268 src=cnn p=0.9989 reject=ok known=6 bad=3 side=0.5385 c=GREEN img=frames/f00268_hit.jpg
+1788619720529 seq=269 src=cnn p=0.9990 reject=ok known=6 bad=3 side=0.5345 c=GREEN
+1788619720624 seq=270 src=cnn p=0.9992 reject=ok known=6 bad=3 side=0.5371 c=GREEN
+1788619720725 seq=271 src=cnn p=0.9993 reject=ok known=8 bad=1 side=0.5407 c=GREEN
+1788619720809 seq=272 src=cnn p=0.9992 reject=ok known=9 bad=0 side=0.5441 c=GREEN
+1788619720916 seq=273 src=cnn p=0.9994 reject=ok known=8 bad=1 side=0.5394 c=GREEN
+1788619721013 seq=274 src=cnn p=0.9996 reject=ok known=7 bad=2 side=0.5568 c=GREEN
+1788619721104 seq=275 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.5620 c=GREEN
+1788619721177 seq=276 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.5661 c=UNKNOWN
+1788619721270 seq=277 src=cnn p=0.9987 reject=ok known=4 bad=5 side=0.5421 c=UNKNOWN
+1788619721356 seq=278 src=cnn p=0.9992 reject=ok known=3 bad=6 side=0.5188 c=UNKNOWN
+1788619721441 seq=279 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.5278 c=UNKNOWN
+1788619721553 seq=280 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.5414 c=UNKNOWN
+1788619721607 seq=281 src=cnn p=0.9995 reject=ok known=5 bad=4 side=0.5519 c=YELLOW
+1788619721719 seq=282 src=cnn p=0.9993 reject=ok known=6 bad=3 side=0.5465 c=YELLOW
+1788619721841 seq=283 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5488 c=YELLOW
+1788619721885 seq=284 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5433 c=YELLOW
+1788619721981 seq=285 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.5422 c=YELLOW
+1788619722047 seq=286 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.5375 c=YELLOW
+1788619722121 seq=287 src=cnn p=0.9992 reject=ok known=5 bad=4 side=0.5469 c=UNKNOWN
+1788619722240 seq=288 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5483 c=UNKNOWN
+1788619722318 seq=289 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5426 c=UNKNOWN
+1788619722412 seq=290 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5292 c=UNKNOWN
+1788619722512 seq=291 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5199 c=UNKNOWN
+1788619722607 seq=292 src=cnn p=0.9993 reject=ok known=6 bad=3 side=0.5100 c=UNKNOWN
+1788619722700 seq=293 src=cnn p=0.9995 reject=ok known=5 bad=4 side=0.5273 c=UNKNOWN
+1788619722764 seq=294 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.4937 c=YELLOW
+1788619722831 seq=295 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.5006 c=YELLOW
+1788619722904 seq=296 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.5033 c=YELLOW
+1788619722904 event stable_capture side=0.5033
+1788619723007 seq=297 src=cnn p=0.9994 reject=ok known=6 bad=3 side=0.5107 c=YELLOW
+1788619723105 seq=298 src=cnn p=0.9995 reject=ok known=5 bad=4 side=0.5318 c=YELLOW
+1788619723206 seq=299 src=cnn p=0.9995 reject=ok known=5 bad=4 side=0.5388 c=YELLOW
+1788619723305 seq=300 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.5227 c=YELLOW
+1788619723406 seq=301 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.5301 c=YELLOW
+1788619723406 event stable_capture side=0.5301
+1788619723494 seq=302 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.5249 c=YELLOW
+1788619723563 seq=303 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.5071 c=YELLOW
+1788619723636 seq=304 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.4970 c=YELLOW
+1788619723636 event stable_capture side=0.4970
+1788619723738 seq=305 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.4920 c=YELLOW
+1788619723859 seq=306 src=cnn p=0.9996 reject=ok known=6 bad=3 side=0.4918 c=YELLOW
+1788619723954 seq=307 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.4891 c=YELLOW
+1788619723954 event stable_capture side=0.4891
+1788619724047 seq=308 src=cnn p=0.9996 reject=ok known=6 bad=3 side=0.4809 c=YELLOW
+1788619724156 seq=309 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.4794 c=YELLOW
+1788619724243 seq=310 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.4765 c=YELLOW
+1788619724316 seq=311 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.4735 c=YELLOW
+1788619724420 seq=312 src=cnn p=0.9997 reject=ok known=6 bad=3 side=0.4762 c=YELLOW
+1788619724520 seq=313 src=cnn p=0.9996 reject=ok known=7 bad=2 side=0.4807 c=YELLOW
+1788619724612 seq=314 src=cnn p=0.9996 reject=ok known=6 bad=3 side=0.4731 c=YELLOW
+1788619724712 seq=315 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.4890 c=YELLOW
+1788619724808 seq=316 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.5042 c=YELLOW
+1788619724877 seq=317 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.5100 c=YELLOW
+1788619724973 seq=318 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.5191 c=YELLOW
+1788619725037 seq=319 src=cnn p=0.9996 reject=ok known=6 bad=3 side=0.5211 c=YELLOW
+1788619725114 seq=320 src=cnn p=0.9996 reject=ok known=7 bad=2 side=0.5205 c=YELLOW
+1788619725210 seq=321 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.5283 c=YELLOW
+1788619725318 seq=322 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.5288 c=YELLOW
+1788619725383 seq=323 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.5293 c=YELLOW
+1788619725487 seq=324 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.5203 c=YELLOW
+1788619725582 seq=325 src=cnn p=0.9996 reject=ok known=7 bad=2 side=0.5214 c=YELLOW
+1788619725643 seq=326 src=cnn p=0.9996 reject=ok known=7 bad=2 side=0.5249 c=YELLOW
+1788619725744 seq=327 src=cnn p=0.9996 reject=ok known=7 bad=2 side=0.5208 c=YELLOW
+1788619725835 seq=328 src=cnn p=0.9993 reject=ok known=9 bad=0 side=0.5704 c=GREEN
+1788619725899 seq=329 src=cnn p=0.9992 reject=ok known=5 bad=4 side=0.5665 c=GREEN
+1788619725999 seq=330 src=cnn p=0.9984 reject=ok known=1 bad=8 side=0.5416 c=UNKNOWN
+1788619726070 seq=331 src=cnn p=0.9980 reject=ok known=6 bad=3 side=0.5413 c=UNKNOWN
+1788619726176 seq=332 src=cnn p=0.9977 reject=ok known=3 bad=6 side=0.4885 c=UNKNOWN
+1788619726278 seq=333 src=cnn p=0.9969 reject=ok known=5 bad=4 side=0.5193 c=UNKNOWN
+1788619726370 seq=334 src=cnn p=0.9966 reject=ok known=3 bad=6 side=0.4497 c=UNKNOWN
+1788619726471 seq=335 src=cnn p=0.9976 reject=ok known=4 bad=4 side=0.4081 c=UNKNOWN
+1788619726580 seq=336 src=cnn p=0.9982 reject=ok known=6 bad=3 side=0.3932 c=BLUE
+1788619726676 seq=337 src=cnn p=0.9991 reject=ok known=3 bad=6 side=0.4631 c=UNKNOWN
+1788619726772 seq=338 src=cnn p=0.9991 reject=ok known=6 bad=3 side=0.4831 c=BLUE
+1788619726875 seq=339 src=cnn p=0.9987 reject=ok known=5 bad=4 side=0.4858 c=UNKNOWN
+1788619726971 seq=340 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5173 c=UNKNOWN
+1788619727082 seq=341 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.4995 c=UNKNOWN
+1788619727172 seq=342 src=cnn p=0.9991 reject=ok known=3 bad=6 side=0.4267 c=UNKNOWN
+1788619727297 seq=343 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.4574 c=UNKNOWN
+1788619727382 seq=344 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.4589 c=UNKNOWN
+1788619727486 seq=345 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.4280 c=UNKNOWN
+1788619727552 seq=346 src=cnn p=0.9990 reject=ok known=1 bad=8 side=0.4508 c=UNKNOWN
+1788619727656 seq=347 src=cnn p=0.9995 reject=ok known=6 bad=3 side=0.3633 c=UNKNOWN
+1788619727761 seq=348 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.3832 c=BLUE
+1788619727860 seq=349 src=cnn p=0.9993 reject=ok known=7 bad=2 side=0.4440 c=BLUE
+1788619727953 seq=350 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.4978 c=BLUE
+1788619728053 seq=351 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.4898 c=BLUE
+1788619728147 seq=352 src=cnn p=0.9989 reject=ok known=6 bad=3 side=0.5172 c=BLUE
+1788619728221 seq=353 src=cnn p=0.9995 reject=ok known=7 bad=2 side=0.4127 c=BLUE
+1788619728304 seq=354 src=cnn p=0.9990 reject=ok known=6 bad=3 side=0.4245 c=BLUE
+1788619728419 seq=355 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.4273 c=BLUE
+1788619728420 event stable_capture side=0.4273
+1788619728513 seq=356 src=cnn p=0.9984 reject=ok known=8 bad=1 side=0.4189 c=BLUE
+1788619728584 seq=357 src=cnn p=0.9993 reject=ok known=6 bad=3 side=0.4321 c=UNKNOWN
+1788619728694 seq=358 src=cnn p=0.9991 reject=ok known=6 bad=3 side=0.4472 c=UNKNOWN
+1788619728788 seq=359 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.4561 c=UNKNOWN
+1788619728863 seq=360 src=cnn p=0.9989 reject=ok known=2 bad=7 side=0.4684 c=UNKNOWN
+1788619728946 seq=361 src=cnn p=0.9983 reject=ok known=4 bad=5 side=0.4576 c=UNKNOWN
+1788619729021 seq=362 src=cnn p=0.9982 reject=ok known=5 bad=4 side=0.4666 c=UNKNOWN
+1788619729120 seq=363 src=cnn p=0.9988 reject=ok known=5 bad=4 side=0.4700 c=BLUE
+1788619729206 seq=364 src=cnn p=0.9987 reject=ok known=2 bad=7 side=0.4743 c=UNKNOWN
+1788619729272 seq=365 src=cnn p=0.9984 reject=ok known=2 bad=7 side=0.4583 c=UNKNOWN
+1788619729337 seq=366 src=cnn p=0.9982 reject=ok known=2 bad=7 side=0.4704 c=UNKNOWN
+1788619729419 seq=367 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.4757 c=UNKNOWN
+1788619729524 seq=368 src=cnn p=0.9993 reject=ok known=1 bad=8 side=0.4683 c=UNKNOWN
+1788619729623 seq=369 src=cnn p=0.9993 reject=ok known=7 bad=2 side=0.5260 c=UNKNOWN
+1788619729710 seq=370 src=cnn p=0.9980 reject=ok known=7 bad=2 side=0.4411 c=BLUE
+1788619729777 seq=371 src=cnn p=0.9984 reject=ok known=3 bad=6 side=0.4689 c=UNKNOWN
+1788619729850 seq=372 src=cnn p=0.9980 reject=ok known=1 bad=8 side=0.4639 c=UNKNOWN
+1788619729968 seq=373 src=cnn p=0.9974 reject=ok known=5 bad=4 side=0.3979 c=BLUE
+1788619730055 seq=374 src=cnn p=0.9984 reject=ok known=5 bad=4 side=0.4190 c=BLUE
+1788619730140 seq=375 src=cnn p=0.9976 reject=ok known=4 bad=5 side=0.4337 c=BLUE
+1788619730236 seq=376 src=cnn p=0.9979 reject=ok known=4 bad=5 side=0.4340 c=BLUE
+1788619730329 seq=377 src=cnn p=0.9976 reject=ok known=1 bad=8 side=0.4415 c=UNKNOWN
+1788619730420 seq=378 src=cnn p=0.9966 reject=ok known=1 bad=8 side=0.4394 c=UNKNOWN
+1788619730485 seq=379 src=cnn p=0.9980 reject=ok known=2 bad=7 side=0.4710 c=UNKNOWN
+1788619730592 seq=380 src=cnn p=0.9984 reject=ok known=8 bad=1 side=0.4964 c=BLUE
+1788619730693 seq=381 src=cnn p=0.9980 reject=ok known=7 bad=2 side=0.4387 c=RED
+1788619730766 seq=382 src=cnn p=0.9983 reject=ok known=6 bad=3 side=0.4119 c=RED
+1788619730861 seq=383 src=cnn p=0.9976 reject=ok known=7 bad=2 side=0.3979 c=BLUE
+1788619730950 seq=384 src=cnn p=0.9984 reject=ok known=8 bad=1 side=0.4606 c=BLUE
+1788619731058 seq=385 src=cnn p=0.9990 reject=ok known=6 bad=3 side=0.4552 c=BLUE
+1788619731059 event stable_capture side=0.4552
+1788619731152 seq=386 src=cnn p=0.9985 reject=ok known=6 bad=3 side=0.5692 c=BLUE
+1788619731257 seq=387 src=cnn p=0.9988 reject=ok known=6 bad=3 side=0.5647 c=BLUE
+1788619731341 seq=388 src=cnn p=0.9992 reject=ok known=3 bad=5 side=0.5412 c=BLUE
+1788619731425 seq=389 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5486 c=UNKNOWN
+1788619731523 seq=390 src=cnn p=0.9983 reject=ok known=6 bad=3 side=0.5436 c=BLUE
+1788619731619 seq=391 src=cnn p=0.9989 reject=ok known=6 bad=3 side=0.4831 c=UNKNOWN
+1788619731715 seq=392 src=cnn p=0.9960 reject=ok known=2 bad=6 side=0.4888 c=ORANGE
+1788619731812 seq=393 src=cnn p=0.9972 reject=ok known=6 bad=3 side=0.5396 c=BLUE
+1788619731888 seq=394 src=cnn p=0.9981 reject=ok known=3 bad=5 side=0.4931 c=UNKNOWN
+1788619731952 seq=395 src=cnn p=0.9981 reject=ok known=2 bad=7 side=0.5068 c=UNKNOWN
+1788619732063 seq=396 src=cnn p=0.9988 reject=ok known=5 bad=4 side=0.4737 c=UNKNOWN
+1788619732147 seq=397 src=cnn p=0.9967 reject=ok known=5 bad=4 side=0.5488 c=ORANGE
+1788619732256 seq=398 src=cnn p=0.9964 reject=ok known=5 bad=4 side=0.5422 c=ORANGE
+1788619732353 seq=399 src=cnn p=0.9961 reject=ok known=4 bad=5 side=0.5191 c=RED
+1788619732443 seq=400 src=cnn p=0.9963 reject=ok known=5 bad=4 side=0.5012 c=ORANGE
+1788619732552 seq=401 src=cnn p=0.9958 reject=ok known=4 bad=5 side=0.4930 c=UNKNOWN
+1788619732612 seq=402 src=cnn p=0.9960 reject=ok known=3 bad=6 side=0.5091 c=UNKNOWN
+1788619732735 seq=403 src=cnn p=0.9958 reject=ok known=4 bad=4 side=0.4989 c=UNKNOWN
+1788619732853 seq=404 src=cnn p=0.9974 reject=ok known=6 bad=3 side=0.4503 c=UNKNOWN
+1788619732944 seq=405 src=cnn p=0.9947 reject=ok known=5 bad=3 side=0.5230 c=ORANGE
+1788619733013 seq=406 src=cnn p=0.9955 reject=ok known=5 bad=4 side=0.1753 c=ORANGE
+1788619733085 seq=407 src=cnn p=0.9968 reject=ok known=5 bad=4 side=0.2212 c=ORANGE
+1788619733175 seq=408 src=cnn p=0.9964 reject=ok known=6 bad=3 side=0.4411 c=YELLOW
+1788619733263 seq=409 src=cnn p=0.9983 reject=ok known=4 bad=5 side=0.5513 c=ORANGE
+1788619733343 seq=410 src=cnn p=0.9978 reject=ok known=3 bad=6 side=0.4972 c=UNKNOWN
+1788619733427 seq=411 src=cnn p=0.9981 reject=ok known=9 bad=0 side=0.5024 c=ORANGE
+1788619733499 seq=412 src=cnn p=0.9979 reject=ok known=6 bad=3 side=0.4538 c=UNKNOWN
+1788619733576 seq=413 src=cnn p=0.9975 reject=ok known=9 bad=0 side=0.3678 c=ORANGE
+1788619733649 seq=414 src=cnn p=0.9969 reject=ok known=7 bad=2 side=0.4477 c=ORANGE
+1788619733749 seq=415 src=cnn p=0.9978 reject=ok known=6 bad=3 side=0.5458 c=ORANGE
+1788619733850 seq=416 src=cnn p=0.9980 reject=ok known=6 bad=3 side=0.5242 c=ORANGE
+1788619733924 seq=417 src=cnn p=0.9969 reject=ok known=5 bad=4 side=0.5281 c=ORANGE
+1788619734037 seq=418 src=cnn p=0.9981 reject=ok known=8 bad=1 side=0.4478 c=ORANGE
+1788619734127 seq=419 src=cnn p=0.9981 reject=ok known=8 bad=1 side=0.4396 c=ORANGE
+1788619734127 event stable_capture side=0.4396
+1788619734205 seq=420 src=cnn p=0.9986 reject=ok known=7 bad=2 side=0.4754 c=ORANGE
+1788619734263 seq=421 src=cnn p=0.9982 reject=ok known=7 bad=2 side=0.4772 c=ORANGE
+1788619734333 seq=422 src=cnn p=0.9989 reject=ok known=7 bad=2 side=0.4754 c=ORANGE
+1788619734333 event stable_capture side=0.4754
+1788619734406 seq=423 src=cnn p=0.9986 reject=ok known=7 bad=2 side=0.4766 c=ORANGE
+1788619734497 seq=424 src=cnn p=0.9981 reject=ok known=7 bad=2 side=0.4844 c=ORANGE
+1788619734583 seq=425 src=cnn p=0.9971 reject=ok known=4 bad=5 side=0.4692 c=ORANGE
+1788619734688 seq=426 src=cnn p=0.9975 reject=ok known=4 bad=5 side=0.4644 c=ORANGE
+1788619734777 seq=427 src=cnn p=0.9987 reject=ok known=7 bad=2 side=0.4914 c=ORANGE
+1788619734852 seq=428 src=cnn p=0.9987 reject=ok known=8 bad=1 side=0.5138 c=ORANGE
+1788619734915 seq=429 src=cnn p=0.9990 reject=ok known=8 bad=1 side=0.5274 c=ORANGE
+1788619735014 seq=430 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5595 c=ORANGE
+1788619735119 seq=431 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5482 c=ORANGE
+1788619735205 seq=432 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.5499 c=ORANGE
+1788619735278 seq=433 src=cnn p=0.9973 reject=ok known=5 bad=4 side=0.5310 c=ORANGE
+1788619735371 seq=434 src=cnn p=0.9983 reject=ok known=7 bad=2 side=0.5292 c=ORANGE
+1788619735436 seq=435 src=cnn p=0.9982 reject=ok known=9 bad=0 side=0.5445 c=ORANGE
+1788619735506 seq=436 src=cnn p=0.9988 reject=ok known=7 bad=2 side=0.5762 c=ORANGE
+1788619735575 seq=437 src=cnn p=0.9986 reject=ok known=6 bad=3 side=0.5842 c=ORANGE
+1788619735647 seq=438 src=cnn p=0.9983 reject=ok known=8 bad=1 side=0.4874 c=ORANGE
+1788619735648 event stable_capture side=0.4874
+1788619735741 seq=439 src=cnn p=0.9979 reject=ok known=6 bad=3 side=0.4626 c=ORANGE
+1788619735804 seq=440 src=cnn p=0.9963 reject=ok known=4 bad=5 side=0.4346 c=UNKNOWN
+1788619735904 seq=441 src=cnn p=0.9950 reject=ok known=4 bad=5 side=0.4128 c=UNKNOWN
+1788619735974 seq=442 src=cnn p=0.9939 reject=ok known=4 bad=5 side=0.4264 c=UNKNOWN
+1788619736072 seq=443 src=cnn p=0.9985 reject=ok known=6 bad=3 side=0.4885 c=BLUE
+1788619736140 seq=444 src=cnn p=0.9982 reject=ok known=3 bad=6 side=0.4891 c=UNKNOWN
+1788619736247 seq=445 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.4830 c=UNKNOWN
+1788619736319 seq=446 src=cnn p=0.9993 reject=ok known=1 bad=8 side=0.4926 c=UNKNOWN
+1788619736414 seq=447 src=cnn p=0.9992 reject=ok known=5 bad=4 side=0.5221 c=BLUE
+1788619736508 seq=448 src=cnn p=0.9990 reject=ok known=6 bad=3 side=0.5558 c=BLUE
+1788619736602 seq=449 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5296 c=BLUE
+1788619736672 seq=450 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.5089 c=BLUE
+1788619736772 seq=451 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.4841 c=BLUE
+1788619736879 seq=452 src=cnn p=0.9984 reject=ok known=7 bad=2 side=0.4948 c=BLUE
+1788619736966 seq=453 src=cnn p=0.9983 reject=ok known=5 bad=4 side=0.4838 c=UNKNOWN
+1788619737038 seq=454 src=cnn p=0.9985 reject=ok known=6 bad=3 side=0.4629 c=BLUE
+1788619737139 seq=455 src=cnn p=0.9985 reject=ok known=5 bad=4 side=0.4518 c=BLUE
+1788619737245 seq=456 src=cnn p=0.9983 reject=ok known=3 bad=6 side=0.5560 c=UNKNOWN
+1788619737305 seq=457 src=cnn p=0.9982 reject=ok known=4 bad=5 side=0.5481 c=BLUE
+1788619737399 seq=458 src=cnn p=0.9981 reject=ok known=5 bad=4 side=0.5456 c=BLUE
+1788619737472 seq=459 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.5386 c=UNKNOWN
+1788619737562 seq=460 src=cnn p=0.9995 reject=ok known=2 bad=7 side=0.5247 c=UNKNOWN
+1788619737635 seq=461 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.5236 c=UNKNOWN
+1788619737726 seq=462 src=cnn p=0.9992 reject=ok known=2 bad=7 side=0.5178 c=UNKNOWN
+1788619737813 seq=463 src=cnn p=0.9991 reject=ok known=3 bad=6 side=0.5301 c=UNKNOWN
+1788619737896 seq=464 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.5295 c=UNKNOWN
+1788619737986 seq=465 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5247 c=UNKNOWN
+1788619738061 seq=466 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.5327 c=UNKNOWN
+1788619738146 seq=467 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.5280 c=UNKNOWN
+1788619738220 seq=468 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5176 c=UNKNOWN
+1788619738319 seq=469 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5228 c=UNKNOWN
+1788619738391 seq=470 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5275 c=UNKNOWN
+1788619738479 seq=471 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.5305 c=UNKNOWN
+1788619738566 seq=472 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5368 c=UNKNOWN
+1788619738644 seq=473 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.5385 c=UNKNOWN
+1788619738716 seq=474 src=cnn p=0.9986 reject=ok known=3 bad=6 side=0.5508 c=BLUE
+1788619738822 seq=475 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.5463 c=BLUE
+1788619738889 seq=476 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.5464 c=BLUE
+1788619738987 seq=477 src=cnn p=0.9989 reject=ok known=4 bad=5 side=0.5434 c=BLUE
+1788619739070 seq=478 src=cnn p=0.9989 reject=ok known=2 bad=7 side=0.5478 c=BLUE
+1788619739185 seq=479 src=cnn p=0.9990 reject=ok known=2 bad=7 side=0.5495 c=BLUE
+1788619739288 seq=480 src=cnn p=0.9990 reject=ok known=1 bad=8 side=0.5511 c=UNKNOWN
+1788619739379 seq=481 src=cnn p=0.9990 reject=ok known=2 bad=7 side=0.5553 c=UNKNOWN
+1788619739456 seq=482 src=cnn p=0.9991 reject=ok known=3 bad=6 side=0.5505 c=UNKNOWN
+1788619739536 seq=483 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.5557 c=UNKNOWN
+1788619739654 seq=484 src=cnn p=0.9990 reject=ok known=2 bad=7 side=0.5646 c=UNKNOWN
+1788619739738 seq=485 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5364 c=UNKNOWN
+1788619739819 seq=486 src=cnn p=0.9987 reject=ok known=2 bad=7 side=0.5334 c=UNKNOWN
+1788619739900 seq=487 src=cnn p=0.9990 reject=ok known=2 bad=7 side=0.5388 c=UNKNOWN
+1788619739986 seq=488 src=cnn p=0.9989 reject=ok known=2 bad=7 side=0.5720 c=UNKNOWN
+1788619740064 seq=489 src=cnn p=0.9990 reject=ok known=6 bad=3 side=0.5849 c=UNKNOWN
+1788619740184 seq=490 src=cnn p=0.9985 reject=ok known=5 bad=4 side=0.6174 c=UNKNOWN
+1788619740275 seq=491 src=cnn p=0.9980 reject=ok known=2 bad=7 side=0.6209 c=UNKNOWN
+1788619740339 seq=492 src=cnn p=0.9988 reject=ok known=3 bad=6 side=0.5950 c=UNKNOWN
+1788619740440 seq=493 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.5139 c=YELLOW
+1788619740568 seq=494 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.5069 c=YELLOW
+1788619740650 seq=495 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.5252 c=UNKNOWN
+1788619740748 seq=496 src=cnn p=0.9993 reject=ok known=2 bad=7 side=0.5025 c=UNKNOWN
+1788619740833 seq=497 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.5374 c=UNKNOWN
+1788619740925 seq=498 src=cnn p=0.9992 reject=ok known=1 bad=8 side=0.5515 c=UNKNOWN
+1788619741019 seq=499 src=cnn p=0.9995 reject=ok known=1 bad=8 side=0.5512 c=UNKNOWN
+1788619741093 seq=500 src=cnn p=0.9992 reject=ok known=1 bad=8 side=0.5651 c=UNKNOWN
+1788619741187 seq=501 src=cnn p=0.9992 reject=ok known=1 bad=8 side=0.5685 c=UNKNOWN
+1788619741259 seq=502 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.5674 c=UNKNOWN
+1788619741342 seq=503 src=cnn p=0.9986 reject=ok known=2 bad=7 side=0.5593 c=UNKNOWN
+1788619741419 seq=504 src=cnn p=0.9990 reject=ok known=3 bad=6 side=0.5658 c=UNKNOWN
+1788619741521 seq=505 src=cnn p=0.9983 reject=ok known=3 bad=6 side=0.5474 c=UNKNOWN
+1788619741624 seq=506 src=cnn p=0.9982 reject=ok known=3 bad=6 side=0.5453 c=UNKNOWN
+1788619741711 seq=507 src=cnn p=0.9985 reject=ok known=3 bad=6 side=0.5367 c=UNKNOWN
+1788619741788 seq=508 src=cnn p=0.9983 reject=ok known=1 bad=8 side=0.5225 c=UNKNOWN
+1788619741884 seq=509 src=cnn p=0.9986 reject=ok known=0 bad=9 side=0.5291 c=UNKNOWN
+1788619741942 seq=510 src=cnn p=0.9985 reject=ok known=0 bad=9 side=0.5342 c=UNKNOWN
+1788619742043 seq=511 src=cnn p=0.9987 reject=ok known=4 bad=5 side=0.5334 c=UNKNOWN
+1788619742123 seq=512 src=cnn p=0.9991 reject=ok known=7 bad=2 side=0.5283 c=YELLOW
+1788619742208 seq=513 src=cnn p=0.9990 reject=ok known=3 bad=6 side=0.4652 c=UNKNOWN
+1788619742281 seq=514 src=cnn p=0.9989 reject=ok known=2 bad=7 side=0.4762 c=UNKNOWN
+1788619742376 seq=515 src=cnn p=0.9988 reject=ok known=2 bad=7 side=0.5025 c=UNKNOWN
+1788619742484 seq=516 src=cnn p=0.9987 reject=ok known=1 bad=8 side=0.5240 c=UNKNOWN
+1788619742584 seq=517 src=cnn p=0.9986 reject=ok known=1 bad=8 side=0.5372 c=UNKNOWN
+1788619742687 seq=518 src=cnn p=0.9992 reject=ok known=0 bad=9 side=0.5345 c=UNKNOWN
+1788619742775 seq=519 src=cnn p=0.9991 reject=ok known=0 bad=9 side=0.5411 c=UNKNOWN
+1788619742862 seq=520 src=cnn p=0.9993 reject=ok known=0 bad=9 side=0.5399 c=UNKNOWN
+1788619742939 seq=521 src=cnn p=0.9992 reject=ok known=1 bad=8 side=0.5473 c=UNKNOWN
+1788619743039 seq=522 src=cnn p=0.9988 reject=ok known=1 bad=8 side=0.5399 c=UNKNOWN
+1788619743119 seq=523 src=cnn p=0.9987 reject=ok known=3 bad=6 side=0.5404 c=UNKNOWN
+1788619743237 seq=524 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.5430 c=UNKNOWN
+1788619743312 seq=525 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5380 c=UNKNOWN
+1788619743373 seq=526 src=cnn p=0.9987 reject=ok known=4 bad=5 side=0.5239 c=UNKNOWN
+1788619743476 seq=527 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5146 c=UNKNOWN
+1788619743537 seq=528 src=cnn p=0.9981 reject=ok known=5 bad=4 side=0.5071 c=UNKNOWN
+1788619743616 seq=529 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.5072 c=YELLOW
+1788619743737 seq=530 src=cnn p=0.9978 reject=ok known=5 bad=4 side=0.4971 c=UNKNOWN
+1788619743808 seq=531 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.4896 c=UNKNOWN
+1788619743908 seq=532 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.4993 c=ORANGE
+1788619744001 seq=533 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.5015 c=UNKNOWN
+1788619744104 seq=534 src=cnn p=0.9983 reject=ok known=4 bad=5 side=0.5016 c=ORANGE
+1788619744195 seq=535 src=cnn p=0.9989 reject=ok known=2 bad=7 side=0.5091 c=UNKNOWN
+1788619744292 seq=536 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5192 c=UNKNOWN
+1788619744390 seq=537 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.5259 c=UNKNOWN
+1788619744473 seq=538 src=cnn p=0.9982 reject=ok known=2 bad=7 side=0.4970 c=BLUE
+1788619744552 seq=539 src=cnn p=0.9990 reject=ok known=1 bad=8 side=0.5248 c=UNKNOWN
+1788619744624 seq=540 src=cnn p=0.9983 reject=ok known=5 bad=4 side=0.4507 c=ORANGE
+1788619744723 seq=541 src=cnn p=0.9983 reject=ok known=4 bad=5 side=0.4124 c=UNKNOWN
+1788619744820 seq=542 src=cnn p=0.9991 reject=ok known=5 bad=4 side=0.5396 c=UNKNOWN
+1788619744924 seq=543 src=cnn p=0.9985 reject=ok known=6 bad=3 side=0.5444 c=GREEN
+1788619745023 seq=544 src=cnn p=0.9989 reject=ok known=8 bad=1 side=0.5370 c=GREEN
+1788619745117 seq=545 src=cnn p=0.9992 reject=ok known=8 bad=1 side=0.5281 c=GREEN
+1788619745118 event stable_capture side=0.5281
+1788619745227 seq=546 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.5406 c=GREEN
+1788619745321 seq=547 src=cnn p=0.9989 reject=ok known=4 bad=5 side=0.5155 c=UNKNOWN
+1788619745421 seq=548 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.4861 c=UNKNOWN
+1788619745489 seq=549 src=cnn p=0.9993 reject=ok known=5 bad=4 side=0.4630 c=UNKNOWN
+1788619745587 seq=550 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.4471 c=UNKNOWN
+1788619745687 seq=551 src=cnn p=0.9989 reject=ok known=7 bad=2 side=0.4445 c=GREEN
+1788619745778 seq=552 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.4342 c=GREEN
+1788619745887 seq=553 src=cnn p=0.9992 reject=ok known=6 bad=3 side=0.4330 c=GREEN
+1788619745888 event stable_capture side=0.4330
+1788619745953 seq=554 src=cnn p=0.9991 reject=ok known=6 bad=3 side=0.4315 c=GREEN
+1788619746056 seq=555 src=cnn p=0.9994 reject=ok known=6 bad=3 side=0.4395 c=GREEN
+1788619746144 seq=556 src=cnn p=0.9986 reject=ok known=6 bad=3 side=0.4424 c=GREEN
+1788619746145 event stable_capture side=0.4424
+1788619746251 seq=557 src=cnn p=0.9988 reject=ok known=2 bad=7 side=0.4873 c=UNKNOWN
+1788619746352 seq=558 src=cnn p=0.9978 reject=ok known=2 bad=7 side=0.5147 c=UNKNOWN
+1788619746422 seq=559 src=cnn p=0.9985 reject=ok known=1 bad=8 side=0.4978 c=UNKNOWN
+1788619746512 seq=560 src=cnn p=0.9979 reject=ok known=4 bad=5 side=0.4864 c=UNKNOWN
+1788619746617 seq=561 src=cnn p=0.9992 reject=ok known=1 bad=8 side=0.4636 c=UNKNOWN
+1788619746711 seq=562 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.4606 c=WHITE
+1788619746806 seq=563 src=cnn p=0.9992 reject=ok known=7 bad=2 side=0.4756 c=WHITE
+1788619746882 seq=564 src=cnn p=0.9990 reject=ok known=8 bad=1 side=0.4961 c=WHITE
+1788619746882 event stable_capture side=0.4961
+1788619746968 seq=565 src=cnn p=0.9994 reject=ok known=7 bad=2 side=0.4723 c=WHITE
+1788619747075 seq=566 src=cnn p=0.9988 reject=ok known=3 bad=6 side=0.4807 c=UNKNOWN
+1788619747193 seq=567 src=cnn p=0.9992 reject=ok known=6 bad=3 side=0.5016 c=BLUE
+1788619747265 seq=568 src=cnn p=0.9987 reject=ok known=5 bad=4 side=0.4970 c=BLUE
+1788619747342 seq=569 src=cnn p=0.9986 reject=ok known=7 bad=2 side=0.4849 c=BLUE
+1788619747444 seq=570 src=cnn p=0.9981 reject=ok known=8 bad=1 side=0.4741 c=BLUE
+1788619747444 event stable_capture side=0.4741
+1788619747550 seq=571 src=cnn p=0.9979 reject=ok known=9 bad=0 side=0.4763 c=BLUE
+1788619747632 seq=572 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.4500 c=UNKNOWN
+1788619747709 seq=573 src=cnn p=0.9989 reject=ok known=6 bad=3 side=0.4587 c=ORANGE
+1788619747801 seq=574 src=cnn p=0.9986 reject=ok known=8 bad=1 side=0.4527 c=BLUE
+1788619747880 seq=575 src=cnn p=0.9989 reject=ok known=7 bad=2 side=0.4679 c=BLUE
+1788619747965 seq=576 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.4515 c=BLUE
+1788619748033 seq=577 src=cnn p=0.9982 reject=ok known=5 bad=4 side=0.4423 c=BLUE
+1788619748111 seq=578 src=cnn p=0.9985 reject=ok known=8 bad=1 side=0.4360 c=BLUE
+1788619748191 seq=579 src=cnn p=0.9989 reject=ok known=7 bad=2 side=0.4761 c=BLUE
+1788619748276 seq=580 src=cnn p=0.9989 reject=ok known=7 bad=2 side=0.4969 c=BLUE
+1788619748277 event stable_capture side=0.4969
+1788619748370 seq=581 src=cnn p=0.9991 reject=ok known=7 bad=2 side=0.5081 c=BLUE
+1788619748479 seq=582 src=cnn p=0.9990 reject=ok known=7 bad=2 side=0.4982 c=BLUE
+1788619748549 seq=583 src=cnn p=0.9991 reject=ok known=8 bad=1 side=0.4918 c=BLUE
+1788619748661 seq=584 src=cnn p=0.9991 reject=ok known=8 bad=1 side=0.5017 c=BLUE
+1788619748743 seq=585 src=cnn p=0.9993 reject=ok known=7 bad=2 side=0.5051 c=BLUE
+1788619748866 seq=586 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.4863 c=BLUE
+1788619748957 seq=587 src=cnn p=0.9980 reject=ok known=7 bad=2 side=0.5529 c=BLUE
+1788619749045 seq=588 src=cnn p=0.9947 reject=ok known=1 bad=8 side=0.4277 c=UNKNOWN
+1788619749143 seq=589 src=cnn p=0.9981 reject=ok known=7 bad=2 side=0.4365 c=ORANGE
+1788619749213 seq=590 src=cnn p=0.9978 reject=ok known=0 bad=9 side=0.4864 c=UNKNOWN
+1788619749320 seq=591 src=cnn p=0.9988 reject=ok known=1 bad=8 side=0.4835 c=UNKNOWN
+1788619749403 seq=592 src=cnn p=0.9970 reject=ok known=2 bad=7 side=0.4721 c=UNKNOWN
+1788619749474 seq=593 src=cnn p=0.9977 reject=ok known=1 bad=8 side=0.4715 c=UNKNOWN
+1788619749546 seq=594 src=cnn p=0.9987 reject=ok known=3 bad=6 side=0.5062 c=UNKNOWN
+1788619749641 seq=595 src=cnn p=0.9973 reject=ok known=1 bad=7 side=0.5090 c=UNKNOWN
+1788619749703 seq=596 src=cnn p=0.9982 reject=ok known=2 bad=7 side=0.5066 c=UNKNOWN
+1788619749803 seq=597 src=cnn p=0.9984 reject=ok known=4 bad=4 side=0.4796 c=UNKNOWN
+1788619749875 seq=598 src=cnn p=0.9981 reject=ok known=5 bad=3 side=0.5200 c=UNKNOWN
+1788619749971 seq=599 src=cnn p=0.9967 reject=ok known=3 bad=5 side=0.4856 c=RED
+1788619750070 seq=600 src=cnn p=0.9969 reject=ok known=1 bad=7 side=0.4946 c=UNKNOWN
+1788619750168 seq=601 src=cnn p=0.9973 reject=ok known=1 bad=8 side=0.4628 c=UNKNOWN
+1788619750288 seq=602 src=cnn p=0.9974 reject=ok known=1 bad=8 side=0.4580 c=UNKNOWN
+1788619750369 seq=603 src=cnn p=0.9981 reject=ok known=1 bad=6 side=0.4912 c=UNKNOWN
+1788619750434 seq=604 src=cnn p=0.9979 reject=ok known=1 bad=8 side=0.5008 c=UNKNOWN
+1788619750501 seq=605 src=cnn p=0.9980 reject=ok known=3 bad=6 side=0.5007 c=BLUE
+1788619750569 seq=606 src=cnn p=0.9987 reject=ok known=2 bad=7 side=0.5096 c=UNKNOWN
+1788619750637 seq=607 src=cnn p=0.9986 reject=ok known=2 bad=7 side=0.5289 c=UNKNOWN
+1788619750738 seq=608 src=cnn p=0.9986 reject=ok known=3 bad=5 side=0.5233 c=UNKNOWN
+1788619750802 seq=609 src=cnn p=0.9994 reject=ok known=2 bad=7 side=0.5343 c=UNKNOWN
+1788619750870 seq=610 src=cnn p=0.9992 reject=ok known=2 bad=7 side=0.5444 c=UNKNOWN
+1788619750937 seq=611 src=cnn p=0.9992 reject=ok known=2 bad=7 side=0.5250 c=UNKNOWN
+1788619751010 seq=612 src=cnn p=0.9996 reject=ok known=1 bad=7 side=0.5334 c=UNKNOWN
+1788619751079 seq=613 src=cnn p=0.9996 reject=ok known=2 bad=6 side=0.5316 c=UNKNOWN
+1788619751171 seq=614 src=cnn p=0.9994 reject=ok known=2 bad=6 side=0.5339 c=UNKNOWN
+1788619751248 seq=615 src=cnn p=0.9994 reject=ok known=3 bad=5 side=0.5348 c=UNKNOWN
+1788619751305 seq=616 src=cnn p=0.9991 reject=ok known=3 bad=5 side=0.5567 c=UNKNOWN
+1788619751427 seq=617 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.5674 c=UNKNOWN
+1788619751504 seq=618 src=cnn p=0.9994 reject=ok known=4 bad=4 side=0.5593 c=UNKNOWN
+1788619751591 seq=619 src=cnn p=0.9992 reject=ok known=5 bad=3 side=0.5527 c=UNKNOWN
+1788619751683 seq=620 src=cnn p=0.9996 reject=ok known=5 bad=3 side=0.5288 c=UNKNOWN
+1788619751766 seq=621 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5313 c=UNKNOWN
+1788619751865 seq=622 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.5194 c=UNKNOWN
+1788619751952 seq=623 src=cnn p=0.9992 reject=ok known=1 bad=8 side=0.5110 c=UNKNOWN
+1788619752051 seq=624 src=cnn p=0.9994 reject=ok known=3 bad=6 side=0.5040 c=UNKNOWN
+1788619752143 seq=625 src=cnn p=0.9991 reject=ok known=3 bad=6 side=0.5153 c=UNKNOWN
+1788619752218 seq=626 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5243 c=UNKNOWN
+1788619752321 seq=627 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.5391 c=UNKNOWN
+1788619752379 seq=628 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5512 c=UNKNOWN
+1788619752487 seq=629 src=cnn p=0.9992 reject=ok known=3 bad=6 side=0.5422 c=UNKNOWN
+1788619752583 seq=630 src=cnn p=0.9993 reject=ok known=2 bad=7 side=0.5497 c=UNKNOWN
+1788619752674 seq=631 src=cnn p=0.9987 reject=ok known=0 bad=9 side=0.5468 c=UNKNOWN
+1788619752745 seq=632 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.5568 c=UNKNOWN
+1788619752851 seq=633 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5520 c=BLUE
+1788619752909 seq=634 src=cnn p=0.9991 reject=ok known=1 bad=8 side=0.5400 c=UNKNOWN
+1788619752986 seq=635 src=cnn p=0.9992 reject=ok known=2 bad=7 side=0.5264 c=UNKNOWN
+1788619753085 seq=636 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.5190 c=UNKNOWN
+1788619753185 seq=637 src=cnn p=0.9990 reject=ok known=3 bad=6 side=0.5281 c=UNKNOWN
+1788619753276 seq=638 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.5485 c=UNKNOWN
+1788619753385 seq=639 src=cnn p=0.9985 reject=ok known=5 bad=4 side=0.5567 c=UNKNOWN
+1788619753483 seq=640 src=cnn p=0.9992 reject=ok known=6 bad=3 side=0.5645 c=BLUE
+1788619753574 seq=641 src=cnn p=0.9990 reject=ok known=6 bad=3 side=0.5655 c=BLUE
+1788619753674 seq=642 src=cnn p=0.9990 reject=ok known=5 bad=4 side=0.5507 c=UNKNOWN
+1788619753799 seq=643 src=cnn p=0.9987 reject=ok known=5 bad=4 side=0.5535 c=UNKNOWN
+1788619753909 seq=644 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.5555 c=UNKNOWN
+1788619753971 seq=645 src=cnn p=0.9988 reject=ok known=5 bad=4 side=0.5555 c=UNKNOWN
+1788619754077 seq=646 src=cnn p=0.9977 reject=ok known=2 bad=7 side=0.5688 c=UNKNOWN
+1788619754149 seq=647 src=cnn p=0.9974 reject=ok known=6 bad=3 side=0.5404 c=WHITE
+1788619754248 seq=648 src=cnn p=0.9990 reject=ok known=2 bad=7 side=0.5816 c=UNKNOWN
+1788619754353 seq=649 src=cnn p=0.9987 reject=ok known=1 bad=7 side=0.5623 c=UNKNOWN
+1788619754458 seq=650 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.6028 c=YELLOW
+1788619754552 seq=651 src=cnn p=0.9986 reject=ok known=3 bad=6 side=0.5656 c=UNKNOWN
+1788619754661 seq=652 src=cnn p=0.9981 reject=ok known=3 bad=6 side=0.4910 c=UNKNOWN
+1788619754753 seq=653 src=cnn p=0.9986 reject=ok known=2 bad=7 side=0.5257 c=UNKNOWN
+1788619754861 seq=654 src=cnn p=0.9983 reject=ok known=5 bad=4 side=0.5360 c=YELLOW
+1788619754954 seq=655 src=cnn p=0.9984 reject=ok known=5 bad=4 side=0.5372 c=YELLOW
+1788619755061 seq=656 src=cnn p=0.9980 reject=ok known=7 bad=2 side=0.4042 c=BLUE
+1788619755160 seq=657 src=cnn p=0.9983 reject=ok known=7 bad=2 side=0.4189 c=BLUE
+1788619755248 seq=658 src=cnn p=0.9983 reject=ok known=7 bad=2 side=0.4195 c=BLUE
+1788619755248 event stable_capture side=0.4195
+1788619755321 seq=659 src=cnn p=0.9982 reject=ok known=8 bad=1 side=0.4290 c=BLUE
+1788619755425 seq=660 src=cnn p=0.9984 reject=ok known=7 bad=2 side=0.4840 c=BLUE
+1788619755526 seq=661 src=cnn p=0.9984 reject=ok known=4 bad=5 side=0.4955 c=BLUE
+1788619755625 seq=662 src=cnn p=0.9983 reject=ok known=4 bad=5 side=0.5158 c=BLUE
+1788619755724 seq=663 src=cnn p=0.9987 reject=ok known=4 bad=5 side=0.5282 c=BLUE
+1788619755820 seq=664 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5341 c=BLUE
+1788619755912 seq=665 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5381 c=BLUE
+1788619756031 seq=666 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5385 c=BLUE
+1788619756124 seq=667 src=cnn p=0.9986 reject=ok known=6 bad=3 side=0.5440 c=BLUE
+1788619756224 seq=668 src=cnn p=0.9983 reject=ok known=3 bad=6 side=0.5314 c=BLUE
+1788619756321 seq=669 src=cnn p=0.9982 reject=ok known=3 bad=6 side=0.5152 c=BLUE
+1788619756389 seq=670 src=cnn p=0.9980 reject=ok known=0 bad=9 side=0.4891 c=UNKNOWN
+1788619756486 seq=671 src=cnn p=0.9979 reject=ok known=2 bad=7 side=0.4797 c=BLUE
+1788619756555 seq=672 src=cnn p=0.9980 reject=ok known=2 bad=7 side=0.4730 c=BLUE
+1788619756637 seq=673 src=cnn p=0.9983 reject=ok known=0 bad=9 side=0.4897 c=UNKNOWN
+1788619756712 seq=674 src=cnn p=0.9981 reject=ok known=3 bad=6 side=0.5265 c=BLUE
+1788619756781 seq=675 src=cnn p=0.9983 reject=ok known=5 bad=4 side=0.5441 c=BLUE
+1788619756885 seq=676 src=cnn p=0.9984 reject=ok known=3 bad=6 side=0.5421 c=BLUE
+1788619756981 seq=677 src=cnn p=0.9983 reject=ok known=1 bad=8 side=0.5391 c=UNKNOWN
+1788619757087 seq=678 src=cnn p=0.9984 reject=ok known=1 bad=8 side=0.5437 c=UNKNOWN
+1788619757200 seq=679 src=cnn p=0.9981 reject=ok known=1 bad=8 side=0.5169 c=UNKNOWN
+1788619757272 seq=680 src=cnn p=0.9981 reject=ok known=4 bad=5 side=0.4692 c=BLUE
+1788619757381 seq=681 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.5056 c=BLUE
+1788619757460 seq=682 src=cnn p=0.9985 reject=ok known=7 bad=2 side=0.5177 c=BLUE
+1788619757537 seq=683 src=cnn p=0.9990 reject=ok known=3 bad=6 side=0.5300 c=BLUE
+1788619757608 seq=684 src=cnn p=0.9983 reject=ok known=7 bad=2 side=0.5305 c=BLUE
+1788619757608 event stable_capture side=0.5305
+1788619757745 seq=685 src=cnn p=0.9987 reject=ok known=7 bad=2 side=0.5316 c=BLUE
+1788619757819 seq=686 src=cnn p=0.9987 reject=ok known=5 bad=3 side=0.5167 c=BLUE
+1788619757884 seq=687 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.5062 c=BLUE
+1788619757884 event stable_capture side=0.5062
+1788619757962 seq=688 src=cnn p=0.9989 reject=ok known=1 bad=8 side=0.5517 c=UNKNOWN
+1788619758035 seq=689 src=cnn p=0.9987 reject=ok known=1 bad=8 side=0.5533 c=UNKNOWN
+1788619758099 seq=690 src=cnn p=0.9983 reject=ok known=1 bad=8 side=0.5402 c=UNKNOWN
+1788619758174 seq=691 src=cnn p=0.9984 reject=ok known=0 bad=9 side=0.5444 c=UNKNOWN
+1788619758268 seq=692 src=cnn p=0.9981 reject=ok known=6 bad=3 side=0.5124 c=BLUE
+1788619758373 seq=693 src=cnn p=0.9984 reject=ok known=5 bad=4 side=0.5054 c=BLUE
+1788619758472 seq=694 src=cnn p=0.9984 reject=ok known=5 bad=4 side=0.5040 c=BLUE
+1788619758569 seq=695 src=cnn p=0.9983 reject=ok known=5 bad=4 side=0.5113 c=BLUE
+1788619758624 seq=696 src=cnn p=0.9980 reject=ok known=5 bad=4 side=0.5105 c=BLUE
+1788619758704 seq=697 src=cnn p=0.9983 reject=ok known=7 bad=2 side=0.4084 c=BLUE
+1788619758776 seq=698 src=cnn p=0.9979 reject=ok known=6 bad=3 side=0.3776 c=BLUE
+1788619758878 seq=699 src=cnn p=0.9982 reject=ok known=8 bad=1 side=0.4021 c=BLUE
+1788619758980 seq=700 src=cnn p=0.9988 reject=ok known=5 bad=4 side=0.4510 c=BLUE
+1788619759081 seq=701 src=cnn p=0.9991 reject=ok known=3 bad=6 side=0.4871 c=UNKNOWN
+1788619759177 seq=702 src=cnn p=0.9982 reject=ok known=3 bad=6 side=0.5196 c=UNKNOWN
+1788619759285 seq=703 src=cnn p=0.9988 reject=ok known=3 bad=6 side=0.5179 c=UNKNOWN
+1788619759382 seq=704 src=cnn p=0.9989 reject=ok known=4 bad=4 side=0.5253 c=BLUE
+1788619759469 seq=705 src=cnn p=0.9990 reject=ok known=2 bad=7 side=0.5195 c=UNKNOWN
+1788619759552 seq=706 src=cnn p=0.9984 reject=ok known=3 bad=6 side=0.5292 c=UNKNOWN
+1788619759638 seq=707 src=cnn p=0.9994 reject=ok known=5 bad=4 side=0.5326 c=UNKNOWN
+1788619759708 seq=708 src=cnn p=0.9991 reject=ok known=3 bad=6 side=0.5292 c=BLUE
+1788619759795 seq=709 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.5652 c=UNKNOWN
+1788619759872 seq=710 src=cnn p=0.9989 reject=ok known=5 bad=4 side=0.5776 c=UNKNOWN
+1788619759972 seq=711 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.5655 c=UNKNOWN
+1788619760075 seq=712 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.5787 c=UNKNOWN
+1788619760151 seq=713 src=cnn p=0.9991 reject=ok known=4 bad=5 side=0.5828 c=UNKNOWN
+1788619760242 seq=714 src=cnn p=0.9993 reject=ok known=4 bad=5 side=0.5795 c=UNKNOWN
+1788619760333 seq=715 src=cnn p=0.9992 reject=ok known=3 bad=6 side=0.5806 c=UNKNOWN
+1788619760404 seq=716 src=cnn p=0.9992 reject=ok known=3 bad=6 side=0.5676 c=UNKNOWN
+1788619760474 seq=717 src=cnn p=0.9988 reject=ok known=3 bad=6 side=0.5607 c=UNKNOWN
+1788619760568 seq=718 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.5531 c=UNKNOWN
+1788619760636 seq=719 src=cnn p=0.9989 reject=ok known=3 bad=6 side=0.5527 c=UNKNOWN
+1788619760749 seq=720 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.5578 c=UNKNOWN
+1788619760848 seq=721 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.5545 c=YELLOW
+1788619760933 seq=722 src=cnn p=0.9987 reject=ok known=6 bad=3 side=0.5489 c=YELLOW
+1788619761004 seq=723 src=cnn p=0.9984 reject=ok known=4 bad=5 side=0.5317 c=UNKNOWN
+1788619761075 seq=724 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.5201 c=UNKNOWN
+1788619761174 seq=725 src=cnn p=0.9985 reject=ok known=3 bad=6 side=0.5093 c=UNKNOWN
+1788619761237 seq=726 src=cnn p=0.9988 reject=ok known=3 bad=6 side=0.5042 c=UNKNOWN
+1788619761344 seq=727 src=cnn p=0.9990 reject=ok known=3 bad=6 side=0.5074 c=UNKNOWN
+1788619761447 seq=728 src=cnn p=0.9989 reject=ok known=1 bad=8 side=0.5115 c=UNKNOWN
+1788619761525 seq=729 src=cnn p=0.9990 reject=ok known=0 bad=9 side=0.5145 c=UNKNOWN
+1788619761600 seq=730 src=cnn p=0.9989 reject=ok known=2 bad=7 side=0.5146 c=BLUE
+1788619761670 seq=731 src=cnn p=0.9985 reject=ok known=0 bad=9 side=0.5179 c=UNKNOWN
+1788619761737 seq=732 src=cnn p=0.9987 reject=ok known=0 bad=9 side=0.5226 c=UNKNOWN
+1788619761832 seq=733 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5159 c=BLUE
+1788619761909 seq=734 src=cnn p=0.9988 reject=ok known=4 bad=5 side=0.5097 c=BLUE
+1788619761965 seq=735 src=cnn p=0.9986 reject=ok known=4 bad=5 side=0.5093 c=BLUE
+1788619762041 seq=736 src=cnn p=0.9985 reject=ok known=4 bad=5 side=0.5086 c=BLUE
+1788619762149 seq=737 src=cnn p=0.9987 reject=ok known=8 bad=1 side=0.5021 c=BLUE
+1788619762238 seq=738 src=cnn p=0.9986 reject=ok known=8 bad=1 side=0.5357 c=BLUE
+1788619762352 seq=739 src=cnn p=0.9976 reject=ok known=2 bad=7 side=0.5422 c=BLUE
+1788619762436 seq=740 src=cnn p=0.9975 reject=ok known=6 bad=3 side=0.5326 c=ORANGE
+1788619762535 seq=741 src=cnn p=0.9994 reject=ok known=4 bad=5 side=0.4914 c=UNKNOWN
+1788619762615 seq=742 src=cnn p=0.9987 reject=ok known=5 bad=4 side=0.5183 c=UNKNOWN
+1788619762714 seq=743 src=cnn p=0.9987 reject=ok known=3 bad=6 side=0.3858 c=UNKNOWN
+1788619762821 seq=744 src=cnn p=0.9988 reject=ok known=2 bad=7 side=0.4582 c=UNKNOWN
+1788619762933 seq=745 src=cnn p=0.9976 reject=ok known=4 bad=5 side=0.4618 c=ORANGE
+1788619763006 seq=746 src=cnn p=0.9984 reject=ok known=1 bad=8 side=0.4691 c=UNKNOWN
+1788619763090 seq=747 src=cnn p=0.9969 reject=ok known=1 bad=8 side=0.4556 c=UNKNOWN
+1788619763153 seq=748 src=cnn p=0.9981 reject=ok known=3 bad=6 side=0.4732 c=UNKNOWN
+1788619763251 seq=749 src=cnn p=0.9977 reject=ok known=3 bad=6 side=0.4664 c=UNKNOWN
+1788619763347 seq=750 src=cnn p=0.9970 reject=ok known=3 bad=6 side=0.4729 c=UNKNOWN
+1788619763410 seq=751 src=cnn p=0.9968 reject=ok known=1 bad=8 side=0.4734 c=UNKNOWN
+1788619763519 seq=752 src=cnn p=0.9982 reject=ok known=2 bad=7 side=0.4752 c=UNKNOWN
+1788619763616 seq=753 src=cnn p=0.9973 reject=ok known=2 bad=7 side=0.4785 c=UNKNOWN
+1788619763715 seq=754 src=cnn p=0.9980 reject=ok known=1 bad=8 side=0.4716 c=UNKNOWN
+1788619763791 seq=755 src=cnn p=0.9979 reject=ok known=2 bad=7 side=0.4717 c=UNKNOWN
+1788619763874 seq=756 src=cnn p=0.9984 reject=ok known=4 bad=5 side=0.4925 c=UNKNOWN
+1788619763940 seq=757 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.4969 c=UNKNOWN
+1788619764039 seq=758 src=cnn p=0.9980 reject=ok known=3 bad=6 side=0.4912 c=UNKNOWN
+1788619764149 seq=759 src=cnn p=0.9987 reject=ok known=3 bad=6 side=0.4877 c=UNKNOWN
+1788619764249 seq=760 src=cnn p=0.9990 reject=ok known=3 bad=6 side=0.4896 c=UNKNOWN
+1788619764351 seq=761 src=cnn p=0.9988 reject=ok known=8 bad=1 side=0.5107 c=GREEN
+1788619764451 seq=762 src=cnn p=0.9988 reject=ok known=9 bad=0 side=0.5265 c=GREEN
+1788619764540 seq=763 src=cnn p=0.9990 reject=ok known=4 bad=5 side=0.5344 c=UNKNOWN
+1788619764606 seq=764 src=cnn p=0.9979 reject=ok known=6 bad=3 side=0.5169 c=GREEN
+1788619764607 event stable_capture side=0.5169
+1788619764677 seq=765 src=cnn p=0.9957 reject=ok known=2 bad=7 side=0.3647 c=UNKNOWN
+1788619764785 seq=766 src=cnn p=0.9955 reject=ok known=6 bad=3 side=0.4780 c=GREEN
+1788619764884 seq=767 src=cnn p=0.9964 reject=ok known=3 bad=6 side=0.5520 c=UNKNOWN
+1788619764981 seq=768 src=cnn p=0.9964 reject=ok known=6 bad=3 side=0.5224 c=GREEN
+1788619765036 seq=769 src=cnn p=0.9985 reject=ok known=1 bad=8 side=0.4915 c=UNKNOWN
+1788619765140 seq=770 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.4984 c=UNKNOWN
+1788619765205 seq=771 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.4992 c=UNKNOWN
+1788619765276 seq=772 src=cnn p=0.9993 reject=ok known=3 bad=6 side=0.5044 c=UNKNOWN
+1788619765356 seq=773 src=cnn p=0.9991 reject=ok known=2 bad=7 side=0.5080 c=UNKNOWN
+1788619765456 seq=774 src=cnn p=0.9992 reject=ok known=4 bad=5 side=0.5069 c=BLUE
+1788619765532 seq=775 src=cnn p=0.9991 reject=ok known=8 bad=1 side=0.5303 c=BLUE
+1788619765622 seq=776 src=cnn p=0.9993 reject=ok known=7 bad=2 side=0.5161 c=BLUE
+1788619765715 seq=777 src=cnn p=0.9986 reject=ok known=8 bad=1 side=0.5112 c=BLUE
+1788619765715 event stable_capture side=0.5112
+1788619765799 seq=778 src=cnn p=0.9989 reject=ok known=7 bad=2 side=0.5166 c=BLUE
+1788619765901 seq=779 src=cnn p=0.9993 reject=ok known=6 bad=3 side=0.5229 c=BLUE
+1788619765966 seq=780 src=cnn p=0.9988 reject=ok known=8 bad=1 side=0.5261 c=BLUE
+1788619766045 seq=781 src=cnn p=0.9992 reject=ok known=7 bad=1 side=0.5329 c=BLUE
+1788619766116 seq=782 src=cnn p=0.9977 reject=ok known=2 bad=7 side=0.3847 c=UNKNOWN
+1788619766224 seq=783 src=cnn p=0.9977 reject=ok known=1 bad=8 side=0.5125 c=UNKNOWN
+1788619766322 seq=784 src=cnn p=0.9972 reject=ok known=1 bad=8 side=0.4811 c=UNKNOWN
+1788619766417 seq=785 src=cnn p=0.9973 reject=ok known=3 bad=6 side=0.5298 c=UNKNOWN
+1788619766508 seq=786 src=cnn p=0.9980 reject=ok known=3 bad=6 side=0.5120 c=BLUE
+1788619766616 seq=787 src=cnn p=0.9979 reject=ok known=3 bad=6 side=0.5141 c=UNKNOWN
+1788619766687 seq=788 src=cnn p=0.9984 reject=ok known=2 bad=7 side=0.4720 c=UNKNOWN
+1788619766796 seq=789 src=cnn p=0.9980 reject=ok known=2 bad=7 side=0.5021 c=UNKNOWN
+1788619766885 seq=790 src=cnn p=0.9989 reject=ok known=4 bad=5 side=0.5182 c=BLUE
+1788619766982 seq=791 src=cnn p=0.9984 reject=ok known=6 bad=3 side=0.4140 c=BLUE
+1788619767045 seq=792 src=cnn p=0.9979 reject=ok known=6 bad=3 side=0.3862 c=WHITE
+1788619767150 seq=793 src=cnn p=0.9983 reject=ok known=6 bad=3 side=0.3624 c=WHITE
+1788619767247 seq=794 src=cnn p=0.9979 reject=ok known=7 bad=2 side=0.4545 c=WHITE
+1788619767248 event stable_capture side=0.4545
+1788619767312 seq=795 src=cnn p=0.9984 reject=ok known=8 bad=1 side=0.4878 c=WHITE
+1788619767382 seq=796 src=cnn p=0.9955 reject=ok known=6 bad=3 side=0.3312 c=UNKNOWN
+1788619767476 seq=797 src=cnn p=0.9932 reject=ok known=5 bad=4 side=0.4049 c=GREEN
+1788619767584 seq=798 src=cnn p=0.9889 reject=ok known=4 bad=5 side=0.5639 c=UNKNOWN
+1788619767639 seq=799 src=cnn p=0.9913 reject=ok known=3 bad=6 side=0.6126 c=UNKNOWN
+1788619767740 seq=800 src=cnn p=0.9444 reject=ok known=4 bad=5 side=0.2064 c=UNKNOWN
+1788619767860 seq=801 src=cnn p=0.9658 reject=ok known=2 bad=7 side=0.2862 c=UNKNOWN
+1788619767910 seq=802 src=cnn p=0.8957 reject=implausible_area
+1788619767911 event cnn_decline_1
+1788619768001 seq=803 src=cnn p=0.9884 reject=ok known=4 bad=5 side=0.3852 c=GREEN
+1788619768072 seq=804 src=cnn p=0.9812 reject=ok known=2 bad=7 side=0.2791 c=UNKNOWN
+1788619768168 seq=805 src=cnn p=0.9798 reject=ok known=2 bad=7 side=0.2738 c=UNKNOWN
+1788619768236 seq=806 src=cnn p=0.9915 reject=ok known=4 bad=4 side=0.2386 c=GREEN
+1788619768340 seq=807 src=cnn p=0.9888 reject=ok known=2 bad=7 side=0.3636 c=UNKNOWN
+1788619768433 seq=808 src=cnn p=0.9935 reject=ok known=2 bad=7 side=0.3110 c=UNKNOWN
+1788619768502 seq=809 src=cnn p=0.9904 reject=ok known=2 bad=7 side=0.3398 c=UNKNOWN
+1788619768570 seq=810 src=cnn p=0.9935 reject=ok known=4 bad=5 side=0.3814 c=GREEN
+1788619768691 seq=811 src=cnn p=0.9932 reject=implausible_aspect
+1788619768691 event cnn_decline_1
+1788619768761 seq=812 src=cnn p=0.9907 reject=ok known=4 bad=4 side=0.2556 c=GREEN
+1788619768832 seq=813 src=cnn p=0.9940 reject=implausible_aspect
+1788619768833 event cnn_decline_1
+1788619768929 seq=814 src=cnn p=0.9926 reject=ok known=2 bad=7 side=0.4148 c=UNKNOWN
+1788619769003 seq=815 src=cnn p=0.9909 reject=ok known=2 bad=7 side=0.2232 c=UNKNOWN
+1788619769125 seq=816 src=cnn p=0.9863 reject=ok known=3 bad=6 side=0.2282 c=UNKNOWN
+1788619769197 seq=817 src=cnn p=0.9950 reject=ok known=3 bad=6 side=0.3742 c=UNKNOWN
+1788619769265 seq=818 src=cnn p=0.9932 reject=implausible_aspect
+1788619769265 event cnn_decline_1
+1788619769331 seq=819 src=cnn p=0.9914 reject=ok known=2 bad=7 side=0.3143 c=UNKNOWN
+1788619769572 seq=820 src=cnn p=0.9911 reject=ok known=1 bad=8 side=0.2970 c=UNKNOWN
+1788619769635 seq=821 src=cnn p=0.9910 reject=implausible_aspect
+1788619769635 event cnn_decline_1
+1788619769679 seq=822 src=cnn p=0.9928 reject=ok known=3 bad=6 side=0.2992 c=UNKNOWN
+1788619769777 seq=823 src=cnn p=0.9955 reject=ok known=2 bad=7 side=0.3266 c=UNKNOWN
+1788619769880 seq=824 src=cnn p=0.9939 reject=implausible_aspect
+1788619769880 event cnn_decline_1
+1788619769984 seq=825 src=cnn p=0.9960 reject=ok known=2 bad=7 side=0.3188 c=UNKNOWN
+1788619770095 seq=826 src=cnn p=0.9410 reject=ok known=5 bad=4 side=0.2143 c=WHITE
+1788619770165 seq=827 src=cnn p=0.9934 reject=implausible_aspect
+1788619770166 event cnn_decline_1
+1788619770233 seq=828 src=cnn p=0.9920 reject=implausible_short
+1788619770233 event cnn_decline_2
+1788619770339 seq=829 src=cnn p=0.9956 reject=ok known=2 bad=7 side=0.3239 c=UNKNOWN
+1788619770441 seq=830 src=cnn p=0.9936 reject=ok known=1 bad=8 side=0.5449 c=UNKNOWN
+1788619770581 seq=831 src=cnn p=0.9958 reject=ok known=5 bad=4 side=0.3853 c=GREEN

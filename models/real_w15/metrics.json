@@ -1,0 +1,9 @@
+{
+  "best_corner_err": 0.0932817402340117,
+  "train_size": 85,
+  "val_size": 21,
+  "width": 1.5,
+  "input_width": 160,
+  "input_height": 288,
+  "epochs": 100
+}

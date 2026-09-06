@@ -57,6 +57,28 @@ public final class FaceSample {
     /** Lab of the centre sticker, which acts as this face's colour prototype. */
     public float[] centerLab() { return lab == null ? null : lab[4]; }
 
+    /**
+     * How far the left column sits from the right, or the top row from the bottom, in Lab.
+     *
+     * <p>A quadrilateral that covers two faces of the cube has one column (or row) on the
+     * neighbour; that split is ~50–90. A real face, even a scrambled one, usually stays below 50
+     * because its nine stickers are a mix rather than two solid blocks of different colours.
+     */
+    public float spatialSplit() {
+        if (lab == null) return 0f;
+        return Math.max(
+            Lab.distance(meanCells(0, 3, 6), meanCells(2, 5, 8)),
+            Lab.distance(meanCells(0, 1, 2), meanCells(6, 7, 8)));
+    }
+
+    private float[] meanCells(int a, int b, int c) {
+        return new float[]{
+            (lab[a][0] + lab[b][0] + lab[c][0]) / 3f,
+            (lab[a][1] + lab[b][1] + lab[c][1]) / 3f,
+            (lab[a][2] + lab[b][2] + lab[c][2]) / 3f
+        };
+    }
+
     public String signature() {
         StringBuilder out = new StringBuilder(9);
         for (CubeColor sticker : stickers) out.append(sticker.face);

@@ -1,0 +1,8 @@
+frames=1260
+hits=37
+misses=1223
+hit_rate=0.0294
+near_misses=0
+geometry_hits=37
+mean_presence=0.0235
+images=189

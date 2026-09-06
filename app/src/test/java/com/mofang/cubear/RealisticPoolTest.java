@@ -108,6 +108,27 @@ public class RealisticPoolTest {
         assertEquals(0, Tools.verify(assembled));
     }
 
+    @Test public void fiveFacesWithSeveralLooksEachStillInferTheSixth() {
+        String state = SOLVED;
+        for (String move : "R U2 F' L D B2 R'".split(" ")) state = CubeMoves.apply(state, move);
+
+        Random rng = new Random(13);
+        CubeStateAssembler assembler = new CubeStateAssembler();
+        for (int pass = 0; pass < 3; pass++) {
+            for (int face = 0; face < 6; face++) {
+                if (face == 3) continue;
+                assembler.put(look(state, face, 0.84f + pass * 0.07f, rng.nextInt(4), rng));
+            }
+        }
+        assertEquals(5, assembler.size());
+        assertNull(assembler.assembleLegalState());
+        String assembled = assembler.assembleFromFiveFaces();
+        assertNotNull("five well-observed faces must infer the sixth", assembled);
+        assertEquals(state, assembled);
+        assertEquals(0, Tools.verify(assembled));
+        assertEquals(CubeColor.YELLOW, assembler.palette().missingColor());
+    }
+
     /** Nine flat stickers, but the left column is taken from the neighbouring face. */
     private static FaceSample straddle(String state, int face, int neighbour, Random rng) {
         CubeColor[] provisional = new CubeColor[9];

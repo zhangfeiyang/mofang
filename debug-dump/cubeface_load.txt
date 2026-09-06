@@ -1,0 +1,5 @@
+09-05 21:48:04.834 E/adbd    (20005): service_to_fd shell,v2,TERM=dumb:export ANDROID_LOG_TAGS=''; exec logcat '-v' 'time' 'DetectionDump:I' 'CubeDetect:I' 'CubeFaceModel:I' 'ScanDump:I' '*:S'
+09-05 21:48:16.973 I/CubeFaceModel(32414): loaded cubeface.onnx
+09-05 21:48:16.975 E/CubeFaceModel(32414): model unavailable: java.lang.UnsatisfiedLinkError: No implementation found for long org.opencv.core.Mat.n_Mat() (tried Java_org_opencv_core_Mat_n_1Mat and Java_org_opencv_core_Mat_n_1Mat__) - is the library loaded, e.g. System.loadLibrary?
+09-05 21:50:32.049 E/adbd    (20005): service_to_fd shell,v2,TERM=dumb:export ANDROID_LOG_TAGS=''; exec logcat '-d' '-v' 'time' 'CubeFaceModel:E' 'CubeFaceModel:I' 'DetectionDump:I' '*:S'
+09-05 21:50:47.960 E/adbd    (20005): service_to_fd shell,v2,TERM=dumb:export ANDROID_LOG_TAGS=''; exec logcat '-d' '-v' 'time' 'CubeFaceModel:E' 'CubeFaceModel:I'

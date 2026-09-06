@@ -1,0 +1,1335 @@
+1788616096981 session start dir=/storage/emulated/0/Android/data/com.mofang.cubear/files/detect-dump/20260905-214816 threshold=0.85
+1788616097612 analysis_frame 720x1280
+1788616097629 seq=1 src=cnn p=-1.0000 reject=no_model img=frames/f00001_miss.jpg
+1788616097653 seq=2 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00002_miss.jpg
+1788616097700 seq=3 src=cnn p=-1.0000 reject=no_model img=frames/f00003_miss.jpg
+1788616097720 seq=4 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00004_miss.jpg
+1788616097756 seq=5 src=cnn p=-1.0000 reject=no_model
+1788616097766 seq=6 src=geometry p=-1.0000 reject=geometry_miss
+1788616097856 seq=7 src=cnn p=-1.0000 reject=no_model
+1788616097877 seq=8 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00008_miss.jpg
+1788616097923 seq=9 src=cnn p=-1.0000 reject=no_model
+1788616097932 seq=10 src=geometry p=-1.0000 reject=geometry_miss
+1788616097990 seq=11 src=cnn p=-1.0000 reject=no_model
+1788616097997 seq=12 src=geometry p=-1.0000 reject=geometry_miss
+1788616098056 seq=13 src=cnn p=-1.0000 reject=no_model
+1788616098066 seq=14 src=geometry p=-1.0000 reject=geometry_miss
+1788616098124 seq=15 src=cnn p=-1.0000 reject=no_model
+1788616098146 seq=16 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00016_miss.jpg
+1788616098191 seq=17 src=cnn p=-1.0000 reject=no_model
+1788616098209 seq=18 src=geometry p=-1.0000 reject=geometry_miss
+1788616098265 seq=19 src=cnn p=-1.0000 reject=no_model
+1788616098286 seq=20 src=geometry p=-1.0000 reject=geometry_miss
+1788616098333 seq=21 src=cnn p=-1.0000 reject=no_model
+1788616098349 seq=22 src=geometry p=-1.0000 reject=geometry_miss
+1788616098400 seq=23 src=cnn p=-1.0000 reject=no_model
+1788616098432 seq=24 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00024_miss.jpg
+1788616098499 seq=25 src=cnn p=-1.0000 reject=no_model
+1788616098517 seq=26 src=geometry p=-1.0000 reject=geometry_miss
+1788616098565 seq=27 src=cnn p=-1.0000 reject=no_model
+1788616098580 seq=28 src=geometry p=-1.0000 reject=geometry_miss
+1788616098664 seq=29 src=cnn p=-1.0000 reject=no_model
+1788616098680 seq=30 src=geometry p=-1.0000 reject=geometry_miss
+1788616098743 seq=31 src=cnn p=-1.0000 reject=no_model
+1788616098768 seq=32 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00032_miss.jpg
+1788616098841 seq=33 src=cnn p=-1.0000 reject=no_model
+1788616098853 seq=34 src=geometry p=-1.0000 reject=geometry_miss
+1788616098908 seq=35 src=cnn p=-1.0000 reject=no_model
+1788616098923 seq=36 src=geometry p=-1.0000 reject=geometry_miss
+1788616099008 seq=37 src=cnn p=-1.0000 reject=no_model
+1788616099028 seq=38 src=geometry p=-1.0000 reject=geometry_miss
+1788616099078 seq=39 src=cnn p=-1.0000 reject=no_model
+1788616099121 seq=40 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00040_miss.jpg
+1788616099151 seq=41 src=cnn p=-1.0000 reject=no_model
+1788616099170 seq=42 src=geometry p=-1.0000 reject=geometry_miss
+1788616099241 seq=43 src=cnn p=-1.0000 reject=no_model
+1788616099260 seq=44 src=geometry p=-1.0000 reject=geometry_miss
+1788616099310 seq=45 src=cnn p=-1.0000 reject=no_model
+1788616099330 seq=46 src=geometry p=-1.0000 reject=geometry_miss
+1788616099383 seq=47 src=cnn p=-1.0000 reject=no_model
+1788616099413 seq=48 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00048_miss.jpg
+1788616099498 seq=49 src=cnn p=-1.0000 reject=no_model
+1788616099517 seq=50 src=geometry p=-1.0000 reject=geometry_miss
+1788616099571 seq=51 src=cnn p=-1.0000 reject=no_model
+1788616099590 seq=52 src=geometry p=-1.0000 reject=geometry_miss
+1788616099666 seq=53 src=cnn p=-1.0000 reject=no_model
+1788616099682 seq=54 src=geometry p=-1.0000 reject=geometry_miss
+1788616099736 seq=55 src=cnn p=-1.0000 reject=no_model
+1788616099770 seq=56 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00056_miss.jpg
+1788616099804 seq=57 src=cnn p=-1.0000 reject=no_model
+1788616099821 seq=58 src=geometry p=-1.0000 reject=geometry_miss
+1788616099887 seq=59 src=cnn p=-1.0000 reject=no_model
+1788616099896 seq=60 src=geometry p=-1.0000 reject=geometry_miss
+1788616099969 seq=61 src=cnn p=-1.0000 reject=no_model
+1788616099982 seq=62 src=geometry p=-1.0000 reject=geometry_miss
+1788616100074 seq=63 src=cnn p=-1.0000 reject=no_model
+1788616100114 seq=64 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00064_miss.jpg
+1788616100148 seq=65 src=cnn p=-1.0000 reject=no_model
+1788616100164 seq=66 src=geometry p=-1.0000 reject=geometry_miss
+1788616100239 seq=67 src=cnn p=-1.0000 reject=no_model
+1788616100259 seq=68 src=geometry p=-1.0000 reject=geometry_miss
+1788616100312 seq=69 src=cnn p=-1.0000 reject=no_model
+1788616100333 seq=70 src=geometry p=-1.0000 reject=geometry_miss
+1788616100418 seq=71 src=cnn p=-1.0000 reject=no_model
+1788616100469 seq=72 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00072_miss.jpg
+1788616100496 seq=73 src=cnn p=-1.0000 reject=no_model
+1788616100511 seq=74 src=geometry p=-1.0000 reject=geometry_miss
+1788616100568 seq=75 src=cnn p=-1.0000 reject=no_model
+1788616100584 seq=76 src=geometry p=-1.0000 reject=geometry_miss
+1788616100665 seq=77 src=cnn p=-1.0000 reject=no_model
+1788616100683 seq=78 src=geometry p=-1.0000 reject=geometry_miss
+1788616100753 seq=79 src=cnn p=-1.0000 reject=no_model
+1788616100789 seq=80 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00080_miss.jpg
+1788616100837 seq=81 src=cnn p=-1.0000 reject=no_model
+1788616100856 seq=82 src=geometry p=-1.0000 reject=geometry_miss
+1788616100934 seq=83 src=cnn p=-1.0000 reject=no_model
+1788616100946 seq=84 src=geometry p=-1.0000 reject=geometry_miss
+1788616101003 seq=85 src=cnn p=-1.0000 reject=no_model
+1788616101014 seq=86 src=geometry p=-1.0000 reject=geometry_miss
+1788616101117 seq=87 src=cnn p=-1.0000 reject=no_model
+1788616101148 seq=88 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00088_miss.jpg
+1788616101198 seq=89 src=cnn p=-1.0000 reject=no_model
+1788616101217 seq=90 src=geometry p=-1.0000 reject=geometry_miss
+1788616101268 seq=91 src=cnn p=-1.0000 reject=no_model
+1788616101281 seq=92 src=geometry p=-1.0000 reject=geometry_miss
+1788616101353 seq=93 src=cnn p=-1.0000 reject=no_model
+1788616101372 seq=94 src=geometry p=-1.0000 reject=geometry_miss
+1788616101451 seq=95 src=cnn p=-1.0000 reject=no_model
+1788616101491 seq=96 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00096_miss.jpg
+1788616101547 seq=97 src=cnn p=-1.0000 reject=no_model
+1788616101561 seq=98 src=geometry p=-1.0000 reject=geometry_miss
+1788616101617 seq=99 src=cnn p=-1.0000 reject=no_model
+1788616101634 seq=100 src=geometry p=-1.0000 reject=geometry_miss
+1788616101686 seq=101 src=cnn p=-1.0000 reject=no_model
+1788616101701 seq=102 src=geometry p=-1.0000 reject=geometry_miss
+1788616101761 seq=103 src=cnn p=-1.0000 reject=no_model
+1788616101782 seq=104 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00104_miss.jpg
+1788616101852 seq=105 src=cnn p=-1.0000 reject=no_model
+1788616101900 seq=106 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.5916 c=ORANGE img=frames/f00106_hit.jpg
+1788616101900 geometry hit after 0 cnn declines
+1788616101956 seq=107 src=cnn p=-1.0000 reject=no_model
+1788616101998 seq=108 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6152 c=ORANGE img=frames/f00108_hit.jpg
+1788616101998 geometry hit after 0 cnn declines
+1788616101998 event stable_capture side=0.6152
+1788616102051 seq=109 src=cnn p=-1.0000 reject=no_model
+1788616102087 seq=110 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.5986 c=ORANGE img=frames/f00110_hit.jpg
+1788616102087 geometry hit after 0 cnn declines
+1788616102157 seq=111 src=cnn p=-1.0000 reject=no_model
+1788616102187 seq=112 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00112_miss.jpg
+1788616102249 seq=113 src=cnn p=-1.0000 reject=no_model
+1788616102264 seq=114 src=geometry p=-1.0000 reject=geometry_miss
+1788616102348 seq=115 src=cnn p=-1.0000 reject=no_model
+1788616102362 seq=116 src=geometry p=-1.0000 reject=geometry_miss
+1788616102436 seq=117 src=cnn p=-1.0000 reject=no_model
+1788616102451 seq=118 src=geometry p=-1.0000 reject=geometry_miss
+1788616102533 seq=119 src=cnn p=-1.0000 reject=no_model
+1788616102565 seq=120 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00120_miss.jpg
+1788616102646 seq=121 src=cnn p=-1.0000 reject=no_model
+1788616102669 seq=122 src=geometry p=-1.0000 reject=geometry_miss
+1788616102741 seq=123 src=cnn p=-1.0000 reject=no_model
+1788616102761 seq=124 src=geometry p=-1.0000 reject=geometry_miss
+1788616102818 seq=125 src=cnn p=-1.0000 reject=no_model
+1788616102848 seq=126 src=geometry p=-1.0000 reject=geometry_miss
+1788616102910 seq=127 src=cnn p=-1.0000 reject=no_model
+1788616102955 seq=128 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00128_miss.jpg
+1788616103006 seq=129 src=cnn p=-1.0000 reject=no_model
+1788616103027 seq=130 src=geometry p=-1.0000 reject=geometry_miss
+1788616103072 seq=131 src=cnn p=-1.0000 reject=no_model
+1788616103090 seq=132 src=geometry p=-1.0000 reject=geometry_miss
+1788616103156 seq=133 src=cnn p=-1.0000 reject=no_model
+1788616103173 seq=134 src=geometry p=-1.0000 reject=geometry_miss
+1788616103252 seq=135 src=cnn p=-1.0000 reject=no_model
+1788616103282 seq=136 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00136_miss.jpg
+1788616103318 seq=137 src=cnn p=-1.0000 reject=no_model
+1788616103350 seq=138 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.5990 c=ORANGE img=frames/f00138_hit.jpg
+1788616103350 geometry hit after 0 cnn declines
+1788616103386 seq=139 src=cnn p=-1.0000 reject=no_model
+1788616103399 seq=140 src=geometry p=-1.0000 reject=geometry_miss
+1788616103476 seq=141 src=cnn p=-1.0000 reject=no_model
+1788616103491 seq=142 src=geometry p=-1.0000 reject=geometry_miss
+1788616103561 seq=143 src=cnn p=-1.0000 reject=no_model
+1788616103596 seq=144 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00144_miss.jpg
+1788616103664 seq=145 src=cnn p=-1.0000 reject=no_model
+1788616103678 seq=146 src=geometry p=-1.0000 reject=geometry_miss
+1788616103750 seq=147 src=cnn p=-1.0000 reject=no_model
+1788616103765 seq=148 src=geometry p=-1.0000 reject=geometry_miss
+1788616103834 seq=149 src=cnn p=-1.0000 reject=no_model
+1788616103854 seq=150 src=geometry p=-1.0000 reject=geometry_miss
+1788616103910 seq=151 src=cnn p=-1.0000 reject=no_model
+1788616103948 seq=152 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00152_miss.jpg
+1788616104007 seq=153 src=cnn p=-1.0000 reject=no_model
+1788616104034 seq=154 src=geometry p=-1.0000 reject=geometry_miss
+1788616104134 seq=155 src=cnn p=-1.0000 reject=no_model
+1788616104160 seq=156 src=geometry p=-1.0000 reject=geometry_miss
+1788616104208 seq=157 src=cnn p=-1.0000 reject=no_model
+1788616104235 seq=158 src=geometry p=-1.0000 reject=geometry_miss
+1788616104289 seq=159 src=cnn p=-1.0000 reject=no_model
+1788616104334 seq=160 src=geometry p=0.8889 reject=ok known=8 bad=0 side=0.5626 c=BLUE img=frames/f00160_hit.jpg
+1788616104334 geometry hit after 0 cnn declines
+1788616104385 seq=161 src=cnn p=-1.0000 reject=no_model
+1788616104404 seq=162 src=geometry p=-1.0000 reject=geometry_miss
+1788616104456 seq=163 src=cnn p=-1.0000 reject=no_model
+1788616104473 seq=164 src=geometry p=-1.0000 reject=geometry_miss
+1788616104564 seq=165 src=cnn p=-1.0000 reject=no_model
+1788616104607 seq=166 src=geometry p=0.7778 reject=ok known=8 bad=0 side=0.6222 c=RED img=frames/f00166_hit.jpg
+1788616104608 geometry hit after 0 cnn declines
+1788616104634 seq=167 src=cnn p=-1.0000 reject=no_model
+1788616104676 seq=168 src=geometry p=0.8889 reject=ok known=7 bad=1 side=0.5635 c=UNKNOWN img=frames/f00168_hit.jpg
+1788616104676 geometry hit after 0 cnn declines
+1788616104706 seq=169 src=cnn p=-1.0000 reject=no_model
+1788616104742 seq=170 src=geometry p=0.8889 reject=ok known=8 bad=1 side=0.5730 c=UNKNOWN img=frames/f00170_hit.jpg
+1788616104742 geometry hit after 0 cnn declines
+1788616104815 seq=171 src=cnn p=-1.0000 reject=no_model
+1788616104836 seq=172 src=geometry p=-1.0000 reject=geometry_miss
+1788616104881 seq=173 src=cnn p=-1.0000 reject=no_model
+1788616104895 seq=174 src=geometry p=-1.0000 reject=geometry_miss
+1788616104985 seq=175 src=cnn p=-1.0000 reject=no_model
+1788616105021 seq=176 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00176_miss.jpg
+1788616105053 seq=177 src=cnn p=-1.0000 reject=no_model
+1788616105069 seq=178 src=geometry p=-1.0000 reject=geometry_miss
+1788616105143 seq=179 src=cnn p=-1.0000 reject=no_model
+1788616105161 seq=180 src=geometry p=-1.0000 reject=geometry_miss
+1788616105254 seq=181 src=cnn p=-1.0000 reject=no_model
+1788616105277 seq=182 src=geometry p=-1.0000 reject=geometry_miss
+1788616105349 seq=183 src=cnn p=-1.0000 reject=no_model
+1788616105386 seq=184 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00184_miss.jpg
+1788616105446 seq=185 src=cnn p=-1.0000 reject=no_model
+1788616105465 seq=186 src=geometry p=-1.0000 reject=geometry_miss
+1788616105513 seq=187 src=cnn p=-1.0000 reject=no_model
+1788616105530 seq=188 src=geometry p=-1.0000 reject=geometry_miss
+1788616105583 seq=189 src=cnn p=-1.0000 reject=no_model
+1788616105606 seq=190 src=geometry p=-1.0000 reject=geometry_miss
+1788616105670 seq=191 src=cnn p=-1.0000 reject=no_model
+1788616105696 seq=192 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00192_miss.jpg
+1788616105765 seq=193 src=cnn p=-1.0000 reject=no_model
+1788616105780 seq=194 src=geometry p=-1.0000 reject=geometry_miss
+1788616105844 seq=195 src=cnn p=-1.0000 reject=no_model
+1788616105857 seq=196 src=geometry p=-1.0000 reject=geometry_miss
+1788616105934 seq=197 src=cnn p=-1.0000 reject=no_model
+1788616105947 seq=198 src=geometry p=-1.0000 reject=geometry_miss
+1788616106018 seq=199 src=cnn p=-1.0000 reject=no_model
+1788616106053 seq=200 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00200_miss.jpg
+1788616106107 seq=201 src=cnn p=-1.0000 reject=no_model
+1788616106118 seq=202 src=geometry p=-1.0000 reject=geometry_miss
+1788616106213 seq=203 src=cnn p=-1.0000 reject=no_model
+1788616106232 seq=204 src=geometry p=-1.0000 reject=geometry_miss
+1788616106311 seq=205 src=cnn p=-1.0000 reject=no_model
+1788616106331 seq=206 src=geometry p=-1.0000 reject=geometry_miss
+1788616106378 seq=207 src=cnn p=-1.0000 reject=no_model
+1788616106415 seq=208 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00208_miss.jpg
+1788616106445 seq=209 src=cnn p=-1.0000 reject=no_model
+1788616106465 seq=210 src=geometry p=-1.0000 reject=geometry_miss
+1788616106516 seq=211 src=cnn p=-1.0000 reject=no_model
+1788616106535 seq=212 src=geometry p=-1.0000 reject=geometry_miss
+1788616106618 seq=213 src=cnn p=-1.0000 reject=no_model
+1788616106635 seq=214 src=geometry p=-1.0000 reject=geometry_miss
+1788616106721 seq=215 src=cnn p=-1.0000 reject=no_model
+1788616106752 seq=216 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00216_miss.jpg
+1788616106806 seq=217 src=cnn p=-1.0000 reject=no_model
+1788616106823 seq=218 src=geometry p=-1.0000 reject=geometry_miss
+1788616106912 seq=219 src=cnn p=-1.0000 reject=no_model
+1788616106937 seq=220 src=geometry p=-1.0000 reject=geometry_miss
+1788616107016 seq=221 src=cnn p=-1.0000 reject=no_model
+1788616107037 seq=222 src=geometry p=-1.0000 reject=geometry_miss
+1788616107115 seq=223 src=cnn p=-1.0000 reject=no_model
+1788616107147 seq=224 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00224_miss.jpg
+1788616107205 seq=225 src=cnn p=-1.0000 reject=no_model
+1788616107217 seq=226 src=geometry p=-1.0000 reject=geometry_miss
+1788616107310 seq=227 src=cnn p=-1.0000 reject=no_model
+1788616107328 seq=228 src=geometry p=-1.0000 reject=geometry_miss
+1788616107377 seq=229 src=cnn p=-1.0000 reject=no_model
+1788616107402 seq=230 src=geometry p=-1.0000 reject=geometry_miss
+1788616107446 seq=231 src=cnn p=-1.0000 reject=no_model
+1788616107482 seq=232 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00232_miss.jpg
+1788616107552 seq=233 src=cnn p=-1.0000 reject=no_model
+1788616107572 seq=234 src=geometry p=-1.0000 reject=geometry_miss
+1788616107644 seq=235 src=cnn p=-1.0000 reject=no_model
+1788616107668 seq=236 src=geometry p=-1.0000 reject=geometry_miss
+1788616107712 seq=237 src=cnn p=-1.0000 reject=no_model
+1788616107735 seq=238 src=geometry p=-1.0000 reject=geometry_miss
+1788616107804 seq=239 src=cnn p=-1.0000 reject=no_model
+1788616107837 seq=240 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00240_miss.jpg
+1788616107875 seq=241 src=cnn p=-1.0000 reject=no_model
+1788616107891 seq=242 src=geometry p=-1.0000 reject=geometry_miss
+1788616107971 seq=243 src=cnn p=-1.0000 reject=no_model
+1788616107991 seq=244 src=geometry p=-1.0000 reject=geometry_miss
+1788616108058 seq=245 src=cnn p=-1.0000 reject=no_model
+1788616108076 seq=246 src=geometry p=-1.0000 reject=geometry_miss
+1788616108139 seq=247 src=cnn p=-1.0000 reject=no_model
+1788616108180 seq=248 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00248_miss.jpg
+1788616108207 seq=249 src=cnn p=-1.0000 reject=no_model
+1788616108225 seq=250 src=geometry p=-1.0000 reject=geometry_miss
+1788616108282 seq=251 src=cnn p=-1.0000 reject=no_model
+1788616108302 seq=252 src=geometry p=-1.0000 reject=geometry_miss
+1788616108385 seq=253 src=cnn p=-1.0000 reject=no_model
+1788616108405 seq=254 src=geometry p=-1.0000 reject=geometry_miss
+1788616108471 seq=255 src=cnn p=-1.0000 reject=no_model
+1788616108510 seq=256 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00256_miss.jpg
+1788616108538 seq=257 src=cnn p=-1.0000 reject=no_model
+1788616108557 seq=258 src=geometry p=-1.0000 reject=geometry_miss
+1788616108623 seq=259 src=cnn p=-1.0000 reject=no_model
+1788616108644 seq=260 src=geometry p=-1.0000 reject=geometry_miss
+1788616108722 seq=261 src=cnn p=-1.0000 reject=no_model
+1788616108741 seq=262 src=geometry p=-1.0000 reject=geometry_miss
+1788616108821 seq=263 src=cnn p=-1.0000 reject=no_model
+1788616108849 seq=264 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00264_miss.jpg
+1788616108900 seq=265 src=cnn p=-1.0000 reject=no_model
+1788616108921 seq=266 src=geometry p=-1.0000 reject=geometry_miss
+1788616108985 seq=267 src=cnn p=-1.0000 reject=no_model
+1788616109003 seq=268 src=geometry p=-1.0000 reject=geometry_miss
+1788616109081 seq=269 src=cnn p=-1.0000 reject=no_model
+1788616109097 seq=270 src=geometry p=-1.0000 reject=geometry_miss
+1788616109180 seq=271 src=cnn p=-1.0000 reject=no_model
+1788616109212 seq=272 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00272_miss.jpg
+1788616109280 seq=273 src=cnn p=-1.0000 reject=no_model
+1788616109300 seq=274 src=geometry p=-1.0000 reject=geometry_miss
+1788616109356 seq=275 src=cnn p=-1.0000 reject=no_model
+1788616109375 seq=276 src=geometry p=-1.0000 reject=geometry_miss
+1788616109425 seq=277 src=cnn p=-1.0000 reject=no_model
+1788616109445 seq=278 src=geometry p=-1.0000 reject=geometry_miss
+1788616109515 seq=279 src=cnn p=-1.0000 reject=no_model
+1788616109553 seq=280 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00280_miss.jpg
+1788616109631 seq=281 src=cnn p=-1.0000 reject=no_model
+1788616109657 seq=282 src=geometry p=-1.0000 reject=geometry_miss
+1788616109708 seq=283 src=cnn p=-1.0000 reject=no_model
+1788616109725 seq=284 src=geometry p=-1.0000 reject=geometry_miss
+1788616109775 seq=285 src=cnn p=-1.0000 reject=no_model
+1788616109796 seq=286 src=geometry p=-1.0000 reject=geometry_miss
+1788616109841 seq=287 src=cnn p=-1.0000 reject=no_model
+1788616109880 seq=288 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00288_miss.jpg
+1788616109941 seq=289 src=cnn p=-1.0000 reject=no_model
+1788616109955 seq=290 src=geometry p=-1.0000 reject=geometry_miss
+1788616110009 seq=291 src=cnn p=-1.0000 reject=no_model
+1788616110020 seq=292 src=geometry p=-1.0000 reject=geometry_miss
+1788616110112 seq=293 src=cnn p=-1.0000 reject=no_model
+1788616110135 seq=294 src=geometry p=-1.0000 reject=geometry_miss
+1788616110191 seq=295 src=cnn p=-1.0000 reject=no_model
+1788616110224 seq=296 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00296_miss.jpg
+1788616110273 seq=297 src=cnn p=-1.0000 reject=no_model
+1788616110292 seq=298 src=geometry p=-1.0000 reject=geometry_miss
+1788616110350 seq=299 src=cnn p=-1.0000 reject=no_model
+1788616110368 seq=300 src=geometry p=-1.0000 reject=geometry_miss
+1788616110451 seq=301 src=cnn p=-1.0000 reject=no_model
+1788616110471 seq=302 src=geometry p=-1.0000 reject=geometry_miss
+1788616110550 seq=303 src=cnn p=-1.0000 reject=no_model
+1788616110584 seq=304 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00304_miss.jpg
+1788616110617 seq=305 src=cnn p=-1.0000 reject=no_model
+1788616110632 seq=306 src=geometry p=-1.0000 reject=geometry_miss
+1788616110716 seq=307 src=cnn p=-1.0000 reject=no_model
+1788616110739 seq=308 src=geometry p=-1.0000 reject=geometry_miss
+1788616110804 seq=309 src=cnn p=-1.0000 reject=no_model
+1788616110825 seq=310 src=geometry p=-1.0000 reject=geometry_miss
+1788616110885 seq=311 src=cnn p=-1.0000 reject=no_model
+1788616110919 seq=312 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00312_miss.jpg
+1788616110970 seq=313 src=cnn p=-1.0000 reject=no_model
+1788616110989 seq=314 src=geometry p=-1.0000 reject=geometry_miss
+1788616111051 seq=315 src=cnn p=-1.0000 reject=no_model
+1788616111069 seq=316 src=geometry p=-1.0000 reject=geometry_miss
+1788616111136 seq=317 src=cnn p=-1.0000 reject=no_model
+1788616111149 seq=318 src=geometry p=-1.0000 reject=geometry_miss
+1788616111235 seq=319 src=cnn p=-1.0000 reject=no_model
+1788616111268 seq=320 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00320_miss.jpg
+1788616111305 seq=321 src=cnn p=-1.0000 reject=no_model
+1788616111321 seq=322 src=geometry p=-1.0000 reject=geometry_miss
+1788616111392 seq=323 src=cnn p=-1.0000 reject=no_model
+1788616111411 seq=324 src=geometry p=-1.0000 reject=geometry_miss
+1788616111486 seq=325 src=cnn p=-1.0000 reject=no_model
+1788616111505 seq=326 src=geometry p=-1.0000 reject=geometry_miss
+1788616111597 seq=327 src=cnn p=-1.0000 reject=no_model
+1788616111629 seq=328 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00328_miss.jpg
+1788616111672 seq=329 src=cnn p=-1.0000 reject=no_model
+1788616111692 seq=330 src=geometry p=-1.0000 reject=geometry_miss
+1788616111746 seq=331 src=cnn p=-1.0000 reject=no_model
+1788616111765 seq=332 src=geometry p=-1.0000 reject=geometry_miss
+1788616111834 seq=333 src=cnn p=-1.0000 reject=no_model
+1788616111852 seq=334 src=geometry p=-1.0000 reject=geometry_miss
+1788616111922 seq=335 src=cnn p=-1.0000 reject=no_model
+1788616111957 seq=336 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00336_miss.jpg
+1788616112008 seq=337 src=cnn p=-1.0000 reject=no_model
+1788616112022 seq=338 src=geometry p=-1.0000 reject=geometry_miss
+1788616112085 seq=339 src=cnn p=-1.0000 reject=no_model
+1788616112102 seq=340 src=geometry p=-1.0000 reject=geometry_miss
+1788616112193 seq=341 src=cnn p=-1.0000 reject=no_model
+1788616112206 seq=342 src=geometry p=-1.0000 reject=geometry_miss
+1788616112292 seq=343 src=cnn p=-1.0000 reject=no_model
+1788616112330 seq=344 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00344_miss.jpg
+1788616112389 seq=345 src=cnn p=-1.0000 reject=no_model
+1788616112404 seq=346 src=geometry p=-1.0000 reject=geometry_miss
+1788616112488 seq=347 src=cnn p=-1.0000 reject=no_model
+1788616112508 seq=348 src=geometry p=-1.0000 reject=geometry_miss
+1788616112557 seq=349 src=cnn p=-1.0000 reject=no_model
+1788616112575 seq=350 src=geometry p=-1.0000 reject=geometry_miss
+1788616112662 seq=351 src=cnn p=-1.0000 reject=no_model
+1788616112700 seq=352 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00352_miss.jpg
+1788616112757 seq=353 src=cnn p=-1.0000 reject=no_model
+1788616112776 seq=354 src=geometry p=-1.0000 reject=geometry_miss
+1788616112829 seq=355 src=cnn p=-1.0000 reject=no_model
+1788616112852 seq=356 src=geometry p=-1.0000 reject=geometry_miss
+1788616112921 seq=357 src=cnn p=-1.0000 reject=no_model
+1788616112944 seq=358 src=geometry p=-1.0000 reject=geometry_miss
+1788616113027 seq=359 src=cnn p=-1.0000 reject=no_model
+1788616113060 seq=360 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00360_miss.jpg
+1788616113112 seq=361 src=cnn p=-1.0000 reject=no_model
+1788616113127 seq=362 src=geometry p=-1.0000 reject=geometry_miss
+1788616113179 seq=363 src=cnn p=-1.0000 reject=no_model
+1788616113193 seq=364 src=geometry p=-1.0000 reject=geometry_miss
+1788616113252 seq=365 src=cnn p=-1.0000 reject=no_model
+1788616113271 seq=366 src=geometry p=-1.0000 reject=geometry_miss
+1788616113349 seq=367 src=cnn p=-1.0000 reject=no_model
+1788616113377 seq=368 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00368_miss.jpg
+1788616113438 seq=369 src=cnn p=-1.0000 reject=no_model
+1788616113457 seq=370 src=geometry p=-1.0000 reject=geometry_miss
+1788616113509 seq=371 src=cnn p=-1.0000 reject=no_model
+1788616113527 seq=372 src=geometry p=-1.0000 reject=geometry_miss
+1788616113578 seq=373 src=cnn p=-1.0000 reject=no_model
+1788616113595 seq=374 src=geometry p=-1.0000 reject=geometry_miss
+1788616113648 seq=375 src=cnn p=-1.0000 reject=no_model
+1788616113680 seq=376 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00376_miss.jpg
+1788616113747 seq=377 src=cnn p=-1.0000 reject=no_model
+1788616113768 seq=378 src=geometry p=-1.0000 reject=geometry_miss
+1788616113845 seq=379 src=cnn p=-1.0000 reject=no_model
+1788616113865 seq=380 src=geometry p=-1.0000 reject=geometry_miss
+1788616113918 seq=381 src=cnn p=-1.0000 reject=no_model
+1788616113938 seq=382 src=geometry p=-1.0000 reject=geometry_miss
+1788616114024 seq=383 src=cnn p=-1.0000 reject=no_model
+1788616114057 seq=384 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6556 c=GREEN img=frames/f00384_hit.jpg
+1788616114057 geometry hit after 0 cnn declines
+1788616114112 seq=385 src=cnn p=-1.0000 reject=no_model
+1788616114131 seq=386 src=geometry p=-1.0000 reject=geometry_miss
+1788616114206 seq=387 src=cnn p=-1.0000 reject=no_model
+1788616114223 seq=388 src=geometry p=-1.0000 reject=geometry_miss
+1788616114307 seq=389 src=cnn p=-1.0000 reject=no_model
+1788616114326 seq=390 src=geometry p=-1.0000 reject=geometry_miss
+1788616114375 seq=391 src=cnn p=-1.0000 reject=no_model
+1788616114413 seq=392 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00392_miss.jpg
+1788616114443 seq=393 src=cnn p=-1.0000 reject=no_model
+1788616114459 seq=394 src=geometry p=-1.0000 reject=geometry_miss
+1788616114539 seq=395 src=cnn p=-1.0000 reject=no_model
+1788616114556 seq=396 src=geometry p=-1.0000 reject=geometry_miss
+1788616114619 seq=397 src=cnn p=-1.0000 reject=no_model
+1788616114636 seq=398 src=geometry p=-1.0000 reject=geometry_miss
+1788616114709 seq=399 src=cnn p=-1.0000 reject=no_model
+1788616114752 seq=400 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00400_miss.jpg
+1788616114810 seq=401 src=cnn p=-1.0000 reject=no_model
+1788616114831 seq=402 src=geometry p=-1.0000 reject=geometry_miss
+1788616114878 seq=403 src=cnn p=-1.0000 reject=no_model
+1788616114892 seq=404 src=geometry p=-1.0000 reject=geometry_miss
+1788616114961 seq=405 src=cnn p=-1.0000 reject=no_model
+1788616114982 seq=406 src=geometry p=-1.0000 reject=geometry_miss
+1788616115063 seq=407 src=cnn p=-1.0000 reject=no_model
+1788616115102 seq=408 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00408_miss.jpg
+1788616115133 seq=409 src=cnn p=-1.0000 reject=no_model
+1788616115146 seq=410 src=geometry p=-1.0000 reject=geometry_miss
+1788616115210 seq=411 src=cnn p=-1.0000 reject=no_model
+1788616115225 seq=412 src=geometry p=-1.0000 reject=geometry_miss
+1788616115276 seq=413 src=cnn p=-1.0000 reject=no_model
+1788616115291 seq=414 src=geometry p=-1.0000 reject=geometry_miss
+1788616115389 seq=415 src=cnn p=-1.0000 reject=no_model
+1788616115416 seq=416 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00416_miss.jpg
+1788616115467 seq=417 src=cnn p=-1.0000 reject=no_model
+1788616115482 seq=418 src=geometry p=-1.0000 reject=geometry_miss
+1788616115564 seq=419 src=cnn p=-1.0000 reject=no_model
+1788616115580 seq=420 src=geometry p=-1.0000 reject=geometry_miss
+1788616115654 seq=421 src=cnn p=-1.0000 reject=no_model
+1788616115671 seq=422 src=geometry p=-1.0000 reject=geometry_miss
+1788616115732 seq=423 src=cnn p=-1.0000 reject=no_model
+1788616115757 seq=424 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00424_miss.jpg
+1788616115835 seq=425 src=cnn p=-1.0000 reject=no_model
+1788616115851 seq=426 src=geometry p=-1.0000 reject=geometry_miss
+1788616115926 seq=427 src=cnn p=-1.0000 reject=no_model
+1788616115942 seq=428 src=geometry p=-1.0000 reject=geometry_miss
+1788616116025 seq=429 src=cnn p=-1.0000 reject=no_model
+1788616116056 seq=430 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6131 c=ORANGE img=frames/f00430_hit.jpg
+1788616116056 geometry hit after 0 cnn declines
+1788616116091 seq=431 src=cnn p=-1.0000 reject=no_model
+1788616116125 seq=432 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6403 c=ORANGE img=frames/f00432_hit.jpg
+1788616116125 geometry hit after 0 cnn declines
+1788616116159 seq=433 src=cnn p=-1.0000 reject=no_model
+1788616116196 seq=434 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6496 c=ORANGE img=frames/f00434_hit.jpg
+1788616116196 geometry hit after 0 cnn declines
+1788616116197 event stable_capture side=0.6496
+1788616116259 seq=435 src=cnn p=-1.0000 reject=no_model
+1788616116273 seq=436 src=geometry p=-1.0000 reject=geometry_miss
+1788616116327 seq=437 src=cnn p=-1.0000 reject=no_model
+1788616116340 seq=438 src=geometry p=-1.0000 reject=geometry_miss
+1788616116393 seq=439 src=cnn p=-1.0000 reject=no_model
+1788616116424 seq=440 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6559 c=ORANGE img=frames/f00440_hit.jpg
+1788616116425 geometry hit after 0 cnn declines
+1788616116520 seq=441 src=cnn p=-1.0000 reject=no_model
+1788616116568 seq=442 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6620 c=ORANGE img=frames/f00442_hit.jpg
+1788616116568 geometry hit after 0 cnn declines
+1788616116568 event stable_capture side=0.6620
+1788616116612 seq=443 src=cnn p=-1.0000 reject=no_model
+1788616116631 seq=444 src=geometry p=-1.0000 reject=geometry_miss
+1788616116685 seq=445 src=cnn p=-1.0000 reject=no_model
+1788616116728 seq=446 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6465 c=ORANGE img=frames/f00446_hit.jpg
+1788616116728 geometry hit after 0 cnn declines
+1788616116784 seq=447 src=cnn p=-1.0000 reject=no_model
+1788616116820 seq=448 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00448_miss.jpg
+1788616116884 seq=449 src=cnn p=-1.0000 reject=no_model
+1788616116920 seq=450 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6461 c=ORANGE img=frames/f00450_hit.jpg
+1788616116920 geometry hit after 0 cnn declines
+1788616116920 event stable_capture side=0.6461
+1788616116984 seq=451 src=cnn p=-1.0000 reject=no_model
+1788616117017 seq=452 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6369 c=ORANGE img=frames/f00452_hit.jpg
+1788616117017 geometry hit after 0 cnn declines
+1788616117079 seq=453 src=cnn p=-1.0000 reject=no_model
+1788616117109 seq=454 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6296 c=ORANGE img=frames/f00454_hit.jpg
+1788616117110 geometry hit after 0 cnn declines
+1788616117110 event stable_capture side=0.6296
+1788616117181 seq=455 src=cnn p=-1.0000 reject=no_model
+1788616117216 seq=456 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00456_miss.jpg
+1788616117281 seq=457 src=cnn p=-1.0000 reject=no_model
+1788616117299 seq=458 src=geometry p=-1.0000 reject=geometry_miss
+1788616117348 seq=459 src=cnn p=-1.0000 reject=no_model
+1788616117363 seq=460 src=geometry p=-1.0000 reject=geometry_miss
+1788616117444 seq=461 src=cnn p=-1.0000 reject=no_model
+1788616117458 seq=462 src=geometry p=-1.0000 reject=geometry_miss
+1788616117516 seq=463 src=cnn p=-1.0000 reject=no_model
+1788616117556 seq=464 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00464_miss.jpg
+1788616117585 seq=465 src=cnn p=-1.0000 reject=no_model
+1788616117605 seq=466 src=geometry p=-1.0000 reject=geometry_miss
+1788616117678 seq=467 src=cnn p=-1.0000 reject=no_model
+1788616117696 seq=468 src=geometry p=-1.0000 reject=geometry_miss
+1788616117785 seq=469 src=cnn p=-1.0000 reject=no_model
+1788616117807 seq=470 src=geometry p=-1.0000 reject=geometry_miss
+1788616117876 seq=471 src=cnn p=-1.0000 reject=no_model
+1788616117911 seq=472 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00472_miss.jpg
+1788616117964 seq=473 src=cnn p=-1.0000 reject=no_model
+1788616117978 seq=474 src=geometry p=-1.0000 reject=geometry_miss
+1788616118033 seq=475 src=cnn p=-1.0000 reject=no_model
+1788616118046 seq=476 src=geometry p=-1.0000 reject=geometry_miss
+1788616118107 seq=477 src=cnn p=-1.0000 reject=no_model
+1788616118121 seq=478 src=geometry p=-1.0000 reject=geometry_miss
+1788616118182 seq=479 src=cnn p=-1.0000 reject=no_model
+1788616118216 seq=480 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00480_miss.jpg
+1788616118272 seq=481 src=cnn p=-1.0000 reject=no_model
+1788616118297 seq=482 src=geometry p=-1.0000 reject=geometry_miss
+1788616118343 seq=483 src=cnn p=-1.0000 reject=no_model
+1788616118366 seq=484 src=geometry p=-1.0000 reject=geometry_miss
+1788616118443 seq=485 src=cnn p=-1.0000 reject=no_model
+1788616118462 seq=486 src=geometry p=-1.0000 reject=geometry_miss
+1788616118559 seq=487 src=cnn p=-1.0000 reject=no_model
+1788616118592 seq=488 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00488_miss.jpg
+1788616118649 seq=489 src=cnn p=-1.0000 reject=no_model
+1788616118664 seq=490 src=geometry p=-1.0000 reject=geometry_miss
+1788616118714 seq=491 src=cnn p=-1.0000 reject=no_model
+1788616118730 seq=492 src=geometry p=-1.0000 reject=geometry_miss
+1788616118800 seq=493 src=cnn p=-1.0000 reject=no_model
+1788616118813 seq=494 src=geometry p=-1.0000 reject=geometry_miss
+1788616118883 seq=495 src=cnn p=-1.0000 reject=no_model
+1788616118929 seq=496 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00496_miss.jpg
+1788616118969 seq=497 src=cnn p=-1.0000 reject=no_model
+1788616118986 seq=498 src=geometry p=-1.0000 reject=geometry_miss
+1788616119087 seq=499 src=cnn p=-1.0000 reject=no_model
+1788616119127 seq=500 src=geometry p=0.7778 reject=ok known=8 bad=0 side=0.6686 c=YELLOW img=frames/f00500_hit.jpg
+1788616119127 geometry hit after 0 cnn declines
+1788616119185 seq=501 src=cnn p=-1.0000 reject=no_model
+1788616119203 seq=502 src=geometry p=-1.0000 reject=geometry_miss
+1788616119270 seq=503 src=cnn p=-1.0000 reject=no_model
+1788616119306 seq=504 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00504_miss.jpg
+1788616119389 seq=505 src=cnn p=-1.0000 reject=no_model
+1788616119412 seq=506 src=geometry p=-1.0000 reject=geometry_miss
+1788616119490 seq=507 src=cnn p=-1.0000 reject=no_model
+1788616119533 seq=508 src=geometry p=0.8889 reject=ok known=9 bad=0 side=0.6777 c=YELLOW img=frames/f00508_hit.jpg
+1788616119533 geometry hit after 0 cnn declines
+1788616119584 seq=509 src=cnn p=-1.0000 reject=no_model
+1788616119604 seq=510 src=geometry p=-1.0000 reject=geometry_miss
+1788616119680 seq=511 src=cnn p=-1.0000 reject=no_model
+1788616119718 seq=512 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00512_miss.jpg
+1788616119790 seq=513 src=cnn p=-1.0000 reject=no_model
+1788616119844 seq=514 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6701 c=YELLOW img=frames/f00514_hit.jpg
+1788616119844 geometry hit after 0 cnn declines
+1788616119844 event stable_capture side=0.6701
+1788616119856 seq=515 src=cnn p=-1.0000 reject=no_model
+1788616119898 seq=516 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6701 c=YELLOW img=frames/f00516_hit.jpg
+1788616119898 geometry hit after 0 cnn declines
+1788616119947 seq=517 src=cnn p=-1.0000 reject=no_model
+1788616119966 seq=518 src=geometry p=-1.0000 reject=geometry_miss
+1788616120046 seq=519 src=cnn p=-1.0000 reject=no_model
+1788616120081 seq=520 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6678 c=YELLOW img=frames/f00520_hit.jpg
+1788616120081 geometry hit after 0 cnn declines
+1788616120081 event stable_capture side=0.6678
+1788616120147 seq=521 src=cnn p=-1.0000 reject=no_model
+1788616120165 seq=522 src=geometry p=-1.0000 reject=geometry_miss
+1788616120215 seq=523 src=cnn p=-1.0000 reject=no_model
+1788616120250 seq=524 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6725 c=YELLOW img=frames/f00524_hit.jpg
+1788616120250 geometry hit after 0 cnn declines
+1788616120318 seq=525 src=cnn p=-1.0000 reject=no_model
+1788616120355 seq=526 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6700 c=YELLOW img=frames/f00526_hit.jpg
+1788616120355 geometry hit after 0 cnn declines
+1788616120355 event stable_capture side=0.6700
+1788616120416 seq=527 src=cnn p=-1.0000 reject=no_model
+1788616120458 seq=528 src=geometry p=0.8889 reject=ok known=9 bad=0 side=0.6677 c=YELLOW img=frames/f00528_hit.jpg
+1788616120458 geometry hit after 0 cnn declines
+1788616120522 seq=529 src=cnn p=-1.0000 reject=no_model
+1788616120555 seq=530 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6724 c=YELLOW img=frames/f00530_hit.jpg
+1788616120555 geometry hit after 0 cnn declines
+1788616120555 event stable_capture side=0.6724
+1788616120624 seq=531 src=cnn p=-1.0000 reject=no_model
+1788616120638 seq=532 src=geometry p=-1.0000 reject=geometry_miss
+1788616120712 seq=533 src=cnn p=-1.0000 reject=no_model
+1788616120729 seq=534 src=geometry p=-1.0000 reject=geometry_miss
+1788616120783 seq=535 src=cnn p=-1.0000 reject=no_model
+1788616120814 seq=536 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00536_miss.jpg
+1788616120881 seq=537 src=cnn p=-1.0000 reject=no_model
+1788616120901 seq=538 src=geometry p=-1.0000 reject=geometry_miss
+1788616120981 seq=539 src=cnn p=-1.0000 reject=no_model
+1788616121003 seq=540 src=geometry p=-1.0000 reject=geometry_miss
+1788616121076 seq=541 src=cnn p=-1.0000 reject=no_model
+1788616121097 seq=542 src=geometry p=-1.0000 reject=geometry_miss
+1788616121173 seq=543 src=cnn p=-1.0000 reject=no_model
+1788616121208 seq=544 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00544_miss.jpg
+1788616121274 seq=545 src=cnn p=-1.0000 reject=no_model
+1788616121291 seq=546 src=geometry p=-1.0000 reject=geometry_miss
+1788616121375 seq=547 src=cnn p=-1.0000 reject=no_model
+1788616121396 seq=548 src=geometry p=-1.0000 reject=geometry_miss
+1788616121442 seq=549 src=cnn p=-1.0000 reject=no_model
+1788616121464 seq=550 src=geometry p=-1.0000 reject=geometry_miss
+1788616121511 seq=551 src=cnn p=-1.0000 reject=no_model
+1788616121550 seq=552 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00552_miss.jpg
+1788616121615 seq=553 src=cnn p=-1.0000 reject=no_model
+1788616121642 seq=554 src=geometry p=-1.0000 reject=geometry_miss
+1788616121704 seq=555 src=cnn p=-1.0000 reject=no_model
+1788616121726 seq=556 src=geometry p=-1.0000 reject=geometry_miss
+1788616121784 seq=557 src=cnn p=-1.0000 reject=no_model
+1788616121803 seq=558 src=geometry p=-1.0000 reject=geometry_miss
+1788616121881 seq=559 src=cnn p=-1.0000 reject=no_model
+1788616121924 seq=560 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00560_miss.jpg
+1788616121972 seq=561 src=cnn p=-1.0000 reject=no_model
+1788616121990 seq=562 src=geometry p=-1.0000 reject=geometry_miss
+1788616122077 seq=563 src=cnn p=-1.0000 reject=no_model
+1788616122093 seq=564 src=geometry p=-1.0000 reject=geometry_miss
+1788616122175 seq=565 src=cnn p=-1.0000 reject=no_model
+1788616122194 seq=566 src=geometry p=-1.0000 reject=geometry_miss
+1788616122273 seq=567 src=cnn p=-1.0000 reject=no_model
+1788616122309 seq=568 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00568_miss.jpg
+1788616122372 seq=569 src=cnn p=-1.0000 reject=no_model
+1788616122398 seq=570 src=geometry p=-1.0000 reject=geometry_miss
+1788616122452 seq=571 src=cnn p=-1.0000 reject=no_model
+1788616122474 seq=572 src=geometry p=-1.0000 reject=geometry_miss
+1788616122543 seq=573 src=cnn p=-1.0000 reject=no_model
+1788616122562 seq=574 src=geometry p=-1.0000 reject=geometry_miss
+1788616122653 seq=575 src=cnn p=-1.0000 reject=no_model
+1788616122689 seq=576 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00576_miss.jpg
+1788616122736 seq=577 src=cnn p=-1.0000 reject=no_model
+1788616122755 seq=578 src=geometry p=-1.0000 reject=geometry_miss
+1788616122817 seq=579 src=cnn p=-1.0000 reject=no_model
+1788616122837 seq=580 src=geometry p=-1.0000 reject=geometry_miss
+1788616122895 seq=581 src=cnn p=-1.0000 reject=no_model
+1788616122919 seq=582 src=geometry p=-1.0000 reject=geometry_miss
+1788616122969 seq=583 src=cnn p=-1.0000 reject=no_model
+1788616123008 seq=584 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00584_miss.jpg
+1788616123042 seq=585 src=cnn p=-1.0000 reject=no_model
+1788616123064 seq=586 src=geometry p=-1.0000 reject=geometry_miss
+1788616123142 seq=587 src=cnn p=-1.0000 reject=no_model
+1788616123159 seq=588 src=geometry p=-1.0000 reject=geometry_miss
+1788616123210 seq=589 src=cnn p=-1.0000 reject=no_model
+1788616123231 seq=590 src=geometry p=-1.0000 reject=geometry_miss
+1788616123284 seq=591 src=cnn p=-1.0000 reject=no_model
+1788616123319 seq=592 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00592_miss.jpg
+1788616123369 seq=593 src=cnn p=-1.0000 reject=no_model
+1788616123383 seq=594 src=geometry p=-1.0000 reject=geometry_miss
+1788616123436 seq=595 src=cnn p=-1.0000 reject=no_model
+1788616123450 seq=596 src=geometry p=-1.0000 reject=geometry_miss
+1788616123511 seq=597 src=cnn p=-1.0000 reject=no_model
+1788616123527 seq=598 src=geometry p=-1.0000 reject=geometry_miss
+1788616123629 seq=599 src=cnn p=-1.0000 reject=no_model
+1788616123663 seq=600 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00600_miss.jpg
+1788616123706 seq=601 src=cnn p=-1.0000 reject=no_model
+1788616123721 seq=602 src=geometry p=-1.0000 reject=geometry_miss
+1788616123779 seq=603 src=cnn p=-1.0000 reject=no_model
+1788616123796 seq=604 src=geometry p=-1.0000 reject=geometry_miss
+1788616123850 seq=605 src=cnn p=-1.0000 reject=no_model
+1788616123867 seq=606 src=geometry p=-1.0000 reject=geometry_miss
+1788616123916 seq=607 src=cnn p=-1.0000 reject=no_model
+1788616123952 seq=608 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00608_miss.jpg
+1788616124013 seq=609 src=cnn p=-1.0000 reject=no_model
+1788616124031 seq=610 src=geometry p=-1.0000 reject=geometry_miss
+1788616124080 seq=611 src=cnn p=-1.0000 reject=no_model
+1788616124100 seq=612 src=geometry p=-1.0000 reject=geometry_miss
+1788616124148 seq=613 src=cnn p=-1.0000 reject=no_model
+1788616124167 seq=614 src=geometry p=-1.0000 reject=geometry_miss
+1788616124220 seq=615 src=cnn p=-1.0000 reject=no_model
+1788616124260 seq=616 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00616_miss.jpg
+1788616124299 seq=617 src=cnn p=-1.0000 reject=no_model
+1788616124316 seq=618 src=geometry p=-1.0000 reject=geometry_miss
+1788616124382 seq=619 src=cnn p=-1.0000 reject=no_model
+1788616124394 seq=620 src=geometry p=-1.0000 reject=geometry_miss
+1788616124453 seq=621 src=cnn p=-1.0000 reject=no_model
+1788616124471 seq=622 src=geometry p=-1.0000 reject=geometry_miss
+1788616124551 seq=623 src=cnn p=-1.0000 reject=no_model
+1788616124590 seq=624 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00624_miss.jpg
+1788616124627 seq=625 src=cnn p=-1.0000 reject=no_model
+1788616124645 seq=626 src=geometry p=-1.0000 reject=geometry_miss
+1788616124703 seq=627 src=cnn p=-1.0000 reject=no_model
+1788616124720 seq=628 src=geometry p=-1.0000 reject=geometry_miss
+1788616124777 seq=629 src=cnn p=-1.0000 reject=no_model
+1788616124798 seq=630 src=geometry p=-1.0000 reject=geometry_miss
+1788616124861 seq=631 src=cnn p=-1.0000 reject=no_model
+1788616124900 seq=632 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00632_miss.jpg
+1788616124942 seq=633 src=cnn p=-1.0000 reject=no_model
+1788616124964 seq=634 src=geometry p=-1.0000 reject=geometry_miss
+1788616125023 seq=635 src=cnn p=-1.0000 reject=no_model
+1788616125042 seq=636 src=geometry p=-1.0000 reject=geometry_miss
+1788616125105 seq=637 src=cnn p=-1.0000 reject=no_model
+1788616125120 seq=638 src=geometry p=-1.0000 reject=geometry_miss
+1788616125178 seq=639 src=cnn p=-1.0000 reject=no_model
+1788616125222 seq=640 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00640_miss.jpg
+1788616125273 seq=641 src=cnn p=-1.0000 reject=no_model
+1788616125291 seq=642 src=geometry p=-1.0000 reject=geometry_miss
+1788616125379 seq=643 src=cnn p=-1.0000 reject=no_model
+1788616125396 seq=644 src=geometry p=-1.0000 reject=geometry_miss
+1788616125476 seq=645 src=cnn p=-1.0000 reject=no_model
+1788616125499 seq=646 src=geometry p=-1.0000 reject=geometry_miss
+1788616125582 seq=647 src=cnn p=-1.0000 reject=no_model
+1788616125620 seq=648 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00648_miss.jpg
+1788616125672 seq=649 src=cnn p=-1.0000 reject=no_model
+1788616125691 seq=650 src=geometry p=-1.0000 reject=geometry_miss
+1788616125770 seq=651 src=cnn p=-1.0000 reject=no_model
+1788616125786 seq=652 src=geometry p=-1.0000 reject=geometry_miss
+1788616125842 seq=653 src=cnn p=-1.0000 reject=no_model
+1788616125864 seq=654 src=geometry p=-1.0000 reject=geometry_miss
+1788616125961 seq=655 src=cnn p=-1.0000 reject=no_model
+1788616126003 seq=656 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00656_miss.jpg
+1788616126043 seq=657 src=cnn p=-1.0000 reject=no_model
+1788616126060 seq=658 src=geometry p=-1.0000 reject=geometry_miss
+1788616126110 seq=659 src=cnn p=-1.0000 reject=no_model
+1788616126131 seq=660 src=geometry p=-1.0000 reject=geometry_miss
+1788616126230 seq=661 src=cnn p=-1.0000 reject=no_model
+1788616126250 seq=662 src=geometry p=-1.0000 reject=geometry_miss
+1788616126302 seq=663 src=cnn p=-1.0000 reject=no_model
+1788616126337 seq=664 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00664_miss.jpg
+1788616126377 seq=665 src=cnn p=-1.0000 reject=no_model
+1788616126399 seq=666 src=geometry p=-1.0000 reject=geometry_miss
+1788616126469 seq=667 src=cnn p=-1.0000 reject=no_model
+1788616126488 seq=668 src=geometry p=-1.0000 reject=geometry_miss
+1788616126561 seq=669 src=cnn p=-1.0000 reject=no_model
+1788616126578 seq=670 src=geometry p=-1.0000 reject=geometry_miss
+1788616126639 seq=671 src=cnn p=-1.0000 reject=no_model
+1788616126676 seq=672 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00672_miss.jpg
+1788616126734 seq=673 src=cnn p=-1.0000 reject=no_model
+1788616126778 seq=674 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6448 c=BLUE img=frames/f00674_hit.jpg
+1788616126778 geometry hit after 0 cnn declines
+1788616126805 seq=675 src=cnn p=-1.0000 reject=no_model
+1788616126823 seq=676 src=geometry p=-1.0000 reject=geometry_miss
+1788616126928 seq=677 src=cnn p=-1.0000 reject=no_model
+1788616126943 seq=678 src=geometry p=-1.0000 reject=geometry_miss
+1788616127018 seq=679 src=cnn p=-1.0000 reject=no_model
+1788616127063 seq=680 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00680_miss.jpg
+1788616127082 seq=681 src=cnn p=-1.0000 reject=no_model
+1788616127100 seq=682 src=geometry p=-1.0000 reject=geometry_miss
+1788616127175 seq=683 src=cnn p=-1.0000 reject=no_model
+1788616127191 seq=684 src=geometry p=-1.0000 reject=geometry_miss
+1788616127248 seq=685 src=cnn p=-1.0000 reject=no_model
+1788616127266 seq=686 src=geometry p=-1.0000 reject=geometry_miss
+1788616127355 seq=687 src=cnn p=-1.0000 reject=no_model
+1788616127393 seq=688 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00688_miss.jpg
+1788616127433 seq=689 src=cnn p=-1.0000 reject=no_model
+1788616127454 seq=690 src=geometry p=-1.0000 reject=geometry_miss
+1788616127512 seq=691 src=cnn p=-1.0000 reject=no_model
+1788616127525 seq=692 src=geometry p=-1.0000 reject=geometry_miss
+1788616127618 seq=693 src=cnn p=-1.0000 reject=no_model
+1788616127635 seq=694 src=geometry p=-1.0000 reject=geometry_miss
+1788616127714 seq=695 src=cnn p=-1.0000 reject=no_model
+1788616127747 seq=696 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00696_miss.jpg
+1788616127817 seq=697 src=cnn p=-1.0000 reject=no_model
+1788616127833 seq=698 src=geometry p=-1.0000 reject=geometry_miss
+1788616127914 seq=699 src=cnn p=-1.0000 reject=no_model
+1788616127935 seq=700 src=geometry p=-1.0000 reject=geometry_miss
+1788616127982 seq=701 src=cnn p=-1.0000 reject=no_model
+1788616128004 seq=702 src=geometry p=-1.0000 reject=geometry_miss
+1788616128081 seq=703 src=cnn p=-1.0000 reject=no_model
+1788616128123 seq=704 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00704_miss.jpg
+1788616128177 seq=705 src=cnn p=-1.0000 reject=no_model
+1788616128193 seq=706 src=geometry p=-1.0000 reject=geometry_miss
+1788616128244 seq=707 src=cnn p=-1.0000 reject=no_model
+1788616128260 seq=708 src=geometry p=-1.0000 reject=geometry_miss
+1788616128317 seq=709 src=cnn p=-1.0000 reject=no_model
+1788616128332 seq=710 src=geometry p=-1.0000 reject=geometry_miss
+1788616128418 seq=711 src=cnn p=-1.0000 reject=no_model
+1788616128463 seq=712 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00712_miss.jpg
+1788616128513 seq=713 src=cnn p=-1.0000 reject=no_model
+1788616128533 seq=714 src=geometry p=-1.0000 reject=geometry_miss
+1788616128618 seq=715 src=cnn p=-1.0000 reject=no_model
+1788616128636 seq=716 src=geometry p=-1.0000 reject=geometry_miss
+1788616128714 seq=717 src=cnn p=-1.0000 reject=no_model
+1788616128737 seq=718 src=geometry p=-1.0000 reject=geometry_miss
+1788616128813 seq=719 src=cnn p=-1.0000 reject=no_model
+1788616128856 seq=720 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00720_miss.jpg
+1788616128882 seq=721 src=cnn p=-1.0000 reject=no_model
+1788616128902 seq=722 src=geometry p=-1.0000 reject=geometry_miss
+1788616128976 seq=723 src=cnn p=-1.0000 reject=no_model
+1788616128997 seq=724 src=geometry p=-1.0000 reject=geometry_miss
+1788616129074 seq=725 src=cnn p=-1.0000 reject=no_model
+1788616129096 seq=726 src=geometry p=-1.0000 reject=geometry_miss
+1788616129144 seq=727 src=cnn p=-1.0000 reject=no_model
+1788616129176 seq=728 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00728_miss.jpg
+1788616129205 seq=729 src=cnn p=-1.0000 reject=no_model
+1788616129217 seq=730 src=geometry p=-1.0000 reject=geometry_miss
+1788616129272 seq=731 src=cnn p=-1.0000 reject=no_model
+1788616129288 seq=732 src=geometry p=-1.0000 reject=geometry_miss
+1788616129373 seq=733 src=cnn p=-1.0000 reject=no_model
+1788616129399 seq=734 src=geometry p=-1.0000 reject=geometry_miss
+1788616129438 seq=735 src=cnn p=-1.0000 reject=no_model
+1788616129465 seq=736 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00736_miss.jpg
+1788616129536 seq=737 src=cnn p=-1.0000 reject=no_model
+1788616129551 seq=738 src=geometry p=-1.0000 reject=geometry_miss
+1788616129631 seq=739 src=cnn p=-1.0000 reject=no_model
+1788616129643 seq=740 src=geometry p=-1.0000 reject=geometry_miss
+1788616129730 seq=741 src=cnn p=-1.0000 reject=no_model
+1788616129748 seq=742 src=geometry p=-1.0000 reject=geometry_miss
+1788616129805 seq=743 src=cnn p=-1.0000 reject=no_model
+1788616129836 seq=744 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00744_miss.jpg
+1788616129901 seq=745 src=cnn p=-1.0000 reject=no_model
+1788616129915 seq=746 src=geometry p=-1.0000 reject=geometry_miss
+1788616130003 seq=747 src=cnn p=-1.0000 reject=no_model
+1788616130021 seq=748 src=geometry p=-1.0000 reject=geometry_miss
+1788616130076 seq=749 src=cnn p=-1.0000 reject=no_model
+1788616130093 seq=750 src=geometry p=-1.0000 reject=geometry_miss
+1788616130173 seq=751 src=cnn p=-1.0000 reject=no_model
+1788616130205 seq=752 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00752_miss.jpg
+1788616130266 seq=753 src=cnn p=-1.0000 reject=no_model
+1788616130287 seq=754 src=geometry p=-1.0000 reject=geometry_miss
+1788616130339 seq=755 src=cnn p=-1.0000 reject=no_model
+1788616130364 seq=756 src=geometry p=-1.0000 reject=geometry_miss
+1788616130465 seq=757 src=cnn p=-1.0000 reject=no_model
+1788616130481 seq=758 src=geometry p=-1.0000 reject=geometry_miss
+1788616130540 seq=759 src=cnn p=-1.0000 reject=no_model
+1788616130578 seq=760 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00760_miss.jpg
+1788616130615 seq=761 src=cnn p=-1.0000 reject=no_model
+1788616130630 seq=762 src=geometry p=-1.0000 reject=geometry_miss
+1788616130715 seq=763 src=cnn p=-1.0000 reject=no_model
+1788616130734 seq=764 src=geometry p=-1.0000 reject=geometry_miss
+1788616130832 seq=765 src=cnn p=-1.0000 reject=no_model
+1788616130851 seq=766 src=geometry p=-1.0000 reject=geometry_miss
+1788616130903 seq=767 src=cnn p=-1.0000 reject=no_model
+1788616130937 seq=768 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00768_miss.jpg
+1788616130968 seq=769 src=cnn p=-1.0000 reject=no_model
+1788616130980 seq=770 src=geometry p=-1.0000 reject=geometry_miss
+1788616131051 seq=771 src=cnn p=-1.0000 reject=no_model
+1788616131064 seq=772 src=geometry p=-1.0000 reject=geometry_miss
+1788616131153 seq=773 src=cnn p=-1.0000 reject=no_model
+1788616131167 seq=774 src=geometry p=-1.0000 reject=geometry_miss
+1788616131233 seq=775 src=cnn p=-1.0000 reject=no_model
+1788616131260 seq=776 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00776_miss.jpg
+1788616131300 seq=777 src=cnn p=-1.0000 reject=no_model
+1788616131312 seq=778 src=geometry p=-1.0000 reject=geometry_miss
+1788616131384 seq=779 src=cnn p=-1.0000 reject=no_model
+1788616131396 seq=780 src=geometry p=-1.0000 reject=geometry_miss
+1788616131481 seq=781 src=cnn p=-1.0000 reject=no_model
+1788616131494 seq=782 src=geometry p=-1.0000 reject=geometry_miss
+1788616131552 seq=783 src=cnn p=-1.0000 reject=no_model
+1788616131588 seq=784 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00784_miss.jpg
+1788616131647 seq=785 src=cnn p=-1.0000 reject=no_model
+1788616131666 seq=786 src=geometry p=-1.0000 reject=geometry_miss
+1788616131752 seq=787 src=cnn p=-1.0000 reject=no_model
+1788616131772 seq=788 src=geometry p=-1.0000 reject=geometry_miss
+1788616131844 seq=789 src=cnn p=-1.0000 reject=no_model
+1788616131859 seq=790 src=geometry p=-1.0000 reject=geometry_miss
+1788616131917 seq=791 src=cnn p=-1.0000 reject=no_model
+1788616131964 seq=792 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.7187 c=WHITE img=frames/f00792_hit.jpg
+1788616131964 geometry hit after 0 cnn declines
+1788616132016 seq=793 src=cnn p=-1.0000 reject=no_model
+1788616132030 seq=794 src=geometry p=-1.0000 reject=geometry_miss
+1788616132084 seq=795 src=cnn p=-1.0000 reject=no_model
+1788616132099 seq=796 src=geometry p=-1.0000 reject=geometry_miss
+1788616132151 seq=797 src=cnn p=-1.0000 reject=no_model
+1788616132173 seq=798 src=geometry p=-1.0000 reject=geometry_miss
+1788616132247 seq=799 src=cnn p=-1.0000 reject=no_model
+1788616132280 seq=800 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00800_miss.jpg
+1788616132316 seq=801 src=cnn p=-1.0000 reject=no_model
+1788616132333 seq=802 src=geometry p=-1.0000 reject=geometry_miss
+1788616132411 seq=803 src=cnn p=-1.0000 reject=no_model
+1788616132426 seq=804 src=geometry p=-1.0000 reject=geometry_miss
+1788616132513 seq=805 src=cnn p=-1.0000 reject=no_model
+1788616132529 seq=806 src=geometry p=-1.0000 reject=geometry_miss
+1788616132618 seq=807 src=cnn p=-1.0000 reject=no_model
+1788616132659 seq=808 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00808_miss.jpg
+1788616132686 seq=809 src=cnn p=-1.0000 reject=no_model
+1788616132700 seq=810 src=geometry p=-1.0000 reject=geometry_miss
+1788616132781 seq=811 src=cnn p=-1.0000 reject=no_model
+1788616132801 seq=812 src=geometry p=-1.0000 reject=geometry_miss
+1788616132880 seq=813 src=cnn p=-1.0000 reject=no_model
+1788616132892 seq=814 src=geometry p=-1.0000 reject=geometry_miss
+1788616132983 seq=815 src=cnn p=-1.0000 reject=no_model
+1788616133029 seq=816 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00816_miss.jpg
+1788616133080 seq=817 src=cnn p=-1.0000 reject=no_model
+1788616133097 seq=818 src=geometry p=-1.0000 reject=geometry_miss
+1788616133173 seq=819 src=cnn p=-1.0000 reject=no_model
+1788616133192 seq=820 src=geometry p=-1.0000 reject=geometry_miss
+1788616133239 seq=821 src=cnn p=-1.0000 reject=no_model
+1788616133256 seq=822 src=geometry p=-1.0000 reject=geometry_miss
+1788616133307 seq=823 src=cnn p=-1.0000 reject=no_model
+1788616133346 seq=824 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00824_miss.jpg
+1788616133377 seq=825 src=cnn p=-1.0000 reject=no_model
+1788616133391 seq=826 src=geometry p=-1.0000 reject=geometry_miss
+1788616133474 seq=827 src=cnn p=-1.0000 reject=no_model
+1788616133490 seq=828 src=geometry p=-1.0000 reject=geometry_miss
+1788616133578 seq=829 src=cnn p=-1.0000 reject=no_model
+1788616133597 seq=830 src=geometry p=-1.0000 reject=geometry_miss
+1788616133679 seq=831 src=cnn p=-1.0000 reject=no_model
+1788616133721 seq=832 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00832_miss.jpg
+1788616133766 seq=833 src=cnn p=-1.0000 reject=no_model
+1788616133779 seq=834 src=geometry p=-1.0000 reject=geometry_miss
+1788616133837 seq=835 src=cnn p=-1.0000 reject=no_model
+1788616133857 seq=836 src=geometry p=-1.0000 reject=geometry_miss
+1788616133963 seq=837 src=cnn p=-1.0000 reject=no_model
+1788616133982 seq=838 src=geometry p=-1.0000 reject=geometry_miss
+1788616134059 seq=839 src=cnn p=-1.0000 reject=no_model
+1788616134098 seq=840 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00840_miss.jpg
+1788616134131 seq=841 src=cnn p=-1.0000 reject=no_model
+1788616134144 seq=842 src=geometry p=-1.0000 reject=geometry_miss
+1788616134199 seq=843 src=cnn p=-1.0000 reject=no_model
+1788616134211 seq=844 src=geometry p=-1.0000 reject=geometry_miss
+1788616134273 seq=845 src=cnn p=-1.0000 reject=no_model
+1788616134288 seq=846 src=geometry p=-1.0000 reject=geometry_miss
+1788616134353 seq=847 src=cnn p=-1.0000 reject=no_model
+1788616134381 seq=848 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00848_miss.jpg
+1788616134437 seq=849 src=cnn p=-1.0000 reject=no_model
+1788616134455 seq=850 src=geometry p=-1.0000 reject=geometry_miss
+1788616134536 seq=851 src=cnn p=-1.0000 reject=no_model
+1788616134553 seq=852 src=geometry p=-1.0000 reject=geometry_miss
+1788616134613 seq=853 src=cnn p=-1.0000 reject=no_model
+1788616134633 seq=854 src=geometry p=-1.0000 reject=geometry_miss
+1788616134697 seq=855 src=cnn p=-1.0000 reject=no_model
+1788616134731 seq=856 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00856_miss.jpg
+1788616134771 seq=857 src=cnn p=-1.0000 reject=no_model
+1788616134788 seq=858 src=geometry p=-1.0000 reject=geometry_miss
+1788616134861 seq=859 src=cnn p=-1.0000 reject=no_model
+1788616134882 seq=860 src=geometry p=-1.0000 reject=geometry_miss
+1788616134952 seq=861 src=cnn p=-1.0000 reject=no_model
+1788616134976 seq=862 src=geometry p=-1.0000 reject=geometry_miss
+1788616135058 seq=863 src=cnn p=-1.0000 reject=no_model
+1788616135098 seq=864 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00864_miss.jpg
+1788616135158 seq=865 src=cnn p=-1.0000 reject=no_model
+1788616135175 seq=866 src=geometry p=-1.0000 reject=geometry_miss
+1788616135243 seq=867 src=cnn p=-1.0000 reject=no_model
+1788616135261 seq=868 src=geometry p=-1.0000 reject=geometry_miss
+1788616135314 seq=869 src=cnn p=-1.0000 reject=no_model
+1788616135334 seq=870 src=geometry p=-1.0000 reject=geometry_miss
+1788616135383 seq=871 src=cnn p=-1.0000 reject=no_model
+1788616135431 seq=872 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00872_miss.jpg
+1788616135466 seq=873 src=cnn p=-1.0000 reject=no_model
+1788616135484 seq=874 src=geometry p=-1.0000 reject=geometry_miss
+1788616135543 seq=875 src=cnn p=-1.0000 reject=no_model
+1788616135560 seq=876 src=geometry p=-1.0000 reject=geometry_miss
+1788616135616 seq=877 src=cnn p=-1.0000 reject=no_model
+1788616135632 seq=878 src=geometry p=-1.0000 reject=geometry_miss
+1788616135721 seq=879 src=cnn p=-1.0000 reject=no_model
+1788616135761 seq=880 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00880_miss.jpg
+1788616135820 seq=881 src=cnn p=-1.0000 reject=no_model
+1788616135837 seq=882 src=geometry p=-1.0000 reject=geometry_miss
+1788616135915 seq=883 src=cnn p=-1.0000 reject=no_model
+1788616135937 seq=884 src=geometry p=-1.0000 reject=geometry_miss
+1788616136024 seq=885 src=cnn p=-1.0000 reject=no_model
+1788616136045 seq=886 src=geometry p=-1.0000 reject=geometry_miss
+1788616136124 seq=887 src=cnn p=-1.0000 reject=no_model
+1788616136166 seq=888 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00888_miss.jpg
+1788616136216 seq=889 src=cnn p=-1.0000 reject=no_model
+1788616136236 seq=890 src=geometry p=-1.0000 reject=geometry_miss
+1788616136319 seq=891 src=cnn p=-1.0000 reject=no_model
+1788616136337 seq=892 src=geometry p=-1.0000 reject=geometry_miss
+1788616136419 seq=893 src=cnn p=-1.0000 reject=no_model
+1788616136442 seq=894 src=geometry p=-1.0000 reject=geometry_miss
+1788616136507 seq=895 src=cnn p=-1.0000 reject=no_model
+1788616136549 seq=896 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00896_miss.jpg
+1788616136588 seq=897 src=cnn p=-1.0000 reject=no_model
+1788616136604 seq=898 src=geometry p=-1.0000 reject=geometry_miss
+1788616136677 seq=899 src=cnn p=-1.0000 reject=no_model
+1788616136694 seq=900 src=geometry p=-1.0000 reject=geometry_miss
+1788616136780 seq=901 src=cnn p=-1.0000 reject=no_model
+1788616136802 seq=902 src=geometry p=-1.0000 reject=geometry_miss
+1788616136874 seq=903 src=cnn p=-1.0000 reject=no_model
+1788616136904 seq=904 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00904_miss.jpg
+1788616136941 seq=905 src=cnn p=-1.0000 reject=no_model
+1788616136958 seq=906 src=geometry p=-1.0000 reject=geometry_miss
+1788616137016 seq=907 src=cnn p=-1.0000 reject=no_model
+1788616137033 seq=908 src=geometry p=-1.0000 reject=geometry_miss
+1788616137121 seq=909 src=cnn p=-1.0000 reject=no_model
+1788616137154 seq=910 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.7279 c=BLUE img=frames/f00910_hit.jpg
+1788616137154 geometry hit after 0 cnn declines
+1788616137203 seq=911 src=cnn p=-1.0000 reject=no_model
+1788616137227 seq=912 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00912_miss.jpg
+1788616137273 seq=913 src=cnn p=-1.0000 reject=no_model
+1788616137289 seq=914 src=geometry p=-1.0000 reject=geometry_miss
+1788616137378 seq=915 src=cnn p=-1.0000 reject=no_model
+1788616137414 seq=916 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.7155 c=BLUE img=frames/f00916_hit.jpg
+1788616137414 geometry hit after 0 cnn declines
+1788616137470 seq=917 src=cnn p=-1.0000 reject=no_model
+1788616137508 seq=918 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.7009 c=BLUE img=frames/f00918_hit.jpg
+1788616137508 geometry hit after 0 cnn declines
+1788616137508 event stable_capture side=0.7009
+1788616137569 seq=919 src=cnn p=-1.0000 reject=no_model
+1788616137601 seq=920 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6961 c=BLUE img=frames/f00920_hit.jpg
+1788616137602 geometry hit after 0 cnn declines
+1788616137671 seq=921 src=cnn p=-1.0000 reject=no_model
+1788616137686 seq=922 src=geometry p=-1.0000 reject=geometry_miss
+1788616137765 seq=923 src=cnn p=-1.0000 reject=no_model
+1788616137783 seq=924 src=geometry p=-1.0000 reject=geometry_miss
+1788616137833 seq=925 src=cnn p=-1.0000 reject=no_model
+1788616137848 seq=926 src=geometry p=-1.0000 reject=geometry_miss
+1788616137905 seq=927 src=cnn p=-1.0000 reject=no_model
+1788616137939 seq=928 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00928_miss.jpg
+1788616138016 seq=929 src=cnn p=-1.0000 reject=no_model
+1788616138037 seq=930 src=geometry p=-1.0000 reject=geometry_miss
+1788616138123 seq=931 src=cnn p=-1.0000 reject=no_model
+1788616138139 seq=932 src=geometry p=-1.0000 reject=geometry_miss
+1788616138213 seq=933 src=cnn p=-1.0000 reject=no_model
+1788616138231 seq=934 src=geometry p=-1.0000 reject=geometry_miss
+1788616138307 seq=935 src=cnn p=-1.0000 reject=no_model
+1788616138348 seq=936 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00936_miss.jpg
+1788616138416 seq=937 src=cnn p=-1.0000 reject=no_model
+1788616138435 seq=938 src=geometry p=-1.0000 reject=geometry_miss
+1788616138510 seq=939 src=cnn p=-1.0000 reject=no_model
+1788616138524 seq=940 src=geometry p=-1.0000 reject=geometry_miss
+1788616138582 seq=941 src=cnn p=-1.0000 reject=no_model
+1788616138601 seq=942 src=geometry p=-1.0000 reject=geometry_miss
+1788616138687 seq=943 src=cnn p=-1.0000 reject=no_model
+1788616138719 seq=944 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00944_miss.jpg
+1788616138787 seq=945 src=cnn p=-1.0000 reject=no_model
+1788616138809 seq=946 src=geometry p=-1.0000 reject=geometry_miss
+1788616138889 seq=947 src=cnn p=-1.0000 reject=no_model
+1788616138903 seq=948 src=geometry p=-1.0000 reject=geometry_miss
+1788616138981 seq=949 src=cnn p=-1.0000 reject=no_model
+1788616139001 seq=950 src=geometry p=-1.0000 reject=geometry_miss
+1788616139087 seq=951 src=cnn p=-1.0000 reject=no_model
+1788616139130 seq=952 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00952_miss.jpg
+1788616139186 seq=953 src=cnn p=-1.0000 reject=no_model
+1788616139203 seq=954 src=geometry p=-1.0000 reject=geometry_miss
+1788616139283 seq=955 src=cnn p=-1.0000 reject=no_model
+1788616139300 seq=956 src=geometry p=-1.0000 reject=geometry_miss
+1788616139385 seq=957 src=cnn p=-1.0000 reject=no_model
+1788616139409 seq=958 src=geometry p=-1.0000 reject=geometry_miss
+1788616139482 seq=959 src=cnn p=-1.0000 reject=no_model
+1788616139511 seq=960 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00960_miss.jpg
+1788616139573 seq=961 src=cnn p=-1.0000 reject=no_model
+1788616139594 seq=962 src=geometry p=-1.0000 reject=geometry_miss
+1788616139660 seq=963 src=cnn p=-1.0000 reject=no_model
+1788616139678 seq=964 src=geometry p=-1.0000 reject=geometry_miss
+1788616139748 seq=965 src=cnn p=-1.0000 reject=no_model
+1788616139768 seq=966 src=geometry p=-1.0000 reject=geometry_miss
+1788616139848 seq=967 src=cnn p=-1.0000 reject=no_model
+1788616139882 seq=968 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00968_miss.jpg
+1788616139943 seq=969 src=cnn p=-1.0000 reject=no_model
+1788616139963 seq=970 src=geometry p=-1.0000 reject=geometry_miss
+1788616140039 seq=971 src=cnn p=-1.0000 reject=no_model
+1788616140048 seq=972 src=geometry p=-1.0000 reject=geometry_miss
+1788616140106 seq=973 src=cnn p=-1.0000 reject=no_model
+1788616140127 seq=974 src=geometry p=-1.0000 reject=geometry_miss
+1788616140202 seq=975 src=cnn p=-1.0000 reject=no_model
+1788616140236 seq=976 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00976_miss.jpg
+1788616140271 seq=977 src=cnn p=-1.0000 reject=no_model
+1788616140289 seq=978 src=geometry p=-1.0000 reject=geometry_miss
+1788616140340 seq=979 src=cnn p=-1.0000 reject=no_model
+1788616140358 seq=980 src=geometry p=-1.0000 reject=geometry_miss
+1788616140440 seq=981 src=cnn p=-1.0000 reject=no_model
+1788616140459 seq=982 src=geometry p=-1.0000 reject=geometry_miss
+1788616140545 seq=983 src=cnn p=-1.0000 reject=no_model
+1788616140585 seq=984 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00984_miss.jpg
+1788616140609 seq=985 src=cnn p=-1.0000 reject=no_model
+1788616140628 seq=986 src=geometry p=-1.0000 reject=geometry_miss
+1788616140675 seq=987 src=cnn p=-1.0000 reject=no_model
+1788616140694 seq=988 src=geometry p=-1.0000 reject=geometry_miss
+1788616140744 seq=989 src=cnn p=-1.0000 reject=no_model
+1788616140761 seq=990 src=geometry p=-1.0000 reject=geometry_miss
+1788616140843 seq=991 src=cnn p=-1.0000 reject=no_model
+1788616140889 seq=992 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00992_miss.jpg
+1788616140942 seq=993 src=cnn p=-1.0000 reject=no_model
+1788616140961 seq=994 src=geometry p=-1.0000 reject=geometry_miss
+1788616141025 seq=995 src=cnn p=-1.0000 reject=no_model
+1788616141037 seq=996 src=geometry p=-1.0000 reject=geometry_miss
+1788616141102 seq=997 src=cnn p=-1.0000 reject=no_model
+1788616141118 seq=998 src=geometry p=-1.0000 reject=geometry_miss
+1788616141215 seq=999 src=cnn p=-1.0000 reject=no_model
+1788616141256 seq=1000 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01000_miss.jpg
+1788616141304 seq=1001 src=cnn p=-1.0000 reject=no_model
+1788616141323 seq=1002 src=geometry p=-1.0000 reject=geometry_miss
+1788616141373 seq=1003 src=cnn p=-1.0000 reject=no_model
+1788616141390 seq=1004 src=geometry p=-1.0000 reject=geometry_miss
+1788616141469 seq=1005 src=cnn p=-1.0000 reject=no_model
+1788616141483 seq=1006 src=geometry p=-1.0000 reject=geometry_miss
+1788616141542 seq=1007 src=cnn p=-1.0000 reject=no_model
+1788616141587 seq=1008 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01008_miss.jpg
+1788616141633 seq=1009 src=cnn p=-1.0000 reject=no_model
+1788616141650 seq=1010 src=geometry p=-1.0000 reject=geometry_miss
+1788616141704 seq=1011 src=cnn p=-1.0000 reject=no_model
+1788616141723 seq=1012 src=geometry p=-1.0000 reject=geometry_miss
+1788616141788 seq=1013 src=cnn p=-1.0000 reject=no_model
+1788616141803 seq=1014 src=geometry p=-1.0000 reject=geometry_miss
+1788616141866 seq=1015 src=cnn p=-1.0000 reject=no_model
+1788616141904 seq=1016 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01016_miss.jpg
+1788616141941 seq=1017 src=cnn p=-1.0000 reject=no_model
+1788616141960 seq=1018 src=geometry p=-1.0000 reject=geometry_miss
+1788616142054 seq=1019 src=cnn p=-1.0000 reject=no_model
+1788616142071 seq=1020 src=geometry p=-1.0000 reject=geometry_miss
+1788616142121 seq=1021 src=cnn p=-1.0000 reject=no_model
+1788616142138 seq=1022 src=geometry p=-1.0000 reject=geometry_miss
+1788616142203 seq=1023 src=cnn p=-1.0000 reject=no_model
+1788616142242 seq=1024 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01024_miss.jpg
+1788616142300 seq=1025 src=cnn p=-1.0000 reject=no_model
+1788616142319 seq=1026 src=geometry p=-1.0000 reject=geometry_miss
+1788616142370 seq=1027 src=cnn p=-1.0000 reject=no_model
+1788616142389 seq=1028 src=geometry p=-1.0000 reject=geometry_miss
+1788616142460 seq=1029 src=cnn p=-1.0000 reject=no_model
+1788616142474 seq=1030 src=geometry p=-1.0000 reject=geometry_miss
+1788616142552 seq=1031 src=cnn p=-1.0000 reject=no_model
+1788616142597 seq=1032 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01032_miss.jpg
+1788616142652 seq=1033 src=cnn p=-1.0000 reject=no_model
+1788616142676 seq=1034 src=geometry p=-1.0000 reject=geometry_miss
+1788616142739 seq=1035 src=cnn p=-1.0000 reject=no_model
+1788616142768 seq=1036 src=geometry p=-1.0000 reject=geometry_miss
+1788616142833 seq=1037 src=cnn p=-1.0000 reject=no_model
+1788616142854 seq=1038 src=geometry p=-1.0000 reject=geometry_miss
+1788616142911 seq=1039 src=cnn p=-1.0000 reject=no_model
+1788616142946 seq=1040 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01040_miss.jpg
+1788616142998 seq=1041 src=cnn p=-1.0000 reject=no_model
+1788616143020 seq=1042 src=geometry p=-1.0000 reject=geometry_miss
+1788616143073 seq=1043 src=cnn p=-1.0000 reject=no_model
+1788616143090 seq=1044 src=geometry p=-1.0000 reject=geometry_miss
+1788616143145 seq=1045 src=cnn p=-1.0000 reject=no_model
+1788616143159 seq=1046 src=geometry p=-1.0000 reject=geometry_miss
+1788616143211 seq=1047 src=cnn p=-1.0000 reject=no_model
+1788616143241 seq=1048 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01048_miss.jpg
+1788616143306 seq=1049 src=cnn p=-1.0000 reject=no_model
+1788616143323 seq=1050 src=geometry p=-1.0000 reject=geometry_miss
+1788616143379 seq=1051 src=cnn p=-1.0000 reject=no_model
+1788616143391 seq=1052 src=geometry p=-1.0000 reject=geometry_miss
+1788616143480 seq=1053 src=cnn p=-1.0000 reject=no_model
+1788616143496 seq=1054 src=geometry p=-1.0000 reject=geometry_miss
+1788616143551 seq=1055 src=cnn p=-1.0000 reject=no_model
+1788616143587 seq=1056 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01056_miss.jpg
+1788616143635 seq=1057 src=cnn p=-1.0000 reject=no_model
+1788616143658 seq=1058 src=geometry p=-1.0000 reject=geometry_miss
+1788616143715 seq=1059 src=cnn p=-1.0000 reject=no_model
+1788616143735 seq=1060 src=geometry p=-1.0000 reject=geometry_miss
+1788616143812 seq=1061 src=cnn p=-1.0000 reject=no_model
+1788616143836 seq=1062 src=geometry p=-1.0000 reject=geometry_miss
+1788616143912 seq=1063 src=cnn p=-1.0000 reject=no_model
+1788616143948 seq=1064 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01064_miss.jpg
+1788616144011 seq=1065 src=cnn p=-1.0000 reject=no_model
+1788616144028 seq=1066 src=geometry p=-1.0000 reject=geometry_miss
+1788616144105 seq=1067 src=cnn p=-1.0000 reject=no_model
+1788616144122 seq=1068 src=geometry p=-1.0000 reject=geometry_miss
+1788616144191 seq=1069 src=cnn p=-1.0000 reject=no_model
+1788616144206 seq=1070 src=geometry p=-1.0000 reject=geometry_miss
+1788616144266 seq=1071 src=cnn p=-1.0000 reject=no_model
+1788616144298 seq=1072 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01072_miss.jpg
+1788616144364 seq=1073 src=cnn p=-1.0000 reject=no_model
+1788616144381 seq=1074 src=geometry p=-1.0000 reject=geometry_miss
+1788616144431 seq=1075 src=cnn p=-1.0000 reject=no_model
+1788616144462 seq=1076 src=geometry p=0.7778 reject=ok known=8 bad=0 side=0.6580 c=GREEN img=frames/f01076_hit.jpg
+1788616144462 geometry hit after 0 cnn declines
+1788616144502 seq=1077 src=cnn p=-1.0000 reject=no_model
+1788616144515 seq=1078 src=geometry p=-1.0000 reject=geometry_miss
+1788616144599 seq=1079 src=cnn p=-1.0000 reject=no_model
+1788616144625 seq=1080 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01080_miss.jpg
+1788616144698 seq=1081 src=cnn p=-1.0000 reject=no_model
+1788616144716 seq=1082 src=geometry p=-1.0000 reject=geometry_miss
+1788616144766 seq=1083 src=cnn p=-1.0000 reject=no_model
+1788616144777 seq=1084 src=geometry p=-1.0000 reject=geometry_miss
+1788616144864 seq=1085 src=cnn p=-1.0000 reject=no_model
+1788616144877 seq=1086 src=geometry p=-1.0000 reject=geometry_miss
+1788616144964 seq=1087 src=cnn p=-1.0000 reject=no_model
+1788616144994 seq=1088 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01088_miss.jpg
+1788616145064 seq=1089 src=cnn p=-1.0000 reject=no_model
+1788616145076 seq=1090 src=geometry p=-1.0000 reject=geometry_miss
+1788616145165 seq=1091 src=cnn p=-1.0000 reject=no_model
+1788616145177 seq=1092 src=geometry p=-1.0000 reject=geometry_miss
+1788616145231 seq=1093 src=cnn p=-1.0000 reject=no_model
+1788616145244 seq=1094 src=geometry p=-1.0000 reject=geometry_miss
+1788616145332 seq=1095 src=cnn p=-1.0000 reject=no_model
+1788616145365 seq=1096 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01096_miss.jpg
+1788616145428 seq=1097 src=cnn p=-1.0000 reject=no_model
+1788616145441 seq=1098 src=geometry p=-1.0000 reject=geometry_miss
+1788616145499 seq=1099 src=cnn p=-1.0000 reject=no_model
+1788616145511 seq=1100 src=geometry p=-1.0000 reject=geometry_miss
+1788616145595 seq=1101 src=cnn p=-1.0000 reject=no_model
+1788616145609 seq=1102 src=geometry p=-1.0000 reject=geometry_miss
+1788616145697 seq=1103 src=cnn p=-1.0000 reject=no_model
+1788616145722 seq=1104 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01104_miss.jpg
+1788616145797 seq=1105 src=cnn p=-1.0000 reject=no_model
+1788616145807 seq=1106 src=geometry p=-1.0000 reject=geometry_miss
+1788616145865 seq=1107 src=cnn p=-1.0000 reject=no_model
+1788616145875 seq=1108 src=geometry p=-1.0000 reject=geometry_miss
+1788616145964 seq=1109 src=cnn p=-1.0000 reject=no_model
+1788616145978 seq=1110 src=geometry p=-1.0000 reject=geometry_miss
+1788616146064 seq=1111 src=cnn p=-1.0000 reject=no_model
+1788616146097 seq=1112 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01112_miss.jpg
+1788616146130 seq=1113 src=cnn p=-1.0000 reject=no_model
+1788616146143 seq=1114 src=geometry p=-1.0000 reject=geometry_miss
+1788616146229 seq=1115 src=cnn p=-1.0000 reject=no_model
+1788616146242 seq=1116 src=geometry p=-1.0000 reject=geometry_miss
+1788616146330 seq=1117 src=cnn p=-1.0000 reject=no_model
+1788616146343 seq=1118 src=geometry p=-1.0000 reject=geometry_miss
+1788616146397 seq=1119 src=cnn p=-1.0000 reject=no_model
+1788616146421 seq=1120 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01120_miss.jpg
+1788616146463 seq=1121 src=cnn p=-1.0000 reject=no_model
+1788616146475 seq=1122 src=geometry p=-1.0000 reject=geometry_miss
+1788616146561 seq=1123 src=cnn p=-1.0000 reject=no_model
+1788616146577 seq=1124 src=geometry p=-1.0000 reject=geometry_miss
+1788616146628 seq=1125 src=cnn p=-1.0000 reject=no_model
+1788616146643 seq=1126 src=geometry p=-1.0000 reject=geometry_miss
+1788616146695 seq=1127 src=cnn p=-1.0000 reject=no_model
+1788616146721 seq=1128 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01128_miss.jpg
+1788616146762 seq=1129 src=cnn p=-1.0000 reject=no_model
+1788616146776 seq=1130 src=geometry p=-1.0000 reject=geometry_miss
+1788616146833 seq=1131 src=cnn p=-1.0000 reject=no_model
+1788616146847 seq=1132 src=geometry p=-1.0000 reject=geometry_miss
+1788616146929 seq=1133 src=cnn p=-1.0000 reject=no_model
+1788616146944 seq=1134 src=geometry p=-1.0000 reject=geometry_miss
+1788616146997 seq=1135 src=cnn p=-1.0000 reject=no_model
+1788616147025 seq=1136 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01136_miss.jpg
+1788616147096 seq=1137 src=cnn p=-1.0000 reject=no_model
+1788616147109 seq=1138 src=geometry p=-1.0000 reject=geometry_miss
+1788616147194 seq=1139 src=cnn p=-1.0000 reject=no_model
+1788616147207 seq=1140 src=geometry p=-1.0000 reject=geometry_miss
+1788616147302 seq=1141 src=cnn p=-1.0000 reject=no_model
+1788616147316 seq=1142 src=geometry p=-1.0000 reject=geometry_miss
+1788616147403 seq=1143 src=cnn p=-1.0000 reject=no_model
+1788616147434 seq=1144 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01144_miss.jpg
+1788616147507 seq=1145 src=cnn p=-1.0000 reject=no_model
+1788616147520 seq=1146 src=geometry p=-1.0000 reject=geometry_miss
+1788616147606 seq=1147 src=cnn p=-1.0000 reject=no_model
+1788616147625 seq=1148 src=geometry p=-1.0000 reject=geometry_miss
+1788616147705 seq=1149 src=cnn p=-1.0000 reject=no_model
+1788616147741 seq=1150 src=geometry p=0.7778 reject=ok known=7 bad=2 side=0.7283 c=UNKNOWN img=frames/f01150_hit.jpg
+1788616147741 geometry hit after 0 cnn declines
+1788616147805 seq=1151 src=cnn p=-1.0000 reject=no_model
+1788616147837 seq=1152 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01152_miss.jpg
+1788616147897 seq=1153 src=cnn p=-1.0000 reject=no_model
+1788616147912 seq=1154 src=geometry p=-1.0000 reject=geometry_miss
+1788616147967 seq=1155 src=cnn p=-1.0000 reject=no_model
+1788616147983 seq=1156 src=geometry p=-1.0000 reject=geometry_miss
+1788616148066 seq=1157 src=cnn p=-1.0000 reject=no_model
+1788616148099 seq=1158 src=geometry p=0.8889 reject=ok known=8 bad=1 side=0.6843 c=UNKNOWN img=frames/f01158_hit.jpg
+1788616148099 geometry hit after 0 cnn declines
+1788616148135 seq=1159 src=cnn p=-1.0000 reject=no_model
+1788616148163 seq=1160 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01160_miss.jpg
+1788616148231 seq=1161 src=cnn p=-1.0000 reject=no_model
+1788616148267 seq=1162 src=geometry p=0.8889 reject=ok known=8 bad=1 side=0.6942 c=UNKNOWN img=frames/f01162_hit.jpg
+1788616148267 geometry hit after 0 cnn declines
+1788616148301 seq=1163 src=cnn p=-1.0000 reject=no_model
+1788616148314 seq=1164 src=geometry p=-1.0000 reject=geometry_miss
+1788616148398 seq=1165 src=cnn p=-1.0000 reject=no_model
+1788616148408 seq=1166 src=geometry p=-1.0000 reject=geometry_miss
+1788616148497 seq=1167 src=cnn p=-1.0000 reject=no_model
+1788616148525 seq=1168 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01168_miss.jpg
+1788616148567 seq=1169 src=cnn p=-1.0000 reject=no_model
+1788616148577 seq=1170 src=geometry p=-1.0000 reject=geometry_miss
+1788616148666 seq=1171 src=cnn p=-1.0000 reject=no_model
+1788616148675 seq=1172 src=geometry p=-1.0000 reject=geometry_miss
+1788616148763 seq=1173 src=cnn p=-1.0000 reject=no_model
+1788616148776 seq=1174 src=geometry p=-1.0000 reject=geometry_miss
+1788616148834 seq=1175 src=cnn p=-1.0000 reject=no_model
+1788616148861 seq=1176 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01176_miss.jpg
+1788616148930 seq=1177 src=cnn p=-1.0000 reject=no_model
+1788616148943 seq=1178 src=geometry p=-1.0000 reject=geometry_miss
+1788616148998 seq=1179 src=cnn p=-1.0000 reject=no_model
+1788616149013 seq=1180 src=geometry p=-1.0000 reject=geometry_miss
+1788616149094 seq=1181 src=cnn p=-1.0000 reject=no_model
+1788616149111 seq=1182 src=geometry p=-1.0000 reject=geometry_miss
+1788616149162 seq=1183 src=cnn p=-1.0000 reject=no_model
+1788616149197 seq=1184 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01184_miss.jpg
+1788616149228 seq=1185 src=cnn p=-1.0000 reject=no_model
+1788616149241 seq=1186 src=geometry p=-1.0000 reject=geometry_miss
+1788616149298 seq=1187 src=cnn p=-1.0000 reject=no_model
+1788616149317 seq=1188 src=geometry p=-1.0000 reject=geometry_miss
+1788616149394 seq=1189 src=cnn p=-1.0000 reject=no_model
+1788616149412 seq=1190 src=geometry p=-1.0000 reject=geometry_miss
+1788616149466 seq=1191 src=cnn p=-1.0000 reject=no_model
+1788616149497 seq=1192 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01192_miss.jpg
+1788616149562 seq=1193 src=cnn p=-1.0000 reject=no_model
+1788616149580 seq=1194 src=geometry p=-1.0000 reject=geometry_miss
+1788616149630 seq=1195 src=cnn p=-1.0000 reject=no_model
+1788616149641 seq=1196 src=geometry p=-1.0000 reject=geometry_miss
+1788616149716 seq=1197 src=cnn p=-1.0000 reject=no_model
+1788616149733 seq=1198 src=geometry p=-1.0000 reject=geometry_miss
+1788616149817 seq=1199 src=cnn p=-1.0000 reject=no_model
+1788616149852 seq=1200 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01200_miss.jpg
+1788616149904 seq=1201 src=cnn p=-1.0000 reject=no_model
+1788616149930 seq=1202 src=geometry p=-1.0000 reject=geometry_miss
+1788616149971 seq=1203 src=cnn p=-1.0000 reject=no_model
+1788616149988 seq=1204 src=geometry p=-1.0000 reject=geometry_miss
+1788616150055 seq=1205 src=cnn p=-1.0000 reject=no_model
+1788616150071 seq=1206 src=geometry p=-1.0000 reject=geometry_miss
+1788616150135 seq=1207 src=cnn p=-1.0000 reject=no_model
+1788616150165 seq=1208 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01208_miss.jpg
+1788616150247 seq=1209 src=cnn p=-1.0000 reject=no_model
+1788616150262 seq=1210 src=geometry p=-1.0000 reject=geometry_miss
+1788616150349 seq=1211 src=cnn p=-1.0000 reject=no_model
+1788616150366 seq=1212 src=geometry p=-1.0000 reject=geometry_miss
+1788616150449 seq=1213 src=cnn p=-1.0000 reject=no_model
+1788616150465 seq=1214 src=geometry p=-1.0000 reject=geometry_miss
+1788616150556 seq=1215 src=cnn p=-1.0000 reject=no_model
+1788616150586 seq=1216 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01216_miss.jpg
+1788616150650 seq=1217 src=cnn p=-1.0000 reject=no_model
+1788616150667 seq=1218 src=geometry p=-1.0000 reject=geometry_miss
+1788616150747 seq=1219 src=cnn p=-1.0000 reject=no_model
+1788616150764 seq=1220 src=geometry p=-1.0000 reject=geometry_miss
+1788616150839 seq=1221 src=cnn p=-1.0000 reject=no_model
+1788616150861 seq=1222 src=geometry p=-1.0000 reject=geometry_miss
+1788616150926 seq=1223 src=cnn p=-1.0000 reject=no_model
+1788616150951 seq=1224 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01224_miss.jpg
+1788616151004 seq=1225 src=cnn p=-1.0000 reject=no_model
+1788616151019 seq=1226 src=geometry p=-1.0000 reject=geometry_miss
+1788616151103 seq=1227 src=cnn p=-1.0000 reject=no_model
+1788616151113 seq=1228 src=geometry p=-1.0000 reject=geometry_miss
+1788616151170 seq=1229 src=cnn p=-1.0000 reject=no_model
+1788616151183 seq=1230 src=geometry p=-1.0000 reject=geometry_miss
+1788616151237 seq=1231 src=cnn p=-1.0000 reject=no_model
+1788616151263 seq=1232 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01232_miss.jpg
+1788616151303 seq=1233 src=cnn p=-1.0000 reject=no_model
+1788616151316 seq=1234 src=geometry p=-1.0000 reject=geometry_miss
+1788616151399 seq=1235 src=cnn p=-1.0000 reject=no_model
+1788616151412 seq=1236 src=geometry p=-1.0000 reject=geometry_miss
+1788616151469 seq=1237 src=cnn p=-1.0000 reject=no_model
+1788616151483 seq=1238 src=geometry p=-1.0000 reject=geometry_miss
+1788616151571 seq=1239 src=cnn p=-1.0000 reject=no_model
+1788616151604 seq=1240 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01240_miss.jpg
+1788616151673 seq=1241 src=cnn p=-1.0000 reject=no_model
+1788616151691 seq=1242 src=geometry p=-1.0000 reject=geometry_miss
+1788616151739 seq=1243 src=cnn p=-1.0000 reject=no_model
+1788616151756 seq=1244 src=geometry p=-1.0000 reject=geometry_miss
+1788616151808 seq=1245 src=cnn p=-1.0000 reject=no_model
+1788616151827 seq=1246 src=geometry p=-1.0000 reject=geometry_miss
+1788616151909 seq=1247 src=cnn p=-1.0000 reject=no_model
+1788616151954 seq=1248 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01248_miss.jpg
+1788616152018 seq=1249 src=cnn p=-1.0000 reject=no_model
+1788616152039 seq=1250 src=geometry p=-1.0000 reject=geometry_miss
+1788616152106 seq=1251 src=cnn p=-1.0000 reject=no_model
+1788616152120 seq=1252 src=geometry p=-1.0000 reject=geometry_miss
+1788616152173 seq=1253 src=cnn p=-1.0000 reject=no_model
+1788616152190 seq=1254 src=geometry p=-1.0000 reject=geometry_miss
+1788616152269 seq=1255 src=cnn p=-1.0000 reject=no_model
+1788616152312 seq=1256 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01256_miss.jpg
+1788616152366 seq=1257 src=cnn p=-1.0000 reject=no_model
+1788616152376 seq=1258 src=geometry p=-1.0000 reject=geometry_miss
+1788616152487 seq=1259 src=cnn p=-1.0000 reject=no_model
+1788616152510 seq=1260 src=geometry p=-1.0000 reject=geometry_miss
+1788616152555 seq=1261 src=cnn p=-1.0000 reject=no_model
+1788616152614 seq=1262 src=geometry p=-1.0000 reject=geometry_miss
+1788616152632 seq=1263 src=cnn p=-1.0000 reject=no_model
+1788616152679 seq=1264 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01264_miss.jpg
+1788616152725 seq=1265 src=cnn p=-1.0000 reject=no_model
+1788616152745 seq=1266 src=geometry p=-1.0000 reject=geometry_miss
+1788616152793 seq=1267 src=cnn p=-1.0000 reject=no_model
+1788616152808 seq=1268 src=geometry p=-1.0000 reject=geometry_miss
+1788616152864 seq=1269 src=cnn p=-1.0000 reject=no_model
+1788616152889 seq=1270 src=geometry p=-1.0000 reject=geometry_miss
+1788616152962 seq=1271 src=cnn p=-1.0000 reject=no_model
+1788616153002 seq=1272 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01272_miss.jpg
+1788616153056 seq=1273 src=cnn p=-1.0000 reject=no_model
+1788616153076 seq=1274 src=geometry p=-1.0000 reject=geometry_miss
+1788616153162 seq=1275 src=cnn p=-1.0000 reject=no_model
+1788616153175 seq=1276 src=geometry p=-1.0000 reject=geometry_miss
+1788616153228 seq=1277 src=cnn p=-1.0000 reject=no_model
+1788616153241 seq=1278 src=geometry p=-1.0000 reject=geometry_miss
+1788616153294 seq=1279 src=cnn p=-1.0000 reject=no_model
+1788616153332 seq=1280 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01280_miss.jpg
+1788616153397 seq=1281 src=cnn p=-1.0000 reject=no_model
+1788616153418 seq=1282 src=geometry p=-1.0000 reject=geometry_miss
+1788616153496 seq=1283 src=cnn p=-1.0000 reject=no_model
+1788616153510 seq=1284 src=geometry p=-1.0000 reject=geometry_miss
+1788616153606 seq=1285 src=cnn p=-1.0000 reject=no_model
+1788616153622 seq=1286 src=geometry p=-1.0000 reject=geometry_miss

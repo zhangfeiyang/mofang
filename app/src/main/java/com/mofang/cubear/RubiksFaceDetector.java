@@ -100,8 +100,16 @@ public final class RubiksFaceDetector {
             if (!duplicate) target.add(addition);
         }
         target.sort(Comparator.comparingDouble((Candidate c) -> c.quality).reversed());
-        if (target.size() > 70) target.subList(70, target.size()).clear();
+        if (target.size() > MAX_CANDIDATES) target.subList(MAX_CANDIDATES, target.size()).clear();
     }
+
+    /**
+     * Contour candidates kept per frame. A real face needs nine; the rest is clutter that only
+     * widens the grid search, which grows cubically in the candidate count.
+     */
+    private static final int MAX_CANDIDATES = 48;
+    /** Grid hypotheses are anchored on the best candidates only; all still serve as matches. */
+    private static final int MAX_GRID_CENTERS = 32;
 
     /** Counts why contours were discarded, so a frame that finds nothing can still explain itself. */
     private static final int[] REJECTIONS = new int[5];
@@ -139,7 +147,7 @@ public final class RubiksFaceDetector {
             }
         }
         out.sort(Comparator.comparingDouble((Candidate c) -> c.quality).reversed());
-        if (out.size() > 70) return new ArrayList<>(out.subList(0, 70));
+        if (out.size() > MAX_CANDIDATES) return new ArrayList<>(out.subList(0, MAX_CANDIDATES));
         return out;
     }
 
@@ -151,7 +159,8 @@ public final class RubiksFaceDetector {
         if (points.size() < 7) return null;
         Grid best = null;
         int n = points.size();
-        for (int centerIndex = 0; centerIndex < n; centerIndex++) {
+        int centerLimit = Math.min(n, MAX_GRID_CENTERS);
+        for (int centerIndex = 0; centerIndex < centerLimit; centerIndex++) {
             Candidate center = points.get(centerIndex);
             for (int uIndex = 0; uIndex < n; uIndex++) {
                 if (uIndex == centerIndex) continue;

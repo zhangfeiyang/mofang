@@ -1,0 +1,6046 @@
+{
+  "format": "cube-mark/v2",
+  "created_at": "2026-09-05T12:03:35.195977+00:00",
+  "shape": "quad",
+  "source_videos": [
+    "video_20260816_162107",
+    "video_20260816_204654"
+  ],
+  "notes": "Filenames are prefixed with the source video so copies do not collide. Unlabelled frames still show a cube and are catalogued but excluded from splits.",
+  "frames": [
+    {
+      "file_name": "video_20260816_162107_frame_000001.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000001.jpg",
+      "frame_index": 1,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              204,
+              611
+            ],
+            [
+              1048,
+              639
+            ],
+            [
+              860,
+              1187
+            ],
+            [
+              273,
+              1213
+            ]
+          ],
+          "bbox_xywh": [
+            204,
+            611,
+            843,
+            602
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              261,
+              372
+            ],
+            [
+              789,
+              411
+            ],
+            [
+              1048,
+              621
+            ],
+            [
+              214,
+              590
+            ]
+          ],
+          "bbox_xywh": [
+            214,
+            372,
+            833,
+            249
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000002.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000002.jpg",
+      "frame_index": 2,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              153,
+              118
+            ],
+            [
+              968,
+              272
+            ],
+            [
+              855,
+              1041
+            ],
+            [
+              91,
+              964
+            ]
+          ],
+          "bbox_xywh": [
+            91,
+            118,
+            877,
+            923
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000003.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000003.jpg",
+      "frame_index": 3,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              248,
+              272
+            ],
+            [
+              925,
+              372
+            ],
+            [
+              881,
+              1026
+            ],
+            [
+              143,
+              923
+            ]
+          ],
+          "bbox_xywh": [
+            143,
+            272,
+            782,
+            754
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000004.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000004.jpg",
+      "frame_index": 4,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              284,
+              288
+            ],
+            [
+              830,
+              357
+            ],
+            [
+              1045,
+              695
+            ],
+            [
+              296,
+              672
+            ]
+          ],
+          "bbox_xywh": [
+            284,
+            288,
+            761,
+            408
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              289,
+              695
+            ],
+            [
+              1040,
+              711
+            ],
+            [
+              809,
+              1116
+            ],
+            [
+              279,
+              1121
+            ]
+          ],
+          "bbox_xywh": [
+            279,
+            695,
+            761,
+            426
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000005.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000005.jpg",
+      "frame_index": 5,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              173,
+              60
+            ],
+            [
+              986,
+              234
+            ],
+            [
+              883,
+              1003
+            ],
+            [
+              97,
+              913
+            ]
+          ],
+          "bbox_xywh": [
+            97,
+            60,
+            890,
+            943
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000006.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000006.jpg",
+      "frame_index": 6,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              212,
+              157
+            ],
+            [
+              994,
+              331
+            ],
+            [
+              886,
+              1072
+            ],
+            [
+              125,
+              1005
+            ]
+          ],
+          "bbox_xywh": [
+            125,
+            157,
+            869,
+            915
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000007.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000007.jpg",
+      "frame_index": 7,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              89,
+              526
+            ],
+            [
+              858,
+              549
+            ],
+            [
+              737,
+              1162
+            ],
+            [
+              161,
+              1152
+            ]
+          ],
+          "bbox_xywh": [
+            89,
+            526,
+            769,
+            636
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000008.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000008.jpg",
+      "frame_index": 8,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              214,
+              254
+            ],
+            [
+              889,
+              349
+            ],
+            [
+              873,
+              990
+            ],
+            [
+              155,
+              954
+            ]
+          ],
+          "bbox_xywh": [
+            155,
+            254,
+            733,
+            736
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000009.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000009.jpg",
+      "frame_index": 9,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              94,
+              495
+            ],
+            [
+              468,
+              295
+            ],
+            [
+              1014,
+              398
+            ],
+            [
+              825,
+              754
+            ]
+          ],
+          "bbox_xywh": [
+            94,
+            295,
+            920,
+            459
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              84,
+              523
+            ],
+            [
+              819,
+              775
+            ],
+            [
+              707,
+              1213
+            ],
+            [
+              207,
+              1018
+            ]
+          ],
+          "bbox_xywh": [
+            84,
+            523,
+            736,
+            690
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000010.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000010.jpg",
+      "frame_index": 10,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              263,
+              242
+            ],
+            [
+              958,
+              485
+            ],
+            [
+              796,
+              1182
+            ],
+            [
+              38,
+              954
+            ]
+          ],
+          "bbox_xywh": [
+            38,
+            242,
+            920,
+            941
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000011.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000011.jpg",
+      "frame_index": 11,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              325,
+              206
+            ],
+            [
+              976,
+              567
+            ],
+            [
+              799,
+              1269
+            ],
+            [
+              58,
+              1059
+            ]
+          ],
+          "bbox_xywh": [
+            58,
+            206,
+            918,
+            1064
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000012.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000012.jpg",
+      "frame_index": 12,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              525,
+              500
+            ],
+            [
+              901,
+              621
+            ],
+            [
+              860,
+              1116
+            ],
+            [
+              502,
+              1198
+            ]
+          ],
+          "bbox_xywh": [
+            502,
+            500,
+            400,
+            697
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              166,
+              593
+            ],
+            [
+              512,
+              498
+            ],
+            [
+              481,
+              1193
+            ],
+            [
+              163,
+              1070
+            ]
+          ],
+          "bbox_xywh": [
+            163,
+            498,
+            349,
+            695
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000013.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000013.jpg",
+      "frame_index": 13,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              235,
+              488
+            ],
+            [
+              825,
+              436
+            ],
+            [
+              894,
+              1041
+            ],
+            [
+              284,
+              1098
+            ]
+          ],
+          "bbox_xywh": [
+            235,
+            436,
+            659,
+            661
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000014.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000014.jpg",
+      "frame_index": 14,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              258,
+              490
+            ],
+            [
+              876,
+              500
+            ],
+            [
+              881,
+              1087
+            ],
+            [
+              294,
+              1111
+            ]
+          ],
+          "bbox_xywh": [
+            258,
+            490,
+            623,
+            620
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_162107_frame_000015.jpg",
+      "source_video": "video_20260816_162107",
+      "source_file": "frame_000015.jpg",
+      "frame_index": 15,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              225,
+              500
+            ],
+            [
+              825,
+              480
+            ],
+            [
+              848,
+              1077
+            ],
+            [
+              253,
+              1098
+            ]
+          ],
+          "bbox_xywh": [
+            225,
+            480,
+            623,
+            618
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000001.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000001.jpg",
+      "frame_index": 1,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              2,
+              485
+            ],
+            [
+              573,
+              608
+            ],
+            [
+              563,
+              1108
+            ],
+            [
+              56,
+              985
+            ]
+          ],
+          "bbox_xywh": [
+            2,
+            485,
+            572,
+            623
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              12,
+              480
+            ],
+            [
+              263,
+              303
+            ],
+            [
+              753,
+              367
+            ],
+            [
+              589,
+              598
+            ]
+          ],
+          "bbox_xywh": [
+            12,
+            303,
+            741,
+            295
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              768,
+              383
+            ],
+            [
+              730,
+              808
+            ],
+            [
+              566,
+              1105
+            ],
+            [
+              586,
+              618
+            ]
+          ],
+          "bbox_xywh": [
+            566,
+            383,
+            203,
+            723
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000002.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000002.jpg",
+      "frame_index": 2,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              135,
+              311
+            ],
+            [
+              681,
+              434
+            ],
+            [
+              573,
+              1044
+            ],
+            [
+              79,
+              870
+            ]
+          ],
+          "bbox_xywh": [
+            79,
+            311,
+            602,
+            733
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000003.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000003.jpg",
+      "frame_index": 3,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              343,
+              488
+            ],
+            [
+              958,
+              559
+            ],
+            [
+              891,
+              1062
+            ],
+            [
+              358,
+              995
+            ]
+          ],
+          "bbox_xywh": [
+            343,
+            488,
+            615,
+            574
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              491,
+              293
+            ],
+            [
+              1004,
+              336
+            ],
+            [
+              960,
+              544
+            ],
+            [
+              353,
+              480
+            ]
+          ],
+          "bbox_xywh": [
+            353,
+            293,
+            651,
+            251
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000004.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000004.jpg",
+      "frame_index": 4,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              471,
+              298
+            ],
+            [
+              991,
+              311
+            ],
+            [
+              986,
+              529
+            ],
+            [
+              371,
+              488
+            ]
+          ],
+          "bbox_xywh": [
+            371,
+            298,
+            620,
+            231
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              366,
+              506
+            ],
+            [
+              1027,
+              544
+            ],
+            [
+              932,
+              1052
+            ],
+            [
+              389,
+              995
+            ]
+          ],
+          "bbox_xywh": [
+            366,
+            506,
+            661,
+            546
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000005.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000005.jpg",
+      "frame_index": 5,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              296,
+              339
+            ],
+            [
+              473,
+              539
+            ],
+            [
+              494,
+              1039
+            ],
+            [
+              320,
+              798
+            ]
+          ],
+          "bbox_xywh": [
+            296,
+            339,
+            197,
+            700
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              494,
+              544
+            ],
+            [
+              1022,
+              459
+            ],
+            [
+              960,
+              936
+            ],
+            [
+              507,
+              1044
+            ]
+          ],
+          "bbox_xywh": [
+            494,
+            459,
+            528,
+            584
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              307,
+              334
+            ],
+            [
+              766,
+              254
+            ],
+            [
+              1017,
+              444
+            ],
+            [
+              489,
+              526
+            ]
+          ],
+          "bbox_xywh": [
+            307,
+            254,
+            710,
+            272
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000006.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000006.jpg",
+      "frame_index": 6,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              284,
+              444
+            ],
+            [
+              789,
+              552
+            ],
+            [
+              753,
+              1090
+            ],
+            [
+              314,
+              916
+            ]
+          ],
+          "bbox_xywh": [
+            284,
+            444,
+            505,
+            646
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              304,
+              426
+            ],
+            [
+              596,
+              288
+            ],
+            [
+              1032,
+              383
+            ],
+            [
+              794,
+              547
+            ]
+          ],
+          "bbox_xywh": [
+            304,
+            288,
+            728,
+            259
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000007.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000007.jpg",
+      "frame_index": 7,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              355,
+              500
+            ],
+            [
+              963,
+              526
+            ],
+            [
+              912,
+              1018
+            ],
+            [
+              386,
+              998
+            ]
+          ],
+          "bbox_xywh": [
+            355,
+            500,
+            608,
+            518
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              443,
+              295
+            ],
+            [
+              940,
+              311
+            ],
+            [
+              973,
+              500
+            ],
+            [
+              353,
+              495
+            ]
+          ],
+          "bbox_xywh": [
+            353,
+            295,
+            620,
+            205
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000008.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000008.jpg",
+      "frame_index": 8,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              376,
+              506
+            ],
+            [
+              991,
+              488
+            ],
+            [
+              940,
+              985
+            ],
+            [
+              409,
+              1008
+            ]
+          ],
+          "bbox_xywh": [
+            376,
+            488,
+            615,
+            520
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              384,
+              293
+            ],
+            [
+              863,
+              270
+            ],
+            [
+              994,
+              480
+            ],
+            [
+              376,
+              498
+            ]
+          ],
+          "bbox_xywh": [
+            376,
+            270,
+            618,
+            228
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000009.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000009.jpg",
+      "frame_index": 9,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              304,
+              470
+            ],
+            [
+              873,
+              534
+            ],
+            [
+              848,
+              1028
+            ],
+            [
+              348,
+              962
+            ]
+          ],
+          "bbox_xywh": [
+            304,
+            470,
+            569,
+            559
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              496,
+              283
+            ],
+            [
+              989,
+              321
+            ],
+            [
+              883,
+              523
+            ],
+            [
+              314,
+              465
+            ]
+          ],
+          "bbox_xywh": [
+            314,
+            283,
+            674,
+            241
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000010.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000010.jpg",
+      "frame_index": 10,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              435,
+              516
+            ],
+            [
+              1071,
+              526
+            ],
+            [
+              1012,
+              1039
+            ],
+            [
+              453,
+              1021
+            ]
+          ],
+          "bbox_xywh": [
+            435,
+            516,
+            636,
+            523
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              494,
+              321
+            ],
+            [
+              994,
+              306
+            ],
+            [
+              1073,
+              518
+            ],
+            [
+              445,
+              508
+            ]
+          ],
+          "bbox_xywh": [
+            445,
+            306,
+            628,
+            213
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000011.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000011.jpg",
+      "frame_index": 11,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              463,
+              523
+            ],
+            [
+              1076,
+              518
+            ],
+            [
+              1050,
+              1018
+            ],
+            [
+              491,
+              1026
+            ]
+          ],
+          "bbox_xywh": [
+            463,
+            518,
+            613,
+            508
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              484,
+              316
+            ],
+            [
+              975,
+              295
+            ],
+            [
+              1080,
+              498
+            ],
+            [
+              461,
+              513
+            ]
+          ],
+          "bbox_xywh": [
+            461,
+            295,
+            619,
+            218
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000012.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000012.jpg",
+      "frame_index": 12,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              437,
+              654
+            ],
+            [
+              1076,
+              559
+            ],
+            [
+              1073,
+              1000
+            ],
+            [
+              581,
+              1059
+            ]
+          ],
+          "bbox_xywh": [
+            437,
+            559,
+            638,
+            500
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              435,
+              270
+            ],
+            [
+              1014,
+              142
+            ],
+            [
+              1076,
+              541
+            ],
+            [
+              448,
+              652
+            ]
+          ],
+          "bbox_xywh": [
+            435,
+            142,
+            641,
+            510
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000013.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000013.jpg",
+      "frame_index": 13,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              294,
+              485
+            ],
+            [
+              978,
+              513
+            ],
+            [
+              917,
+              1046
+            ],
+            [
+              348,
+              1005
+            ]
+          ],
+          "bbox_xywh": [
+            294,
+            485,
+            684,
+            561
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              422,
+              254
+            ],
+            [
+              960,
+              257
+            ],
+            [
+              981,
+              490
+            ],
+            [
+              304,
+              475
+            ]
+          ],
+          "bbox_xywh": [
+            304,
+            254,
+            677,
+            236
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000014.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000014.jpg",
+      "frame_index": 14,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              86,
+              400
+            ],
+            [
+              730,
+              434
+            ],
+            [
+              696,
+              946
+            ],
+            [
+              173,
+              921
+            ]
+          ],
+          "bbox_xywh": [
+            86,
+            400,
+            643,
+            546
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              243,
+              170
+            ],
+            [
+              758,
+              177
+            ],
+            [
+              737,
+              416
+            ],
+            [
+              107,
+              390
+            ]
+          ],
+          "bbox_xywh": [
+            107,
+            170,
+            651,
+            246
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000015.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000015.jpg",
+      "frame_index": 15,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              294,
+              424
+            ],
+            [
+              842,
+              457
+            ],
+            [
+              804,
+              905
+            ],
+            [
+              343,
+              862
+            ]
+          ],
+          "bbox_xywh": [
+            294,
+            424,
+            549,
+            482
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              417,
+              216
+            ],
+            [
+              883,
+              224
+            ],
+            [
+              850,
+              439
+            ],
+            [
+              289,
+              413
+            ]
+          ],
+          "bbox_xywh": [
+            289,
+            216,
+            595,
+            223
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000016.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000016.jpg",
+      "frame_index": 16,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              173,
+              567
+            ],
+            [
+              760,
+              611
+            ],
+            [
+              735,
+              1054
+            ],
+            [
+              243,
+              1003
+            ]
+          ],
+          "bbox_xywh": [
+            173,
+            567,
+            587,
+            487
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              330,
+              334
+            ],
+            [
+              796,
+              347
+            ],
+            [
+              760,
+              595
+            ],
+            [
+              184,
+              557
+            ]
+          ],
+          "bbox_xywh": [
+            184,
+            334,
+            613,
+            261
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000017.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000017.jpg",
+      "frame_index": 17,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              266,
+              475
+            ],
+            [
+              773,
+              616
+            ],
+            [
+              743,
+              1067
+            ],
+            [
+              307,
+              921
+            ]
+          ],
+          "bbox_xywh": [
+            266,
+            475,
+            508,
+            592
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              281,
+              465
+            ],
+            [
+              532,
+              280
+            ],
+            [
+              978,
+              362
+            ],
+            [
+              781,
+              598
+            ]
+          ],
+          "bbox_xywh": [
+            281,
+            280,
+            697,
+            318
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              991,
+              380
+            ],
+            [
+              945,
+              800
+            ],
+            [
+              758,
+              1067
+            ],
+            [
+              784,
+              608
+            ]
+          ],
+          "bbox_xywh": [
+            758,
+            380,
+            233,
+            687
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000018.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000018.jpg",
+      "frame_index": 18,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              612,
+              641
+            ],
+            [
+              966,
+              408
+            ],
+            [
+              937,
+              846
+            ],
+            [
+              627,
+              1128
+            ]
+          ],
+          "bbox_xywh": [
+            612,
+            408,
+            354,
+            720
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              161,
+              441
+            ],
+            [
+              540,
+              254
+            ],
+            [
+              971,
+              390
+            ],
+            [
+              614,
+              629
+            ]
+          ],
+          "bbox_xywh": [
+            161,
+            254,
+            810,
+            374
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              150,
+              472
+            ],
+            [
+              602,
+              664
+            ],
+            [
+              602,
+              1123
+            ],
+            [
+              220,
+              913
+            ]
+          ],
+          "bbox_xywh": [
+            150,
+            472,
+            451,
+            651
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000019.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000019.jpg",
+      "frame_index": 19,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              322,
+              495
+            ],
+            [
+              968,
+              454
+            ],
+            [
+              907,
+              946
+            ],
+            [
+              381,
+              982
+            ]
+          ],
+          "bbox_xywh": [
+            322,
+            454,
+            646,
+            528
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              312,
+              242
+            ],
+            [
+              837,
+              213
+            ],
+            [
+              968,
+              429
+            ],
+            [
+              314,
+              482
+            ]
+          ],
+          "bbox_xywh": [
+            312,
+            213,
+            656,
+            269
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000020.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000020.jpg",
+      "frame_index": 20,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              348,
+              242
+            ],
+            [
+              1009,
+              195
+            ],
+            [
+              1037,
+              836
+            ],
+            [
+              432,
+              900
+            ]
+          ],
+          "bbox_xywh": [
+            348,
+            195,
+            690,
+            705
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000021.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000021.jpg",
+      "frame_index": 21,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              232,
+              541
+            ],
+            [
+              937,
+              503
+            ],
+            [
+              866,
+              1016
+            ],
+            [
+              296,
+              1059
+            ]
+          ],
+          "bbox_xywh": [
+            232,
+            503,
+            705,
+            556
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              245,
+              259
+            ],
+            [
+              814,
+              226
+            ],
+            [
+              927,
+              480
+            ],
+            [
+              235,
+              523
+            ]
+          ],
+          "bbox_xywh": [
+            235,
+            226,
+            692,
+            297
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000022.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000022.jpg",
+      "frame_index": 22,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              43,
+              411
+            ],
+            [
+              525,
+              675
+            ],
+            [
+              537,
+              1195
+            ],
+            [
+              132,
+              913
+            ]
+          ],
+          "bbox_xywh": [
+            43,
+            411,
+            495,
+            784
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              540,
+              670
+            ],
+            [
+              1001,
+              388
+            ],
+            [
+              927,
+              900
+            ],
+            [
+              550,
+              1205
+            ]
+          ],
+          "bbox_xywh": [
+            540,
+            388,
+            461,
+            818
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              40,
+              393
+            ],
+            [
+              527,
+              193
+            ],
+            [
+              1001,
+              367
+            ],
+            [
+              525,
+              652
+            ]
+          ],
+          "bbox_xywh": [
+            40,
+            193,
+            961,
+            459
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000023.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000023.jpg",
+      "frame_index": 23,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              199,
+              470
+            ],
+            [
+              799,
+              598
+            ],
+            [
+              753,
+              1090
+            ],
+            [
+              255,
+              957
+            ]
+          ],
+          "bbox_xywh": [
+            199,
+            470,
+            600,
+            620
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              999,
+              326
+            ],
+            [
+              960,
+              772
+            ],
+            [
+              771,
+              1070
+            ],
+            [
+              812,
+              590
+            ]
+          ],
+          "bbox_xywh": [
+            771,
+            326,
+            228,
+            743
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000024.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000024.jpg",
+      "frame_index": 24,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              327,
+              677
+            ],
+            [
+              1076,
+              1021
+            ],
+            [
+              714,
+              1167
+            ],
+            [
+              73,
+              946
+            ]
+          ],
+          "bbox_xywh": [
+            73,
+            677,
+            1002,
+            490
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              549,
+              0
+            ],
+            [
+              1080,
+              246
+            ],
+            [
+              1071,
+              1003
+            ],
+            [
+              317,
+              654
+            ]
+          ],
+          "bbox_xywh": [
+            317,
+            0,
+            763,
+            1003
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000025.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000025.jpg",
+      "frame_index": 25,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              240,
+              680
+            ],
+            [
+              868,
+              864
+            ],
+            [
+              709,
+              1495
+            ],
+            [
+              66,
+              1385
+            ]
+          ],
+          "bbox_xywh": [
+            66,
+            680,
+            802,
+            815
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000026.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000026.jpg",
+      "frame_index": 26,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              471,
+              598
+            ],
+            [
+              853,
+              800
+            ],
+            [
+              635,
+              1293
+            ],
+            [
+              194,
+              1182
+            ]
+          ],
+          "bbox_xywh": [
+            194,
+            598,
+            659,
+            695
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              181,
+              470
+            ],
+            [
+              458,
+              603
+            ],
+            [
+              179,
+              1190
+            ],
+            [
+              0,
+              823
+            ]
+          ],
+          "bbox_xywh": [
+            0,
+            470,
+            458,
+            720
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000027.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000027.jpg",
+      "frame_index": 27,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              71,
+              688
+            ],
+            [
+              581,
+              526
+            ],
+            [
+              817,
+              1021
+            ],
+            [
+              317,
+              1239
+            ]
+          ],
+          "bbox_xywh": [
+            71,
+            526,
+            746,
+            713
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000028.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000028.jpg",
+      "frame_index": 28,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              258,
+              657
+            ],
+            [
+              799,
+              462
+            ],
+            [
+              1045,
+              1021
+            ],
+            [
+              535,
+              1298
+            ]
+          ],
+          "bbox_xywh": [
+            258,
+            462,
+            787,
+            836
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              104,
+              793
+            ],
+            [
+              232,
+              672
+            ],
+            [
+              517,
+              1308
+            ],
+            [
+              322,
+              1272
+            ]
+          ],
+          "bbox_xywh": [
+            104,
+            672,
+            413,
+            636
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000029.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000029.jpg",
+      "frame_index": 29,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              148,
+              365
+            ],
+            [
+              660,
+              347
+            ],
+            [
+              863,
+              775
+            ],
+            [
+              304,
+              862
+            ]
+          ],
+          "bbox_xywh": [
+            148,
+            347,
+            715,
+            515
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              299,
+              880
+            ],
+            [
+              871,
+              793
+            ],
+            [
+              668,
+              1087
+            ],
+            [
+              255,
+              1136
+            ]
+          ],
+          "bbox_xywh": [
+            255,
+            793,
+            615,
+            343
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              130,
+              375
+            ],
+            [
+              289,
+              864
+            ],
+            [
+              230,
+              1146
+            ],
+            [
+              66,
+              721
+            ]
+          ],
+          "bbox_xywh": [
+            66,
+            375,
+            223,
+            772
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000030.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000030.jpg",
+      "frame_index": 30,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              302,
+              529
+            ],
+            [
+              773,
+              465
+            ],
+            [
+              778,
+              1016
+            ],
+            [
+              345,
+              1152
+            ]
+          ],
+          "bbox_xywh": [
+            302,
+            465,
+            477,
+            687
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              4,
+              529
+            ],
+            [
+              286,
+              534
+            ],
+            [
+              317,
+              1154
+            ],
+            [
+              30,
+              1016
+            ]
+          ],
+          "bbox_xywh": [
+            4,
+            529,
+            313,
+            625
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000031.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000031.jpg",
+      "frame_index": 31,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              158,
+              618
+            ],
+            [
+              771,
+              616
+            ],
+            [
+              819,
+              1223
+            ],
+            [
+              209,
+              1259
+            ]
+          ],
+          "bbox_xywh": [
+            158,
+            616,
+            661,
+            643
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000032.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000032.jpg",
+      "frame_index": 32,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              2,
+              767
+            ],
+            [
+              689,
+              441
+            ],
+            [
+              1078,
+              1144
+            ],
+            [
+              379,
+              1544
+            ]
+          ],
+          "bbox_xywh": [
+            2,
+            441,
+            1077,
+            1102
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000033.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000033.jpg",
+      "frame_index": 33,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              268,
+              526
+            ],
+            [
+              1024,
+              595
+            ],
+            [
+              1012,
+              1346
+            ],
+            [
+              120,
+              1264
+            ]
+          ],
+          "bbox_xywh": [
+            120,
+            526,
+            905,
+            820
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              122,
+              1280
+            ],
+            [
+              1012,
+              1369
+            ],
+            [
+              881,
+              1500
+            ],
+            [
+              258,
+              1423
+            ]
+          ],
+          "bbox_xywh": [
+            122,
+            1280,
+            890,
+            220
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000034.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000034.jpg",
+      "frame_index": 34,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              27,
+              929
+            ],
+            [
+              817,
+              793
+            ],
+            [
+              873,
+              1375
+            ],
+            [
+              217,
+              1480
+            ]
+          ],
+          "bbox_xywh": [
+            27,
+            793,
+            846,
+            687
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              132,
+              598
+            ],
+            [
+              707,
+              500
+            ],
+            [
+              801,
+              772
+            ],
+            [
+              27,
+              921
+            ]
+          ],
+          "bbox_xywh": [
+            27,
+            500,
+            774,
+            420
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000035.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000035.jpg",
+      "frame_index": 35,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              40,
+              616
+            ],
+            [
+              701,
+              236
+            ],
+            [
+              1080,
+              903
+            ],
+            [
+              489,
+              1290
+            ]
+          ],
+          "bbox_xywh": [
+            40,
+            236,
+            1040,
+            1054
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000036.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000036.jpg",
+      "frame_index": 36,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              91,
+              349
+            ],
+            [
+              635,
+              493
+            ],
+            [
+              889,
+              1105
+            ],
+            [
+              379,
+              1239
+            ]
+          ],
+          "bbox_xywh": [
+            91,
+            349,
+            797,
+            890
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000037.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000037.jpg",
+      "frame_index": 37,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              25,
+              313
+            ],
+            [
+              866,
+              249
+            ],
+            [
+              930,
+              1054
+            ],
+            [
+              238,
+              1326
+            ]
+          ],
+          "bbox_xywh": [
+            25,
+            249,
+            905,
+            1077
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000038.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000038.jpg",
+      "frame_index": 38,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              91,
+              83
+            ],
+            [
+              650,
+              177
+            ],
+            [
+              1055,
+              680
+            ],
+            [
+              596,
+              754
+            ]
+          ],
+          "bbox_xywh": [
+            91,
+            83,
+            964,
+            672
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000039.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000039.jpg",
+      "frame_index": 39,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              99,
+              52
+            ],
+            [
+              914,
+              354
+            ],
+            [
+              650,
+              1141
+            ],
+            [
+              9,
+              949
+            ]
+          ],
+          "bbox_xywh": [
+            9,
+            52,
+            905,
+            1089
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000040.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000040.jpg",
+      "frame_index": 40,
+      "width": 1080,
+      "height": 1920,
+      "annotations": []
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000041.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000041.jpg",
+      "frame_index": 41,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              71,
+              329
+            ],
+            [
+              768,
+              588
+            ],
+            [
+              527,
+              1198
+            ],
+            [
+              4,
+              1036
+            ]
+          ],
+          "bbox_xywh": [
+            4,
+            329,
+            764,
+            869
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000042.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000042.jpg",
+      "frame_index": 42,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              625,
+              213
+            ],
+            [
+              1017,
+              690
+            ],
+            [
+              727,
+              1218
+            ],
+            [
+              222,
+              782
+            ]
+          ],
+          "bbox_xywh": [
+            222,
+            213,
+            795,
+            1005
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000043.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000043.jpg",
+      "frame_index": 43,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              407,
+              557
+            ],
+            [
+              1024,
+              1108
+            ],
+            [
+              514,
+              1372
+            ],
+            [
+              2,
+              1018
+            ]
+          ],
+          "bbox_xywh": [
+            2,
+            557,
+            1023,
+            815
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              581,
+              170
+            ],
+            [
+              1060,
+              608
+            ],
+            [
+              1048,
+              1103
+            ],
+            [
+              417,
+              539
+            ]
+          ],
+          "bbox_xywh": [
+            417,
+            170,
+            643,
+            933
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000044.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000044.jpg",
+      "frame_index": 44,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              153,
+              357
+            ],
+            [
+              871,
+              577
+            ],
+            [
+              673,
+              1323
+            ],
+            [
+              7,
+              1123
+            ]
+          ],
+          "bbox_xywh": [
+            7,
+            357,
+            864,
+            966
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000045.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000045.jpg",
+      "frame_index": 45,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              140,
+              416
+            ],
+            [
+              832,
+              639
+            ],
+            [
+              566,
+              1328
+            ],
+            [
+              17,
+              1123
+            ]
+          ],
+          "bbox_xywh": [
+            17,
+            416,
+            815,
+            913
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000046.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000046.jpg",
+      "frame_index": 46,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              461,
+              539
+            ],
+            [
+              1078,
+              749
+            ],
+            [
+              904,
+              1400
+            ],
+            [
+              266,
+              1205
+            ]
+          ],
+          "bbox_xywh": [
+            266,
+            539,
+            813,
+            861
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000047.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000047.jpg",
+      "frame_index": 47,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              350,
+              326
+            ],
+            [
+              1073,
+              680
+            ],
+            [
+              801,
+              1405
+            ],
+            [
+              53,
+              1123
+            ]
+          ],
+          "bbox_xywh": [
+            53,
+            326,
+            1020,
+            1079
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000048.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000048.jpg",
+      "frame_index": 48,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              238,
+              252
+            ],
+            [
+              814,
+              485
+            ],
+            [
+              663,
+              1026
+            ],
+            [
+              9,
+              775
+            ]
+          ],
+          "bbox_xywh": [
+            9,
+            252,
+            805,
+            774
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              0,
+              777
+            ],
+            [
+              658,
+              1054
+            ],
+            [
+              478,
+              1210
+            ],
+            [
+              2,
+              1028
+            ]
+          ],
+          "bbox_xywh": [
+            0,
+            777,
+            658,
+            433
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000049.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000049.jpg",
+      "frame_index": 49,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              363,
+              257
+            ],
+            [
+              701,
+              400
+            ],
+            [
+              317,
+              1093
+            ],
+            [
+              99,
+              803
+            ]
+          ],
+          "bbox_xywh": [
+            99,
+            257,
+            602,
+            836
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              717,
+              413
+            ],
+            [
+              1066,
+              611
+            ],
+            [
+              912,
+              1259
+            ],
+            [
+              325,
+              1113
+            ]
+          ],
+          "bbox_xywh": [
+            325,
+            413,
+            741,
+            846
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000050.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000050.jpg",
+      "frame_index": 50,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              91,
+              383
+            ],
+            [
+              481,
+              577
+            ],
+            [
+              312,
+              985
+            ],
+            [
+              0,
+              890
+            ]
+          ],
+          "bbox_xywh": [
+            0,
+            383,
+            481,
+            602
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000051.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000051.jpg",
+      "frame_index": 51,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              512,
+              518
+            ],
+            [
+              791,
+              670
+            ],
+            [
+              576,
+              1054
+            ],
+            [
+              281,
+              954
+            ]
+          ],
+          "bbox_xywh": [
+            281,
+            518,
+            510,
+            536
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              232,
+              375
+            ],
+            [
+              507,
+              503
+            ],
+            [
+              258,
+              952
+            ],
+            [
+              58,
+              757
+            ]
+          ],
+          "bbox_xywh": [
+            58,
+            375,
+            449,
+            577
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000052.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000052.jpg",
+      "frame_index": 52,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              161,
+              367
+            ],
+            [
+              730,
+              162
+            ],
+            [
+              873,
+              641
+            ],
+            [
+              261,
+              849
+            ]
+          ],
+          "bbox_xywh": [
+            161,
+            162,
+            713,
+            687
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              266,
+              862
+            ],
+            [
+              886,
+              654
+            ],
+            [
+              912,
+              921
+            ],
+            [
+              402,
+              1087
+            ]
+          ],
+          "bbox_xywh": [
+            266,
+            654,
+            646,
+            433
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000053.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000053.jpg",
+      "frame_index": 53,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              335,
+              503
+            ],
+            [
+              673,
+              431
+            ],
+            [
+              773,
+              916
+            ],
+            [
+              461,
+              1072
+            ]
+          ],
+          "bbox_xywh": [
+            335,
+            431,
+            438,
+            641
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              4,
+              598
+            ],
+            [
+              322,
+              516
+            ],
+            [
+              432,
+              1062
+            ],
+            [
+              99,
+              1077
+            ]
+          ],
+          "bbox_xywh": [
+            4,
+            516,
+            428,
+            561
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000054.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000054.jpg",
+      "frame_index": 54,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              14,
+              675
+            ],
+            [
+              476,
+              549
+            ],
+            [
+              617,
+              1103
+            ],
+            [
+              89,
+              1210
+            ]
+          ],
+          "bbox_xywh": [
+            14,
+            549,
+            602,
+            661
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000055.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000055.jpg",
+      "frame_index": 55,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              268,
+              739
+            ],
+            [
+              866,
+              736
+            ],
+            [
+              701,
+              1193
+            ],
+            [
+              191,
+              1193
+            ]
+          ],
+          "bbox_xywh": [
+            191,
+            736,
+            674,
+            456
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000056.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000056.jpg",
+      "frame_index": 56,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              504,
+              670
+            ],
+            [
+              809,
+              823
+            ],
+            [
+              940,
+              1259
+            ],
+            [
+              581,
+              1177
+            ]
+          ],
+          "bbox_xywh": [
+            504,
+            670,
+            436,
+            590
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              161,
+              880
+            ],
+            [
+              494,
+              682
+            ],
+            [
+              563,
+              1198
+            ],
+            [
+              179,
+              1351
+            ]
+          ],
+          "bbox_xywh": [
+            161,
+            682,
+            402,
+            669
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000057.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000057.jpg",
+      "frame_index": 57,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              240,
+              375
+            ],
+            [
+              725,
+              395
+            ],
+            [
+              848,
+              975
+            ],
+            [
+              358,
+              1049
+            ]
+          ],
+          "bbox_xywh": [
+            240,
+            375,
+            608,
+            674
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              7,
+              552
+            ],
+            [
+              214,
+              380
+            ],
+            [
+              337,
+              1059
+            ],
+            [
+              38,
+              1121
+            ]
+          ],
+          "bbox_xywh": [
+            7,
+            380,
+            331,
+            741
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000058.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000058.jpg",
+      "frame_index": 58,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              409,
+              500
+            ],
+            [
+              955,
+              590
+            ],
+            [
+              868,
+              1198
+            ],
+            [
+              327,
+              1239
+            ]
+          ],
+          "bbox_xywh": [
+            327,
+            500,
+            628,
+            738
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              112,
+              516
+            ],
+            [
+              389,
+              521
+            ],
+            [
+              304,
+              1223
+            ],
+            [
+              68,
+              1039
+            ]
+          ],
+          "bbox_xywh": [
+            68,
+            516,
+            320,
+            708
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000059.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000059.jpg",
+      "frame_index": 59,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              35,
+              785
+            ],
+            [
+              840,
+              749
+            ],
+            [
+              614,
+              1177
+            ],
+            [
+              12,
+              1236
+            ]
+          ],
+          "bbox_xywh": [
+            12,
+            749,
+            828,
+            487
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              7,
+              249
+            ],
+            [
+              602,
+              224
+            ],
+            [
+              835,
+              729
+            ],
+            [
+              25,
+              767
+            ]
+          ],
+          "bbox_xywh": [
+            7,
+            224,
+            828,
+            543
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000060.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000060.jpg",
+      "frame_index": 60,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              30,
+              549
+            ],
+            [
+              550,
+              441
+            ],
+            [
+              807,
+              757
+            ],
+            [
+              194,
+              872
+            ]
+          ],
+          "bbox_xywh": [
+            30,
+            441,
+            777,
+            431
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              25,
+              562
+            ],
+            [
+              179,
+              882
+            ],
+            [
+              214,
+              1282
+            ],
+            [
+              38,
+              939
+            ]
+          ],
+          "bbox_xywh": [
+            25,
+            562,
+            190,
+            720
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              194,
+              890
+            ],
+            [
+              817,
+              772
+            ],
+            [
+              727,
+              1185
+            ],
+            [
+              235,
+              1285
+            ]
+          ],
+          "bbox_xywh": [
+            194,
+            772,
+            623,
+            513
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000061.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000061.jpg",
+      "frame_index": 61,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              30,
+              1041
+            ],
+            [
+              586,
+              834
+            ],
+            [
+              404,
+              1070
+            ],
+            [
+              2,
+              1218
+            ]
+          ],
+          "bbox_xywh": [
+            2,
+            834,
+            584,
+            385
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              9,
+              416
+            ],
+            [
+              304,
+              341
+            ],
+            [
+              581,
+              816
+            ],
+            [
+              9,
+              1036
+            ]
+          ],
+          "bbox_xywh": [
+            9,
+            341,
+            572,
+            695
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000062.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000062.jpg",
+      "frame_index": 62,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              227,
+              593
+            ],
+            [
+              830,
+              621
+            ],
+            [
+              850,
+              1282
+            ],
+            [
+              222,
+              1300
+            ]
+          ],
+          "bbox_xywh": [
+            222,
+            593,
+            628,
+            708
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000063.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000063.jpg",
+      "frame_index": 63,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              20,
+              547
+            ],
+            [
+              591,
+              390
+            ],
+            [
+              732,
+              931
+            ],
+            [
+              56,
+              1077
+            ]
+          ],
+          "bbox_xywh": [
+            20,
+            390,
+            713,
+            687
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              50,
+              1093
+            ],
+            [
+              745,
+              949
+            ],
+            [
+              786,
+              1182
+            ],
+            [
+              250,
+              1295
+            ]
+          ],
+          "bbox_xywh": [
+            50,
+            949,
+            736,
+            346
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000064.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000064.jpg",
+      "frame_index": 64,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              463,
+              721
+            ],
+            [
+              950,
+              841
+            ],
+            [
+              666,
+              1287
+            ],
+            [
+              207,
+              1218
+            ]
+          ],
+          "bbox_xywh": [
+            207,
+            721,
+            743,
+            567
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              240,
+              444
+            ],
+            [
+              676,
+              557
+            ],
+            [
+              953,
+              831
+            ],
+            [
+              445,
+              708
+            ]
+          ],
+          "bbox_xywh": [
+            240,
+            444,
+            713,
+            387
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              227,
+              449
+            ],
+            [
+              448,
+              726
+            ],
+            [
+              186,
+              1205
+            ],
+            [
+              48,
+              893
+            ]
+          ],
+          "bbox_xywh": [
+            48,
+            449,
+            400,
+            756
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000065.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000065.jpg",
+      "frame_index": 65,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              561,
+              226
+            ],
+            [
+              1071,
+              390
+            ],
+            [
+              1068,
+              1052
+            ],
+            [
+              399,
+              834
+            ]
+          ],
+          "bbox_xywh": [
+            399,
+            226,
+            672,
+            825
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              394,
+              852
+            ],
+            [
+              1053,
+              1064
+            ],
+            [
+              812,
+              1182
+            ],
+            [
+              307,
+              1026
+            ]
+          ],
+          "bbox_xywh": [
+            307,
+            852,
+            746,
+            331
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000066.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000066.jpg",
+      "frame_index": 66,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              302,
+              375
+            ],
+            [
+              778,
+              831
+            ],
+            [
+              599,
+              1405
+            ],
+            [
+              9,
+              967
+            ]
+          ],
+          "bbox_xywh": [
+            9,
+            375,
+            769,
+            1030
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              9,
+              995
+            ],
+            [
+              573,
+              1428
+            ],
+            [
+              150,
+              1477
+            ],
+            [
+              0,
+              1349
+            ]
+          ],
+          "bbox_xywh": [
+            0,
+            995,
+            573,
+            482
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000067.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000067.jpg",
+      "frame_index": 67,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              337,
+              618
+            ],
+            [
+              860,
+              388
+            ],
+            [
+              1078,
+              911
+            ],
+            [
+              694,
+              1349
+            ]
+          ],
+          "bbox_xywh": [
+            337,
+            388,
+            741,
+            961
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              43,
+              841
+            ],
+            [
+              320,
+              634
+            ],
+            [
+              673,
+              1351
+            ],
+            [
+              312,
+              1367
+            ]
+          ],
+          "bbox_xywh": [
+            43,
+            634,
+            631,
+            733
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000068.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000068.jpg",
+      "frame_index": 68,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              245,
+              239
+            ],
+            [
+              853,
+              395
+            ],
+            [
+              871,
+              985
+            ],
+            [
+              245,
+              893
+            ]
+          ],
+          "bbox_xywh": [
+            245,
+            239,
+            625,
+            746
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              4,
+              424
+            ],
+            [
+              230,
+              275
+            ],
+            [
+              222,
+              918
+            ],
+            [
+              7,
+              1059
+            ]
+          ],
+          "bbox_xywh": [
+            4,
+            275,
+            226,
+            784
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000069.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000069.jpg",
+      "frame_index": 69,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              291,
+              365
+            ],
+            [
+              561,
+              613
+            ],
+            [
+              594,
+              1018
+            ],
+            [
+              335,
+              864
+            ]
+          ],
+          "bbox_xywh": [
+            291,
+            365,
+            302,
+            654
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              20,
+              485
+            ],
+            [
+              279,
+              380
+            ],
+            [
+              312,
+              870
+            ],
+            [
+              12,
+              995
+            ]
+          ],
+          "bbox_xywh": [
+            12,
+            380,
+            300,
+            615
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              0,
+              1034
+            ],
+            [
+              335,
+              867
+            ],
+            [
+              555,
+              1021
+            ],
+            [
+              215,
+              1157
+            ]
+          ],
+          "bbox_xywh": [
+            0,
+            867,
+            555,
+            290
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000070.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000070.jpg",
+      "frame_index": 70,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              396,
+              285
+            ],
+            [
+              694,
+              493
+            ],
+            [
+              855,
+              905
+            ],
+            [
+              522,
+              775
+            ]
+          ],
+          "bbox_xywh": [
+            396,
+            285,
+            459,
+            620
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              7,
+              590
+            ],
+            [
+              384,
+              298
+            ],
+            [
+              514,
+              800
+            ],
+            [
+              89,
+              1039
+            ]
+          ],
+          "bbox_xywh": [
+            7,
+            298,
+            508,
+            741
+          ]
+        },
+        {
+          "id": 3,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              109,
+              1062
+            ],
+            [
+              532,
+              803
+            ],
+            [
+              848,
+              911
+            ],
+            [
+              463,
+              1149
+            ]
+          ],
+          "bbox_xywh": [
+            109,
+            803,
+            738,
+            346
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000071.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000071.jpg",
+      "frame_index": 71,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              340,
+              465
+            ],
+            [
+              899,
+              716
+            ],
+            [
+              607,
+              1234
+            ],
+            [
+              7,
+              941
+            ]
+          ],
+          "bbox_xywh": [
+            7,
+            465,
+            892,
+            769
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              7,
+              967
+            ],
+            [
+              586,
+              1259
+            ],
+            [
+              532,
+              1459
+            ],
+            [
+              73,
+              1172
+            ]
+          ],
+          "bbox_xywh": [
+            7,
+            967,
+            579,
+            492
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000072.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000072.jpg",
+      "frame_index": 72,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              658,
+              631
+            ],
+            [
+              930,
+              929
+            ],
+            [
+              622,
+              1369
+            ],
+            [
+              276,
+              1152
+            ]
+          ],
+          "bbox_xywh": [
+            276,
+            631,
+            654,
+            738
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              276,
+              477
+            ],
+            [
+              653,
+              626
+            ],
+            [
+              250,
+              1157
+            ],
+            [
+              2,
+              877
+            ]
+          ],
+          "bbox_xywh": [
+            2,
+            477,
+            651,
+            679
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000073.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000073.jpg",
+      "frame_index": 73,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              109,
+              905
+            ],
+            [
+              763,
+              864
+            ],
+            [
+              543,
+              1310
+            ],
+            [
+              2,
+              1349
+            ]
+          ],
+          "bbox_xywh": [
+            2,
+            864,
+            761,
+            484
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              12,
+              482
+            ],
+            [
+              514,
+              503
+            ],
+            [
+              766,
+              854
+            ],
+            [
+              102,
+              888
+            ]
+          ],
+          "bbox_xywh": [
+            12,
+            482,
+            754,
+            405
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000074.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000074.jpg",
+      "frame_index": 74,
+      "width": 1080,
+      "height": 1920,
+      "annotations": []
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000075.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000075.jpg",
+      "frame_index": 75,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              7,
+              770
+            ],
+            [
+              412,
+              462
+            ],
+            [
+              842,
+              772
+            ],
+            [
+              468,
+              1121
+            ]
+          ],
+          "bbox_xywh": [
+            7,
+            462,
+            836,
+            659
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000076.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000076.jpg",
+      "frame_index": 76,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              422,
+              242
+            ],
+            [
+              745,
+              744
+            ],
+            [
+              349,
+              1249
+            ],
+            [
+              0,
+              688
+            ]
+          ],
+          "bbox_xywh": [
+            0,
+            242,
+            745,
+            1007
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000077.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000077.jpg",
+      "frame_index": 77,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              130,
+              1180
+            ],
+            [
+              1073,
+              698
+            ],
+            [
+              1076,
+              1331
+            ],
+            [
+              545,
+              1626
+            ]
+          ],
+          "bbox_xywh": [
+            130,
+            698,
+            946,
+            928
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              2,
+              626
+            ],
+            [
+              686,
+              244
+            ],
+            [
+              1071,
+              664
+            ],
+            [
+              120,
+              1164
+            ]
+          ],
+          "bbox_xywh": [
+            2,
+            244,
+            1069,
+            920
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000078.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000078.jpg",
+      "frame_index": 78,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              348,
+              162
+            ],
+            [
+              1001,
+              608
+            ],
+            [
+              594,
+              1287
+            ],
+            [
+              7,
+              877
+            ]
+          ],
+          "bbox_xywh": [
+            7,
+            162,
+            995,
+            1125
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000079.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000079.jpg",
+      "frame_index": 79,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              4,
+              654
+            ],
+            [
+              543,
+              218
+            ],
+            [
+              1040,
+              713
+            ],
+            [
+              322,
+              1203
+            ]
+          ],
+          "bbox_xywh": [
+            4,
+            218,
+            1036,
+            984
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              337,
+              1216
+            ],
+            [
+              1058,
+              729
+            ],
+            [
+              1040,
+              1049
+            ],
+            [
+              494,
+              1410
+            ]
+          ],
+          "bbox_xywh": [
+            337,
+            729,
+            720,
+            682
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000080.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000080.jpg",
+      "frame_index": 80,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              512,
+              447
+            ],
+            [
+              1001,
+              729
+            ],
+            [
+              886,
+              1246
+            ],
+            [
+              314,
+              946
+            ]
+          ],
+          "bbox_xywh": [
+            314,
+            447,
+            687,
+            800
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              109,
+              1146
+            ],
+            [
+              309,
+              967
+            ],
+            [
+              853,
+              1249
+            ],
+            [
+              586,
+              1351
+            ]
+          ],
+          "bbox_xywh": [
+            109,
+            967,
+            743,
+            385
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000081.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000081.jpg",
+      "frame_index": 81,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              330,
+              452
+            ],
+            [
+              904,
+              649
+            ],
+            [
+              789,
+              1113
+            ],
+            [
+              73,
+              846
+            ]
+          ],
+          "bbox_xywh": [
+            73,
+            452,
+            831,
+            661
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              68,
+              872
+            ],
+            [
+              781,
+              1123
+            ],
+            [
+              612,
+              1469
+            ],
+            [
+              40,
+              1259
+            ]
+          ],
+          "bbox_xywh": [
+            40,
+            872,
+            741,
+            597
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000082.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000082.jpg",
+      "frame_index": 82,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              179,
+              544
+            ],
+            [
+              799,
+              426
+            ],
+            [
+              1019,
+              985
+            ],
+            [
+              330,
+              1126
+            ]
+          ],
+          "bbox_xywh": [
+            179,
+            426,
+            841,
+            700
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              322,
+              1144
+            ],
+            [
+              1009,
+              1003
+            ],
+            [
+              817,
+              1208
+            ],
+            [
+              317,
+              1303
+            ]
+          ],
+          "bbox_xywh": [
+            317,
+            1003,
+            692,
+            300
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000083.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000083.jpg",
+      "frame_index": 83,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              232,
+              526
+            ],
+            [
+              804,
+              536
+            ],
+            [
+              955,
+              1149
+            ],
+            [
+              394,
+              1226
+            ]
+          ],
+          "bbox_xywh": [
+            232,
+            526,
+            723,
+            700
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              225,
+              547
+            ],
+            [
+              371,
+              1234
+            ],
+            [
+              120,
+              1308
+            ],
+            [
+              40,
+              785
+            ]
+          ],
+          "bbox_xywh": [
+            40,
+            547,
+            331,
+            761
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000084.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000084.jpg",
+      "frame_index": 84,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              435,
+              631
+            ],
+            [
+              1076,
+              729
+            ],
+            [
+              1068,
+              1408
+            ],
+            [
+              343,
+              1300
+            ]
+          ],
+          "bbox_xywh": [
+            343,
+            631,
+            733,
+            777
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000085.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000085.jpg",
+      "frame_index": 85,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              81,
+              375
+            ],
+            [
+              650,
+              201
+            ],
+            [
+              704,
+              829
+            ],
+            [
+              263,
+              1100
+            ]
+          ],
+          "bbox_xywh": [
+            81,
+            201,
+            623,
+            900
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000086.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000086.jpg",
+      "frame_index": 86,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              163,
+              688
+            ],
+            [
+              830,
+              536
+            ],
+            [
+              889,
+              1157
+            ],
+            [
+              307,
+              1318
+            ]
+          ],
+          "bbox_xywh": [
+            163,
+            536,
+            725,
+            782
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000087.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000087.jpg",
+      "frame_index": 87,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              461,
+              529
+            ],
+            [
+              784,
+              923
+            ],
+            [
+              291,
+              1482
+            ],
+            [
+              132,
+              1016
+            ]
+          ],
+          "bbox_xywh": [
+            132,
+            529,
+            651,
+            954
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000088.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000088.jpg",
+      "frame_index": 88,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              4,
+              685
+            ],
+            [
+              773,
+              716
+            ],
+            [
+              722,
+              1472
+            ],
+            [
+              32,
+              1380
+            ]
+          ],
+          "bbox_xywh": [
+            4,
+            685,
+            769,
+            787
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000089.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000089.jpg",
+      "frame_index": 89,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              440,
+              0
+            ],
+            [
+              1076,
+              26
+            ],
+            [
+              1058,
+              1349
+            ],
+            [
+              12,
+              687
+            ]
+          ],
+          "bbox_xywh": [
+            12,
+            0,
+            1064,
+            1349
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000090.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000090.jpg",
+      "frame_index": 90,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              499,
+              393
+            ],
+            [
+              904,
+              621
+            ],
+            [
+              668,
+              1259
+            ],
+            [
+              227,
+              1205
+            ]
+          ],
+          "bbox_xywh": [
+            227,
+            393,
+            677,
+            866
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000091.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000091.jpg",
+      "frame_index": 91,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              86,
+              390
+            ],
+            [
+              645,
+              554
+            ],
+            [
+              604,
+              1169
+            ],
+            [
+              20,
+              1116
+            ]
+          ],
+          "bbox_xywh": [
+            20,
+            390,
+            625,
+            779
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000092.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000092.jpg",
+      "frame_index": 92,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              509,
+              500
+            ],
+            [
+              1071,
+              595
+            ],
+            [
+              942,
+              1282
+            ],
+            [
+              409,
+              1318
+            ]
+          ],
+          "bbox_xywh": [
+            409,
+            500,
+            661,
+            818
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "video_20260816_204654_frame_000093.jpg",
+      "source_video": "video_20260816_204654",
+      "source_file": "frame_000093.jpg",
+      "frame_index": 93,
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              163,
+              475
+            ],
+            [
+              953,
+              385
+            ],
+            [
+              1050,
+              1149
+            ],
+            [
+              279,
+              1259
+            ]
+          ],
+          "bbox_xywh": [
+            163,
+            385,
+            887,
+            874
+          ]
+        }
+      ]
+    }
+  ]
+}

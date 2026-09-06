@@ -47,4 +47,16 @@ public final class Lab {
     public static float chroma(float[] lab) {
         return (float) Math.hypot(lab[1], lab[2]);
     }
+
+    /**
+     * True when a centre reading looks like a sticker rather than black plastic or a washed-out
+     * edge. White is high-L and low-chroma; the other five colours are high-chroma. A dark grey
+     * centre is the usual signature of a quadrilateral that landed on the cube body.
+     */
+    public static boolean isStickerCenter(float[] lab) {
+        if (lab == null) return false;
+        float chroma = chroma(lab);
+        if (lab[0] >= 78f && chroma < 22f) return true;
+        return chroma >= 20f;
+    }
 }

@@ -8,6 +8,38 @@ public class CubeCoreTest {
     private static final String SOLVED =
         "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
 
+    @Test public void stickerCenterRejectsBlackPlasticAndKeepsWhite() {
+        assertTrue(Lab.isStickerCenter(Lab.fromRgb(240, 240, 235)));
+        assertTrue(Lab.isStickerCenter(Lab.fromRgb(225, 52, 44)));
+        assertTrue(Lab.isStickerCenter(Lab.fromRgb(245, 145, 35)));
+        assertFalse(Lab.isStickerCenter(new float[]{29f, -4f, 6f}));
+        assertFalse(Lab.isStickerCenter(new float[]{30f, -5f, 8f}));
+        assertFalse("dim grey is not a white centre",
+            Lab.isStickerCenter(new float[]{69f, 0.8f, 5f}));
+    }
+
+    @Test public void junkGreyCentresDoNotCreateAFakeSixthFace() {
+        CubeStateAssembler assembler = new CubeStateAssembler();
+        CubeColor[] palette = {CubeColor.WHITE, CubeColor.RED, CubeColor.GREEN,
+            CubeColor.YELLOW, CubeColor.ORANGE, CubeColor.BLUE};
+        for (CubeColor color : palette) {
+            assembler.put(uniformFace(color, 0));
+            assembler.put(uniformFace(color, 4));
+        }
+        float[][] grey = new float[9][];
+        CubeColor[] unknown = new CubeColor[9];
+        boolean[] reliable = new boolean[9];
+        for (int i = 0; i < 9; i++) {
+            grey[i] = new float[]{29f, -4f, 6f};
+            unknown[i] = CubeColor.UNKNOWN;
+            reliable[i] = true;
+        }
+        assertFalse("grey plastic must not enter the pool",
+            assembler.put(new FaceSample(unknown, grey, reliable, 0.55f)));
+        assertEquals(6, assembler.size());
+        assertTrue(assembler.isComplete());
+    }
+
     @Test public void colorClassifierHandlesStickerPalette() {
         assertEquals(CubeColor.WHITE, CubeColor.classify(240, 240, 235));
         assertEquals(CubeColor.RED, CubeColor.classify(225, 52, 44));
@@ -179,6 +211,7 @@ public class CubeCoreTest {
         for (CubeColor color : new CubeColor[]{CubeColor.WHITE, CubeColor.YELLOW, CubeColor.GREEN,
                 CubeColor.BLUE, CubeColor.RED, CubeColor.ORANGE}) {
             assembler.put(uniformFace(color, 0));
+            assembler.put(uniformFace(color, 2));
         }
         assertEquals(6, assembler.size());
         for (int wobble : new int[]{3, 6, 9}) assembler.put(uniformFace(CubeColor.GREEN, wobble));
@@ -192,6 +225,7 @@ public class CubeCoreTest {
         for (CubeColor color : new CubeColor[]{CubeColor.WHITE, CubeColor.YELLOW, CubeColor.GREEN,
                 CubeColor.BLUE, CubeColor.RED, CubeColor.ORANGE}) {
             assembler.put(uniformFace(color, 0));
+            assembler.put(uniformFace(color, 2));
         }
         assertEquals("all six centres must stay distinct", 6, assembler.size());
         assertTrue(assembler.isComplete());
@@ -269,6 +303,40 @@ public class CubeCoreTest {
             stabilizer.push(driftingFace(CubeColor.GREEN, 2f)));
     }
 
+    /**
+     * The detector's corner ordering flips by a quarter turn whenever the held angle crosses one
+     * of its boundaries. The same stationary face then arrives rotated, and the run must ride
+     * through it — this is what "hold the cube still at any angle" has to mean.
+     */
+    @Test public void stabilizerSurvivesAQuarterTurnOfTheDetectorOrdering() {
+        FaceStabilizer stabilizer = new FaceStabilizer(2);
+        // Two horizontal bands: low split (passes the straddle gate) yet rotation-sensitive.
+        FaceSample upright = bandedFace();
+        assertNull(stabilizer.push(upright));
+        FaceSample emitted = stabilizer.push(upright.rotateClockwise().rotateClockwise().rotateClockwise());
+        assertNotNull("a quarter-turn of the ordering must not reset the run", emitted);
+        // The emitted sample is in the run's canonical roll frame.
+        assertArrayEquals(upright.stickers, emitted.stickers);
+    }
+
+    /**
+     * A two-band pattern face: the bands are the same colour under different exposure, so the
+     * split stays far under the straddle gate, yet a quarter turn visibly rearranges the cells.
+     */
+    private static FaceSample bandedFace() {
+        CubeColor[] stickers = new CubeColor[9];
+        float[][] lab = new float[9][];
+        int[] rgb = rgbOf(CubeColor.RED);
+        for (int cell = 0; cell < 9; cell++) {
+            int shade = cell < 6 ? 0 : 24;
+            stickers[cell] = CubeColor.RED;
+            lab[cell] = Lab.fromRgb(clamp(rgb[0] + shade), clamp(rgb[1] + shade), clamp(rgb[2] + shade));
+        }
+        boolean[] reliable = new boolean[9];
+        java.util.Arrays.fill(reliable, true);
+        return new FaceSample(stickers, lab, reliable, 1f);
+    }
+
     @Test public void stabilizerRejectsAnUnreliableCentre() {
         FaceStabilizer stabilizer = new FaceStabilizer(2);
         FaceSample face = driftingFace(CubeColor.GREEN, 0f);
@@ -339,6 +407,181 @@ public class CubeCoreTest {
         tooFew[0] = CubeColor.WHITE;
         assertFalse("a mostly unreadable face proves nothing",
             CubeMoves.faceMatchesAnyRotation(face, new FaceSample(tooFew, 1f)));
+    }
+
+    @Test public void minSideFractionMeasuresTheShortestEdgeAgainstTheShortFrameEdge() {
+        CubeColor[] stickers = new CubeColor[9];
+        java.util.Arrays.fill(stickers, CubeColor.BLUE);
+        FaceSample sample = new FaceSample(stickers, 1f);
+        // A 100px square anywhere on a 200x400 frame reads as half the short edge.
+        DetectedFace square = new DetectedFace(sample,
+            new float[]{40, 40, 140, 40, 140, 140, 40, 140}, 200, 400, 1f);
+        assertEquals(0.5f, square.minSideFraction(), 1e-4f);
+        // A slanted quad must be measured by its true shortest side, not its bounding box.
+        DetectedFace slanted = new DetectedFace(sample,
+            new float[]{0, 0, 96, 28, 68, 124, -28, 96}, 400, 400, 1f);
+        assertTrue(slanted.minSideFraction() < 0.26f);
+        DetectedFace tiny = new DetectedFace(sample,
+            new float[]{0, 0, 3, 0, 3, 3, 0, 3}, 400, 800, 1f);
+        assertTrue("a distant face must fall under the capture gate", tiny.minSideFraction() < 0.02f);
+    }
+
+    @Test public void stabilizerProgressTracksTheSteadyRun() {
+        FaceStabilizer stabilizer = new FaceStabilizer(3);
+        assertEquals(0f, stabilizer.progress(), 1e-6f);
+        assertNull(stabilizer.push(driftingFace(CubeColor.RED, 0f)));
+        assertEquals(1f / 3f, stabilizer.progress(), 1e-4f);
+        assertNull(stabilizer.push(driftingFace(CubeColor.RED, 4f)));
+        assertEquals(2f / 3f, stabilizer.progress(), 1e-4f);
+        assertNotNull(stabilizer.push(driftingFace(CubeColor.RED, 8f)));
+        assertEquals("a capture consumed the run", 0f, stabilizer.progress(), 1e-6f);
+    }
+
+    @Test public void stabilizerProgressSurvivesDroppedFramesButNotSustainedOnes() {
+        FaceStabilizer stabilizer = new FaceStabilizer(3);
+        assertNull(stabilizer.push(driftingFace(CubeColor.GREEN, 0f)));
+        assertNull(stabilizer.push(null));
+        assertEquals("one dropped frame must not reset the ring", 1f / 3f,
+            stabilizer.progress(), 1e-4f);
+        for (int i = 0; i < 3; i++) stabilizer.push(null);
+        assertEquals("the cube moved away, so the ring empties", 0f, stabilizer.progress(), 1e-6f);
+    }
+
+    /** A scan missing one face must still finish: the sixth follows from the cube's structure. */
+    @Test public void assemblerInfersTheUnscannedFace() {
+        String state = SOLVED;
+        for (String move : "R U2 F' L D B2 R'".split(" ")) state = CubeMoves.apply(state, move);
+        CubeStateAssembler assembler = new CubeStateAssembler();
+        int face = 0;
+        for (char letter : "URFDLB".toCharArray()) {
+            if (letter == 'D') continue;
+            assembler.put(canonicalFace(state, letter, face % 4));
+            face++;
+        }
+        assertEquals(5, assembler.size());
+        assertFalse(assembler.isComplete());
+
+        String assembled = assembler.assembleFromFiveFaces();
+        assertNotNull("five faces must be enough to assemble", assembled);
+        assertEquals(state, assembled);
+        assertEquals(0, Tools.verify(assembled));
+        assertNotNull(assembler.palette());
+        assertEquals(CubeColor.fromFace('D'), assembler.palette().missingColor());
+    }
+
+    @Test public void inferredPaletteLeavesTheUnseenColourUnnamedUntilItIsSeen() {
+        String state = SOLVED;
+        for (String move : "L' U F2 R D' B".split(" ")) state = CubeMoves.apply(state, move);
+        CubeStateAssembler assembler = new CubeStateAssembler();
+        int face = 0;
+        for (char letter : "URFDLB".toCharArray()) {
+            if (letter == 'B') continue;
+            assembler.put(canonicalFace(state, letter, face % 4));
+            face++;
+        }
+        assertNotNull(assembler.assembleFromFiveFaces());
+        ScanPalette palette = assembler.palette();
+        assertEquals(CubeColor.fromFace('B'), palette.missingColor());
+
+        FaceSample unseen = canonicalFace(state, 'B', 0);
+        FaceSample relabelled = palette.relabel(unseen);
+        for (int cell = 0; cell < 9; cell++) {
+            CubeColor truth = CubeColor.fromFace(state.charAt(45 + cell));
+            if (truth == CubeColor.BLUE) {
+                assertEquals("unseen blue cell " + cell, CubeColor.UNKNOWN, relabelled.stickers[cell]);
+            } else {
+                assertEquals("scanned colour on the unseen face, cell " + cell,
+                    truth, relabelled.stickers[cell]);
+            }
+        }
+
+        // The first steady look at the missing colour completes the palette.
+        palette.learnMissing(unseen.centerLab());
+        assertNull(palette.missingColor());
+        FaceSample renamed = palette.relabel(unseen);
+        for (int cell = 0; cell < 9; cell++) {
+            assertEquals("cell " + cell, CubeColor.fromFace(state.charAt(45 + cell)),
+                renamed.stickers[cell]);
+        }
+    }
+
+    @Test public void fiveFacesAreNotForceSplitIntoSix() {
+        String state = SOLVED;
+        for (String move : "R U2 F' L D B2 R'".split(" ")) state = CubeMoves.apply(state, move);
+        CubeStateAssembler assembler = new CubeStateAssembler();
+        int face = 0;
+        for (char letter : "URFDLB".toCharArray()) {
+            if (letter == 'D') continue;
+            assembler.put(canonicalFace(state, letter, face % 4));
+            assembler.put(canonicalFace(state, letter, (face + 1) % 4));
+            face++;
+        }
+        assertEquals(5, assembler.size());
+        assertNull("five real faces must not be split into a fake sixth",
+            assembler.assembleLegalState());
+        assertEquals(state, assembler.assembleFromFiveFaces());
+    }
+
+    @Test public void paletteLearnsTheMissingColourFromAnOutlierSticker() {
+        String state = SOLVED;
+        for (String move : "L' U F2 R D' B".split(" ")) state = CubeMoves.apply(state, move);
+        CubeStateAssembler assembler = new CubeStateAssembler();
+        int face = 0;
+        for (char letter : "URFDLB".toCharArray()) {
+            if (letter == 'B') continue;
+            assembler.put(canonicalFace(state, letter, face % 4));
+            face++;
+        }
+        assertNotNull(assembler.assembleFromFiveFaces());
+        ScanPalette palette = assembler.palette();
+        assertEquals(CubeColor.fromFace('B'), palette.missingColor());
+
+        // A scanned face that still carries a blue sticker completes the palette without
+        // waiting for the blue centre to face the camera.
+        boolean learned = false;
+        for (char letter : "URFDL".toCharArray()) {
+            if (palette.maybeLearn(canonicalFace(state, letter, 0))) {
+                learned = true;
+                break;
+            }
+        }
+        assertTrue("a scrambled cube shows the missing colour on the faces already scanned", learned);
+        assertNull(palette.missingColor());
+        FaceSample unseen = canonicalFace(state, 'B', 0);
+        FaceSample renamed = palette.relabel(unseen);
+        assertEquals(CubeColor.BLUE, renamed.stickers[4]);
+    }
+
+    @Test public void paletteDoesNotLearnGlareAsTheMissingColour() {
+        String state = SOLVED;
+        for (String move : "L' U F2 R D' B".split(" ")) state = CubeMoves.apply(state, move);
+        CubeStateAssembler assembler = new CubeStateAssembler();
+        int face = 0;
+        for (char letter : "URFDLB".toCharArray()) {
+            if (letter == 'B') continue;
+            assembler.put(canonicalFace(state, letter, face % 4));
+            face++;
+        }
+        assertNotNull(assembler.assembleFromFiveFaces());
+        ScanPalette palette = assembler.palette();
+        // A washed-out grey patch is far from every prototype, but it is not blue.
+        assertFalse(palette.maybeLearn(uniformFace(CubeColor.UNKNOWN, 0)));
+        assertEquals(CubeColor.fromFace('B'), palette.missingColor());
+    }
+
+    /** One observed face with exact canonical readings, at an arbitrary roll. */
+    private static FaceSample canonicalFace(String state, char letter, int rolls) {
+        int base = "URFDLB".indexOf(letter) * 9;
+        CubeColor[] stickers = new CubeColor[9];
+        float[][] lab = new float[9][];
+        for (int cell = 0; cell < 9; cell++) {
+            stickers[cell] = CubeColor.fromFace(state.charAt(base + cell));
+            int[] rgb = rgbOf(stickers[cell]);
+            lab[cell] = Lab.fromRgb(rgb[0], rgb[1], rgb[2]);
+        }
+        FaceSample sample = new FaceSample(stickers, lab, 1f);
+        for (int i = 0; i < rolls; i++) sample = sample.rotateClockwise();
+        return sample;
     }
 
     private static FaceSample driftingFace(CubeColor color, float drift) {

@@ -1,0 +1,660 @@
+{
+  "format": "cube-mark/v2",
+  "created_at": "2026-09-05T11:09:09.926Z",
+  "shape": "quad",
+  "max_boxes_per_frame": 3,
+  "frames": [
+    {
+      "frame_index": 1,
+      "file_name": "frame_000001.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              204,
+              611
+            ],
+            [
+              1048,
+              639
+            ],
+            [
+              860,
+              1187
+            ],
+            [
+              273,
+              1213
+            ]
+          ],
+          "bbox_xywh": [
+            204,
+            611,
+            843,
+            602
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              261,
+              372
+            ],
+            [
+              789,
+              411
+            ],
+            [
+              1048,
+              621
+            ],
+            [
+              214,
+              590
+            ]
+          ],
+          "bbox_xywh": [
+            214,
+            372,
+            833,
+            249
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 2,
+      "file_name": "frame_000002.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              153,
+              118
+            ],
+            [
+              968,
+              272
+            ],
+            [
+              855,
+              1041
+            ],
+            [
+              91,
+              964
+            ]
+          ],
+          "bbox_xywh": [
+            91,
+            118,
+            877,
+            923
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 3,
+      "file_name": "frame_000003.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              248,
+              272
+            ],
+            [
+              925,
+              372
+            ],
+            [
+              881,
+              1026
+            ],
+            [
+              143,
+              923
+            ]
+          ],
+          "bbox_xywh": [
+            143,
+            272,
+            782,
+            754
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 4,
+      "file_name": "frame_000004.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              284,
+              288
+            ],
+            [
+              830,
+              357
+            ],
+            [
+              1045,
+              695
+            ],
+            [
+              296,
+              672
+            ]
+          ],
+          "bbox_xywh": [
+            284,
+            288,
+            761,
+            408
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              289,
+              695
+            ],
+            [
+              1040,
+              711
+            ],
+            [
+              809,
+              1116
+            ],
+            [
+              279,
+              1121
+            ]
+          ],
+          "bbox_xywh": [
+            279,
+            695,
+            761,
+            426
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 5,
+      "file_name": "frame_000005.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              173,
+              60
+            ],
+            [
+              986,
+              234
+            ],
+            [
+              883,
+              1003
+            ],
+            [
+              97,
+              913
+            ]
+          ],
+          "bbox_xywh": [
+            97,
+            60,
+            890,
+            943
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 6,
+      "file_name": "frame_000006.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              212,
+              157
+            ],
+            [
+              994,
+              331
+            ],
+            [
+              886,
+              1072
+            ],
+            [
+              125,
+              1005
+            ]
+          ],
+          "bbox_xywh": [
+            125,
+            157,
+            869,
+            915
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 7,
+      "file_name": "frame_000007.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              89,
+              526
+            ],
+            [
+              858,
+              549
+            ],
+            [
+              737,
+              1162
+            ],
+            [
+              161,
+              1152
+            ]
+          ],
+          "bbox_xywh": [
+            89,
+            526,
+            769,
+            636
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 8,
+      "file_name": "frame_000008.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              214,
+              254
+            ],
+            [
+              889,
+              349
+            ],
+            [
+              873,
+              990
+            ],
+            [
+              155,
+              954
+            ]
+          ],
+          "bbox_xywh": [
+            155,
+            254,
+            733,
+            736
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 9,
+      "file_name": "frame_000009.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              94,
+              495
+            ],
+            [
+              468,
+              295
+            ],
+            [
+              1014,
+              398
+            ],
+            [
+              825,
+              754
+            ]
+          ],
+          "bbox_xywh": [
+            94,
+            295,
+            920,
+            459
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              84,
+              523
+            ],
+            [
+              819,
+              775
+            ],
+            [
+              707,
+              1213
+            ],
+            [
+              207,
+              1018
+            ]
+          ],
+          "bbox_xywh": [
+            84,
+            523,
+            736,
+            690
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 10,
+      "file_name": "frame_000010.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              263,
+              242
+            ],
+            [
+              958,
+              485
+            ],
+            [
+              796,
+              1182
+            ],
+            [
+              38,
+              954
+            ]
+          ],
+          "bbox_xywh": [
+            38,
+            242,
+            920,
+            941
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 11,
+      "file_name": "frame_000011.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              325,
+              206
+            ],
+            [
+              976,
+              567
+            ],
+            [
+              799,
+              1269
+            ],
+            [
+              58,
+              1059
+            ]
+          ],
+          "bbox_xywh": [
+            58,
+            206,
+            918,
+            1064
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 12,
+      "file_name": "frame_000012.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              525,
+              500
+            ],
+            [
+              901,
+              621
+            ],
+            [
+              860,
+              1116
+            ],
+            [
+              502,
+              1198
+            ]
+          ],
+          "bbox_xywh": [
+            502,
+            500,
+            400,
+            697
+          ]
+        },
+        {
+          "id": 2,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              166,
+              593
+            ],
+            [
+              512,
+              498
+            ],
+            [
+              481,
+              1193
+            ],
+            [
+              163,
+              1070
+            ]
+          ],
+          "bbox_xywh": [
+            163,
+            498,
+            349,
+            695
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 13,
+      "file_name": "frame_000013.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              235,
+              488
+            ],
+            [
+              825,
+              436
+            ],
+            [
+              894,
+              1041
+            ],
+            [
+              284,
+              1098
+            ]
+          ],
+          "bbox_xywh": [
+            235,
+            436,
+            659,
+            661
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 14,
+      "file_name": "frame_000014.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              258,
+              490
+            ],
+            [
+              876,
+              500
+            ],
+            [
+              881,
+              1087
+            ],
+            [
+              294,
+              1111
+            ]
+          ],
+          "bbox_xywh": [
+            258,
+            490,
+            623,
+            620
+          ]
+        }
+      ]
+    },
+    {
+      "frame_index": 15,
+      "file_name": "frame_000015.jpg",
+      "width": 1080,
+      "height": 1920,
+      "annotations": [
+        {
+          "id": 1,
+          "category": "rubiks_cube",
+          "quad_xy": [
+            [
+              225,
+              500
+            ],
+            [
+              825,
+              480
+            ],
+            [
+              848,
+              1077
+            ],
+            [
+              253,
+              1098
+            ]
+          ],
+          "bbox_xywh": [
+            225,
+            480,
+            623,
+            618
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -9,11 +9,18 @@ deliberately wider than the image so a corner just outside the frame is still re
 """
 
 import argparse
+import json
 import os
+import sys
+
+import cv2
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
+sys.path.insert(0, os.path.dirname(__file__))
+from real_dataset import INPUT_HEIGHT, INPUT_WIDTH, RealCubeDataset, load_packed
 
 # Heatmap coordinates span this range in normalised image space, letting the model place a corner
 # slightly outside the frame instead of clamping it to the border.
@@ -210,9 +217,72 @@ def usable_indices(root):
     return np.array(keep, dtype=np.int64)
 
 
+def save_val_preview(model, dataset, device, path, count=12):
+    """Draws ground-truth (lime) and predicted (red) quads on a strip of val frames."""
+    if dataset is None or len(dataset) == 0:
+        return
+    model.eval()
+    tiles = []
+    with torch.no_grad():
+        for i in range(min(count, len(dataset))):
+            image, corners, present = dataset[i]
+            predicted, presence, _ = model(image.unsqueeze(0).to(device))
+            rgb = (image.permute(1, 2, 0).numpy() * 255).clip(0, 255).astype(np.uint8)
+            bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+            bgr = cv2.resize(bgr, (INPUT_WIDTH * 3, INPUT_HEIGHT * 3), interpolation=cv2.INTER_NEAREST)
+            h, w = bgr.shape[:2]
+            if present.item() > 0.5:
+                gt = corners.numpy().reshape(4, 2)
+                gt_px = np.stack([gt[:, 0] * w, gt[:, 1] * h], axis=1).astype(np.int32)
+                cv2.polylines(bgr, [gt_px], True, (0, 220, 80), 2)
+            pred = predicted[0].cpu().numpy().reshape(4, 2)
+            pred_px = np.stack([pred[:, 0] * w, pred[:, 1] * h], axis=1).astype(np.int32)
+            color = (0, 0, 255) if presence.sigmoid().item() >= 0.5 else (160, 160, 160)
+            cv2.polylines(bgr, [pred_px], True, color, 2)
+            label = f'p={presence.sigmoid().item():.2f}'
+            cv2.putText(bgr, label, (8, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
+            tiles.append(bgr)
+    cols = min(4, len(tiles))
+    rows = int(np.ceil(len(tiles) / cols))
+    th, tw = tiles[0].shape[:2]
+    canvas = np.full((rows * th, cols * tw, 3), 20, np.uint8)
+    for i, tile in enumerate(tiles):
+        r, c = divmod(i, cols)
+        canvas[r * th:(r + 1) * th, c * tw:(c + 1) * tw] = tile
+    cv2.imwrite(path, canvas)
+    model.train()
+
+
+def build_datasets(args):
+    train_sets, val_dataset = [], None
+    if args.data:
+        usable = usable_indices(args.data)
+        rng = np.random.default_rng(0)
+        order = usable[rng.permutation(len(usable))]
+        n_val = min(args.val, max(1, len(order) // 5))
+        val_idx, train_idx = order[:n_val], order[n_val:]
+        train_sets.append(SynthDataset(args.data, train_idx, True))
+        val_dataset = SynthDataset(args.data, val_idx, False)
+        print(f'synth {len(train_idx)} train / {len(val_idx)} val')
+    if args.real:
+        _, split, _ = load_packed(args.real)
+        real_train = RealCubeDataset(args.real, split['train'], True,
+                                     args.input_width, args.input_height)
+        real_val = RealCubeDataset(args.real, split['val'], False,
+                                   args.input_width, args.input_height)
+        train_sets.append(real_train)
+        val_dataset = real_val
+        print(f'real {len(real_train)} train / {len(real_val)} val')
+    if not train_sets:
+        raise SystemExit('provide --data and/or --real')
+    train_dataset = train_sets[0] if len(train_sets) == 1 else torch.utils.data.ConcatDataset(train_sets)
+    return train_dataset, val_dataset
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', required=True)
+    parser.add_argument('--data', default=None, help='synthetic memmap directory (images.npy)')
+    parser.add_argument('--real', default=None, help='packed real set from pack_real_dataset.py')
     parser.add_argument('--epochs', type=int, default=18)
     parser.add_argument('--batch', type=int, default=128)
     parser.add_argument('--lr', type=float, default=3e-3)
@@ -220,23 +290,30 @@ def main():
     parser.add_argument('--val', type=int, default=3000)
     parser.add_argument('--out', default='models')
     parser.add_argument('--workers', type=int, default=6)
+    parser.add_argument('--input-width', type=int, default=INPUT_WIDTH)
+    parser.add_argument('--input-height', type=int, default=INPUT_HEIGHT)
     args = parser.parse_args()
+    if not args.data and not args.real:
+        parser.error('provide --data and/or --real')
 
     os.makedirs(args.out, exist_ok=True)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    usable = usable_indices(args.data)
-    total = len(usable)
-    rng = np.random.default_rng(0)
-    order = usable[rng.permutation(total)]
-    val_idx, train_idx = order[:args.val], order[args.val:]
-    print(f'{len(train_idx)} train / {len(val_idx)} val on {device}')
+    torch.manual_seed(0)
+    np.random.seed(0)
 
+    train_dataset, val_dataset = build_datasets(args)
+    print(f'{len(train_dataset)} train / {len(val_dataset)} val on {device}')
+
+    drop_last = len(train_dataset) >= args.batch * 2
+    workers = args.workers if len(train_dataset) > 32 else 0
     train_loader = torch.utils.data.DataLoader(
-        SynthDataset(args.data, train_idx, True), batch_size=args.batch, shuffle=True,
-        num_workers=args.workers, pin_memory=True, drop_last=True, persistent_workers=True)
+        train_dataset, batch_size=min(args.batch, len(train_dataset)), shuffle=True,
+        num_workers=workers, pin_memory=device == 'cuda', drop_last=drop_last,
+        persistent_workers=workers > 0)
     val_loader = torch.utils.data.DataLoader(
-        SynthDataset(args.data, val_idx, False), batch_size=args.batch, shuffle=False,
-        num_workers=2, pin_memory=True, persistent_workers=True)
+        val_dataset, batch_size=min(args.batch, len(val_dataset)), shuffle=False,
+        num_workers=min(2, workers), pin_memory=device == 'cuda',
+        persistent_workers=workers > 0)
 
     model = CubeFaceNet(args.width).to(device)
     params = sum(p.numel() for p in model.parameters())
@@ -287,16 +364,30 @@ def main():
               f'corner_err={error:.4f} presence_acc={accuracy:.4f}', flush=True)
         if error < best:
             best = error
-            torch.save({'state': model.state_dict(), 'width': args.width},
+            torch.save({'state': model.state_dict(), 'width': args.width,
+                        'input_width': args.input_width, 'input_height': args.input_height},
                        os.path.join(args.out, 'cubeface.pt'))
+            save_val_preview(model, val_dataset, device,
+                             os.path.join(args.out, 'val_preview.jpg'))
 
     print(f'best mean corner error {best:.4f} of image width')
-    export(os.path.join(args.out, 'cubeface.pt'), os.path.join(args.out, 'cubeface.onnx'), args.width)
+    metrics = {
+        'best_corner_err': best,
+        'train_size': len(train_dataset),
+        'val_size': len(val_dataset),
+        'width': args.width,
+        'input_width': args.input_width,
+        'input_height': args.input_height,
+        'epochs': args.epochs,
+    }
+    open(os.path.join(args.out, 'metrics.json'), 'w').write(json.dumps(metrics, indent=2))
+    export(os.path.join(args.out, 'cubeface.pt'), os.path.join(args.out, 'cubeface.onnx'), args.width,
+           args.input_height, args.input_width)
 
 
-def export(checkpoint_path, onnx_path, width):
+def export(checkpoint_path, onnx_path, width, height=INPUT_HEIGHT, input_width=INPUT_WIDTH):
     model = CubeFaceNet(width)
-    model.load_state_dict(torch.load(checkpoint_path, map_location='cpu')['state'])
+    model.load_state_dict(torch.load(checkpoint_path, map_location='cpu', weights_only=False)['state'])
     model.eval()
 
     class Exportable(nn.Module):
@@ -309,7 +400,7 @@ def export(checkpoint_path, onnx_path, width):
             corners, presence, _ = self.inner(x)
             return corners, torch.sigmoid(presence)
 
-    dummy = torch.zeros(1, 3, 160, 160)
+    dummy = torch.zeros(1, 3, height, input_width)
     # Height and width stay dynamic: the network is fully convolutional, and the camera frame is
     # portrait, so being able to feed the whole frame rather than a square crop matters.
     torch.onnx.export(Exportable(model), dummy, onnx_path,

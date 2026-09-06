@@ -1,0 +1,3 @@
+threshold=0.85
+input=160x288
+started=1788616096981

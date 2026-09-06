@@ -20,12 +20,21 @@ import java.util.Set;
 public final class CubeStateAssembler {
     private static final char[] ORDER = {'U', 'R', 'F', 'D', 'L', 'B'};
     private static final int POOL_LIMIT = 40;
+    /**
+     * Looks a colour group needs before the scan may complete on it. One look cannot be told
+     * apart from a straddle or a fluke; two independent looks agreeing is the cheapest
+     * redundancy the user can be asked for.
+     */
+    private static final int MIN_LOOKS_PER_FACE = 2;
     /** How many alternative prototype namings to try before giving up on a legal state. */
     private static final int NAMING_RETRIES = 6;
 
     private final List<FaceSample> pool = new ArrayList<>();
     private int lastGroupCount;
     private ScanPalette palette;
+    private String lastFailure = "";
+    /** Remaining attempts across the retry ladders of one {@link #assemble()} call. */
+    private int searchBudget;
 
     /** The colour prototypes behind the last successful assembly, for naming later frames. */
     public ScanPalette palette() { return palette; }
@@ -35,25 +44,113 @@ public final class CubeStateAssembler {
         if (face == null) return false;
         if (face.lab == null) {
             if (face.center() == CubeColor.UNKNOWN || face.containsUnknown()) return false;
-        } else if (!face.centerReliable()) {
+        } else if (!face.centerReliable() || !Lab.isStickerCenter(face.centerLab())) {
             return false;
         }
+        // No spatial-split gate here, deliberately. On a scrambled cube an honest face's columns
+        // are random colour mixes whose means sit as far apart as a straddling quad's two halves
+        // (measured: honest 58–105 vs straddle 60–90), so any absolute cut rejects honest looks —
+        // and every rejected look is a slower scan. Straddles are dealt with where evidence
+        // accumulates: per-colour clustering, the consensus close-filter, and the retry ladder.
         pool.add(face);
-        if (pool.size() > POOL_LIMIT) pool.remove(0);
+        if (pool.size() > POOL_LIMIT) evict();
         int groups = distinctFaceCount();
         boolean grew = groups > lastGroupCount;
         lastGroupCount = groups;
         return grew;
     }
 
+    /**
+     * Makes room by dropping the least valuable observation, not the oldest one.
+     *
+     * <p>Plain FIFO eviction was a trap: once the pool filled during a long scan it discarded the
+     * first faces' only honest looks, their colours silently vanished, and the scan regressed to
+     * five groups fed with whatever remained — including the one face whose every look was a
+     * straddle. Surplus-group members go first (the clusterer already called them junk), then the
+     * oldest member of the largest colour group, so thin groups always survive.
+     */
+    private void evict() {
+        int[] label = clusteredLabels();
+        int victim = 0;
+        if (label == null) {
+            victim = 0;
+        } else {
+            int surplus = -1;
+            int largest = -1, largestSize = 0;
+            java.util.Map<Integer, Integer> count = new java.util.HashMap<>();
+            for (int i = 0; i < label.length; i++) {
+                int id = label[i];
+                if (id < 0) { surplus = i; continue; }
+                int size = count.getOrDefault(id, 0) + 1;
+                count.put(id, size);
+                if (size > largestSize) { largestSize = size; largest = id; }
+            }
+            if (surplus >= 0) {
+                victim = surplus;
+            } else {
+                for (int i = 0; i < label.length; i++) {
+                    if (label[i] == largest) { victim = i; break; }
+                }
+            }
+        }
+        pool.remove(victim);
+    }
+
     public int size() { return lastGroupCount; }
-    public boolean isComplete() { return lastGroupCount >= 6; }
+
+    /**
+     * True when six colour groups exist AND each holds at least two looks.
+     *
+     * <p>A colour seen exactly once is not a collected face: its single look may be a straddle
+     * or a fluke, and one bad group is enough to fail every assembly. Requiring a second look
+     * turns the failure mode from "solve fails, user has no idea why" into "that colour's dot
+     * stays unlit" — the user knows which face to show again.
+     */
+    public boolean isComplete() {
+        if (lastGroupCount != 6) return false;
+        int[] label = clusteredLabels();
+        if (label == null || countGroups(label) != 6) return false;
+        return smallestGroup(label) >= MIN_LOOKS_PER_FACE;
+    }
+
+    /** Provisional centre colours of the groups that have the minimum evidence. */
+    public Set<CubeColor> establishedColors() {
+        Set<CubeColor> colors = EnumSet.noneOf(CubeColor.class);
+        int[] label = clusteredLabels();
+        if (label == null) return colors;
+        java.util.Map<Integer, CubeColor> sample = new java.util.HashMap<>();
+        java.util.Map<Integer, Integer> count = new java.util.HashMap<>();
+        for (int i = 0; i < label.length; i++) {
+            int id = label[i];
+            if (id < 0) continue;
+            count.put(id, count.getOrDefault(id, 0) + 1);
+            sample.putIfAbsent(id, pool.get(i).center());
+        }
+        for (int id : count.keySet()) {
+            if (count.get(id) >= MIN_LOOKS_PER_FACE) colors.add(sample.get(id));
+        }
+        colors.remove(CubeColor.UNKNOWN);
+        return colors;
+    }
+
+    private int smallestGroup(int[] label) {
+        java.util.Map<Integer, Integer> count = new java.util.HashMap<>();
+        for (int id : label) {
+            if (id < 0) continue;
+            count.put(id, count.getOrDefault(id, 0) + 1);
+        }
+        int smallest = Integer.MAX_VALUE;
+        for (int size : count.values()) smallest = Math.min(smallest, size);
+        return smallest;
+    }
+    public String lastFailure() { return lastFailure; }
     public List<FaceSample> observations() { return new ArrayList<>(pool); }
 
     public void clear() {
         pool.clear();
         lastGroupCount = 0;
         palette = null;
+        lastFailure = "";
     }
 
     /** Provisional centre colours of the grouped faces, for progress display only. */
@@ -66,24 +163,38 @@ public final class CubeStateAssembler {
 
     /**
      * Two observations count as the same face when they sit closer together than this share of the
-     * whole pool's colour spread. It is a ratio, not a distance, so a warm room or a dim frame moves
-     * every reading together and changes nothing. The six sticker colours are designed to be told
-     * apart, so even the tightest genuine pair, red and orange, stays well above this.
+     * whole pool's colour spread. Real scans have a widest gap around 140 (white vs red) and a
+     * red–orange gap around 39; 0.30 of 140 is 42 and merged red with orange. A floor of 32 joins
+     * lighting variants (~20–28) without bridging red and orange.
      */
-    private static final double SAME_FACE_SHARE = 0.30;
+    private static final double SAME_FACE_SHARE = 0.20;
+    /** Floor so a pool that only contains red and orange does not split each colour in two. */
+    private static final double SAME_FACE_FLOOR = 32.0;
+    /**
+     * A look whose left/right or top/bottom Lab means differ by roughly this is shaped like a quad
+     * sitting on an edge. Never used to reject a look outright — honest scrambled faces reach the
+     * same values — but it ranks groups when the assembler must decide which face to distrust.
+     */
+    static final float STRADDLE_SPLIT = 52f;
 
     /**
      * How many distinct face colours the pool supports.
      *
-     * <p>Merging is only ever forced once there are more than six groups, since a cube has six
-     * colours. Below that, groups are joined only when they are close relative to the pool's own
-     * spread, so nothing depends on an absolute colour distance.
+     * <p>Extra groups are dropped, not force-merged. Force-merging a seventh junk cluster into six
+     * is what glued red to orange and then reported 6/6 on an illegal colouring.
      */
     private int distinctFaceCount() {
+        int[] label = clusteredLabels();
+        if (label == null) return Math.min(pool.size(), countByEnum());
+        return countGroups(label);
+    }
+
+    /** Labels after relative merge and dropping surplus weak groups. Null if Lab is incomplete. */
+    private int[] clusteredLabels() {
         List<float[]> centers = centersWithLab();
-        if (centers.size() != pool.size()) return Math.min(pool.size(), countByEnum());
-        if (centers.isEmpty()) return 0;
-        return Math.min(6, countGroups(mergeRelatively(centers)));
+        if (centers.size() != pool.size() || centers.isEmpty()) return null;
+        int[] label = mergeRelatively(centers);
+        return dropExtraGroups(label);
     }
 
     private int countByEnum() {
@@ -102,7 +213,7 @@ public final class CubeStateAssembler {
         return centers;
     }
 
-    /** Joins groups that are close relative to the pool's overall spread, never past six groups. */
+    /** Joins groups that are close relative to the pool's overall spread. */
     private static int[] mergeRelatively(List<float[]> points) {
         double widest = 0;
         for (int i = 0; i < points.size(); i++) {
@@ -110,7 +221,7 @@ public final class CubeStateAssembler {
                 widest = Math.max(widest, Lab.distance(points.get(i), points.get(j)));
             }
         }
-        double cut = widest * SAME_FACE_SHARE;
+        double cut = Math.max(SAME_FACE_FLOOR, widest * SAME_FACE_SHARE);
 
         int[] label = new int[points.size()];
         for (int i = 0; i < label.length; i++) label[i] = i;
@@ -119,24 +230,59 @@ public final class CubeStateAssembler {
             double best = Double.MAX_VALUE;
             int mergeA = -1, mergeB = -1;
             for (int a = 0; a < label.length; a++) {
+                if (label[a] < 0) continue;
                 for (int b = a + 1; b < label.length; b++) {
-                    if (label[a] == label[b]) continue;
+                    if (label[b] < 0 || label[a] == label[b]) continue;
                     double spread = linkage(points, label, label[a], label[b]);
                     if (spread < best) { best = spread; mergeA = label[a]; mergeB = label[b]; }
                 }
             }
-            if (mergeA < 0) break;
-            // Above six groups the cube itself forces a merge; below, only closeness justifies one.
-            if (groups <= 6 && best > cut) break;
+            if (mergeA < 0 || best > cut) break;
             for (int i = 0; i < label.length; i++) if (label[i] == mergeB) label[i] = mergeA;
             groups--;
         }
         return label;
     }
 
+    /**
+     * Surplus clusters are discarded rather than merged. Merging the extra one was gluing red to
+     * orange whenever a junk grey centre made a seventh group.
+     */
+    private int[] dropExtraGroups(int[] label) {
+        while (countGroups(label) > 6) {
+            int weak = weakestGroup(label);
+            if (weak < 0) break;
+            for (int i = 0; i < label.length; i++) if (label[i] == weak) label[i] = -1;
+        }
+        return label;
+    }
+
+    private int weakestGroup(int[] label) {
+        java.util.Map<Integer, Double> score = new java.util.HashMap<>();
+        java.util.Map<Integer, Integer> count = new java.util.HashMap<>();
+        for (int i = 0; i < label.length; i++) {
+            int id = label[i];
+            if (id < 0) continue;
+            FaceSample face = pool.get(i);
+            double add = face.confidence + (Lab.isStickerCenter(face.centerLab()) ? 100.0 : 0.0);
+            score.put(id, score.getOrDefault(id, 0.0) + add);
+            count.put(id, count.getOrDefault(id, 0) + 1);
+        }
+        int weak = -1;
+        double worst = Double.MAX_VALUE;
+        for (int id : score.keySet()) {
+            double mean = score.get(id) / Math.max(1, count.get(id));
+            if (mean < worst) { worst = mean; weak = id; }
+        }
+        return weak;
+    }
+
     private static int countGroups(int[] label) {
         List<Integer> seen = new ArrayList<>();
-        for (int value : label) if (!seen.contains(value)) seen.add(value);
+        for (int value : label) {
+            if (value < 0) continue;
+            if (!seen.contains(value)) seen.add(value);
+        }
         return seen.size();
     }
 
@@ -153,53 +299,45 @@ public final class CubeStateAssembler {
         return worst;
     }
 
-    private static int[] partition(List<float[]> points, int k) {
-        int[] label = new int[points.size()];
-        for (int i = 0; i < label.length; i++) label[i] = i;
-        int groups = points.size();
-        while (groups > k) {
-            double best = Double.MAX_VALUE;
-            int mergeA = -1, mergeB = -1;
-            for (int a = 0; a < label.length; a++) {
-                for (int b = a + 1; b < label.length; b++) {
-                    if (label[a] == label[b]) continue;
-                    double spread = linkage(points, label, label[a], label[b]);
-                    if (spread < best) { best = spread; mergeA = label[a]; mergeB = label[b]; }
-                }
-            }
-            if (mergeA < 0) break;
-            for (int i = 0; i < label.length; i++) if (label[i] == mergeB) label[i] = mergeA;
-            groups--;
+    /**
+     * Best-effort assembly. Six grouped faces are tried first; if they cannot form a legal cube
+     * — usually because a straddling quad contaminated one colour — the noisiest face is dropped
+     * and rebuilt from the other five, the same way a five-face scan infers the missing side.
+     */
+    public String assemble() {
+        if (isComplete()) {
+            String six = assembleLegalState();
+            if (six != null) return six;
+            return assembleByDroppingAFace();
         }
-        return label;
+        return assembleFromFiveFaces();
     }
 
     public String assembleLegalState() {
+        // The retry ladders below are bounded by this budget; without a cap the cluster
+        // combinations can stall the solver thread for minutes on a hopeless pool.
+        searchBudget = 120;
         List<float[]> centers = centersWithLab();
         if (centers.size() != pool.size() || pool.size() < 6) return assembleWithoutReadings();
 
-        int[] label = partition(centers, 6);
-        List<List<FaceSample>> groups = new ArrayList<>();
-        List<Integer> seen = new ArrayList<>();
-        for (int i = 0; i < label.length; i++) {
-            int index = seen.indexOf(label[i]);
-            if (index < 0) { seen.add(label[i]); groups.add(new ArrayList<>()); index = groups.size() - 1; }
-            groups.get(index).add(pool.get(i));
-        }
-        if (groups.size() != 6) return null;
-        for (List<FaceSample> group : groups) {
-            group.sort((a, b) -> Float.compare(b.confidence, a.confidence));
+        // Use the same grouping that reports progress. Force-splitting five real faces into six
+        // invents a duplicate that can still pass the solver's parity check — a wrong cube.
+        List<List<FaceSample>> raw = groupsOf(6);
+        if (raw == null) {
+            lastFailure = "分组不是 6 个独立面";
+            return null;
         }
 
-        // Every look at a face is combined, rather than one being crowned. Then, if the cube still
-        // rejects the reading, one face at a time drops the look that agrees with its fellows least.
+        // Looks that share a centre colour are not all the same face: a quad sitting on an edge
+        // has a plausible centre and lands in that colour's bucket, then poisons the median.
+        List<List<FaceSample>> groups = new ArrayList<>();
+        for (List<FaceSample> group : raw) groups.add(largestCluster(group));
+
         FaceSample[] chosen = new FaceSample[6];
         for (int i = 0; i < 6; i++) chosen[i] = consensus(groups.get(i), -1);
         String state = tryAssemble(chosen);
         if (state != null) return state;
 
-        // Then all six at once. Swapping a single face cannot help when two of them are spoiled,
-        // and a scan that saw the cube at an angle tends to spoil several the same way.
         FaceSample[] trimmed = new FaceSample[6];
         for (int i = 0; i < 6; i++) {
             List<FaceSample> group = groups.get(i);
@@ -221,7 +359,256 @@ public final class CubeStateAssembler {
             }
             chosen[face] = original;
         }
+
+        // The largest cluster of a face can still be a repeated straddle. Try the runner-up too.
+        state = tryClusterCombinations(raw);
+        if (state != null) return state;
+
+        lastFailure = "六面色块对不上魔方结构";
         return null;
+    }
+
+    /**
+     * Drops the most internally-inconsistent colour group and infers that face from the rest.
+     *
+     * <p>Once the pool reports six colours, {@link #assembleFromFiveFaces()} refuses to run
+     * because it demands exactly five groups. That is what made 6/6 scans stick while 5/6 ones
+     * sometimes proceeded: the extra group was often a contaminated look, not a better cube.
+     */
+    private String assembleByDroppingAFace() {
+        searchBudget = 120;
+        List<List<FaceSample>> raw = groupsOf(6);
+        if (raw == null) return null;
+        List<List<FaceSample>> options = clusterChoices(raw);
+        Integer[] order = {0, 1, 2, 3, 4, 5};
+        java.util.Arrays.sort(order, (a, b) -> {
+            int split = Float.compare(meanSplit(raw.get(b)), meanSplit(raw.get(a)));
+            if (split != 0) return split;
+            int wasteA = raw.get(a).size() - largestCluster(raw.get(a)).size();
+            int wasteB = raw.get(b).size() - largestCluster(raw.get(b)).size();
+            if (wasteA != wasteB) return Integer.compare(wasteB, wasteA);
+            return Integer.compare(raw.get(b).size(), raw.get(a).size());
+        });
+        for (int drop : order) {
+            List<List<FaceSample>> fiveOptions = new ArrayList<>();
+            for (int i = 0; i < 6; i++) if (i != drop) fiveOptions.add(options.get(i));
+            String state = cartesianFive(fiveOptions, 0, new FaceSample[5]);
+            if (state != null) return state;
+        }
+        return null;
+    }
+
+    private String cartesianFive(List<List<FaceSample>> options, int index, FaceSample[] chosen) {
+        if (index == options.size()) {
+            if (searchBudget-- <= 0) return null;
+            SixthFaceSolver.Result result = SixthFaceSolver.solve(chosen);
+            if (result == null) return null;
+            palette = result.palette;
+            lastFailure = "";
+            return result.state;
+        }
+        for (FaceSample pick : options.get(index)) {
+            chosen[index] = pick;
+            String state = cartesianFive(options, index + 1, chosen);
+            if (state != null) return state;
+        }
+        return null;
+    }
+
+    private String tryClusterCombinations(List<List<FaceSample>> raw) {
+        return cartesianAssemble(clusterChoices(raw), 0, new FaceSample[6]);
+    }
+
+    private static float meanSplit(List<FaceSample> group) {
+        float total = 0;
+        for (FaceSample look : group) total += look.spatialSplit();
+        return group.isEmpty() ? 0f : total / group.size();
+    }
+
+    /** One consensus reading per consistent cluster of each colour group. */
+    private static List<List<FaceSample>> clusterChoices(List<List<FaceSample>> raw) {
+        List<List<FaceSample>> options = new ArrayList<>();
+        for (List<FaceSample> group : raw) {
+            List<List<FaceSample>> parts = partitionLooks(group);
+            parts.sort(CubeStateAssembler::compareClusters);
+            List<FaceSample> choices = new ArrayList<>();
+            int limit = Math.min(4, parts.size());
+            for (int i = 0; i < limit; i++) choices.add(consensus(parts.get(i), -1));
+            options.add(choices);
+        }
+        return options;
+    }
+
+    private String cartesianAssemble(List<List<FaceSample>> options, int index, FaceSample[] chosen) {
+        if (index == options.size()) {
+            if (searchBudget-- <= 0) return null;
+            return tryAssemble(chosen);
+        }
+        for (FaceSample pick : options.get(index)) {
+            chosen[index] = pick;
+            String state = cartesianAssemble(options, index + 1, chosen);
+            if (state != null) return state;
+        }
+        return null;
+    }
+
+    /**
+     * Splits looks that share a centre colour into clusters of actually similar faces.
+     *
+     * <p>Complete linkage at the same 32-unit cut the consensus close-filter uses: lighting
+     * variants of one face stay together (~18–28), a straddling quad does not.
+     */
+    private static final float SAME_LOOK_CUT = 24f;
+
+    static List<List<FaceSample>> partitionLooks(List<FaceSample> group) {
+        List<List<FaceSample>> parts = new ArrayList<>();
+        int n = group.size();
+        if (n == 0) return parts;
+        if (n == 1) {
+            parts.add(new ArrayList<>(group));
+            return parts;
+        }
+        float[][] dist = new float[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                float d = meanCellDistance(group.get(i), alignTo(group.get(i), group.get(j)));
+                dist[i][j] = dist[j][i] = d;
+            }
+        }
+        int[] label = new int[n];
+        for (int i = 0; i < n; i++) label[i] = i;
+        int clusters = n;
+        while (clusters > 1) {
+            float best = Float.MAX_VALUE;
+            int mergeA = -1, mergeB = -1;
+            for (int i = 0; i < n; i++) {
+                for (int j = i + 1; j < n; j++) {
+                    if (label[i] == label[j]) continue;
+                    float link = 0f;
+                    for (int p = 0; p < n; p++) {
+                        if (label[p] != label[i]) continue;
+                        for (int q = 0; q < n; q++) {
+                            if (label[q] != label[j]) continue;
+                            link = Math.max(link, dist[p][q]);
+                        }
+                    }
+                    if (link < best) { best = link; mergeA = label[i]; mergeB = label[j]; }
+                }
+            }
+            if (mergeA < 0 || best > SAME_LOOK_CUT) break;
+            for (int i = 0; i < n; i++) if (label[i] == mergeB) label[i] = mergeA;
+            clusters--;
+        }
+        List<Integer> seen = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int index = seen.indexOf(label[i]);
+            if (index < 0) {
+                seen.add(label[i]);
+                parts.add(new ArrayList<>());
+                index = parts.size() - 1;
+            }
+            parts.get(index).add(group.get(i));
+        }
+        return parts;
+    }
+
+    static List<FaceSample> largestCluster(List<FaceSample> group) {
+        List<List<FaceSample>> parts = partitionLooks(group);
+        if (parts.isEmpty()) return group;
+        parts.sort(CubeStateAssembler::compareClusters);
+        return parts.get(0);
+    }
+
+    private static int compareClusters(List<FaceSample> a, List<FaceSample> b) {
+        int bySize = Integer.compare(b.size(), a.size());
+        if (bySize != 0) return bySize;
+        return Integer.compare(reliableCells(b), reliableCells(a));
+    }
+
+    private static int reliableCells(List<FaceSample> looks) {
+        int n = 0;
+        for (FaceSample look : looks) n += 9 - look.unreliableCount();
+        return n;
+    }
+
+    /**
+     * Solves from five distinct faces by deriving the sixth from the cube's structure.
+     *
+     * <p>The face nobody scanned is not free-form: once the five centres name five colours, the
+     * sixth colour is whatever is left, the nine-per-colour rule fixes how many of each colour
+     * the unseen face holds, and piece uniqueness places them. This is what lets a scan succeed
+     * when one face — usually the bottom — is too awkward to present cleanly.
+     */
+    public String assembleFromFiveFaces() {
+        searchBudget = 120;
+        List<List<FaceSample>> groups = groupsOf(5);
+        if (groups == null) {
+            lastFailure = "还没有 5 个独立面";
+            return null;
+        }
+        for (int i = 0; i < groups.size(); i++) groups.set(i, largestCluster(groups.get(i)));
+
+        FaceSample[] chosen = new FaceSample[5];
+        for (int i = 0; i < 5; i++) chosen[i] = consensus(groups.get(i), -1);
+        SixthFaceSolver.Result result = SixthFaceSolver.solve(chosen);
+        if (result != null) {
+            palette = result.palette;
+            return result.state;
+        }
+
+        FaceSample[] trimmed = new FaceSample[5];
+        for (int i = 0; i < 5; i++) {
+            List<FaceSample> group = groups.get(i);
+            trimmed[i] = group.size() < 2 ? chosen[i]
+                : consensus(group, byDisagreement(group).get(0));
+        }
+        result = SixthFaceSolver.solve(trimmed);
+        if (result != null) {
+            palette = result.palette;
+            return result.state;
+        }
+
+        for (int face = 0; face < 5; face++) {
+            List<FaceSample> group = groups.get(face);
+            if (group.size() < 2) continue;
+            FaceSample original = chosen[face];
+            List<Integer> worstFirst = byDisagreement(group);
+            for (int attempt = 0; attempt < Math.min(2, worstFirst.size()); attempt++) {
+                chosen[face] = consensus(group, worstFirst.get(attempt));
+                result = SixthFaceSolver.solve(chosen);
+                if (result != null) {
+                    palette = result.palette;
+                    lastFailure = "";
+                    return result.state;
+                }
+            }
+            chosen[face] = original;
+        }
+        lastFailure = "五面推算不出第六面，色块读数有歧义";
+        return null;
+    }
+
+    /**
+     * Observations clustered by the same relative merge that reports {@link #size()}.
+     *
+     * @return {@code expected} groups, or null when the pool does not support that many colours
+     */
+    private List<List<FaceSample>> groupsOf(int expected) {
+        int[] label = clusteredLabels();
+        if (label == null || countGroups(label) != expected) return null;
+        List<List<FaceSample>> groups = new ArrayList<>();
+        List<Integer> seen = new ArrayList<>();
+        for (int i = 0; i < label.length; i++) {
+            if (label[i] < 0) continue;
+            int index = seen.indexOf(label[i]);
+            if (index < 0) {
+                seen.add(label[i]);
+                groups.add(new ArrayList<>());
+                index = groups.size() - 1;
+            }
+            groups.get(index).add(pool.get(i));
+        }
+        return groups;
     }
 
     /**
@@ -236,17 +623,21 @@ public final class CubeStateAssembler {
      *
      * @param skip index of a look to leave out, or -1 to use them all
      */
-    private static FaceSample consensus(List<FaceSample> group, int skip) {
-        FaceSample reference = null;
-        for (int i = 0; i < group.size(); i++) {
-            if (i != skip) { reference = group.get(i); break; }
-        }
+    static FaceSample consensus(List<FaceSample> group, int skip) {
+        FaceSample reference = mostCentral(group, skip);
         if (reference == null) return null;
 
         List<FaceSample> aligned = new ArrayList<>();
+        List<FaceSample> close = new ArrayList<>();
         for (int i = 0; i < group.size(); i++) {
-            if (i != skip) aligned.add(alignTo(reference, group.get(i)));
+            if (i == skip) continue;
+            FaceSample candidate = alignTo(reference, group.get(i));
+            aligned.add(candidate);
+            if (meanCellDistance(reference, candidate) <= SAME_LOOK_CUT) close.add(candidate);
         }
+        // A straddling quad scores high confidence, so it must not be allowed to outvote
+        // several honest looks. Drop looks that do not match the group's centre of mass.
+        if (close.size() >= 2 && close.size() < aligned.size()) aligned = close;
         if (aligned.size() == 1) return aligned.get(0);
 
         float[][] lab = new float[9][3];
@@ -275,6 +666,38 @@ public final class CubeStateAssembler {
      * <p>Looks at one face arrive at whatever roll the phone happened to be held at, so they cannot
      * be averaged cell by cell until they are brought into a common orientation.
      */
+    /** The look nearest the others, not the highest-confidence one — straddles score 1.0. */
+    private static FaceSample mostCentral(List<FaceSample> group, int skip) {
+        FaceSample best = null;
+        double lowest = Double.MAX_VALUE;
+        for (int i = 0; i < group.size(); i++) {
+            if (i == skip) continue;
+            double cost = 0;
+            int n = 0;
+            FaceSample pivot = group.get(i);
+            for (int j = 0; j < group.size(); j++) {
+                if (j == skip || j == i) continue;
+                cost += meanCellDistance(pivot, alignTo(pivot, group.get(j)));
+                n++;
+            }
+            double mean = n == 0 ? 0 : cost / n;
+            if (mean < lowest) { lowest = mean; best = pivot; }
+        }
+        return best;
+    }
+
+    private static float meanCellDistance(FaceSample a, FaceSample b) {
+        float total = 0;
+        int n = 0;
+        for (int cell = 0; cell < 9; cell++) {
+            if (a.lab == null || b.lab == null) continue;
+            if (!a.reliable[cell] || !b.reliable[cell]) continue;
+            total += Lab.distance(a.lab[cell], b.lab[cell]);
+            n++;
+        }
+        return n == 0 ? 999f : total / n;
+    }
+
     private static FaceSample alignTo(FaceSample reference, FaceSample sample) {
         FaceSample best = sample, rotated = sample;
         double lowest = Double.MAX_VALUE;

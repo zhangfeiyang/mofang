@@ -1,0 +1,13 @@
+{
+  "best_corner_err": 0.0933,
+  "val_median_corner_err": 0.068,
+  "val_presence_at_0.85": "21/21",
+  "train_size": 85,
+  "val_size": 21,
+  "width": 1.5,
+  "parameters": "0.32M",
+  "input_width": 160,
+  "input_height": 288,
+  "epochs": 100,
+  "onnx": "models/real/cubeface.onnx"
+}

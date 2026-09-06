@@ -1,0 +1,1338 @@
+--------- beginning of main
+09-05 21:48:16.973 I/CubeFaceModel(32414): loaded cubeface.onnx
+09-05 21:48:16.975 E/CubeFaceModel(32414): model unavailable: java.lang.UnsatisfiedLinkError: No implementation found for long org.opencv.core.Mat.n_Mat() (tried Java_org_opencv_core_Mat_n_1Mat and Java_org_opencv_core_Mat_n_1Mat__) - is the library loaded, e.g. System.loadLibrary?
+09-05 21:48:16.981 I/DetectionDump(32414): session start dir=/storage/emulated/0/Android/data/com.mofang.cubear/files/detect-dump/20260905-214816 threshold=0.85
+09-05 21:48:17.612 I/DetectionDump(32414): analysis_frame 720x1280
+09-05 21:48:17.629 I/DetectionDump(32414): seq=1 src=cnn p=-1.0000 reject=no_model img=frames/f00001_miss.jpg
+09-05 21:48:17.653 I/DetectionDump(32414): seq=2 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00002_miss.jpg
+09-05 21:48:17.700 I/DetectionDump(32414): seq=3 src=cnn p=-1.0000 reject=no_model img=frames/f00003_miss.jpg
+09-05 21:48:17.720 I/DetectionDump(32414): seq=4 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00004_miss.jpg
+09-05 21:48:17.756 I/DetectionDump(32414): seq=5 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:17.766 I/DetectionDump(32414): seq=6 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:17.856 I/DetectionDump(32414): seq=7 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:17.877 I/DetectionDump(32414): seq=8 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00008_miss.jpg
+09-05 21:48:17.923 I/DetectionDump(32414): seq=9 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:17.932 I/DetectionDump(32414): seq=10 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:17.990 I/DetectionDump(32414): seq=11 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:17.997 I/DetectionDump(32414): seq=12 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.056 I/DetectionDump(32414): seq=13 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.066 I/DetectionDump(32414): seq=14 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.124 I/DetectionDump(32414): seq=15 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.146 I/DetectionDump(32414): seq=16 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00016_miss.jpg
+09-05 21:48:18.191 I/DetectionDump(32414): seq=17 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.209 I/DetectionDump(32414): seq=18 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.265 I/DetectionDump(32414): seq=19 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.286 I/DetectionDump(32414): seq=20 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.333 I/DetectionDump(32414): seq=21 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.349 I/DetectionDump(32414): seq=22 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.400 I/DetectionDump(32414): seq=23 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.432 I/DetectionDump(32414): seq=24 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00024_miss.jpg
+09-05 21:48:18.499 I/DetectionDump(32414): seq=25 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.517 I/DetectionDump(32414): seq=26 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.565 I/DetectionDump(32414): seq=27 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.580 I/DetectionDump(32414): seq=28 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.664 I/DetectionDump(32414): seq=29 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.680 I/DetectionDump(32414): seq=30 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.743 I/DetectionDump(32414): seq=31 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.768 I/DetectionDump(32414): seq=32 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00032_miss.jpg
+09-05 21:48:18.840 I/DetectionDump(32414): seq=33 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.853 I/DetectionDump(32414): seq=34 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:18.908 I/DetectionDump(32414): seq=35 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:18.923 I/DetectionDump(32414): seq=36 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.008 I/DetectionDump(32414): seq=37 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.028 I/DetectionDump(32414): seq=38 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.078 I/DetectionDump(32414): seq=39 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.121 I/DetectionDump(32414): seq=40 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00040_miss.jpg
+09-05 21:48:19.151 I/DetectionDump(32414): seq=41 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.170 I/DetectionDump(32414): seq=42 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.241 I/DetectionDump(32414): seq=43 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.260 I/DetectionDump(32414): seq=44 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.310 I/DetectionDump(32414): seq=45 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.330 I/DetectionDump(32414): seq=46 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.383 I/DetectionDump(32414): seq=47 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.413 I/DetectionDump(32414): seq=48 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00048_miss.jpg
+09-05 21:48:19.498 I/DetectionDump(32414): seq=49 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.517 I/DetectionDump(32414): seq=50 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.571 I/DetectionDump(32414): seq=51 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.590 I/DetectionDump(32414): seq=52 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.666 I/DetectionDump(32414): seq=53 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.682 I/DetectionDump(32414): seq=54 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.736 I/DetectionDump(32414): seq=55 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.770 I/DetectionDump(32414): seq=56 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00056_miss.jpg
+09-05 21:48:19.804 I/DetectionDump(32414): seq=57 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.821 I/DetectionDump(32414): seq=58 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.887 I/DetectionDump(32414): seq=59 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.896 I/DetectionDump(32414): seq=60 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:19.969 I/DetectionDump(32414): seq=61 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:19.982 I/DetectionDump(32414): seq=62 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:20.074 I/DetectionDump(32414): seq=63 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.114 I/DetectionDump(32414): seq=64 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00064_miss.jpg
+09-05 21:48:20.148 I/DetectionDump(32414): seq=65 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.164 I/DetectionDump(32414): seq=66 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:20.239 I/DetectionDump(32414): seq=67 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.259 I/DetectionDump(32414): seq=68 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:20.312 I/DetectionDump(32414): seq=69 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.333 I/DetectionDump(32414): seq=70 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:20.418 I/DetectionDump(32414): seq=71 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.469 I/DetectionDump(32414): seq=72 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00072_miss.jpg
+09-05 21:48:20.496 I/DetectionDump(32414): seq=73 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.511 I/DetectionDump(32414): seq=74 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:20.568 I/DetectionDump(32414): seq=75 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.584 I/DetectionDump(32414): seq=76 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:20.665 I/DetectionDump(32414): seq=77 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.683 I/DetectionDump(32414): seq=78 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:20.753 I/DetectionDump(32414): seq=79 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.789 I/DetectionDump(32414): seq=80 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00080_miss.jpg
+09-05 21:48:20.837 I/DetectionDump(32414): seq=81 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.856 I/DetectionDump(32414): seq=82 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:20.934 I/DetectionDump(32414): seq=83 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:20.946 I/DetectionDump(32414): seq=84 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:21.003 I/DetectionDump(32414): seq=85 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.014 I/DetectionDump(32414): seq=86 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:21.117 I/DetectionDump(32414): seq=87 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.148 I/DetectionDump(32414): seq=88 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00088_miss.jpg
+09-05 21:48:21.198 I/DetectionDump(32414): seq=89 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.217 I/DetectionDump(32414): seq=90 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:21.268 I/DetectionDump(32414): seq=91 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.281 I/DetectionDump(32414): seq=92 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:21.353 I/DetectionDump(32414): seq=93 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.371 I/DetectionDump(32414): seq=94 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:21.451 I/DetectionDump(32414): seq=95 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.491 I/DetectionDump(32414): seq=96 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00096_miss.jpg
+09-05 21:48:21.547 I/DetectionDump(32414): seq=97 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.561 I/DetectionDump(32414): seq=98 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:21.617 I/DetectionDump(32414): seq=99 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.633 I/DetectionDump(32414): seq=100 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:21.686 I/DetectionDump(32414): seq=101 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.701 I/DetectionDump(32414): seq=102 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:21.761 I/DetectionDump(32414): seq=103 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.782 I/DetectionDump(32414): seq=104 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00104_miss.jpg
+09-05 21:48:21.851 I/DetectionDump(32414): seq=105 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.900 I/DetectionDump(32414): seq=106 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.5916 c=ORANGE img=frames/f00106_hit.jpg
+09-05 21:48:21.900 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:21.956 I/DetectionDump(32414): seq=107 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:21.998 I/DetectionDump(32414): seq=108 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6152 c=ORANGE img=frames/f00108_hit.jpg
+09-05 21:48:21.998 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:21.998 I/DetectionDump(32414): event stable_capture side=0.6152
+09-05 21:48:22.051 I/DetectionDump(32414): seq=109 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.087 I/DetectionDump(32414): seq=110 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.5986 c=ORANGE img=frames/f00110_hit.jpg
+09-05 21:48:22.087 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:22.157 I/DetectionDump(32414): seq=111 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.186 I/DetectionDump(32414): seq=112 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00112_miss.jpg
+09-05 21:48:22.249 I/DetectionDump(32414): seq=113 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.264 I/DetectionDump(32414): seq=114 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:22.348 I/DetectionDump(32414): seq=115 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.361 I/DetectionDump(32414): seq=116 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:22.436 I/DetectionDump(32414): seq=117 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.450 I/DetectionDump(32414): seq=118 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:22.533 I/DetectionDump(32414): seq=119 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.565 I/DetectionDump(32414): seq=120 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00120_miss.jpg
+09-05 21:48:22.646 I/DetectionDump(32414): seq=121 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.669 I/DetectionDump(32414): seq=122 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:22.741 I/DetectionDump(32414): seq=123 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.761 I/DetectionDump(32414): seq=124 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:22.818 I/DetectionDump(32414): seq=125 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.848 I/DetectionDump(32414): seq=126 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:22.910 I/DetectionDump(32414): seq=127 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:22.955 I/DetectionDump(32414): seq=128 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00128_miss.jpg
+09-05 21:48:23.006 I/DetectionDump(32414): seq=129 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.027 I/DetectionDump(32414): seq=130 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:23.072 I/DetectionDump(32414): seq=131 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.090 I/DetectionDump(32414): seq=132 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:23.156 I/DetectionDump(32414): seq=133 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.173 I/DetectionDump(32414): seq=134 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:23.252 I/DetectionDump(32414): seq=135 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.282 I/DetectionDump(32414): seq=136 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00136_miss.jpg
+09-05 21:48:23.318 I/DetectionDump(32414): seq=137 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.350 I/DetectionDump(32414): seq=138 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.5990 c=ORANGE img=frames/f00138_hit.jpg
+09-05 21:48:23.350 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:23.386 I/DetectionDump(32414): seq=139 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.399 I/DetectionDump(32414): seq=140 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:23.476 I/DetectionDump(32414): seq=141 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.491 I/DetectionDump(32414): seq=142 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:23.561 I/DetectionDump(32414): seq=143 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.596 I/DetectionDump(32414): seq=144 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00144_miss.jpg
+09-05 21:48:23.664 I/DetectionDump(32414): seq=145 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.678 I/DetectionDump(32414): seq=146 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:23.750 I/DetectionDump(32414): seq=147 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.765 I/DetectionDump(32414): seq=148 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:23.834 I/DetectionDump(32414): seq=149 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.854 I/DetectionDump(32414): seq=150 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:23.910 I/DetectionDump(32414): seq=151 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:23.948 I/DetectionDump(32414): seq=152 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00152_miss.jpg
+09-05 21:48:24.007 I/DetectionDump(32414): seq=153 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.034 I/DetectionDump(32414): seq=154 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:24.134 I/DetectionDump(32414): seq=155 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.160 I/DetectionDump(32414): seq=156 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:24.208 I/DetectionDump(32414): seq=157 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.234 I/DetectionDump(32414): seq=158 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:24.289 I/DetectionDump(32414): seq=159 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.334 I/DetectionDump(32414): seq=160 src=geometry p=0.8889 reject=ok known=8 bad=0 side=0.5626 c=BLUE img=frames/f00160_hit.jpg
+09-05 21:48:24.334 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:24.385 I/DetectionDump(32414): seq=161 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.403 I/DetectionDump(32414): seq=162 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:24.455 I/DetectionDump(32414): seq=163 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.473 I/DetectionDump(32414): seq=164 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:24.564 I/DetectionDump(32414): seq=165 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.607 I/DetectionDump(32414): seq=166 src=geometry p=0.7778 reject=ok known=8 bad=0 side=0.6222 c=RED img=frames/f00166_hit.jpg
+09-05 21:48:24.608 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:24.634 I/DetectionDump(32414): seq=167 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.676 I/DetectionDump(32414): seq=168 src=geometry p=0.8889 reject=ok known=7 bad=1 side=0.5635 c=UNKNOWN img=frames/f00168_hit.jpg
+09-05 21:48:24.676 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:24.706 I/DetectionDump(32414): seq=169 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.742 I/DetectionDump(32414): seq=170 src=geometry p=0.8889 reject=ok known=8 bad=1 side=0.5730 c=UNKNOWN img=frames/f00170_hit.jpg
+09-05 21:48:24.742 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:24.815 I/DetectionDump(32414): seq=171 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.836 I/DetectionDump(32414): seq=172 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:24.881 I/DetectionDump(32414): seq=173 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:24.895 I/DetectionDump(32414): seq=174 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:24.985 I/DetectionDump(32414): seq=175 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.021 I/DetectionDump(32414): seq=176 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00176_miss.jpg
+09-05 21:48:25.053 I/DetectionDump(32414): seq=177 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.069 I/DetectionDump(32414): seq=178 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:25.143 I/DetectionDump(32414): seq=179 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.161 I/DetectionDump(32414): seq=180 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:25.254 I/DetectionDump(32414): seq=181 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.277 I/DetectionDump(32414): seq=182 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:25.348 I/DetectionDump(32414): seq=183 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.386 I/DetectionDump(32414): seq=184 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00184_miss.jpg
+09-05 21:48:25.446 I/DetectionDump(32414): seq=185 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.465 I/DetectionDump(32414): seq=186 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:25.513 I/DetectionDump(32414): seq=187 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.530 I/DetectionDump(32414): seq=188 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:25.582 I/DetectionDump(32414): seq=189 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.606 I/DetectionDump(32414): seq=190 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:25.670 I/DetectionDump(32414): seq=191 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.696 I/DetectionDump(32414): seq=192 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00192_miss.jpg
+09-05 21:48:25.765 I/DetectionDump(32414): seq=193 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.780 I/DetectionDump(32414): seq=194 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:25.844 I/DetectionDump(32414): seq=195 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.857 I/DetectionDump(32414): seq=196 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:25.934 I/DetectionDump(32414): seq=197 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:25.947 I/DetectionDump(32414): seq=198 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:26.018 I/DetectionDump(32414): seq=199 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.053 I/DetectionDump(32414): seq=200 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00200_miss.jpg
+09-05 21:48:26.107 I/DetectionDump(32414): seq=201 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.118 I/DetectionDump(32414): seq=202 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:26.213 I/DetectionDump(32414): seq=203 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.232 I/DetectionDump(32414): seq=204 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:26.311 I/DetectionDump(32414): seq=205 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.330 I/DetectionDump(32414): seq=206 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:26.378 I/DetectionDump(32414): seq=207 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.415 I/DetectionDump(32414): seq=208 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00208_miss.jpg
+09-05 21:48:26.445 I/DetectionDump(32414): seq=209 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.465 I/DetectionDump(32414): seq=210 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:26.516 I/DetectionDump(32414): seq=211 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.535 I/DetectionDump(32414): seq=212 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:26.618 I/DetectionDump(32414): seq=213 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.635 I/DetectionDump(32414): seq=214 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:26.721 I/DetectionDump(32414): seq=215 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.752 I/DetectionDump(32414): seq=216 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00216_miss.jpg
+09-05 21:48:26.806 I/DetectionDump(32414): seq=217 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.823 I/DetectionDump(32414): seq=218 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:26.912 I/DetectionDump(32414): seq=219 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:26.937 I/DetectionDump(32414): seq=220 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.016 I/DetectionDump(32414): seq=221 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.037 I/DetectionDump(32414): seq=222 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.114 I/DetectionDump(32414): seq=223 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.147 I/DetectionDump(32414): seq=224 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00224_miss.jpg
+09-05 21:48:27.205 I/DetectionDump(32414): seq=225 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.217 I/DetectionDump(32414): seq=226 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.310 I/DetectionDump(32414): seq=227 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.328 I/DetectionDump(32414): seq=228 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.377 I/DetectionDump(32414): seq=229 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.401 I/DetectionDump(32414): seq=230 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.446 I/DetectionDump(32414): seq=231 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.482 I/DetectionDump(32414): seq=232 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00232_miss.jpg
+09-05 21:48:27.552 I/DetectionDump(32414): seq=233 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.571 I/DetectionDump(32414): seq=234 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.644 I/DetectionDump(32414): seq=235 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.668 I/DetectionDump(32414): seq=236 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.711 I/DetectionDump(32414): seq=237 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.735 I/DetectionDump(32414): seq=238 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.804 I/DetectionDump(32414): seq=239 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.837 I/DetectionDump(32414): seq=240 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00240_miss.jpg
+09-05 21:48:27.875 I/DetectionDump(32414): seq=241 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.891 I/DetectionDump(32414): seq=242 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:27.971 I/DetectionDump(32414): seq=243 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:27.991 I/DetectionDump(32414): seq=244 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.058 I/DetectionDump(32414): seq=245 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.076 I/DetectionDump(32414): seq=246 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.138 I/DetectionDump(32414): seq=247 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.180 I/DetectionDump(32414): seq=248 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00248_miss.jpg
+09-05 21:48:28.207 I/DetectionDump(32414): seq=249 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.225 I/DetectionDump(32414): seq=250 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.282 I/DetectionDump(32414): seq=251 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.302 I/DetectionDump(32414): seq=252 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.385 I/DetectionDump(32414): seq=253 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.405 I/DetectionDump(32414): seq=254 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.471 I/DetectionDump(32414): seq=255 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.510 I/DetectionDump(32414): seq=256 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00256_miss.jpg
+09-05 21:48:28.538 I/DetectionDump(32414): seq=257 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.557 I/DetectionDump(32414): seq=258 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.623 I/DetectionDump(32414): seq=259 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.644 I/DetectionDump(32414): seq=260 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.721 I/DetectionDump(32414): seq=261 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.741 I/DetectionDump(32414): seq=262 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.821 I/DetectionDump(32414): seq=263 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.849 I/DetectionDump(32414): seq=264 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00264_miss.jpg
+09-05 21:48:28.900 I/DetectionDump(32414): seq=265 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:28.921 I/DetectionDump(32414): seq=266 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:28.985 I/DetectionDump(32414): seq=267 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.003 I/DetectionDump(32414): seq=268 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:29.080 I/DetectionDump(32414): seq=269 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.097 I/DetectionDump(32414): seq=270 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:29.180 I/DetectionDump(32414): seq=271 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.212 I/DetectionDump(32414): seq=272 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00272_miss.jpg
+09-05 21:48:29.280 I/DetectionDump(32414): seq=273 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.300 I/DetectionDump(32414): seq=274 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:29.356 I/DetectionDump(32414): seq=275 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.375 I/DetectionDump(32414): seq=276 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:29.425 I/DetectionDump(32414): seq=277 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.445 I/DetectionDump(32414): seq=278 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:29.515 I/DetectionDump(32414): seq=279 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.553 I/DetectionDump(32414): seq=280 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00280_miss.jpg
+09-05 21:48:29.630 I/DetectionDump(32414): seq=281 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.657 I/DetectionDump(32414): seq=282 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:29.708 I/DetectionDump(32414): seq=283 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.724 I/DetectionDump(32414): seq=284 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:29.775 I/DetectionDump(32414): seq=285 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.796 I/DetectionDump(32414): seq=286 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:29.841 I/DetectionDump(32414): seq=287 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.880 I/DetectionDump(32414): seq=288 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00288_miss.jpg
+09-05 21:48:29.941 I/DetectionDump(32414): seq=289 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:29.955 I/DetectionDump(32414): seq=290 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.009 I/DetectionDump(32414): seq=291 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.020 I/DetectionDump(32414): seq=292 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.112 I/DetectionDump(32414): seq=293 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.135 I/DetectionDump(32414): seq=294 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.191 I/DetectionDump(32414): seq=295 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.224 I/DetectionDump(32414): seq=296 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00296_miss.jpg
+09-05 21:48:30.273 I/DetectionDump(32414): seq=297 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.292 I/DetectionDump(32414): seq=298 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.350 I/DetectionDump(32414): seq=299 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.368 I/DetectionDump(32414): seq=300 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.451 I/DetectionDump(32414): seq=301 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.471 I/DetectionDump(32414): seq=302 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.550 I/DetectionDump(32414): seq=303 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.584 I/DetectionDump(32414): seq=304 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00304_miss.jpg
+09-05 21:48:30.617 I/DetectionDump(32414): seq=305 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.632 I/DetectionDump(32414): seq=306 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.716 I/DetectionDump(32414): seq=307 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.739 I/DetectionDump(32414): seq=308 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.804 I/DetectionDump(32414): seq=309 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.825 I/DetectionDump(32414): seq=310 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:30.885 I/DetectionDump(32414): seq=311 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.919 I/DetectionDump(32414): seq=312 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00312_miss.jpg
+09-05 21:48:30.970 I/DetectionDump(32414): seq=313 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:30.989 I/DetectionDump(32414): seq=314 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.051 I/DetectionDump(32414): seq=315 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.069 I/DetectionDump(32414): seq=316 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.136 I/DetectionDump(32414): seq=317 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.149 I/DetectionDump(32414): seq=318 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.235 I/DetectionDump(32414): seq=319 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.268 I/DetectionDump(32414): seq=320 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00320_miss.jpg
+09-05 21:48:31.305 I/DetectionDump(32414): seq=321 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.321 I/DetectionDump(32414): seq=322 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.392 I/DetectionDump(32414): seq=323 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.411 I/DetectionDump(32414): seq=324 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.486 I/DetectionDump(32414): seq=325 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.505 I/DetectionDump(32414): seq=326 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.597 I/DetectionDump(32414): seq=327 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.629 I/DetectionDump(32414): seq=328 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00328_miss.jpg
+09-05 21:48:31.672 I/DetectionDump(32414): seq=329 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.692 I/DetectionDump(32414): seq=330 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.746 I/DetectionDump(32414): seq=331 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.765 I/DetectionDump(32414): seq=332 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.834 I/DetectionDump(32414): seq=333 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.852 I/DetectionDump(32414): seq=334 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:31.922 I/DetectionDump(32414): seq=335 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:31.957 I/DetectionDump(32414): seq=336 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00336_miss.jpg
+09-05 21:48:32.008 I/DetectionDump(32414): seq=337 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.022 I/DetectionDump(32414): seq=338 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:32.085 I/DetectionDump(32414): seq=339 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.102 I/DetectionDump(32414): seq=340 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:32.193 I/DetectionDump(32414): seq=341 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.206 I/DetectionDump(32414): seq=342 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:32.292 I/DetectionDump(32414): seq=343 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.330 I/DetectionDump(32414): seq=344 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00344_miss.jpg
+09-05 21:48:32.389 I/DetectionDump(32414): seq=345 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.404 I/DetectionDump(32414): seq=346 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:32.488 I/DetectionDump(32414): seq=347 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.508 I/DetectionDump(32414): seq=348 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:32.557 I/DetectionDump(32414): seq=349 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.575 I/DetectionDump(32414): seq=350 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:32.660 I/DetectionDump(32414): seq=351 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.700 I/DetectionDump(32414): seq=352 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00352_miss.jpg
+09-05 21:48:32.757 I/DetectionDump(32414): seq=353 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.776 I/DetectionDump(32414): seq=354 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:32.829 I/DetectionDump(32414): seq=355 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.852 I/DetectionDump(32414): seq=356 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:32.921 I/DetectionDump(32414): seq=357 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:32.944 I/DetectionDump(32414): seq=358 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.027 I/DetectionDump(32414): seq=359 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.060 I/DetectionDump(32414): seq=360 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00360_miss.jpg
+09-05 21:48:33.112 I/DetectionDump(32414): seq=361 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.126 I/DetectionDump(32414): seq=362 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.178 I/DetectionDump(32414): seq=363 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.193 I/DetectionDump(32414): seq=364 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.252 I/DetectionDump(32414): seq=365 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.271 I/DetectionDump(32414): seq=366 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.349 I/DetectionDump(32414): seq=367 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.377 I/DetectionDump(32414): seq=368 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00368_miss.jpg
+09-05 21:48:33.438 I/DetectionDump(32414): seq=369 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.457 I/DetectionDump(32414): seq=370 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.509 I/DetectionDump(32414): seq=371 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.527 I/DetectionDump(32414): seq=372 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.577 I/DetectionDump(32414): seq=373 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.595 I/DetectionDump(32414): seq=374 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.648 I/DetectionDump(32414): seq=375 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.680 I/DetectionDump(32414): seq=376 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00376_miss.jpg
+09-05 21:48:33.747 I/DetectionDump(32414): seq=377 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.768 I/DetectionDump(32414): seq=378 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.845 I/DetectionDump(32414): seq=379 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.865 I/DetectionDump(32414): seq=380 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:33.918 I/DetectionDump(32414): seq=381 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:33.938 I/DetectionDump(32414): seq=382 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.024 I/DetectionDump(32414): seq=383 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.057 I/DetectionDump(32414): seq=384 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6556 c=GREEN img=frames/f00384_hit.jpg
+09-05 21:48:34.057 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:34.111 I/DetectionDump(32414): seq=385 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.131 I/DetectionDump(32414): seq=386 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.206 I/DetectionDump(32414): seq=387 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.223 I/DetectionDump(32414): seq=388 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.307 I/DetectionDump(32414): seq=389 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.325 I/DetectionDump(32414): seq=390 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.375 I/DetectionDump(32414): seq=391 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.413 I/DetectionDump(32414): seq=392 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00392_miss.jpg
+09-05 21:48:34.443 I/DetectionDump(32414): seq=393 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.459 I/DetectionDump(32414): seq=394 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.539 I/DetectionDump(32414): seq=395 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.556 I/DetectionDump(32414): seq=396 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.619 I/DetectionDump(32414): seq=397 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.636 I/DetectionDump(32414): seq=398 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.709 I/DetectionDump(32414): seq=399 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.752 I/DetectionDump(32414): seq=400 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00400_miss.jpg
+09-05 21:48:34.810 I/DetectionDump(32414): seq=401 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.831 I/DetectionDump(32414): seq=402 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.877 I/DetectionDump(32414): seq=403 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.892 I/DetectionDump(32414): seq=404 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:34.961 I/DetectionDump(32414): seq=405 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:34.982 I/DetectionDump(32414): seq=406 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:35.063 I/DetectionDump(32414): seq=407 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.102 I/DetectionDump(32414): seq=408 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00408_miss.jpg
+09-05 21:48:35.133 I/DetectionDump(32414): seq=409 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.146 I/DetectionDump(32414): seq=410 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:35.209 I/DetectionDump(32414): seq=411 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.224 I/DetectionDump(32414): seq=412 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:35.276 I/DetectionDump(32414): seq=413 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.291 I/DetectionDump(32414): seq=414 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:35.389 I/DetectionDump(32414): seq=415 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.416 I/DetectionDump(32414): seq=416 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00416_miss.jpg
+09-05 21:48:35.467 I/DetectionDump(32414): seq=417 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.482 I/DetectionDump(32414): seq=418 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:35.564 I/DetectionDump(32414): seq=419 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.580 I/DetectionDump(32414): seq=420 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:35.654 I/DetectionDump(32414): seq=421 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.671 I/DetectionDump(32414): seq=422 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:35.732 I/DetectionDump(32414): seq=423 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.757 I/DetectionDump(32414): seq=424 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00424_miss.jpg
+09-05 21:48:35.835 I/DetectionDump(32414): seq=425 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.851 I/DetectionDump(32414): seq=426 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:35.926 I/DetectionDump(32414): seq=427 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:35.942 I/DetectionDump(32414): seq=428 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:36.025 I/DetectionDump(32414): seq=429 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.056 I/DetectionDump(32414): seq=430 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6131 c=ORANGE img=frames/f00430_hit.jpg
+09-05 21:48:36.056 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:36.091 I/DetectionDump(32414): seq=431 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.125 I/DetectionDump(32414): seq=432 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6403 c=ORANGE img=frames/f00432_hit.jpg
+09-05 21:48:36.125 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:36.159 I/DetectionDump(32414): seq=433 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.196 I/DetectionDump(32414): seq=434 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6496 c=ORANGE img=frames/f00434_hit.jpg
+09-05 21:48:36.196 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:36.197 I/DetectionDump(32414): event stable_capture side=0.6496
+09-05 21:48:36.259 I/DetectionDump(32414): seq=435 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.273 I/DetectionDump(32414): seq=436 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:36.327 I/DetectionDump(32414): seq=437 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.340 I/DetectionDump(32414): seq=438 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:36.393 I/DetectionDump(32414): seq=439 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.424 I/DetectionDump(32414): seq=440 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6559 c=ORANGE img=frames/f00440_hit.jpg
+09-05 21:48:36.425 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:36.520 I/DetectionDump(32414): seq=441 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.568 I/DetectionDump(32414): seq=442 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6620 c=ORANGE img=frames/f00442_hit.jpg
+09-05 21:48:36.568 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:36.568 I/DetectionDump(32414): event stable_capture side=0.6620
+09-05 21:48:36.612 I/DetectionDump(32414): seq=443 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.631 I/DetectionDump(32414): seq=444 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:36.685 I/DetectionDump(32414): seq=445 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.728 I/DetectionDump(32414): seq=446 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6465 c=ORANGE img=frames/f00446_hit.jpg
+09-05 21:48:36.728 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:36.784 I/DetectionDump(32414): seq=447 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.820 I/DetectionDump(32414): seq=448 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00448_miss.jpg
+09-05 21:48:36.884 I/DetectionDump(32414): seq=449 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:36.919 I/DetectionDump(32414): seq=450 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6461 c=ORANGE img=frames/f00450_hit.jpg
+09-05 21:48:36.920 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:36.920 I/DetectionDump(32414): event stable_capture side=0.6461
+09-05 21:48:36.984 I/DetectionDump(32414): seq=451 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.017 I/DetectionDump(32414): seq=452 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6369 c=ORANGE img=frames/f00452_hit.jpg
+09-05 21:48:37.017 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:37.079 I/DetectionDump(32414): seq=453 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.109 I/DetectionDump(32414): seq=454 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6296 c=ORANGE img=frames/f00454_hit.jpg
+09-05 21:48:37.110 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:37.110 I/DetectionDump(32414): event stable_capture side=0.6296
+09-05 21:48:37.181 I/DetectionDump(32414): seq=455 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.216 I/DetectionDump(32414): seq=456 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00456_miss.jpg
+09-05 21:48:37.281 I/DetectionDump(32414): seq=457 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.299 I/DetectionDump(32414): seq=458 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:37.348 I/DetectionDump(32414): seq=459 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.363 I/DetectionDump(32414): seq=460 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:37.444 I/DetectionDump(32414): seq=461 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.458 I/DetectionDump(32414): seq=462 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:37.516 I/DetectionDump(32414): seq=463 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.556 I/DetectionDump(32414): seq=464 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00464_miss.jpg
+09-05 21:48:37.585 I/DetectionDump(32414): seq=465 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.605 I/DetectionDump(32414): seq=466 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:37.678 I/DetectionDump(32414): seq=467 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.696 I/DetectionDump(32414): seq=468 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:37.785 I/DetectionDump(32414): seq=469 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.807 I/DetectionDump(32414): seq=470 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:37.875 I/DetectionDump(32414): seq=471 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.911 I/DetectionDump(32414): seq=472 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00472_miss.jpg
+09-05 21:48:37.964 I/DetectionDump(32414): seq=473 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:37.978 I/DetectionDump(32414): seq=474 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.033 I/DetectionDump(32414): seq=475 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.046 I/DetectionDump(32414): seq=476 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.107 I/DetectionDump(32414): seq=477 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.121 I/DetectionDump(32414): seq=478 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.182 I/DetectionDump(32414): seq=479 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.215 I/DetectionDump(32414): seq=480 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00480_miss.jpg
+09-05 21:48:38.272 I/DetectionDump(32414): seq=481 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.297 I/DetectionDump(32414): seq=482 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.343 I/DetectionDump(32414): seq=483 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.366 I/DetectionDump(32414): seq=484 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.443 I/DetectionDump(32414): seq=485 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.462 I/DetectionDump(32414): seq=486 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.559 I/DetectionDump(32414): seq=487 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.592 I/DetectionDump(32414): seq=488 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00488_miss.jpg
+09-05 21:48:38.649 I/DetectionDump(32414): seq=489 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.663 I/DetectionDump(32414): seq=490 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.714 I/DetectionDump(32414): seq=491 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.730 I/DetectionDump(32414): seq=492 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.800 I/DetectionDump(32414): seq=493 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.813 I/DetectionDump(32414): seq=494 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:38.882 I/DetectionDump(32414): seq=495 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.929 I/DetectionDump(32414): seq=496 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00496_miss.jpg
+09-05 21:48:38.969 I/DetectionDump(32414): seq=497 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:38.986 I/DetectionDump(32414): seq=498 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:39.087 I/DetectionDump(32414): seq=499 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.127 I/DetectionDump(32414): seq=500 src=geometry p=0.7778 reject=ok known=8 bad=0 side=0.6686 c=YELLOW img=frames/f00500_hit.jpg
+09-05 21:48:39.127 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:39.185 I/DetectionDump(32414): seq=501 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.203 I/DetectionDump(32414): seq=502 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:39.270 I/DetectionDump(32414): seq=503 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.306 I/DetectionDump(32414): seq=504 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00504_miss.jpg
+09-05 21:48:39.389 I/DetectionDump(32414): seq=505 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.412 I/DetectionDump(32414): seq=506 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:39.489 I/DetectionDump(32414): seq=507 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.533 I/DetectionDump(32414): seq=508 src=geometry p=0.8889 reject=ok known=9 bad=0 side=0.6777 c=YELLOW img=frames/f00508_hit.jpg
+09-05 21:48:39.533 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:39.584 I/DetectionDump(32414): seq=509 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.604 I/DetectionDump(32414): seq=510 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:39.680 I/DetectionDump(32414): seq=511 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.718 I/DetectionDump(32414): seq=512 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00512_miss.jpg
+09-05 21:48:39.790 I/DetectionDump(32414): seq=513 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.844 I/DetectionDump(32414): seq=514 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6701 c=YELLOW img=frames/f00514_hit.jpg
+09-05 21:48:39.844 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:39.844 I/DetectionDump(32414): event stable_capture side=0.6701
+09-05 21:48:39.856 I/DetectionDump(32414): seq=515 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.898 I/DetectionDump(32414): seq=516 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6701 c=YELLOW img=frames/f00516_hit.jpg
+09-05 21:48:39.898 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:39.947 I/DetectionDump(32414): seq=517 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:39.966 I/DetectionDump(32414): seq=518 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:40.046 I/DetectionDump(32414): seq=519 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.081 I/DetectionDump(32414): seq=520 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6678 c=YELLOW img=frames/f00520_hit.jpg
+09-05 21:48:40.081 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:40.081 I/DetectionDump(32414): event stable_capture side=0.6678
+09-05 21:48:40.147 I/DetectionDump(32414): seq=521 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.165 I/DetectionDump(32414): seq=522 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:40.215 I/DetectionDump(32414): seq=523 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.250 I/DetectionDump(32414): seq=524 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6725 c=YELLOW img=frames/f00524_hit.jpg
+09-05 21:48:40.250 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:40.318 I/DetectionDump(32414): seq=525 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.355 I/DetectionDump(32414): seq=526 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6700 c=YELLOW img=frames/f00526_hit.jpg
+09-05 21:48:40.355 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:40.355 I/DetectionDump(32414): event stable_capture side=0.6700
+09-05 21:48:40.416 I/DetectionDump(32414): seq=527 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.458 I/DetectionDump(32414): seq=528 src=geometry p=0.8889 reject=ok known=9 bad=0 side=0.6677 c=YELLOW img=frames/f00528_hit.jpg
+09-05 21:48:40.458 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:40.522 I/DetectionDump(32414): seq=529 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.555 I/DetectionDump(32414): seq=530 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6724 c=YELLOW img=frames/f00530_hit.jpg
+09-05 21:48:40.555 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:40.555 I/DetectionDump(32414): event stable_capture side=0.6724
+09-05 21:48:40.624 I/DetectionDump(32414): seq=531 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.638 I/DetectionDump(32414): seq=532 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:40.712 I/DetectionDump(32414): seq=533 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.729 I/DetectionDump(32414): seq=534 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:40.783 I/DetectionDump(32414): seq=535 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.814 I/DetectionDump(32414): seq=536 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00536_miss.jpg
+09-05 21:48:40.881 I/DetectionDump(32414): seq=537 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:40.901 I/DetectionDump(32414): seq=538 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:40.980 I/DetectionDump(32414): seq=539 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.003 I/DetectionDump(32414): seq=540 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:41.076 I/DetectionDump(32414): seq=541 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.097 I/DetectionDump(32414): seq=542 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:41.173 I/DetectionDump(32414): seq=543 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.208 I/DetectionDump(32414): seq=544 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00544_miss.jpg
+09-05 21:48:41.274 I/DetectionDump(32414): seq=545 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.291 I/DetectionDump(32414): seq=546 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:41.374 I/DetectionDump(32414): seq=547 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.396 I/DetectionDump(32414): seq=548 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:41.442 I/DetectionDump(32414): seq=549 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.464 I/DetectionDump(32414): seq=550 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:41.511 I/DetectionDump(32414): seq=551 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.550 I/DetectionDump(32414): seq=552 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00552_miss.jpg
+09-05 21:48:41.615 I/DetectionDump(32414): seq=553 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.642 I/DetectionDump(32414): seq=554 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:41.704 I/DetectionDump(32414): seq=555 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.725 I/DetectionDump(32414): seq=556 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:41.784 I/DetectionDump(32414): seq=557 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.803 I/DetectionDump(32414): seq=558 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:41.880 I/DetectionDump(32414): seq=559 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.924 I/DetectionDump(32414): seq=560 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00560_miss.jpg
+09-05 21:48:41.972 I/DetectionDump(32414): seq=561 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:41.990 I/DetectionDump(32414): seq=562 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.077 I/DetectionDump(32414): seq=563 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.093 I/DetectionDump(32414): seq=564 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.174 I/DetectionDump(32414): seq=565 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.193 I/DetectionDump(32414): seq=566 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.273 I/DetectionDump(32414): seq=567 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.308 I/DetectionDump(32414): seq=568 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00568_miss.jpg
+09-05 21:48:42.372 I/DetectionDump(32414): seq=569 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.397 I/DetectionDump(32414): seq=570 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.452 I/DetectionDump(32414): seq=571 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.474 I/DetectionDump(32414): seq=572 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.543 I/DetectionDump(32414): seq=573 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.562 I/DetectionDump(32414): seq=574 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.653 I/DetectionDump(32414): seq=575 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.689 I/DetectionDump(32414): seq=576 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00576_miss.jpg
+09-05 21:48:42.736 I/DetectionDump(32414): seq=577 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.755 I/DetectionDump(32414): seq=578 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.817 I/DetectionDump(32414): seq=579 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.837 I/DetectionDump(32414): seq=580 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.895 I/DetectionDump(32414): seq=581 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:42.919 I/DetectionDump(32414): seq=582 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:42.969 I/DetectionDump(32414): seq=583 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.007 I/DetectionDump(32414): seq=584 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00584_miss.jpg
+09-05 21:48:43.042 I/DetectionDump(32414): seq=585 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.064 I/DetectionDump(32414): seq=586 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.142 I/DetectionDump(32414): seq=587 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.159 I/DetectionDump(32414): seq=588 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.210 I/DetectionDump(32414): seq=589 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.231 I/DetectionDump(32414): seq=590 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.284 I/DetectionDump(32414): seq=591 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.319 I/DetectionDump(32414): seq=592 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00592_miss.jpg
+09-05 21:48:43.369 I/DetectionDump(32414): seq=593 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.383 I/DetectionDump(32414): seq=594 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.436 I/DetectionDump(32414): seq=595 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.450 I/DetectionDump(32414): seq=596 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.511 I/DetectionDump(32414): seq=597 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.527 I/DetectionDump(32414): seq=598 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.629 I/DetectionDump(32414): seq=599 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.663 I/DetectionDump(32414): seq=600 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00600_miss.jpg
+09-05 21:48:43.706 I/DetectionDump(32414): seq=601 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.721 I/DetectionDump(32414): seq=602 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.779 I/DetectionDump(32414): seq=603 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.796 I/DetectionDump(32414): seq=604 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.850 I/DetectionDump(32414): seq=605 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.867 I/DetectionDump(32414): seq=606 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:43.916 I/DetectionDump(32414): seq=607 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:43.952 I/DetectionDump(32414): seq=608 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00608_miss.jpg
+09-05 21:48:44.012 I/DetectionDump(32414): seq=609 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.031 I/DetectionDump(32414): seq=610 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.080 I/DetectionDump(32414): seq=611 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.100 I/DetectionDump(32414): seq=612 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.148 I/DetectionDump(32414): seq=613 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.167 I/DetectionDump(32414): seq=614 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.219 I/DetectionDump(32414): seq=615 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.260 I/DetectionDump(32414): seq=616 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00616_miss.jpg
+09-05 21:48:44.299 I/DetectionDump(32414): seq=617 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.316 I/DetectionDump(32414): seq=618 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.382 I/DetectionDump(32414): seq=619 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.394 I/DetectionDump(32414): seq=620 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.453 I/DetectionDump(32414): seq=621 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.471 I/DetectionDump(32414): seq=622 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.551 I/DetectionDump(32414): seq=623 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.590 I/DetectionDump(32414): seq=624 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00624_miss.jpg
+09-05 21:48:44.627 I/DetectionDump(32414): seq=625 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.645 I/DetectionDump(32414): seq=626 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.703 I/DetectionDump(32414): seq=627 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.720 I/DetectionDump(32414): seq=628 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.777 I/DetectionDump(32414): seq=629 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.798 I/DetectionDump(32414): seq=630 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:44.861 I/DetectionDump(32414): seq=631 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.900 I/DetectionDump(32414): seq=632 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00632_miss.jpg
+09-05 21:48:44.942 I/DetectionDump(32414): seq=633 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:44.963 I/DetectionDump(32414): seq=634 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.023 I/DetectionDump(32414): seq=635 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.042 I/DetectionDump(32414): seq=636 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.105 I/DetectionDump(32414): seq=637 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.120 I/DetectionDump(32414): seq=638 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.178 I/DetectionDump(32414): seq=639 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.222 I/DetectionDump(32414): seq=640 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00640_miss.jpg
+09-05 21:48:45.273 I/DetectionDump(32414): seq=641 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.291 I/DetectionDump(32414): seq=642 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.379 I/DetectionDump(32414): seq=643 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.396 I/DetectionDump(32414): seq=644 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.476 I/DetectionDump(32414): seq=645 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.499 I/DetectionDump(32414): seq=646 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.582 I/DetectionDump(32414): seq=647 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.620 I/DetectionDump(32414): seq=648 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00648_miss.jpg
+09-05 21:48:45.672 I/DetectionDump(32414): seq=649 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.691 I/DetectionDump(32414): seq=650 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.770 I/DetectionDump(32414): seq=651 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.786 I/DetectionDump(32414): seq=652 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.842 I/DetectionDump(32414): seq=653 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:45.864 I/DetectionDump(32414): seq=654 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:45.961 I/DetectionDump(32414): seq=655 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.003 I/DetectionDump(32414): seq=656 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00656_miss.jpg
+09-05 21:48:46.043 I/DetectionDump(32414): seq=657 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.060 I/DetectionDump(32414): seq=658 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:46.110 I/DetectionDump(32414): seq=659 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.131 I/DetectionDump(32414): seq=660 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:46.230 I/DetectionDump(32414): seq=661 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.250 I/DetectionDump(32414): seq=662 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:46.302 I/DetectionDump(32414): seq=663 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.336 I/DetectionDump(32414): seq=664 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00664_miss.jpg
+09-05 21:48:46.377 I/DetectionDump(32414): seq=665 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.399 I/DetectionDump(32414): seq=666 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:46.469 I/DetectionDump(32414): seq=667 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.488 I/DetectionDump(32414): seq=668 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:46.561 I/DetectionDump(32414): seq=669 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.578 I/DetectionDump(32414): seq=670 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:46.639 I/DetectionDump(32414): seq=671 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.676 I/DetectionDump(32414): seq=672 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00672_miss.jpg
+09-05 21:48:46.734 I/DetectionDump(32414): seq=673 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.778 I/DetectionDump(32414): seq=674 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6448 c=BLUE img=frames/f00674_hit.jpg
+09-05 21:48:46.778 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:46.805 I/DetectionDump(32414): seq=675 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.822 I/DetectionDump(32414): seq=676 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:46.928 I/DetectionDump(32414): seq=677 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:46.943 I/DetectionDump(32414): seq=678 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.018 I/DetectionDump(32414): seq=679 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.063 I/DetectionDump(32414): seq=680 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00680_miss.jpg
+09-05 21:48:47.082 I/DetectionDump(32414): seq=681 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.100 I/DetectionDump(32414): seq=682 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.175 I/DetectionDump(32414): seq=683 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.191 I/DetectionDump(32414): seq=684 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.248 I/DetectionDump(32414): seq=685 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.266 I/DetectionDump(32414): seq=686 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.355 I/DetectionDump(32414): seq=687 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.393 I/DetectionDump(32414): seq=688 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00688_miss.jpg
+09-05 21:48:47.432 I/DetectionDump(32414): seq=689 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.454 I/DetectionDump(32414): seq=690 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.512 I/DetectionDump(32414): seq=691 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.525 I/DetectionDump(32414): seq=692 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.618 I/DetectionDump(32414): seq=693 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.635 I/DetectionDump(32414): seq=694 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.714 I/DetectionDump(32414): seq=695 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.747 I/DetectionDump(32414): seq=696 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00696_miss.jpg
+09-05 21:48:47.817 I/DetectionDump(32414): seq=697 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.833 I/DetectionDump(32414): seq=698 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.914 I/DetectionDump(32414): seq=699 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:47.935 I/DetectionDump(32414): seq=700 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:47.982 I/DetectionDump(32414): seq=701 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.004 I/DetectionDump(32414): seq=702 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:48.081 I/DetectionDump(32414): seq=703 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.122 I/DetectionDump(32414): seq=704 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00704_miss.jpg
+09-05 21:48:48.177 I/DetectionDump(32414): seq=705 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.193 I/DetectionDump(32414): seq=706 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:48.244 I/DetectionDump(32414): seq=707 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.260 I/DetectionDump(32414): seq=708 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:48.317 I/DetectionDump(32414): seq=709 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.332 I/DetectionDump(32414): seq=710 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:48.418 I/DetectionDump(32414): seq=711 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.463 I/DetectionDump(32414): seq=712 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00712_miss.jpg
+09-05 21:48:48.513 I/DetectionDump(32414): seq=713 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.533 I/DetectionDump(32414): seq=714 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:48.618 I/DetectionDump(32414): seq=715 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.636 I/DetectionDump(32414): seq=716 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:48.714 I/DetectionDump(32414): seq=717 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.737 I/DetectionDump(32414): seq=718 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:48.813 I/DetectionDump(32414): seq=719 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.856 I/DetectionDump(32414): seq=720 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00720_miss.jpg
+09-05 21:48:48.881 I/DetectionDump(32414): seq=721 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.902 I/DetectionDump(32414): seq=722 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:48.976 I/DetectionDump(32414): seq=723 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:48.996 I/DetectionDump(32414): seq=724 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:49.074 I/DetectionDump(32414): seq=725 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.096 I/DetectionDump(32414): seq=726 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:49.143 I/DetectionDump(32414): seq=727 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.176 I/DetectionDump(32414): seq=728 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00728_miss.jpg
+09-05 21:48:49.204 I/DetectionDump(32414): seq=729 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.217 I/DetectionDump(32414): seq=730 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:49.272 I/DetectionDump(32414): seq=731 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.288 I/DetectionDump(32414): seq=732 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:49.373 I/DetectionDump(32414): seq=733 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.399 I/DetectionDump(32414): seq=734 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:49.438 I/DetectionDump(32414): seq=735 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.465 I/DetectionDump(32414): seq=736 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00736_miss.jpg
+09-05 21:48:49.536 I/DetectionDump(32414): seq=737 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.551 I/DetectionDump(32414): seq=738 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:49.631 I/DetectionDump(32414): seq=739 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.643 I/DetectionDump(32414): seq=740 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:49.730 I/DetectionDump(32414): seq=741 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.748 I/DetectionDump(32414): seq=742 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:49.805 I/DetectionDump(32414): seq=743 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.836 I/DetectionDump(32414): seq=744 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00744_miss.jpg
+09-05 21:48:49.901 I/DetectionDump(32414): seq=745 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:49.915 I/DetectionDump(32414): seq=746 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.003 I/DetectionDump(32414): seq=747 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.021 I/DetectionDump(32414): seq=748 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.076 I/DetectionDump(32414): seq=749 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.093 I/DetectionDump(32414): seq=750 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.173 I/DetectionDump(32414): seq=751 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.205 I/DetectionDump(32414): seq=752 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00752_miss.jpg
+09-05 21:48:50.266 I/DetectionDump(32414): seq=753 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.287 I/DetectionDump(32414): seq=754 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.338 I/DetectionDump(32414): seq=755 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.364 I/DetectionDump(32414): seq=756 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.465 I/DetectionDump(32414): seq=757 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.481 I/DetectionDump(32414): seq=758 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.540 I/DetectionDump(32414): seq=759 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.578 I/DetectionDump(32414): seq=760 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00760_miss.jpg
+09-05 21:48:50.615 I/DetectionDump(32414): seq=761 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.630 I/DetectionDump(32414): seq=762 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.715 I/DetectionDump(32414): seq=763 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.734 I/DetectionDump(32414): seq=764 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.832 I/DetectionDump(32414): seq=765 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.851 I/DetectionDump(32414): seq=766 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:50.903 I/DetectionDump(32414): seq=767 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.937 I/DetectionDump(32414): seq=768 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00768_miss.jpg
+09-05 21:48:50.968 I/DetectionDump(32414): seq=769 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:50.980 I/DetectionDump(32414): seq=770 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.051 I/DetectionDump(32414): seq=771 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.064 I/DetectionDump(32414): seq=772 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.153 I/DetectionDump(32414): seq=773 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.167 I/DetectionDump(32414): seq=774 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.233 I/DetectionDump(32414): seq=775 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.260 I/DetectionDump(32414): seq=776 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00776_miss.jpg
+09-05 21:48:51.300 I/DetectionDump(32414): seq=777 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.312 I/DetectionDump(32414): seq=778 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.384 I/DetectionDump(32414): seq=779 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.396 I/DetectionDump(32414): seq=780 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.480 I/DetectionDump(32414): seq=781 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.494 I/DetectionDump(32414): seq=782 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.552 I/DetectionDump(32414): seq=783 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.588 I/DetectionDump(32414): seq=784 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00784_miss.jpg
+09-05 21:48:51.647 I/DetectionDump(32414): seq=785 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.666 I/DetectionDump(32414): seq=786 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.752 I/DetectionDump(32414): seq=787 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.772 I/DetectionDump(32414): seq=788 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.844 I/DetectionDump(32414): seq=789 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.859 I/DetectionDump(32414): seq=790 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:51.917 I/DetectionDump(32414): seq=791 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:51.964 I/DetectionDump(32414): seq=792 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.7187 c=WHITE img=frames/f00792_hit.jpg
+09-05 21:48:51.964 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:52.016 I/DetectionDump(32414): seq=793 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.030 I/DetectionDump(32414): seq=794 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.084 I/DetectionDump(32414): seq=795 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.099 I/DetectionDump(32414): seq=796 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.151 I/DetectionDump(32414): seq=797 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.173 I/DetectionDump(32414): seq=798 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.247 I/DetectionDump(32414): seq=799 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.280 I/DetectionDump(32414): seq=800 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00800_miss.jpg
+09-05 21:48:52.316 I/DetectionDump(32414): seq=801 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.333 I/DetectionDump(32414): seq=802 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.410 I/DetectionDump(32414): seq=803 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.426 I/DetectionDump(32414): seq=804 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.513 I/DetectionDump(32414): seq=805 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.529 I/DetectionDump(32414): seq=806 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.618 I/DetectionDump(32414): seq=807 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.659 I/DetectionDump(32414): seq=808 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00808_miss.jpg
+09-05 21:48:52.686 I/DetectionDump(32414): seq=809 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.700 I/DetectionDump(32414): seq=810 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.781 I/DetectionDump(32414): seq=811 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.801 I/DetectionDump(32414): seq=812 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.880 I/DetectionDump(32414): seq=813 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:52.892 I/DetectionDump(32414): seq=814 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:52.983 I/DetectionDump(32414): seq=815 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.029 I/DetectionDump(32414): seq=816 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00816_miss.jpg
+09-05 21:48:53.080 I/DetectionDump(32414): seq=817 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.097 I/DetectionDump(32414): seq=818 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:53.173 I/DetectionDump(32414): seq=819 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.191 I/DetectionDump(32414): seq=820 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:53.239 I/DetectionDump(32414): seq=821 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.256 I/DetectionDump(32414): seq=822 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:53.307 I/DetectionDump(32414): seq=823 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.346 I/DetectionDump(32414): seq=824 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00824_miss.jpg
+09-05 21:48:53.377 I/DetectionDump(32414): seq=825 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.391 I/DetectionDump(32414): seq=826 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:53.474 I/DetectionDump(32414): seq=827 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.490 I/DetectionDump(32414): seq=828 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:53.578 I/DetectionDump(32414): seq=829 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.597 I/DetectionDump(32414): seq=830 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:53.679 I/DetectionDump(32414): seq=831 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.721 I/DetectionDump(32414): seq=832 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00832_miss.jpg
+09-05 21:48:53.766 I/DetectionDump(32414): seq=833 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.779 I/DetectionDump(32414): seq=834 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:53.837 I/DetectionDump(32414): seq=835 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.857 I/DetectionDump(32414): seq=836 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:53.963 I/DetectionDump(32414): seq=837 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:53.982 I/DetectionDump(32414): seq=838 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.059 I/DetectionDump(32414): seq=839 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.097 I/DetectionDump(32414): seq=840 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00840_miss.jpg
+09-05 21:48:54.131 I/DetectionDump(32414): seq=841 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.144 I/DetectionDump(32414): seq=842 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.199 I/DetectionDump(32414): seq=843 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.211 I/DetectionDump(32414): seq=844 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.273 I/DetectionDump(32414): seq=845 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.288 I/DetectionDump(32414): seq=846 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.353 I/DetectionDump(32414): seq=847 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.381 I/DetectionDump(32414): seq=848 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00848_miss.jpg
+09-05 21:48:54.437 I/DetectionDump(32414): seq=849 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.455 I/DetectionDump(32414): seq=850 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.536 I/DetectionDump(32414): seq=851 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.552 I/DetectionDump(32414): seq=852 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.613 I/DetectionDump(32414): seq=853 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.633 I/DetectionDump(32414): seq=854 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.697 I/DetectionDump(32414): seq=855 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.731 I/DetectionDump(32414): seq=856 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00856_miss.jpg
+09-05 21:48:54.770 I/DetectionDump(32414): seq=857 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.788 I/DetectionDump(32414): seq=858 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.860 I/DetectionDump(32414): seq=859 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.882 I/DetectionDump(32414): seq=860 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:54.952 I/DetectionDump(32414): seq=861 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:54.976 I/DetectionDump(32414): seq=862 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:55.058 I/DetectionDump(32414): seq=863 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.098 I/DetectionDump(32414): seq=864 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00864_miss.jpg
+09-05 21:48:55.158 I/DetectionDump(32414): seq=865 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.175 I/DetectionDump(32414): seq=866 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:55.243 I/DetectionDump(32414): seq=867 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.261 I/DetectionDump(32414): seq=868 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:55.314 I/DetectionDump(32414): seq=869 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.334 I/DetectionDump(32414): seq=870 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:55.383 I/DetectionDump(32414): seq=871 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.431 I/DetectionDump(32414): seq=872 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00872_miss.jpg
+09-05 21:48:55.466 I/DetectionDump(32414): seq=873 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.484 I/DetectionDump(32414): seq=874 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:55.543 I/DetectionDump(32414): seq=875 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.560 I/DetectionDump(32414): seq=876 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:55.616 I/DetectionDump(32414): seq=877 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.632 I/DetectionDump(32414): seq=878 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:55.721 I/DetectionDump(32414): seq=879 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.761 I/DetectionDump(32414): seq=880 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00880_miss.jpg
+09-05 21:48:55.820 I/DetectionDump(32414): seq=881 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.837 I/DetectionDump(32414): seq=882 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:55.915 I/DetectionDump(32414): seq=883 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:55.937 I/DetectionDump(32414): seq=884 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:56.023 I/DetectionDump(32414): seq=885 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.045 I/DetectionDump(32414): seq=886 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:56.124 I/DetectionDump(32414): seq=887 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.166 I/DetectionDump(32414): seq=888 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00888_miss.jpg
+09-05 21:48:56.216 I/DetectionDump(32414): seq=889 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.236 I/DetectionDump(32414): seq=890 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:56.319 I/DetectionDump(32414): seq=891 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.337 I/DetectionDump(32414): seq=892 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:56.419 I/DetectionDump(32414): seq=893 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.442 I/DetectionDump(32414): seq=894 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:56.507 I/DetectionDump(32414): seq=895 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.549 I/DetectionDump(32414): seq=896 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00896_miss.jpg
+09-05 21:48:56.588 I/DetectionDump(32414): seq=897 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.604 I/DetectionDump(32414): seq=898 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:56.677 I/DetectionDump(32414): seq=899 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.694 I/DetectionDump(32414): seq=900 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:56.780 I/DetectionDump(32414): seq=901 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.802 I/DetectionDump(32414): seq=902 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:56.874 I/DetectionDump(32414): seq=903 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.904 I/DetectionDump(32414): seq=904 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00904_miss.jpg
+09-05 21:48:56.941 I/DetectionDump(32414): seq=905 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:56.957 I/DetectionDump(32414): seq=906 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:57.016 I/DetectionDump(32414): seq=907 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.032 I/DetectionDump(32414): seq=908 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:57.121 I/DetectionDump(32414): seq=909 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.154 I/DetectionDump(32414): seq=910 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.7279 c=BLUE img=frames/f00910_hit.jpg
+09-05 21:48:57.154 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:57.203 I/DetectionDump(32414): seq=911 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.227 I/DetectionDump(32414): seq=912 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00912_miss.jpg
+09-05 21:48:57.273 I/DetectionDump(32414): seq=913 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.289 I/DetectionDump(32414): seq=914 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:57.378 I/DetectionDump(32414): seq=915 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.414 I/DetectionDump(32414): seq=916 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.7155 c=BLUE img=frames/f00916_hit.jpg
+09-05 21:48:57.414 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:57.470 I/DetectionDump(32414): seq=917 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.508 I/DetectionDump(32414): seq=918 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.7009 c=BLUE img=frames/f00918_hit.jpg
+09-05 21:48:57.508 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:57.508 I/DetectionDump(32414): event stable_capture side=0.7009
+09-05 21:48:57.569 I/DetectionDump(32414): seq=919 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.601 I/DetectionDump(32414): seq=920 src=geometry p=0.7778 reject=ok known=9 bad=0 side=0.6961 c=BLUE img=frames/f00920_hit.jpg
+09-05 21:48:57.602 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:48:57.671 I/DetectionDump(32414): seq=921 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.686 I/DetectionDump(32414): seq=922 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:57.765 I/DetectionDump(32414): seq=923 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.783 I/DetectionDump(32414): seq=924 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:57.833 I/DetectionDump(32414): seq=925 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.848 I/DetectionDump(32414): seq=926 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:57.905 I/DetectionDump(32414): seq=927 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:57.939 I/DetectionDump(32414): seq=928 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00928_miss.jpg
+09-05 21:48:58.015 I/DetectionDump(32414): seq=929 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.037 I/DetectionDump(32414): seq=930 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:58.123 I/DetectionDump(32414): seq=931 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.139 I/DetectionDump(32414): seq=932 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:58.213 I/DetectionDump(32414): seq=933 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.231 I/DetectionDump(32414): seq=934 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:58.307 I/DetectionDump(32414): seq=935 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.348 I/DetectionDump(32414): seq=936 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00936_miss.jpg
+09-05 21:48:58.416 I/DetectionDump(32414): seq=937 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.435 I/DetectionDump(32414): seq=938 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:58.510 I/DetectionDump(32414): seq=939 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.524 I/DetectionDump(32414): seq=940 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:58.582 I/DetectionDump(32414): seq=941 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.601 I/DetectionDump(32414): seq=942 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:58.687 I/DetectionDump(32414): seq=943 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.719 I/DetectionDump(32414): seq=944 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00944_miss.jpg
+09-05 21:48:58.787 I/DetectionDump(32414): seq=945 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.809 I/DetectionDump(32414): seq=946 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:58.889 I/DetectionDump(32414): seq=947 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:58.903 I/DetectionDump(32414): seq=948 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:58.981 I/DetectionDump(32414): seq=949 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.001 I/DetectionDump(32414): seq=950 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:59.087 I/DetectionDump(32414): seq=951 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.130 I/DetectionDump(32414): seq=952 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00952_miss.jpg
+09-05 21:48:59.186 I/DetectionDump(32414): seq=953 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.203 I/DetectionDump(32414): seq=954 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:59.283 I/DetectionDump(32414): seq=955 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.300 I/DetectionDump(32414): seq=956 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:59.385 I/DetectionDump(32414): seq=957 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.409 I/DetectionDump(32414): seq=958 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:59.482 I/DetectionDump(32414): seq=959 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.510 I/DetectionDump(32414): seq=960 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00960_miss.jpg
+09-05 21:48:59.573 I/DetectionDump(32414): seq=961 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.594 I/DetectionDump(32414): seq=962 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:59.660 I/DetectionDump(32414): seq=963 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.678 I/DetectionDump(32414): seq=964 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:59.748 I/DetectionDump(32414): seq=965 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.768 I/DetectionDump(32414): seq=966 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:48:59.848 I/DetectionDump(32414): seq=967 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.882 I/DetectionDump(32414): seq=968 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00968_miss.jpg
+09-05 21:48:59.943 I/DetectionDump(32414): seq=969 src=cnn p=-1.0000 reject=no_model
+09-05 21:48:59.962 I/DetectionDump(32414): seq=970 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.039 I/DetectionDump(32414): seq=971 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.048 I/DetectionDump(32414): seq=972 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.106 I/DetectionDump(32414): seq=973 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.127 I/DetectionDump(32414): seq=974 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.202 I/DetectionDump(32414): seq=975 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.236 I/DetectionDump(32414): seq=976 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00976_miss.jpg
+09-05 21:49:00.271 I/DetectionDump(32414): seq=977 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.289 I/DetectionDump(32414): seq=978 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.340 I/DetectionDump(32414): seq=979 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.358 I/DetectionDump(32414): seq=980 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.440 I/DetectionDump(32414): seq=981 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.459 I/DetectionDump(32414): seq=982 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.545 I/DetectionDump(32414): seq=983 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.585 I/DetectionDump(32414): seq=984 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00984_miss.jpg
+09-05 21:49:00.608 I/DetectionDump(32414): seq=985 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.628 I/DetectionDump(32414): seq=986 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.675 I/DetectionDump(32414): seq=987 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.694 I/DetectionDump(32414): seq=988 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.744 I/DetectionDump(32414): seq=989 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.761 I/DetectionDump(32414): seq=990 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:00.843 I/DetectionDump(32414): seq=991 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.889 I/DetectionDump(32414): seq=992 src=geometry p=-1.0000 reject=geometry_miss img=frames/f00992_miss.jpg
+09-05 21:49:00.942 I/DetectionDump(32414): seq=993 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:00.961 I/DetectionDump(32414): seq=994 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.025 I/DetectionDump(32414): seq=995 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.037 I/DetectionDump(32414): seq=996 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.101 I/DetectionDump(32414): seq=997 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.118 I/DetectionDump(32414): seq=998 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.215 I/DetectionDump(32414): seq=999 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.256 I/DetectionDump(32414): seq=1000 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01000_miss.jpg
+09-05 21:49:01.304 I/DetectionDump(32414): seq=1001 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.323 I/DetectionDump(32414): seq=1002 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.373 I/DetectionDump(32414): seq=1003 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.390 I/DetectionDump(32414): seq=1004 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.469 I/DetectionDump(32414): seq=1005 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.483 I/DetectionDump(32414): seq=1006 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.542 I/DetectionDump(32414): seq=1007 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.587 I/DetectionDump(32414): seq=1008 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01008_miss.jpg
+09-05 21:49:01.633 I/DetectionDump(32414): seq=1009 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.650 I/DetectionDump(32414): seq=1010 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.704 I/DetectionDump(32414): seq=1011 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.723 I/DetectionDump(32414): seq=1012 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.788 I/DetectionDump(32414): seq=1013 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.803 I/DetectionDump(32414): seq=1014 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:01.866 I/DetectionDump(32414): seq=1015 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.904 I/DetectionDump(32414): seq=1016 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01016_miss.jpg
+09-05 21:49:01.941 I/DetectionDump(32414): seq=1017 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:01.959 I/DetectionDump(32414): seq=1018 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.054 I/DetectionDump(32414): seq=1019 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.071 I/DetectionDump(32414): seq=1020 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.121 I/DetectionDump(32414): seq=1021 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.138 I/DetectionDump(32414): seq=1022 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.203 I/DetectionDump(32414): seq=1023 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.242 I/DetectionDump(32414): seq=1024 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01024_miss.jpg
+09-05 21:49:02.300 I/DetectionDump(32414): seq=1025 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.319 I/DetectionDump(32414): seq=1026 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.370 I/DetectionDump(32414): seq=1027 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.389 I/DetectionDump(32414): seq=1028 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.460 I/DetectionDump(32414): seq=1029 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.474 I/DetectionDump(32414): seq=1030 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.552 I/DetectionDump(32414): seq=1031 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.597 I/DetectionDump(32414): seq=1032 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01032_miss.jpg
+09-05 21:49:02.652 I/DetectionDump(32414): seq=1033 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.676 I/DetectionDump(32414): seq=1034 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.739 I/DetectionDump(32414): seq=1035 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.768 I/DetectionDump(32414): seq=1036 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.833 I/DetectionDump(32414): seq=1037 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.853 I/DetectionDump(32414): seq=1038 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:02.911 I/DetectionDump(32414): seq=1039 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:02.945 I/DetectionDump(32414): seq=1040 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01040_miss.jpg
+09-05 21:49:02.998 I/DetectionDump(32414): seq=1041 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.020 I/DetectionDump(32414): seq=1042 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.073 I/DetectionDump(32414): seq=1043 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.090 I/DetectionDump(32414): seq=1044 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.145 I/DetectionDump(32414): seq=1045 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.159 I/DetectionDump(32414): seq=1046 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.211 I/DetectionDump(32414): seq=1047 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.241 I/DetectionDump(32414): seq=1048 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01048_miss.jpg
+09-05 21:49:03.306 I/DetectionDump(32414): seq=1049 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.323 I/DetectionDump(32414): seq=1050 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.379 I/DetectionDump(32414): seq=1051 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.391 I/DetectionDump(32414): seq=1052 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.480 I/DetectionDump(32414): seq=1053 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.496 I/DetectionDump(32414): seq=1054 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.551 I/DetectionDump(32414): seq=1055 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.586 I/DetectionDump(32414): seq=1056 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01056_miss.jpg
+09-05 21:49:03.635 I/DetectionDump(32414): seq=1057 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.658 I/DetectionDump(32414): seq=1058 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.715 I/DetectionDump(32414): seq=1059 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.735 I/DetectionDump(32414): seq=1060 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.812 I/DetectionDump(32414): seq=1061 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.836 I/DetectionDump(32414): seq=1062 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:03.912 I/DetectionDump(32414): seq=1063 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:03.948 I/DetectionDump(32414): seq=1064 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01064_miss.jpg
+09-05 21:49:04.011 I/DetectionDump(32414): seq=1065 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.028 I/DetectionDump(32414): seq=1066 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:04.105 I/DetectionDump(32414): seq=1067 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.121 I/DetectionDump(32414): seq=1068 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:04.191 I/DetectionDump(32414): seq=1069 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.206 I/DetectionDump(32414): seq=1070 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:04.266 I/DetectionDump(32414): seq=1071 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.298 I/DetectionDump(32414): seq=1072 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01072_miss.jpg
+09-05 21:49:04.364 I/DetectionDump(32414): seq=1073 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.381 I/DetectionDump(32414): seq=1074 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:04.431 I/DetectionDump(32414): seq=1075 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.462 I/DetectionDump(32414): seq=1076 src=geometry p=0.7778 reject=ok known=8 bad=0 side=0.6580 c=GREEN img=frames/f01076_hit.jpg
+09-05 21:49:04.462 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:49:04.502 I/DetectionDump(32414): seq=1077 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.515 I/DetectionDump(32414): seq=1078 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:04.599 I/DetectionDump(32414): seq=1079 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.625 I/DetectionDump(32414): seq=1080 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01080_miss.jpg
+09-05 21:49:04.698 I/DetectionDump(32414): seq=1081 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.716 I/DetectionDump(32414): seq=1082 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:04.766 I/DetectionDump(32414): seq=1083 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.777 I/DetectionDump(32414): seq=1084 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:04.864 I/DetectionDump(32414): seq=1085 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.877 I/DetectionDump(32414): seq=1086 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:04.964 I/DetectionDump(32414): seq=1087 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:04.994 I/DetectionDump(32414): seq=1088 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01088_miss.jpg
+09-05 21:49:05.064 I/DetectionDump(32414): seq=1089 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.076 I/DetectionDump(32414): seq=1090 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:05.165 I/DetectionDump(32414): seq=1091 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.177 I/DetectionDump(32414): seq=1092 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:05.231 I/DetectionDump(32414): seq=1093 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.244 I/DetectionDump(32414): seq=1094 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:05.332 I/DetectionDump(32414): seq=1095 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.365 I/DetectionDump(32414): seq=1096 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01096_miss.jpg
+09-05 21:49:05.427 I/DetectionDump(32414): seq=1097 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.441 I/DetectionDump(32414): seq=1098 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:05.499 I/DetectionDump(32414): seq=1099 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.511 I/DetectionDump(32414): seq=1100 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:05.595 I/DetectionDump(32414): seq=1101 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.609 I/DetectionDump(32414): seq=1102 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:05.697 I/DetectionDump(32414): seq=1103 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.722 I/DetectionDump(32414): seq=1104 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01104_miss.jpg
+09-05 21:49:05.796 I/DetectionDump(32414): seq=1105 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.807 I/DetectionDump(32414): seq=1106 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:05.865 I/DetectionDump(32414): seq=1107 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.875 I/DetectionDump(32414): seq=1108 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:05.964 I/DetectionDump(32414): seq=1109 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:05.978 I/DetectionDump(32414): seq=1110 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.064 I/DetectionDump(32414): seq=1111 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.097 I/DetectionDump(32414): seq=1112 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01112_miss.jpg
+09-05 21:49:06.130 I/DetectionDump(32414): seq=1113 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.143 I/DetectionDump(32414): seq=1114 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.229 I/DetectionDump(32414): seq=1115 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.242 I/DetectionDump(32414): seq=1116 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.330 I/DetectionDump(32414): seq=1117 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.343 I/DetectionDump(32414): seq=1118 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.397 I/DetectionDump(32414): seq=1119 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.421 I/DetectionDump(32414): seq=1120 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01120_miss.jpg
+09-05 21:49:06.463 I/DetectionDump(32414): seq=1121 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.475 I/DetectionDump(32414): seq=1122 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.561 I/DetectionDump(32414): seq=1123 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.577 I/DetectionDump(32414): seq=1124 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.628 I/DetectionDump(32414): seq=1125 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.643 I/DetectionDump(32414): seq=1126 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.694 I/DetectionDump(32414): seq=1127 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.721 I/DetectionDump(32414): seq=1128 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01128_miss.jpg
+09-05 21:49:06.762 I/DetectionDump(32414): seq=1129 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.776 I/DetectionDump(32414): seq=1130 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.833 I/DetectionDump(32414): seq=1131 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.847 I/DetectionDump(32414): seq=1132 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.929 I/DetectionDump(32414): seq=1133 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:06.944 I/DetectionDump(32414): seq=1134 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:06.997 I/DetectionDump(32414): seq=1135 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.025 I/DetectionDump(32414): seq=1136 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01136_miss.jpg
+09-05 21:49:07.096 I/DetectionDump(32414): seq=1137 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.109 I/DetectionDump(32414): seq=1138 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:07.194 I/DetectionDump(32414): seq=1139 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.207 I/DetectionDump(32414): seq=1140 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:07.302 I/DetectionDump(32414): seq=1141 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.316 I/DetectionDump(32414): seq=1142 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:07.403 I/DetectionDump(32414): seq=1143 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.433 I/DetectionDump(32414): seq=1144 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01144_miss.jpg
+09-05 21:49:07.507 I/DetectionDump(32414): seq=1145 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.520 I/DetectionDump(32414): seq=1146 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:07.606 I/DetectionDump(32414): seq=1147 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.625 I/DetectionDump(32414): seq=1148 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:07.705 I/DetectionDump(32414): seq=1149 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.741 I/DetectionDump(32414): seq=1150 src=geometry p=0.7778 reject=ok known=7 bad=2 side=0.7283 c=UNKNOWN img=frames/f01150_hit.jpg
+09-05 21:49:07.741 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:49:07.805 I/DetectionDump(32414): seq=1151 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.837 I/DetectionDump(32414): seq=1152 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01152_miss.jpg
+09-05 21:49:07.897 I/DetectionDump(32414): seq=1153 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.912 I/DetectionDump(32414): seq=1154 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:07.967 I/DetectionDump(32414): seq=1155 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:07.983 I/DetectionDump(32414): seq=1156 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:08.066 I/DetectionDump(32414): seq=1157 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.099 I/DetectionDump(32414): seq=1158 src=geometry p=0.8889 reject=ok known=8 bad=1 side=0.6843 c=UNKNOWN img=frames/f01158_hit.jpg
+09-05 21:49:08.099 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:49:08.135 I/DetectionDump(32414): seq=1159 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.163 I/DetectionDump(32414): seq=1160 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01160_miss.jpg
+09-05 21:49:08.231 I/DetectionDump(32414): seq=1161 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.266 I/DetectionDump(32414): seq=1162 src=geometry p=0.8889 reject=ok known=8 bad=1 side=0.6942 c=UNKNOWN img=frames/f01162_hit.jpg
+09-05 21:49:08.267 I/DetectionDump(32414): geometry hit after 0 cnn declines
+09-05 21:49:08.301 I/DetectionDump(32414): seq=1163 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.314 I/DetectionDump(32414): seq=1164 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:08.398 I/DetectionDump(32414): seq=1165 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.408 I/DetectionDump(32414): seq=1166 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:08.497 I/DetectionDump(32414): seq=1167 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.524 I/DetectionDump(32414): seq=1168 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01168_miss.jpg
+09-05 21:49:08.567 I/DetectionDump(32414): seq=1169 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.577 I/DetectionDump(32414): seq=1170 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:08.666 I/DetectionDump(32414): seq=1171 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.675 I/DetectionDump(32414): seq=1172 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:08.763 I/DetectionDump(32414): seq=1173 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.776 I/DetectionDump(32414): seq=1174 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:08.834 I/DetectionDump(32414): seq=1175 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.861 I/DetectionDump(32414): seq=1176 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01176_miss.jpg
+09-05 21:49:08.930 I/DetectionDump(32414): seq=1177 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:08.943 I/DetectionDump(32414): seq=1178 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:08.998 I/DetectionDump(32414): seq=1179 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.013 I/DetectionDump(32414): seq=1180 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.094 I/DetectionDump(32414): seq=1181 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.111 I/DetectionDump(32414): seq=1182 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.162 I/DetectionDump(32414): seq=1183 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.197 I/DetectionDump(32414): seq=1184 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01184_miss.jpg
+09-05 21:49:09.228 I/DetectionDump(32414): seq=1185 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.241 I/DetectionDump(32414): seq=1186 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.298 I/DetectionDump(32414): seq=1187 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.317 I/DetectionDump(32414): seq=1188 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.394 I/DetectionDump(32414): seq=1189 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.412 I/DetectionDump(32414): seq=1190 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.466 I/DetectionDump(32414): seq=1191 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.497 I/DetectionDump(32414): seq=1192 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01192_miss.jpg
+09-05 21:49:09.562 I/DetectionDump(32414): seq=1193 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.580 I/DetectionDump(32414): seq=1194 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.630 I/DetectionDump(32414): seq=1195 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.641 I/DetectionDump(32414): seq=1196 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.716 I/DetectionDump(32414): seq=1197 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.733 I/DetectionDump(32414): seq=1198 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.817 I/DetectionDump(32414): seq=1199 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.852 I/DetectionDump(32414): seq=1200 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01200_miss.jpg
+09-05 21:49:09.904 I/DetectionDump(32414): seq=1201 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.930 I/DetectionDump(32414): seq=1202 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:09.971 I/DetectionDump(32414): seq=1203 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:09.988 I/DetectionDump(32414): seq=1204 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:10.055 I/DetectionDump(32414): seq=1205 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.071 I/DetectionDump(32414): seq=1206 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:10.135 I/DetectionDump(32414): seq=1207 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.165 I/DetectionDump(32414): seq=1208 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01208_miss.jpg
+09-05 21:49:10.247 I/DetectionDump(32414): seq=1209 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.262 I/DetectionDump(32414): seq=1210 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:10.349 I/DetectionDump(32414): seq=1211 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.366 I/DetectionDump(32414): seq=1212 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:10.448 I/DetectionDump(32414): seq=1213 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.465 I/DetectionDump(32414): seq=1214 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:10.556 I/DetectionDump(32414): seq=1215 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.586 I/DetectionDump(32414): seq=1216 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01216_miss.jpg
+09-05 21:49:10.650 I/DetectionDump(32414): seq=1217 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.667 I/DetectionDump(32414): seq=1218 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:10.747 I/DetectionDump(32414): seq=1219 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.764 I/DetectionDump(32414): seq=1220 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:10.839 I/DetectionDump(32414): seq=1221 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.861 I/DetectionDump(32414): seq=1222 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:10.926 I/DetectionDump(32414): seq=1223 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:10.951 I/DetectionDump(32414): seq=1224 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01224_miss.jpg
+09-05 21:49:11.004 I/DetectionDump(32414): seq=1225 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.019 I/DetectionDump(32414): seq=1226 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.102 I/DetectionDump(32414): seq=1227 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.113 I/DetectionDump(32414): seq=1228 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.169 I/DetectionDump(32414): seq=1229 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.183 I/DetectionDump(32414): seq=1230 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.237 I/DetectionDump(32414): seq=1231 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.262 I/DetectionDump(32414): seq=1232 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01232_miss.jpg
+09-05 21:49:11.303 I/DetectionDump(32414): seq=1233 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.315 I/DetectionDump(32414): seq=1234 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.399 I/DetectionDump(32414): seq=1235 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.412 I/DetectionDump(32414): seq=1236 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.469 I/DetectionDump(32414): seq=1237 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.483 I/DetectionDump(32414): seq=1238 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.571 I/DetectionDump(32414): seq=1239 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.604 I/DetectionDump(32414): seq=1240 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01240_miss.jpg
+09-05 21:49:11.673 I/DetectionDump(32414): seq=1241 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.691 I/DetectionDump(32414): seq=1242 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.739 I/DetectionDump(32414): seq=1243 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.756 I/DetectionDump(32414): seq=1244 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.808 I/DetectionDump(32414): seq=1245 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.827 I/DetectionDump(32414): seq=1246 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:11.909 I/DetectionDump(32414): seq=1247 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:11.954 I/DetectionDump(32414): seq=1248 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01248_miss.jpg
+09-05 21:49:12.018 I/DetectionDump(32414): seq=1249 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.039 I/DetectionDump(32414): seq=1250 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.106 I/DetectionDump(32414): seq=1251 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.120 I/DetectionDump(32414): seq=1252 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.173 I/DetectionDump(32414): seq=1253 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.190 I/DetectionDump(32414): seq=1254 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.269 I/DetectionDump(32414): seq=1255 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.312 I/DetectionDump(32414): seq=1256 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01256_miss.jpg
+09-05 21:49:12.366 I/DetectionDump(32414): seq=1257 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.376 I/DetectionDump(32414): seq=1258 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.487 I/DetectionDump(32414): seq=1259 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.510 I/DetectionDump(32414): seq=1260 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.555 I/DetectionDump(32414): seq=1261 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.614 I/DetectionDump(32414): seq=1262 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.632 I/DetectionDump(32414): seq=1263 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.679 I/DetectionDump(32414): seq=1264 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01264_miss.jpg
+09-05 21:49:12.725 I/DetectionDump(32414): seq=1265 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.745 I/DetectionDump(32414): seq=1266 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.793 I/DetectionDump(32414): seq=1267 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.808 I/DetectionDump(32414): seq=1268 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.864 I/DetectionDump(32414): seq=1269 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:12.888 I/DetectionDump(32414): seq=1270 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:12.962 I/DetectionDump(32414): seq=1271 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:13.002 I/DetectionDump(32414): seq=1272 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01272_miss.jpg
+09-05 21:49:13.056 I/DetectionDump(32414): seq=1273 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:13.076 I/DetectionDump(32414): seq=1274 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:13.162 I/DetectionDump(32414): seq=1275 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:13.175 I/DetectionDump(32414): seq=1276 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:13.227 I/DetectionDump(32414): seq=1277 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:13.241 I/DetectionDump(32414): seq=1278 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:13.294 I/DetectionDump(32414): seq=1279 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:13.332 I/DetectionDump(32414): seq=1280 src=geometry p=-1.0000 reject=geometry_miss img=frames/f01280_miss.jpg
+09-05 21:49:13.397 I/DetectionDump(32414): seq=1281 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:13.418 I/DetectionDump(32414): seq=1282 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:13.496 I/DetectionDump(32414): seq=1283 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:13.510 I/DetectionDump(32414): seq=1284 src=geometry p=-1.0000 reject=geometry_miss
+09-05 21:49:13.606 I/DetectionDump(32414): seq=1285 src=cnn p=-1.0000 reject=no_model
+09-05 21:49:13.622 I/DetectionDump(32414): seq=1286 src=geometry p=-1.0000 reject=geometry_miss

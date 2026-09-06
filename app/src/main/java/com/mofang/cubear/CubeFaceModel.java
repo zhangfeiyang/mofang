@@ -10,7 +10,6 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.util.Collections;
-import java.util.Map;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
@@ -42,13 +41,15 @@ public final class CubeFaceModel implements Closeable {
      * confidently wrong quad is worse than no detection, since it yields a face that looks
      * perfectly readable and has to be caught later by the cube's own rules.
      */
-    private static final float PRESENCE_THRESHOLD = 0.85f;
+    static final float PRESENCE_THRESHOLD = 0.85f;
 
     private final OrtEnvironment environment;
     private final OrtSession session;
     private final String inputName;
     private final float[] input = new float[3 * INPUT_WIDTH * INPUT_HEIGHT];
     private final byte[] pixels = new byte[INPUT_WIDTH * INPUT_HEIGHT * 4];
+    /** Reused across frames; created after OpenCV is loaded, not at class init. */
+    private Mat resized;
 
     private CubeFaceModel(OrtEnvironment environment, OrtSession session) {
         this.environment = environment;
@@ -66,11 +67,11 @@ public final class CubeFaceModel implements Closeable {
 
             OrtEnvironment environment = OrtEnvironment.getEnvironment();
             OrtSession.SessionOptions options = new OrtSession.SessionOptions();
-            options.setIntraOpNumThreads(2);
             try {
                 options.addNnapi();
             } catch (Throwable ignored) {
-                // NNAPI is unavailable on some devices; the CPU path is fast enough at this size.
+                // NNAPI is unavailable on some devices; give the CPU path a few threads instead.
+                options.setIntraOpNumThreads(4);
             }
             OrtSession session = environment.createSession(buffer.toByteArray(), options);
             Log.i(TAG, "loaded " + ASSET);
@@ -92,10 +93,43 @@ public final class CubeFaceModel implements Closeable {
         }
     }
 
+    /**
+     * Full network output, including rejected frames. Used by the debug dump so a low presence
+     * score is still recorded instead of disappearing into a null.
+     */
+    public static final class DebugResult {
+        public final Point[] corners;
+        public final float presence;
+        public final boolean accepted;
+        public final String reject;
+        public final double areaFraction;
+        public final double aspect;
+        public final double shortest;
+
+        DebugResult(Point[] corners, float presence, boolean accepted, String reject,
+                    double areaFraction, double aspect, double shortest) {
+            this.corners = corners;
+            this.presence = presence;
+            this.accepted = accepted;
+            this.reject = reject;
+            this.areaFraction = areaFraction;
+            this.aspect = aspect;
+            this.shortest = shortest;
+        }
+
+        Result toResult() {
+            return accepted ? new Result(corners, presence) : null;
+        }
+    }
+
     /** Runs the network on one RGBA frame. Returns null when no face is confidently present. */
     public Result detect(Mat rgba) {
-        Mat resized = new Mat();
+        return evaluate(rgba).toResult();
+    }
+
+    public DebugResult evaluate(Mat rgba) {
         try {
+            if (resized == null) resized = new Mat();
             Imgproc.resize(rgba, resized, new Size(INPUT_WIDTH, INPUT_HEIGHT), 0, 0,
                 Imgproc.INTER_AREA);
             resized.get(0, 0, pixels);
@@ -114,33 +148,52 @@ public final class CubeFaceModel implements Closeable {
                      Collections.singletonMap(inputName, tensor))) {
                 float[] corners = ((float[][]) output.get(0).getValue())[0];
                 float presence = ((float[][]) output.get(1).getValue())[0][0];
-                if (presence < PRESENCE_THRESHOLD) return null;
-
                 Point[] points = new Point[4];
                 for (int i = 0; i < 4; i++) {
                     points[i] = new Point(corners[i * 2] * rgba.cols(),
                         corners[i * 2 + 1] * rgba.rows());
                 }
-                return plausible(points, rgba.cols(), rgba.rows())
-                    ? new Result(points, presence) : null;
+                ShapeStats stats = measure(points, rgba.cols(), rgba.rows());
+                if (presence < PRESENCE_THRESHOLD) {
+                    return new DebugResult(points, presence, false, "presence",
+                        stats.areaFraction, stats.aspect, stats.shortest);
+                }
+                if (stats.reject != null) {
+                    return new DebugResult(points, presence, false, stats.reject,
+                        stats.areaFraction, stats.aspect, stats.shortest);
+                }
+                return new DebugResult(points, presence, true, null,
+                    stats.areaFraction, stats.aspect, stats.shortest);
             }
         } catch (Throwable error) {
             Log.e(TAG, "inference failed: " + error);
-            return null;
-        } finally {
-            resized.release();
+            return new DebugResult(null, -1f, false, "inference", 0, 0, 0);
+        }
+    }
+
+    private static final class ShapeStats {
+        final double areaFraction;
+        final double aspect;
+        final double shortest;
+        final String reject;
+
+        ShapeStats(double areaFraction, double aspect, double shortest, String reject) {
+            this.areaFraction = areaFraction;
+            this.aspect = aspect;
+            this.shortest = shortest;
+            this.reject = reject;
         }
     }
 
     /** Rejects degenerate quads the sampler could not warp meaningfully. */
-    private static boolean plausible(Point[] corners, int width, int height) {
+    private static ShapeStats measure(Point[] corners, int width, int height) {
         double area = 0;
         for (int i = 0; i < 4; i++) {
             Point a = corners[i], b = corners[(i + 1) % 4];
             area += a.x * b.y - b.x * a.y;
         }
         area = Math.abs(area) / 2.0;
-        if (area < width * (double) height * 0.006) return false;
+        double areaFraction = area / (width * (double) height);
         double shortest = Double.MAX_VALUE, longest = 0;
         for (int i = 0; i < 4; i++) {
             double side = Math.hypot(corners[i].x - corners[(i + 1) % 4].x,
@@ -148,10 +201,16 @@ public final class CubeFaceModel implements Closeable {
             shortest = Math.min(shortest, side);
             longest = Math.max(longest, side);
         }
-        return shortest > 12 && longest / shortest < 4.0;
+        double aspect = shortest <= 0 ? 99 : longest / shortest;
+        String reject = null;
+        if (areaFraction < 0.006) reject = "implausible_area";
+        else if (shortest <= 12) reject = "implausible_short";
+        else if (aspect >= 2.2) reject = "implausible_aspect";
+        return new ShapeStats(areaFraction, aspect, shortest, reject);
     }
 
     @Override public void close() {
+        if (resized != null) resized.release();
         try {
             session.close();
         } catch (Exception ignored) {
