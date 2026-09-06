@@ -137,22 +137,16 @@ public final class FaceStabilizer {
         return new FaceSample(latest.stickers, mean, reliable, latest.confidence);
     }
 
-    /**
-     * A look whose left/right or top/bottom column means differ by more than this is shaped like
-     * a quad parked on a cube edge, not a face. Real device data separates cleanly here — honest
-     * looks measured 54 at worst, straddles 60 and up — so this is the one place a hard cut is
-     * worth its cost: the user sees capture feedback, and must not be congratulated for garbage.
-     * (The assembler stays gate-free; a scrambled face's honest columns overlap straddle values
-     * there, and it has multi-look evidence instead.)
-     */
-    static final float MAX_STABILIZER_SPLIT = 58f;
-
     private static boolean usable(FaceSample sample) {
         if (sample == null) return false;
         if (sample.lab == null) return !sample.containsUnknown() && sample.confidence >= 0.80f;
-        // The centre names the face, so it alone must be trustworthy.
-        return sample.centerReliable() && sample.unreliableCount() <= MAX_UNRELIABLE
-            && sample.spatialSplit() <= MAX_STABILIZER_SPLIT;
+        // The centre names the face, so it alone must be trustworthy. No split gate here: the
+        // 58-unit cut was calibrated against a pool whose green looks it excluded, and on this
+        // user's cube the honest green face reads split 75-90 — the gate silently made one face
+        // uncapturable. Synthetic ground truth says honest scrambled faces reach 105. Straddles
+        // are handled downstream where there is multi-look evidence: per-colour clustering, the
+        // consensus close-filter, the retry ladders, and the two-looks-per-colour rule.
+        return sample.centerReliable() && sample.unreliableCount() <= MAX_UNRELIABLE;
     }
 
     private static boolean holdsStill(FaceSample reference, FaceSample current) {

@@ -14,8 +14,10 @@ public class CubeCoreTest {
         assertTrue(Lab.isStickerCenter(Lab.fromRgb(245, 145, 35)));
         assertFalse(Lab.isStickerCenter(new float[]{29f, -4f, 6f}));
         assertFalse(Lab.isStickerCenter(new float[]{30f, -5f, 8f}));
-        assertFalse("dim grey is not a white centre",
-            Lab.isStickerCenter(new float[]{69f, 0.8f, 5f}));
+        assertTrue("a white centre in ordinary indoor light (L~70) must pass",
+            Lab.isStickerCenter(new float[]{70f, 0.8f, 5f}));
+        assertFalse("mid grey is not a white centre",
+            Lab.isStickerCenter(new float[]{58f, 0.8f, 5f}));
     }
 
     @Test public void junkGreyCentresDoNotCreateAFakeSixthFace() {

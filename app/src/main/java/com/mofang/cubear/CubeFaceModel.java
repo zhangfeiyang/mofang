@@ -67,18 +67,42 @@ public final class CubeFaceModel implements Closeable {
 
             OrtEnvironment environment = OrtEnvironment.getEnvironment();
             OrtSession.SessionOptions options = new OrtSession.SessionOptions();
+            boolean nnapi = true;
             try {
                 options.addNnapi();
             } catch (Throwable ignored) {
                 // NNAPI is unavailable on some devices; give the CPU path a few threads instead.
+                nnapi = false;
                 options.setIntraOpNumThreads(4);
             }
             OrtSession session = environment.createSession(buffer.toByteArray(), options);
-            Log.i(TAG, "loaded " + ASSET);
-            return new CubeFaceModel(environment, session);
+            Log.i(TAG, "loaded " + ASSET + " nnapi=" + nnapi);
+            CubeFaceModel model = new CubeFaceModel(environment, session);
+            model.warmUp();
+            return model;
         } catch (Throwable error) {
             Log.e(TAG, "model unavailable: " + error);
             return null;
+        }
+    }
+
+    /**
+     * Runs one inference before the camera starts. NNAPI compiles its execution plan on the
+     * first call — tens to hundreds of milliseconds — and paying that during the first analysed
+     * frame reads as a frozen preview. The logged time also tells CPU from accelerator speed,
+     * which decides whether the input size is worth revisiting.
+     */
+    private void warmUp() {
+        try {
+            org.opencv.core.Mat blank = new org.opencv.core.Mat(
+                INPUT_HEIGHT, INPUT_WIDTH, org.opencv.core.CvType.CV_8UC4,
+                org.opencv.core.Scalar.all(128));
+            long start = android.os.SystemClock.uptimeMillis();
+            evaluate(blank);
+            blank.release();
+            Log.i(TAG, "warmup inference " + (android.os.SystemClock.uptimeMillis() - start) + "ms");
+        } catch (Throwable error) {
+            Log.w(TAG, "warmup skipped: " + error);
         }
     }
 

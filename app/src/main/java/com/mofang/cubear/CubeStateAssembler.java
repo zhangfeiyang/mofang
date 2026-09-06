@@ -57,7 +57,28 @@ public final class CubeStateAssembler {
         int groups = distinctFaceCount();
         boolean grew = groups > lastGroupCount;
         lastGroupCount = groups;
+        android.util.Log.d("CubeAsm", describeGroups());
         return grew;
+    }
+
+    /** One line per accepted look: group count and each group's size + centre, for logcat. */
+    private String describeGroups() {
+        int[] label = clusteredLabels();
+        if (label == null) return "groups=? (lab incomplete) pool=" + pool.size();
+        java.util.Map<Integer, Integer> count = new java.util.HashMap<>();
+        java.util.Map<Integer, CubeColor> centre = new java.util.HashMap<>();
+        for (int i = 0; i < label.length; i++) {
+            int id = label[i];
+            if (id < 0) continue;
+            count.put(id, count.getOrDefault(id, 0) + 1);
+            centre.putIfAbsent(id, pool.get(i).center());
+        }
+        StringBuilder out = new StringBuilder("groups=").append(count.size()).append(" [");
+        for (java.util.Map.Entry<Integer, Integer> e : count.entrySet()) {
+            out.append(centre.get(e.getKey()).toString().substring(0, 3))
+                .append(':').append(e.getValue()).append(' ');
+        }
+        return out.append("] pool=").append(pool.size()).toString();
     }
 
     /**
@@ -118,18 +139,28 @@ public final class CubeStateAssembler {
         Set<CubeColor> colors = EnumSet.noneOf(CubeColor.class);
         int[] label = clusteredLabels();
         if (label == null) return colors;
-        java.util.Map<Integer, CubeColor> sample = new java.util.HashMap<>();
+        // Majority non-UNKNOWN name per group: the first look of a group often classified its
+        // centre UNKNOWN (shadow, glare), and an UNKNOWN here blanks the user's face dot even
+        // though the group itself is fine.
+        java.util.Map<Integer, java.util.Map<CubeColor, Integer>> names = new java.util.HashMap<>();
         java.util.Map<Integer, Integer> count = new java.util.HashMap<>();
         for (int i = 0; i < label.length; i++) {
             int id = label[i];
             if (id < 0) continue;
             count.put(id, count.getOrDefault(id, 0) + 1);
-            sample.putIfAbsent(id, pool.get(i).center());
+            names.computeIfAbsent(id, k -> new EnumMap<>(CubeColor.class))
+                .merge(pool.get(i).center(), 1, Integer::sum);
         }
         for (int id : count.keySet()) {
-            if (count.get(id) >= MIN_LOOKS_PER_FACE) colors.add(sample.get(id));
+            if (count.get(id) < MIN_LOOKS_PER_FACE) continue;
+            CubeColor best = null;
+            int bestCount = 0;
+            for (java.util.Map.Entry<CubeColor, Integer> e : names.get(id).entrySet()) {
+                if (e.getKey() == CubeColor.UNKNOWN) continue;
+                if (e.getValue() > bestCount) { bestCount = e.getValue(); best = e.getKey(); }
+            }
+            if (best != null) colors.add(best);
         }
-        colors.remove(CubeColor.UNKNOWN);
         return colors;
     }
 
@@ -168,8 +199,13 @@ public final class CubeStateAssembler {
      * lighting variants (~20–28) without bridging red and orange.
      */
     private static final double SAME_FACE_SHARE = 0.20;
-    /** Floor so a pool that only contains red and orange does not split each colour in two. */
-    private static final double SAME_FACE_FLOOR = 32.0;
+    /**
+     * Floor so a pool that only contains red and orange does not split each colour in two.
+     * Calibrated on the device pool: one face's looks vary by 2-7 Lab units, while this cube's
+     * red-orange centres sit 34 apart — the old floor of 32 was one warm room away from fusing
+     * them into a single group, which stalls the scan at five colours forever.
+     */
+    private static final double SAME_FACE_FLOOR = 24.0;
     /**
      * A look whose left/right or top/bottom Lab means differ by roughly this is shaped like a quad
      * sitting on an edge. Never used to reject a look outright — honest scrambled faces reach the

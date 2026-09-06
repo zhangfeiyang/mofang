@@ -87,6 +87,8 @@ public class ScanFailReplayTest {
         while (flag.find() && i < 9) reliable[i++] = flag.group().equals("true");
         CubeColor[] stickers = new CubeColor[9];
         java.util.Arrays.fill(stickers, CubeColor.UNKNOWN);
+        java.util.regex.Matcher centre = Pattern.compile("\"center\":\\s*\"([A-Z]+)\"").matcher(line);
+        if (centre.find()) stickers[4] = CubeColor.valueOf(centre.group(1));
         return new FaceSample(stickers, lab, reliable, confidence);
     }
 }

@@ -24,7 +24,8 @@ public final class ScanDump {
             out.write("[\n");
             for (int i = 0; i < pool.size(); i++) {
                 FaceSample face = pool.get(i);
-                out.write("  {\"confidence\": " + face.confidence + ", \"lab\": [");
+                out.write("  {\"confidence\": " + face.confidence
+                    + ", \"center\": \"" + face.center().name() + "\", \"lab\": [");
                 for (int cell = 0; cell < 9; cell++) {
                     float[] lab = face.lab == null ? new float[3] : face.lab[cell];
                     out.write((cell == 0 ? "" : ", ")

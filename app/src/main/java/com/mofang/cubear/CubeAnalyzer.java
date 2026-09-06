@@ -32,6 +32,7 @@ public final class CubeAnalyzer implements ImageAnalysis.Analyzer {
     private static final int FALLBACK_AFTER_DECLINES = 3;
     private int modelDeclines;
     private boolean loggedSize;
+    private int framesSinceLog;
 
     public CubeAnalyzer(Listener listener) { this(listener, null, null); }
 
@@ -49,6 +50,13 @@ public final class CubeAnalyzer implements ImageAnalysis.Analyzer {
         try {
             long now = System.nanoTime();
             if (now - lastAnalysisNanos < 66_000_000L) return;
+            if (lastAnalysisNanos > 0 && ++framesSinceLog == 90) {
+                // Logcat-only heartbeat: how fast the pipeline really runs, without touching disk.
+                android.util.Log.i("CubeAnalyzer", String.format(java.util.Locale.US,
+                    "pace %.1f fps (%.0f ms/frame)", 90f / ((now - lastAnalysisNanos) / 1e9f),
+                    (now - lastAnalysisNanos) / 90f / 1e6f));
+                framesSinceLog = 0;
+            }
             lastAnalysisNanos = now;
             if (image.getPlanes().length == 0) return;
             ImageProxy.PlaneProxy plane = image.getPlanes()[0];

@@ -48,7 +48,7 @@ public final class MainActivity extends AppCompatActivity {
     private CubeOverlayView overlay;
     private final ExecutorService cameraExecutor = Executors.newSingleThreadExecutor();
     private final ExecutorService solverExecutor = Executors.newSingleThreadExecutor();
-    private final FaceStabilizer stabilizer = new FaceStabilizer(3);
+    private final FaceStabilizer stabilizer = new FaceStabilizer(2);
     private final CubeStateAssembler assembler = new CubeStateAssembler();
     private final DetectionTracker detectionTracker = new DetectionTracker();
     private final List<String> moves = new ArrayList<>();
@@ -62,6 +62,8 @@ public final class MainActivity extends AppCompatActivity {
     /** True for the first guidance step after the sixth face was inferred, not scanned. */
     private boolean announceInference;
     private int lastSolvePoolSize = -1;
+    /** Consecutive failed six-face verifications; a poisoned pool never recovers on its own. */
+    private int failedAssemblies;
     private ActivityResultLauncher<String> cameraPermission;
     private CubeFaceModel faceModel;
     private DetectionDump detectionDump;
@@ -225,12 +227,26 @@ public final class MainActivity extends AppCompatActivity {
         if (state == null) {
             List<FaceSample> pool = assembler.observations();
             ScanDump.write(new File(getExternalFilesDir(null), "scan-fail.json"), pool);
-            // Keep every observation and stay in scanning. More looks at the same cube are what
-            // resolve an ambiguous reading, so throwing the scan away here would be the worst move.
+            failedAssemblies++;
+            // More looks usually resolve an ambiguous reading — but not when the pool mixes two
+            // cube states, which is what a single layer turn mid-scan does. Three failed
+            // verifications on a full pool mean that happened; keeping the observations would
+            // strand the user at "6 faces collected" forever, so the honest move is a restart.
+            final boolean poisoned = !inferred && failedAssemblies >= 3;
+            if (poisoned) {
+                assembler.clear();
+                lastSolvePoolSize = -1;
+                failedAssemblies = 0;
+            }
             final int groups = assembler.size();
             final String why = assembler.lastFailure();
             runOnUiThread(() -> {
                 phase = CubeUiState.Phase.SCANNING;
+                if (poisoned) {
+                    publish("读数互相矛盾，已重新开始",
+                        "扫描途中是否拧动过魔方的某一层？整体转动没有影响，请重新扫一遍");
+                    return;
+                }
                 String detail = groups == 5
                     ? "再对准一次，或转出最后一个面"
                     : "已看过 " + pool.size() + " 次，再把红/橙两面各对准一次";
@@ -239,6 +255,7 @@ public final class MainActivity extends AppCompatActivity {
             });
             return;
         }
+        failedAssemblies = 0;
         guideSolution(state, inferred, false);
     }
 
@@ -248,7 +265,14 @@ public final class MainActivity extends AppCompatActivity {
      */
     private void solveInBackground() {
         String state = assembler.assemble();
-        if (state == null) return;
+        if (state == null) {
+            // Silent failures are undebuggable: a refused inference gets the same scan-fail
+            // dump as a foreground one, so the pool can be replayed offline.
+            List<FaceSample> pool = assembler.observations();
+            ScanDump.write(new File(getExternalFilesDir(null), "scan-fail.json"), pool);
+            android.util.Log.i("CubeAsm", "background inference refused: " + assembler.lastFailure());
+            return;
+        }
         guideSolution(state, true, true);
     }
 
@@ -337,6 +361,7 @@ public final class MainActivity extends AppCompatActivity {
             return;
         }
         lastSolvePoolSize = -1;
+        failedAssemblies = 0;
         assembler.clear();
         moves.clear();
         cubeState = null;
@@ -364,6 +389,12 @@ public final class MainActivity extends AppCompatActivity {
         } else if (phase == CubeUiState.Phase.SCANNING) {
             if (tooFar) {
                 publish("找到魔方了", "再拿近一点，色块读得更准");
+            } else if (assembler.isComplete()) {
+                // Six faces are in: every frame must not bury the verification outcome the
+                // user is waiting for under "keep rotating".
+                publish("正在校验魔方", assembler.lastFailure().isEmpty()
+                    ? "六个面已集齐，正在核对色块…"
+                    : "校验未通过：" + assembler.lastFailure());
             } else {
                 publish("扫描魔方", "已采集 " + assembler.size() + " 面，缓慢转到下一面");
             }

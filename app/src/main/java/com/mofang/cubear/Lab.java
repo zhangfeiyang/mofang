@@ -56,7 +56,10 @@ public final class Lab {
     public static boolean isStickerCenter(float[] lab) {
         if (lab == null) return false;
         float chroma = chroma(lab);
-        if (lab[0] >= 78f && chroma < 22f) return true;
+        // 78 assumed a well-lit white; on the device, whites under ordinary indoor light sit at
+        // L 60-75 and were rejected wholesale. The cube's dark body is L<45, so 68 keeps the
+        // grey-plastic filter intact while letting shaded whites through.
+        if (lab[0] >= 68f && chroma < 22f) return true;
         return chroma >= 20f;
     }
 }
