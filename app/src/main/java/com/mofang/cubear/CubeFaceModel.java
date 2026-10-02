@@ -10,10 +10,6 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.util.Collections;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 
 /**
  * Locates the cube face with a small convolutional network.
@@ -35,83 +31,111 @@ public final class CubeFaceModel implements Closeable {
     /**
      * Below this the frame is treated as having no usable face.
      *
-     * <p>Set high because the score is sharply bimodal: on real footage, moving it from 0.60 to
-     * 0.85 costs under 3% of detections but drops the near-45-degree views where the network is
-     * unsure which of two faces it is looking at and returns a quadrilateral spanning both. A
-     * confidently wrong quad is worse than no detection, since it yields a face that looks
-     * perfectly readable and has to be caught later by the cube's own rules.
+     * <p>The first model needed 0.85 to keep out near-45-degree views where it was unsure which
+     * face it saw and returned a quad spanning both — nothing downstream could tell such a quad
+     * from a real face. The retrained model is far more precise, and a straddle now has to get
+     * past the lattice refiner and the agreement check before it can be captured, so the
+     * threshold only needs to drop frames without a cube: at 0.6 it keeps 20 of 21 held-out
+     * frames, against 17 at 0.85.
      */
-    static final float PRESENCE_THRESHOLD = 0.85f;
+    static final float PRESENCE_THRESHOLD = 0.6f;
 
     private final OrtEnvironment environment;
     private final OrtSession session;
     private final String inputName;
     private final float[] input = new float[3 * INPUT_WIDTH * INPUT_HEIGHT];
-    private final byte[] pixels = new byte[INPUT_WIDTH * INPUT_HEIGHT * 4];
-    /** Reused across frames; created after OpenCV is loaded, not at class init. */
-    private Mat resized;
+    private AreaResizer resizer;
+    /** Which execution provider won the start-up race, for the logs. */
+    final String provider;
 
-    private CubeFaceModel(OrtEnvironment environment, OrtSession session) {
+    private CubeFaceModel(OrtEnvironment environment, OrtSession session, String provider) {
         this.environment = environment;
         this.session = session;
         this.inputName = session.getInputNames().iterator().next();
+        this.provider = provider;
     }
 
-    /** Returns null when the model cannot be loaded, letting the caller fall back to geometry. */
+    /**
+     * Loads the model on whichever execution provider runs it fastest on this device.
+     *
+     * <p>NNAPI is not reliably faster for a network this small: on many phones it falls back
+     * operator by operator, or pays more in dispatch than the 2-4 CPU threads need for the whole
+     * graph. Both are timed on a few warm runs and the quicker one is kept. Returns null when the
+     * model cannot be loaded, letting the caller fall back to the lattice search.
+     */
     public static CubeFaceModel create(Context context) {
+        byte[] bytes;
         try (InputStream stream = context.getAssets().open(ASSET)) {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             byte[] chunk = new byte[16384];
             int read;
             while ((read = stream.read(chunk)) > 0) buffer.write(chunk, 0, read);
-
-            OrtEnvironment environment = OrtEnvironment.getEnvironment();
-            OrtSession.SessionOptions options = new OrtSession.SessionOptions();
-            boolean nnapi = true;
-            try {
-                options.addNnapi();
-            } catch (Throwable ignored) {
-                // NNAPI is unavailable on some devices; give the CPU path a few threads instead.
-                nnapi = false;
-                options.setIntraOpNumThreads(4);
-            }
-            OrtSession session = environment.createSession(buffer.toByteArray(), options);
-            Log.i(TAG, "loaded " + ASSET + " nnapi=" + nnapi);
-            CubeFaceModel model = new CubeFaceModel(environment, session);
-            model.warmUp();
-            return model;
+            bytes = buffer.toByteArray();
         } catch (Throwable error) {
             Log.e(TAG, "model unavailable: " + error);
+            return null;
+        }
+        OrtEnvironment environment = OrtEnvironment.getEnvironment();
+        CubeFaceModel cpu = open(environment, bytes, false);
+        CubeFaceModel nnapi = open(environment, bytes, true);
+        if (cpu == null) return nnapi;
+        if (nnapi == null) return cpu;
+        long cpuNanos = cpu.benchmark(), nnapiNanos = nnapi.benchmark();
+        CubeFaceModel winner = nnapiNanos < cpuNanos * 0.9 ? nnapi : cpu;
+        (winner == nnapi ? cpu : nnapi).close();
+        Log.i(TAG, String.format(java.util.Locale.US, "cpu %.1f ms, nnapi %.1f ms -> %s",
+            cpuNanos / 1e6, nnapiNanos / 1e6, winner.provider));
+        return winner;
+    }
+
+    private static CubeFaceModel open(OrtEnvironment environment, byte[] bytes, boolean nnapi) {
+        try {
+            OrtSession.SessionOptions options = new OrtSession.SessionOptions();
+            if (nnapi) {
+                options.addNnapi();
+            } else {
+                options.setIntraOpNumThreads(Math.max(1, Math.min(4,
+                    Runtime.getRuntime().availableProcessors() / 2)));
+                options.setOptimizationLevel(OrtSession.SessionOptions.OptLevel.ALL_OPT);
+            }
+            OrtSession session = environment.createSession(bytes, options);
+            Log.i(TAG, "loaded " + ASSET + (nnapi ? " on nnapi" : " on cpu"));
+            return new CubeFaceModel(environment, session, nnapi ? "nnapi" : "cpu");
+        } catch (Throwable error) {
+            Log.w(TAG, (nnapi ? "nnapi" : "cpu") + " session unavailable: " + error);
             return null;
         }
     }
 
     /**
-     * Runs one inference before the camera starts. NNAPI compiles its execution plan on the
-     * first call — tens to hundreds of milliseconds — and paying that during the first analysed
-     * frame reads as a frozen preview. The logged time also tells CPU from accelerator speed,
-     * which decides whether the input size is worth revisiting.
+     * Median of a few inferences after one warm-up. The warm-up also pays NNAPI's plan
+     * compilation, which would otherwise land on the first camera frame as a frozen preview.
      */
-    private void warmUp() {
+    private long benchmark() {
         try {
-            org.opencv.core.Mat blank = new org.opencv.core.Mat(
-                INPUT_HEIGHT, INPUT_WIDTH, org.opencv.core.CvType.CV_8UC4,
-                org.opencv.core.Scalar.all(128));
-            long start = android.os.SystemClock.uptimeMillis();
-            evaluate(blank);
-            blank.release();
-            Log.i(TAG, "warmup inference " + (android.os.SystemClock.uptimeMillis() - start) + "ms");
+            byte[] blank = new byte[INPUT_WIDTH * INPUT_HEIGHT * 4];
+            java.util.Arrays.fill(blank, (byte) 128);
+            evaluate(blank, INPUT_WIDTH, INPUT_HEIGHT);
+            long[] times = new long[3];
+            for (int i = 0; i < times.length; i++) {
+                long start = System.nanoTime();
+                evaluate(blank, INPUT_WIDTH, INPUT_HEIGHT);
+                times[i] = System.nanoTime() - start;
+            }
+            java.util.Arrays.sort(times);
+            return times[1];
         } catch (Throwable error) {
-            Log.w(TAG, "warmup skipped: " + error);
+            Log.w(TAG, "benchmark failed: " + error);
+            return Long.MAX_VALUE;
         }
     }
 
     public static final class Result {
-        /** Four corners clockwise from the top-left, in full-frame coordinates. */
-        public final Point[] corners;
+        /** Four corners as x0,y0..x3,y3 in full-frame pixels, in the network's own order. */
+        public final double[] corners;
         public final float presence;
 
-        Result(Point[] corners, float presence) {
+        Result(double[] corners, float presence) {
             this.corners = corners;
             this.presence = presence;
         }
@@ -122,7 +146,7 @@ public final class CubeFaceModel implements Closeable {
      * score is still recorded instead of disappearing into a null.
      */
     public static final class DebugResult {
-        public final Point[] corners;
+        public final double[] corners;
         public final float presence;
         public final boolean accepted;
         public final String reject;
@@ -130,7 +154,7 @@ public final class CubeFaceModel implements Closeable {
         public final double aspect;
         public final double shortest;
 
-        DebugResult(Point[] corners, float presence, boolean accepted, String reject,
+        DebugResult(double[] corners, float presence, boolean accepted, String reject,
                     double areaFraction, double aspect, double shortest) {
             this.corners = corners;
             this.presence = presence;
@@ -147,24 +171,16 @@ public final class CubeFaceModel implements Closeable {
     }
 
     /** Runs the network on one RGBA frame. Returns null when no face is confidently present. */
-    public Result detect(Mat rgba) {
-        return evaluate(rgba).toResult();
+    public Result detect(byte[] rgba, int width, int height) {
+        return evaluate(rgba, width, height).toResult();
     }
 
-    public DebugResult evaluate(Mat rgba) {
+    public DebugResult evaluate(byte[] rgba, int width, int height) {
         try {
-            if (resized == null) resized = new Mat();
-            Imgproc.resize(rgba, resized, new Size(INPUT_WIDTH, INPUT_HEIGHT), 0, 0,
-                Imgproc.INTER_AREA);
-            resized.get(0, 0, pixels);
-
-            int plane = INPUT_WIDTH * INPUT_HEIGHT;
-            for (int i = 0; i < plane; i++) {
-                input[i] = (pixels[i * 4] & 0xFF) / 255f;
-                input[plane + i] = (pixels[i * 4 + 1] & 0xFF) / 255f;
-                input[2 * plane + i] = (pixels[i * 4 + 2] & 0xFF) / 255f;
+            if (resizer == null || !resizer.fits(width, height)) {
+                resizer = new AreaResizer(width, height, INPUT_WIDTH, INPUT_HEIGHT);
             }
-
+            resizer.resize(rgba, input);
             long[] shape = {1, 3, INPUT_HEIGHT, INPUT_WIDTH};
             try (OnnxTensor tensor = OnnxTensor.createTensor(environment,
                      FloatBuffer.wrap(input), shape);
@@ -172,12 +188,12 @@ public final class CubeFaceModel implements Closeable {
                      Collections.singletonMap(inputName, tensor))) {
                 float[] corners = ((float[][]) output.get(0).getValue())[0];
                 float presence = ((float[][]) output.get(1).getValue())[0][0];
-                Point[] points = new Point[4];
+                double[] points = new double[8];
                 for (int i = 0; i < 4; i++) {
-                    points[i] = new Point(corners[i * 2] * rgba.cols(),
-                        corners[i * 2 + 1] * rgba.rows());
+                    points[i * 2] = corners[i * 2] * width;
+                    points[i * 2 + 1] = corners[i * 2 + 1] * height;
                 }
-                ShapeStats stats = measure(points, rgba.cols(), rgba.rows());
+                ShapeStats stats = measure(points, width, height);
                 if (presence < PRESENCE_THRESHOLD) {
                     return new DebugResult(points, presence, false, "presence",
                         stats.areaFraction, stats.aspect, stats.shortest);
@@ -210,18 +226,18 @@ public final class CubeFaceModel implements Closeable {
     }
 
     /** Rejects degenerate quads the sampler could not warp meaningfully. */
-    private static ShapeStats measure(Point[] corners, int width, int height) {
+    private static ShapeStats measure(double[] corners, int width, int height) {
         double area = 0;
         for (int i = 0; i < 4; i++) {
-            Point a = corners[i], b = corners[(i + 1) % 4];
-            area += a.x * b.y - b.x * a.y;
+            int n = (i + 1) % 4;
+            area += corners[i * 2] * corners[n * 2 + 1] - corners[n * 2] * corners[i * 2 + 1];
         }
         area = Math.abs(area) / 2.0;
         double areaFraction = area / (width * (double) height);
         double shortest = Double.MAX_VALUE, longest = 0;
         for (int i = 0; i < 4; i++) {
-            double side = Math.hypot(corners[i].x - corners[(i + 1) % 4].x,
-                corners[i].y - corners[(i + 1) % 4].y);
+            int n = (i + 1) % 4;
+            double side = Math.hypot(corners[i * 2] - corners[n * 2], corners[i * 2 + 1] - corners[n * 2 + 1]);
             shortest = Math.min(shortest, side);
             longest = Math.max(longest, side);
         }
@@ -234,7 +250,6 @@ public final class CubeFaceModel implements Closeable {
     }
 
     @Override public void close() {
-        if (resized != null) resized.release();
         try {
             session.close();
         } catch (Exception ignored) {

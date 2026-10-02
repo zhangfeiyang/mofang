@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Debug replay frames stand in for the camera preview. -->
+    <ImageView
+        android:id="@+id/replay_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <com.mofang.cubear.CubeOverlayView
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name" />
+
+    <!-- Everything below is inset-aware: padding is set from the system bars at runtime. -->
+    <FrameLayout
+        android:id="@+id/hud"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
+
+        <!-- Top bar -->
+        <LinearLayout
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_bar_height"
+            android:layout_gravity="top"
+            android:layout_margin="@dimen/gutter"
+            android:background="@drawable/bg_glass_pill"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="6dp">
+
+            <TextView
+                android:id="@+id/phase_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_phase_chip"
+                android:drawablePadding="6dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="12dp"
+                android:text="@string/phase_scan"
+                android:textColor="@color/mint"
+                android:textSize="13sp"
+                tools:drawableStart="@drawable/dot" />
+
+            <TextView
+                android:id="@+id/progress_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/Text.Label"
+                tools:text="已采集 3 / 6 面" />
+
+            <ImageButton
+                android:id="@+id/btn_voice"
+                style="@style/IconButton"
+                android:contentDescription="@string/cd_voice"
+                android:src="@drawable/ic_voice"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btn_torch"
+                style="@style/IconButton"
+                android:layout_marginStart="4dp"
+                android:contentDescription="@string/cd_torch"
+                android:src="@drawable/ic_flash_off" />
+
+            <ImageButton
+                android:id="@+id/btn_help"
+                style="@style/IconButton"
+                android:layout_marginStart="4dp"
+                android:contentDescription="@string/cd_help"
+                android:src="@drawable/ic_help" />
+
+            <ImageButton
+                android:id="@+id/btn_restart"
+                style="@style/IconButton"
+                android:layout_marginStart="4dp"
+                android:contentDescription="@string/cd_restart"
+                android:src="@drawable/ic_restart" />
+        </LinearLayout>
+
+        <!-- 3D move animation during guidance -->
+        <FrameLayout
+            android:id="@+id/guide_card"
+            android:layout_width="@dimen/guide_card_size"
+            android:layout_height="@dimen/guide_card_size"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="@dimen/gutter"
+            android:background="@drawable/bg_glass_panel"
+            android:visibility="gone">
+
+            <com.mofang.cubear.GuideCubeView
+                android:id="@+id/guide_cube"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/cd_guide_cube" />
+        </FrameLayout>
+
+        <!-- Bottom panel -->
+        <LinearLayout
+            android:id="@+id/panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/gutter"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/bg_glass_panel"
+            android:orientation="vertical"
+            android:padding="@dimen/panel_padding">
+
+            <TextView
+                android:id="@+id/hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_hint"
+                android:fontFamily="sans-serif-medium"
+                android:paddingStart="12dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/mint"
+                android:textSize="13sp"
+                android:visibility="gone"
+                tools:text="再靠近一点"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Text.Title"
+                tools:text="对准一个面" />
+
+            <TextView
+                android:id="@+id/detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="3"
+                android:textAppearance="@style/Text.Body"
+                tools:text="网格变绿、圆环走满即采集成功" />
+
+            <!-- Scanning: cube net + tips -->
+            <LinearLayout
+                android:id="@+id/scan_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.mofang.cubear.CubeNetView
+                    android:id="@+id/cube_net"
+                    android:layout_width="144dp"
+                    android:layout_height="108dp"
+                    android:contentDescription="@string/cd_cube_net" />
+
+                <LinearLayout
+                    android:id="@+id/tips"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tip_scan_1"
+                        android:textAppearance="@style/Text.Caption" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/tip_scan_2"
+                        android:textAppearance="@style/Text.Caption" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/tip_scan_3"
+                        android:textAppearance="@style/Text.Caption" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Guidance: move, progress, controls -->
+            <LinearLayout
+                android:id="@+id/guide_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ProgressBar
+                    android:id="@+id/step_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="14dp"
+                    android:max="1000"
+                    android:progressDrawable="@drawable/bg_progress" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/move_big"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="84dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/mint"
+                        android:textSize="52sp"
+                        android:textStyle="bold"
+                        tools:text="R′" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/move_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/text_primary"
+                            android:textSize="17sp"
+                            tools:text="红色面 · 逆时针 90°" />
+
+                        <TextView
+                            android:id="@+id/move_next"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textAppearance="@style/Text.Caption"
+                            tools:text="接下来  U   F2   L′" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_prev"
+                        style="@style/SecondaryButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_prev"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="20dp"
+                        android:text="@string/action_prev" />
+
+                    <Button
+                        android:id="@+id/btn_next"
+                        style="@style/PrimaryButton"
+                        android:layout_width="0dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1.5"
+                        android:drawableEnd="@drawable/ic_next"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="16dp"
+                        android:text="@string/action_next" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Ready / solved / error actions -->
+            <LinearLayout
+                android:id="@+id/action_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btn_secondary"
+                    style="@style/SecondaryButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/action_rescan" />
+
+                <Button
+                    android:id="@+id/btn_primary"
+                    style="@style/PrimaryButton"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1.5"
+                    android:text="@string/action_start" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Help sheet -->
+        <FrameLayout
+            android:id="@+id/help_scrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#B3000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:background="@drawable/bg_glass_panel"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_title"
+                    android:textAppearance="@style/Text.Title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/help_body"
+                    android:textAppearance="@style/Text.Body"
+                    android:textColor="@color/text_primary" />
+
+                <Button
+                    android:id="@+id/btn_help_close"
+                    style="@style/PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/action_got_it" />
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+</FrameLayout>

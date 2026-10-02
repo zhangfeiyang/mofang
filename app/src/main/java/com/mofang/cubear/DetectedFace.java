@@ -7,15 +7,34 @@ public final class DetectedFace {
     public final int imageWidth;
     public final int imageHeight;
     public final float detectionScore;
+    /**
+     * True when the corners were snapped onto the visible sticker lattice by {@link FaceRefiner};
+     * false for a detector's coarse estimate, whose readings may come from a border or a
+     * neighbouring face.
+     */
+    public final boolean refined;
+    /**
+     * True when the refiner anchored on a lattice the detector disagrees with — one of them is on
+     * the wrong face or straddles an edge, and nothing says which. Such a frame is shown but
+     * never captured.
+     */
+    public final boolean disputed;
 
     public DetectedFace(FaceSample sample, float[] corners, int imageWidth, int imageHeight,
                         float detectionScore) {
+        this(sample, corners, imageWidth, imageHeight, detectionScore, false, false);
+    }
+
+    public DetectedFace(FaceSample sample, float[] corners, int imageWidth, int imageHeight,
+                        float detectionScore, boolean refined, boolean disputed) {
         if (corners.length != 8) throw new IllegalArgumentException("Four corners required");
         this.sample = sample;
         this.corners = corners.clone();
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
         this.detectionScore = detectionScore;
+        this.refined = refined;
+        this.disputed = disputed;
     }
 
     /**
@@ -35,4 +54,9 @@ public final class DetectedFace {
         }
         return shortest / Math.min(imageWidth, imageHeight);
     }
+
+    /** Centre of the quad in frame pixels. */
+    public float centerX() { return (corners[0] + corners[2] + corners[4] + corners[6]) / 4f; }
+
+    public float centerY() { return (corners[1] + corners[3] + corners[5] + corners[7]) / 4f; }
 }

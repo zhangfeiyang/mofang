@@ -26,18 +26,37 @@ public final class FaceStabilizer {
     private static final int MISSES_TOLERATED = 2;
 
     private final int framesRequired;
+    /**
+     * Minimum time between the first and the last frame of a steady run. Two frames 33 ms apart
+     * barely test stillness — a cube sweeping past reads nearly the same in both — and replaying
+     * the demo video at 30 fps raised wrong captures from 6% to 9% against 15 fps. Gating on time
+     * keeps the check equally strict whatever rate the device analyses at.
+     */
+    private final long minSpanNanos;
     private FaceSample canonical;
     private int stableFrames;
+    private long runStartedNanos;
+    private long lastNanos;
     private int consecutiveMisses;
     private boolean emitted;
     private float[][] labSum;
     private int[] labCount;
 
     public FaceStabilizer(int framesRequired) {
+        this(framesRequired, 0L);
+    }
+
+    public FaceStabilizer(int framesRequired, long minSpanNanos) {
         this.framesRequired = framesRequired;
+        this.minSpanNanos = minSpanNanos;
     }
 
     public FaceSample push(FaceSample sample) {
+        return push(sample, System.nanoTime());
+    }
+
+    public FaceSample push(FaceSample sample, long nowNanos) {
+        lastNanos = nowNanos;
         if (!usable(sample)) {
             if (++consecutiveMisses > MISSES_TOLERATED) resetCandidate();
             return null;
@@ -46,6 +65,7 @@ public final class FaceStabilizer {
         if (canonical == null || !holdsStill(canonical, sample)) {
             canonical = sample;
             stableFrames = 1;
+            runStartedNanos = nowNanos;
             emitted = false;
             startAveraging(sample);
             return null;
@@ -60,7 +80,7 @@ public final class FaceStabilizer {
             : alignedTo(canonical, sample);
         stableFrames++;
         accumulate(aligned);
-        if (!emitted && stableFrames >= framesRequired) {
+        if (!emitted && stableFrames >= framesRequired && nowNanos - runStartedNanos >= minSpanNanos) {
             emitted = true;
             return averaged(aligned);
         }
@@ -75,7 +95,10 @@ public final class FaceStabilizer {
      */
     public float progress() {
         if (canonical == null || emitted) return 0f;
-        return Math.min(1f, stableFrames / (float) framesRequired);
+        float frames = stableFrames / (float) framesRequired;
+        if (minSpanNanos <= 0) return Math.min(1f, frames);
+        float span = (lastNanos - runStartedNanos) / (float) minSpanNanos;
+        return Math.min(1f, Math.min(frames, span));
     }
 
     /**
@@ -164,6 +187,7 @@ public final class FaceStabilizer {
     public void resetCandidate() {
         canonical = null;
         stableFrames = 0;
+        runStartedNanos = 0;
         consecutiveMisses = 0;
         emitted = false;
         labSum = null;

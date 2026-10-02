@@ -2,626 +2,478 @@ package com.mofang.cubear;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.os.SystemClock;
-import android.view.MotionEvent;
+import android.util.AttributeSet;
 import android.view.View;
-import java.util.Collections;
+import java.util.Random;
 
 /**
- * Camera overlay: scan grid, stability ring, capture feedback and the guidance card.
+ * The AR layer over the camera: the tracked face lattice, the capture ring, capture feedback,
+ * guidance arrows and the finish confetti. Text and controls live in the HUD views above it.
  *
- * <p>Everything the user needs to act on is drawn here, so the overlay carries the three signals
- * that decide how a scan feels: where the tracked face is, how close the current reading is to
- * being captured, and what the next move wants. Animations run only while something is actually
- * moving — the radar, the solving spinner, a capture flash, the celebration, or a stability run
- * closing — and the view idles otherwise.
+ * <p>Detections arrive at the analysis rate, 10-20 times a second, so drawing them directly made
+ * the lattice jump. The drawn quad instead glides toward the latest detection every display
+ * frame, and its corner order is matched cyclically to the previous one so the cells never spin
+ * when the detector's top-left choice flips.
  */
 public final class CubeOverlayView extends View {
-    private static final int MINT = 0xFF74F5C5;
-    private static final int CARD_BG = 0xF30B1714;
-    private static final int TEXT_DIM = 0xFF9EB0AA;
-
-    private static final long FLASH_MS = 480;
-    private static final long CELEBRATE_MS = 1400;
+    private static final int MINT = 0xFF6FF2C2;
+    private static final int AMBER = 0xFFFFC857;
+    private static final long FLASH_MS = 520;
+    private static final long CELEBRATE_MS = 2600;
+    /** Time constant of the glide toward a new detection. */
+    private static final float GLIDE_MS = 55f;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path = new Path();
     private final RectF rect = new RectF();
-    private CubeUiState state = new CubeUiState(CubeUiState.Phase.SCANNING,
-        "寻找魔方", "将一个完整面放入框内", null, null,
-        Collections.emptySet(), 0, Collections.emptyList(), -1);
-    private Runnable onReset = () -> {};
-    private final RectF resetBounds = new RectF();
-    private final RectF guideCubeBounds = new RectF();
-    private final GuideCube guideCube = new GuideCube();
-    private String lastGuideMove = "";
-    private long guideAnimAt;
-
-    /** Smoothly-chased copy of {@code state.stabilizeProgress}, so the ring never jumps. */
+    private final float[] shown = new float[8];
+    private final float[] target = new float[8];
+    private final double[] quad = new double[8];
+    private final double[] point = new double[2];
+    private final DashPathEffect[] flow = new DashPathEffect[12];
+    private CubeUiState state = CubeUiState.builder(CubeUiState.Phase.SCANNING).build();
+    private boolean hasShown;
+    private int shownShift;
+    private float visibility;
     private float shownProgress;
-    private long flashStartedAt;
-    private long celebrateStartedAt;
+    private long lastFrame;
+    private long flashAt = -100_000;
+    private long celebrateAt = -100_000;
+    private final float[][] confetti = new float[90][7];
+    private final int[] confettiColor = new int[90];
 
-    public CubeOverlayView(Context context) {
-        super(context);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        setContentDescription("魔方 AR 实时识别和还原指引");
+    public CubeOverlayView(Context context) { this(context, null); }
+
+    public CubeOverlayView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        float d = getResources().getDisplayMetrics().density;
+        for (int i = 0; i < flow.length; i++) {
+            flow[i] = new DashPathEffect(new float[]{14 * d, 9 * d}, -i * 23 * d / flow.length);
+        }
+        setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
 
     public void setState(CubeUiState state) {
         this.state = state;
-        invalidate();
-    }
-
-    public void setOnReset(Runnable onReset) { this.onReset = onReset; }
-
-    /** A brief flash over the quad after a face is captured. */
-    public void onFaceCaptured() {
-        flashStartedAt = SystemClock.uptimeMillis();
         postInvalidateOnAnimation();
     }
 
-    /** Expanding rings and a check for the restored cube. */
+    /** A brief flash over the quad after a face is captured. */
+    public void onFaceCaptured() {
+        flashAt = SystemClock.uptimeMillis();
+        postInvalidateOnAnimation();
+    }
+
+    /** Confetti for the restored cube. */
     public void celebrate() {
-        celebrateStartedAt = SystemClock.uptimeMillis();
+        celebrateAt = SystemClock.uptimeMillis();
+        Random random = new Random();
+        int[] palette = {CubeColor.WHITE.argb, CubeColor.RED.argb, CubeColor.GREEN.argb,
+            CubeColor.YELLOW.argb, CubeColor.ORANGE.argb, CubeColor.BLUE.argb, MINT};
+        float w = Math.max(1, getWidth()), h = Math.max(1, getHeight());
+        for (int i = 0; i < confetti.length; i++) {
+            float[] c = confetti[i];
+            c[0] = w * (0.1f + 0.8f * random.nextFloat());   // x
+            c[1] = h * (0.25f + 0.2f * random.nextFloat());  // y
+            c[2] = (random.nextFloat() - 0.5f) * w * 1.4f;   // vx px/s
+            c[3] = -h * (0.55f + 0.5f * random.nextFloat()); // vy px/s
+            c[4] = random.nextFloat() * 360f;                // angle
+            c[5] = (random.nextFloat() - 0.5f) * 720f;       // spin deg/s
+            c[6] = 0.6f + random.nextFloat() * 0.8f;         // size
+            confettiColor[i] = palette[random.nextInt(palette.length)];
+        }
         postInvalidateOnAnimation();
     }
 
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        long now = SystemClock.uptimeMillis();
+        float dt = lastFrame == 0 ? 16f : Math.min(60f, now - lastFrame);
+        lastFrame = now;
         float d = getResources().getDisplayMetrics().density;
-        float width = getWidth(), height = getHeight();
+        boolean animating = false;
 
-        drawTopStatus(canvas, d, width);
-        float[] detected = mapDetectedCorners(width, height);
-        if (detected != null) {
-            RectF bounds = drawDetectedGrid(canvas, d, detected);
-            drawStabilityRing(canvas, d, height, bounds);
-            drawCaptureFlash(canvas, d, detected, bounds);
-            if (state.phase == CubeUiState.Phase.GUIDING && state.cubeState == null) {
-                drawTurnArrow(canvas, d, bounds, state.currentMove());
+        boolean tracked = mapDetection(getWidth(), getHeight());
+        if (tracked) {
+            int shift = hasShown ? bestShift(shown, target) : 0;
+            float jump = 0;
+            for (int i = 0; i < 4; i++) {
+                int j = (i + shift) % 4;
+                jump = Math.max(jump, (float) Math.hypot(target[j * 2] - shown[i * 2],
+                    target[j * 2 + 1] - shown[i * 2 + 1]));
             }
-        } else if (state.phase == CubeUiState.Phase.SOLVING) {
-            drawSolvingSpinner(canvas, d, width, height);
-        } else if (state.phase != CubeUiState.Phase.PERMISSION
-                && state.phase != CubeUiState.Phase.ERROR) {
-            drawSearching(canvas, d, width, height);
+            float diagonal = (float) Math.hypot(target[0] - target[4], target[1] - target[5]);
+            if (!hasShown || visibility < 0.05f || jump > diagonal * 0.6f) {
+                shift = 0;
+                System.arraycopy(target, 0, shown, 0, 8);
+            } else {
+                float k = 1f - (float) Math.exp(-dt / GLIDE_MS);
+                for (int i = 0; i < 4; i++) {
+                    int j = (i + shift) % 4;
+                    shown[i * 2] += (target[j * 2] - shown[i * 2]) * k;
+                    shown[i * 2 + 1] += (target[j * 2 + 1] - shown[i * 2 + 1]) * k;
+                }
+                if (jump > 0.5f) animating = true;
+            }
+            shownShift = shift;
+            hasShown = true;
+            visibility = Math.min(1f, visibility + dt / 110f);
+        } else {
+            visibility = Math.max(0f, visibility - dt / 200f);
         }
-        drawCelebration(canvas, d, width, height);
-        drawGuideCube(canvas, d, width);
-        drawBottomCard(canvas, d, width, height);
-        drawDumpBadge(canvas, d, width, height);
-        if (animating()) postInvalidateOnAnimation();
+        if (visibility > 0f && visibility < 1f) animating = true;
+
+        if (hasShown && visibility > 0.01f) {
+            drawLattice(canvas, d);
+            animating |= drawRing(canvas, d, dt);
+            animating |= drawFlash(canvas, d, now);
+            if (state.phase == CubeUiState.Phase.GUIDING && state.targetInView && tracked) {
+                drawTurnArrow(canvas, d, now);
+                animating = true;
+            }
+        }
+        if (!tracked && (state.phase == CubeUiState.Phase.SCANNING
+                || state.phase == CubeUiState.Phase.GUIDING)) {
+            drawSearching(canvas, d, now);
+            animating = true;
+        }
+        animating |= drawConfetti(canvas, d, now, dt);
+        drawDumpBadge(canvas, d);
+        if (animating || DetectionDump.active() != null) postInvalidateOnAnimation();
     }
 
-    /** True while any animation still owes frames to the user. */
-    private boolean animating() {
-        if (SystemClock.uptimeMillis() - flashStartedAt < FLASH_MS) return true;
-        if (SystemClock.uptimeMillis() - celebrateStartedAt < CELEBRATE_MS) return true;
-        if (state.phase == CubeUiState.Phase.SOLVING) return true;
-        if (state.detectedFace == null
-                && (state.phase == CubeUiState.Phase.SCANNING
-                    || state.phase == CubeUiState.Phase.GUIDING)) {
-            return true;
+    /** Maps the detection into view pixels; FILL_CENTER crops the analysis frame the same way. */
+    private boolean mapDetection(float viewWidth, float viewHeight) {
+        DetectedFace detection = state.detectedFace;
+        if (detection == null || detection.imageWidth <= 0 || detection.imageHeight <= 0) return false;
+        float scale = Math.max(viewWidth / detection.imageWidth, viewHeight / detection.imageHeight);
+        float offsetX = (viewWidth - detection.imageWidth * scale) / 2f;
+        float offsetY = (viewHeight - detection.imageHeight * scale) / 2f;
+        for (int i = 0; i < 4; i++) {
+            target[i * 2] = offsetX + detection.corners[i * 2] * scale;
+            target[i * 2 + 1] = offsetY + detection.corners[i * 2 + 1] * scale;
         }
-        if (Math.abs(shownProgress - state.stabilizeProgress) > 0.004f) return true;
-        if (state.phase == CubeUiState.Phase.GUIDING && state.cubeState != null) return true;
-        return DetectionDump.active() != null;
+        return true;
     }
 
-    private void drawGuideCube(Canvas canvas, float d, float width) {
-        if (state.phase != CubeUiState.Phase.GUIDING || state.cubeState == null) return;
-        String move = state.currentMove();
-        if (move.isEmpty()) return;
-        if (!move.equals(lastGuideMove)) {
-            lastGuideMove = move;
-            guideAnimAt = SystemClock.uptimeMillis();
+    /** The cyclic shift of {@code to}'s corners that lies closest to {@code from}'s. */
+    private static int bestShift(float[] from, float[] to) {
+        int best = 0;
+        double lowest = Double.MAX_VALUE;
+        for (int shift = 0; shift < 4; shift++) {
+            double cost = 0;
+            for (int i = 0; i < 4; i++) {
+                int j = (i + shift) % 4;
+                cost += Math.hypot(to[j * 2] - from[i * 2], to[j * 2 + 1] - from[i * 2 + 1]);
+            }
+            if (cost < lowest) { lowest = cost; best = shift; }
         }
-        float size = 164 * d;
-        guideCubeBounds.set(width - 14 * d - size, 74 * d, width - 14 * d, 74 * d + size);
-        paint.setColor(0xE80B1714);
-        canvas.drawRoundRect(guideCubeBounds, 22 * d, 22 * d, paint);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1.4f * d);
-        paint.setColor(0x5574F5C5);
-        canvas.drawRoundRect(guideCubeBounds, 22 * d, 22 * d, paint);
+        return best;
+    }
+
+    private void drawLattice(Canvas canvas, float d) {
+        for (int i = 0; i < 8; i++) quad[i] = shown[i];
+        double[] toView = Homography.fromSquare(3, quad);
+        if (toView == null) return;
+        int alpha = (int) (255 * visibility);
+        FaceSample live = state.liveFace;
+        // The drawn quad may start from a different corner than the detection's; turn the
+        // readings by the same amount so each colour sits on its own sticker.
+        if (live != null) for (int t = 0; t < (4 - shownShift) % 4; t++) live = live.rotateClockwise();
+        boolean refined = state.detectedFace != null && state.detectedFace.refined;
+        boolean disputed = state.detectedFace != null && state.detectedFace.disputed;
+        boolean readable = live != null && live.unreliableCount() == 0;
+        int edge = state.tooFarToCapture ? AMBER : readable && refined ? 0xFFDFFFF3 : 0xFFFFFFFF;
+
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(0xFF9FE8CC);
-        paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-        paint.setTextSize(11 * d);
-        paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("这一步", guideCubeBounds.centerX(), guideCubeBounds.top + 18 * d, paint);
-        paint.setTextAlign(Paint.Align.LEFT);
-        RectF inner = new RectF(guideCubeBounds.left + 8 * d, guideCubeBounds.top + 20 * d,
-            guideCubeBounds.right - 8 * d, guideCubeBounds.bottom - 6 * d);
-        guideCube.draw(canvas, inner, state.cubeState, move, SystemClock.uptimeMillis() - guideAnimAt);
-    }
-
-    private void drawTopStatus(Canvas canvas, float d, float width) {
-        paint.setColor(0xB30D1A16);
-        rect.set(16 * d, 16 * d, width - 16 * d, 66 * d);
-        canvas.drawRoundRect(rect, 20 * d, 20 * d, paint);
-        paint.setColor(statusDotColor());
-        canvas.drawCircle(38 * d, 41 * d, 4.5f * d, paint);
-        resetBounds.set(width - 86 * d, 26 * d, width - 30 * d, 56 * d);
-        float textMax = resetBounds.left - 62 * d;
-        paint.setColor(Color.WHITE);
-        paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-        paint.setTextSize(15 * d);
-        drawFittedText(canvas, state.title, 54 * d, 40 * d, textMax, paint);
-        paint.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-        paint.setTextSize(11 * d);
-        paint.setColor(0xFFA9BBB4);
-        drawFittedText(canvas, state.detail, 54 * d, 57 * d, textMax, paint);
-        paint.setColor(0x3374F5C5);
-        canvas.drawRoundRect(resetBounds, 15 * d, 15 * d, paint);
-        paint.setColor(MINT);
-        paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-        paint.setTextSize(12.5f * d);
-        paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("重扫", resetBounds.centerX(), resetBounds.centerY() + 4.5f * d, paint);
-        paint.setTextAlign(Paint.Align.LEFT);
-    }
-
-    private void drawDumpBadge(Canvas canvas, float d, float width, float height) {
-        DetectionDump dump = DetectionDump.active();
-        if (dump == null) return;
-        String text = String.format(java.util.Locale.US, "DEBUG  p=%.2f  %s/%s  dump=%d",
-            dump.lastPresence, dump.lastSource, dump.lastReject, dump.imagesWritten());
-        paint.setColor(0xCC1A0A08);
-        rect.set(16 * d, height - 118 * d, width - 16 * d, height - 92 * d);
-        canvas.drawRoundRect(rect, 10 * d, 10 * d, paint);
-        paint.setColor(0xFFFFB4A2);
-        paint.setTextSize(11 * d);
-        paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-        paint.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText(text, 26 * d, height - 100 * d, paint);
-    }
-
-    private int statusDotColor() {
-        switch (state.phase) {
-            case SOLVING: return 0xFFFFD66B;
-            case SOLVED: return MINT;
-            case ERROR: return 0xFFFF6B5E;
-            case GUIDING: return MINT;
-            default: return state.detectedFace != null ? MINT : 0xFF6FA8FF;
-        }
-    }
-
-    private RectF drawDetectedGrid(Canvas canvas, float d, float[] corners) {
-        if (state.liveFace != null) {
-            for (int i = 0; i < 9; i++) {
-                int row = i / 3, col = i % 3;
-                paint.setColor((state.liveFace.stickers[i].argb & 0x00FFFFFF) | 0x5A000000);
-                drawCell(canvas, corners, col / 3f, row / 3f, (col + 1) / 3f, (row + 1) / 3f, 0.08f);
+        if (live != null && !state.tooFarToCapture) {
+            for (int cell = 0; cell < 9; cell++) {
+                if (!live.reliable[cell] || live.stickers[cell] == CubeColor.UNKNOWN) continue;
+                paint.setColor(live.stickers[cell].argb);
+                paint.setAlpha((int) (alpha * 0.58f));
+                cellPath(toView, cell % 3, cell / 3, 0.14);
+                canvas.drawPath(path, paint);
             }
         }
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1.5f * d);
-        paint.setColor(0x55FFFFFF);
-        for (int i = 1; i < 3; i++) {
-            float[] top = bilinear(corners, i / 3f, 0);
-            float[] bottom = bilinear(corners, i / 3f, 1);
-            float[] left = bilinear(corners, 0, i / 3f);
-            float[] right = bilinear(corners, 1, i / 3f);
-            canvas.drawLine(top[0], top[1], bottom[0], bottom[1], paint);
-            canvas.drawLine(left[0], left[1], right[0], right[1], paint);
-        }
-        paint.setStrokeWidth(3.5f * d);
         paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setColor(state.liveFace != null && !state.liveFace.containsUnknown() ? MINT : Color.WHITE);
+        paint.setStrokeWidth(1.2f * d);
+        paint.setColor(0xFFFFFFFF);
+        paint.setAlpha((int) (alpha * 0.45f));
+        for (int k = 1; k < 3; k++) {
+            line(canvas, toView, k, 0, k, 3);
+            line(canvas, toView, 0, k, 3, k);
+        }
+        paint.setStrokeWidth((refined ? 3.2f : 2.4f) * d);
+        paint.setColor(edge);
+        paint.setAlpha(disputed ? alpha / 2 : alpha);
+        if (disputed) paint.setPathEffect(flow[0]);
         path.reset();
-        path.moveTo(corners[0], corners[1]);
-        path.lineTo(corners[2], corners[3]);
-        path.lineTo(corners[4], corners[5]);
-        path.lineTo(corners[6], corners[7]);
+        path.moveTo(shown[0], shown[1]);
+        path.lineTo(shown[2], shown[3]);
+        path.lineTo(shown[4], shown[5]);
+        path.lineTo(shown[6], shown[7]);
         path.close();
         canvas.drawPath(path, paint);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setStrokeJoin(Paint.Join.MITER);
-        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;
-        float maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;
+        paint.setPathEffect(null);
+        // Corner ticks make the frame read as "locked on" rather than as a plain outline.
+        paint.setStrokeWidth(5f * d);
+        paint.setStrokeCap(Paint.Cap.ROUND);
         for (int i = 0; i < 4; i++) {
-            minX = Math.min(minX, corners[i * 2]); maxX = Math.max(maxX, corners[i * 2]);
-            minY = Math.min(minY, corners[i * 2 + 1]); maxY = Math.max(maxY, corners[i * 2 + 1]);
+            float x = shown[i * 2], y = shown[i * 2 + 1];
+            int prev = (i + 3) % 4, next = (i + 1) % 4;
+            canvas.drawLine(x, y, x + (shown[next * 2] - x) * 0.16f, y + (shown[next * 2 + 1] - y) * 0.16f, paint);
+            canvas.drawLine(x, y, x + (shown[prev * 2] - x) * 0.16f, y + (shown[prev * 2 + 1] - y) * 0.16f, paint);
         }
-        return new RectF(minX, minY, maxX, maxY);
+        paint.setStrokeCap(Paint.Cap.BUTT);
+        paint.setStyle(Paint.Style.FILL);
+    }
+
+    private void cellPath(double[] toView, int col, int row, double inset) {
+        path.reset();
+        double[][] corners = {{col + inset, row + inset}, {col + 1 - inset, row + inset},
+            {col + 1 - inset, row + 1 - inset}, {col + inset, row + 1 - inset}};
+        for (int i = 0; i < 4; i++) {
+            Homography.apply(toView, corners[i][0], corners[i][1], point);
+            if (i == 0) path.moveTo((float) point[0], (float) point[1]);
+            else path.lineTo((float) point[0], (float) point[1]);
+        }
+        path.close();
+    }
+
+    private void line(Canvas canvas, double[] toView, double x0, double y0, double x1, double y1) {
+        Homography.apply(toView, x0, y0, point);
+        float ax = (float) point[0], ay = (float) point[1];
+        Homography.apply(toView, x1, y1, point);
+        canvas.drawLine(ax, ay, (float) point[0], (float) point[1], paint);
     }
 
     /**
-     * Ring around the tracked quad showing how close the steady run is to a capture.
-     *
-     * <p>Held-still frames are what the whole capture hinges on, and without this the user only
-     * finds out afterwards whether they waited long enough.
+     * Capture progress traced along the face's own outline, starting at its top-left corner.
+     * A separate ring around the face read as a second, larger target and fought the lattice for
+     * attention; drawing progress on the frame the user is already watching says "hold still"
+     * where they are looking.
      */
-    private void drawStabilityRing(Canvas canvas, float d, float height, RectF bounds) {
-        float target = state.stabilizeProgress;
-        shownProgress += (target - shownProgress) * 0.3f;
-        if (Math.abs(target - shownProgress) < 0.004f) shownProgress = target;
-        if (shownProgress <= 0.004f || shownProgress >= 0.996f) return;
-
-        float cx = bounds.centerX(), cy = bounds.centerY();
-        float radius = Math.max(bounds.width(), bounds.height()) / 2f + 16 * d;
+    private boolean drawRing(Canvas canvas, float d, float dt) {
+        float goal = state.phase == CubeUiState.Phase.SCANNING || state.phase == CubeUiState.Phase.GUIDING
+            ? state.stabilizeProgress : 0f;
+        float k = 1f - (float) Math.exp(-dt / 70f);
+        shownProgress += (goal - shownProgress) * k;
+        if (Math.abs(goal - shownProgress) < 0.003f) shownProgress = goal;
+        boolean animating = Math.abs(goal - shownProgress) > 0.003f;
+        if (shownProgress <= 0.01f || state.tooFarToCapture) return animating;
+        // Start from whichever drawn corner is top-left-most, so progress always begins there.
+        int start = 0;
+        float best = Float.MAX_VALUE;
+        for (int i = 0; i < 4; i++) {
+            float score = shown[i * 2] + shown[i * 2 + 1];
+            if (score < best) { best = score; start = i; }
+        }
+        float[] side = new float[4];
+        float total = 0;
+        for (int i = 0; i < 4; i++) {
+            int a = (start + i) % 4, b = (start + i + 1) % 4;
+            side[i] = (float) Math.hypot(shown[b * 2] - shown[a * 2], shown[b * 2 + 1] - shown[a * 2 + 1]);
+            total += side[i];
+        }
+        float remaining = total * Math.min(1f, shownProgress);
+        path.reset();
+        path.moveTo(shown[start * 2], shown[start * 2 + 1]);
+        for (int i = 0; i < 4 && remaining > 0; i++) {
+            int a = (start + i) % 4, b = (start + i + 1) % 4;
+            float t = Math.min(1f, remaining / Math.max(side[i], 1e-3f));
+            path.lineTo(shown[a * 2] + (shown[b * 2] - shown[a * 2]) * t,
+                shown[a * 2 + 1] + (shown[b * 2 + 1] - shown[a * 2 + 1]) * t);
+            remaining -= side[i];
+        }
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStrokeWidth(4 * d);
-        paint.setColor(0x30FFFFFF);
-        canvas.drawCircle(cx, cy, radius, paint);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeWidth(6 * d);
         paint.setColor(MINT);
-        rect.set(cx - radius, cy - radius, cx + radius, cy + radius);
-        canvas.drawArc(rect, -90, 360 * shownProgress, false, paint);
-
-        float captionY = bounds.bottom + radius + 24 * d;
-        if (captionY < height - 200 * d) {
-            paint.setStyle(Paint.Style.FILL);
-            paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-            paint.setTextSize(12.5f * d);
-            paint.setColor(MINT);
-            canvas.drawText(state.phase == CubeUiState.Phase.GUIDING
-                ? "保持对准目标面" : "保持稳定，即将采集", cx, captionY, paint);
-            paint.setTextAlign(Paint.Align.LEFT);
-        }
+        paint.setAlpha((int) (255 * visibility));
+        canvas.drawPath(path, paint);
         paint.setStrokeCap(Paint.Cap.BUTT);
         paint.setStyle(Paint.Style.FILL);
+        return animating;
     }
 
-    /** Expanding mint frame and a quick white pulse over a freshly captured face. */
-    private void drawCaptureFlash(Canvas canvas, float d, float[] corners, RectF bounds) {
-        long elapsed = SystemClock.uptimeMillis() - flashStartedAt;
-        if (elapsed < 0 || elapsed > FLASH_MS) return;
+    /** White pulse over the face, an expanding mint frame, and a check badge. */
+    private boolean drawFlash(Canvas canvas, float d, long now) {
+        long elapsed = now - flashAt;
+        if (elapsed < 0 || elapsed > FLASH_MS) return false;
         float t = elapsed / (float) FLASH_MS;
         float ease = 1f - t * t;
-
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
-        paint.setAlpha((int) (70 * ease));
         path.reset();
-        path.moveTo(corners[0], corners[1]);
-        path.lineTo(corners[2], corners[3]);
-        path.lineTo(corners[4], corners[5]);
-        path.lineTo(corners[6], corners[7]);
+        path.moveTo(shown[0], shown[1]);
+        path.lineTo(shown[2], shown[3]);
+        path.lineTo(shown[4], shown[5]);
+        path.lineTo(shown[6], shown[7]);
+        path.close();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(0xFFFFFFFF);
+        paint.setAlpha((int) (90 * ease));
+        canvas.drawPath(path, paint);
+
+        float cx = (shown[0] + shown[2] + shown[4] + shown[6]) / 4f;
+        float cy = (shown[1] + shown[3] + shown[5] + shown[7]) / 4f;
+        float grow = 1f + 0.18f * t;
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(3 * d);
+        paint.setColor(MINT);
+        paint.setAlpha((int) (230 * ease));
+        path.reset();
+        for (int i = 0; i < 4; i++) {
+            float x = cx + (shown[i * 2] - cx) * grow, y = cy + (shown[i * 2 + 1] - cy) * grow;
+            if (i == 0) path.moveTo(x, y); else path.lineTo(x, y);
+        }
         path.close();
         canvas.drawPath(path, paint);
 
-        float pad = 14 * d + 54 * d * t;
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(3 * d);
-        paint.setColor(MINT);
-        paint.setAlpha((int) (220 * ease));
-        rect.set(bounds.left - pad, bounds.top - pad, bounds.right + pad, bounds.bottom + pad);
-        canvas.drawRoundRect(rect, 18 * d, 18 * d, paint);
-
+        float badge = 17 * d * (0.7f + 0.3f * Math.min(1f, t * 4));
         paint.setStyle(Paint.Style.FILL);
+        paint.setColor(MINT);
         paint.setAlpha((int) (255 * ease));
-        float cx = bounds.centerX();
-        float cy = bounds.top - pad - 6 * d;
-        canvas.drawCircle(cx, cy, 13 * d, paint);
-        paint.setColor(Color.WHITE);
+        canvas.drawCircle(cx, cy, badge, paint);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2.6f * d);
+        paint.setStrokeWidth(3.2f * d);
         paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setColor(0xFF05261D);
+        paint.setAlpha((int) (255 * ease));
         path.reset();
-        path.moveTo(cx - 5.5f * d, cy + 0.5f * d);
-        path.lineTo(cx - 1.5f * d, cy + 4.5f * d);
-        path.lineTo(cx + 5.5f * d, cy - 4 * d);
+        path.moveTo(cx - badge * 0.42f, cy + badge * 0.02f);
+        path.lineTo(cx - badge * 0.10f, cy + badge * 0.34f);
+        path.lineTo(cx + badge * 0.45f, cy - badge * 0.30f);
         canvas.drawPath(path, paint);
-        paint.setAlpha(255);
         paint.setStrokeCap(Paint.Cap.BUTT);
         paint.setStyle(Paint.Style.FILL);
+        return true;
     }
 
-    private void drawSearching(Canvas canvas, float d, float width, float height) {
-        float x = width / 2f, y = height * 0.42f;
-        float angle = (SystemClock.uptimeMillis() % 1600) / 1600f * 360f;
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(3.5f * d);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setColor(0x2274F5C5);
-        canvas.drawCircle(x, y, 26 * d, paint);
-        paint.setColor(0xEE74F5C5);
-        rect.set(x - 26 * d, y - 26 * d, x + 26 * d, y + 26 * d);
-        canvas.drawArc(rect, angle, 110, false, paint);
-        canvas.drawArc(rect, angle + 180, 110, false, paint);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(13 * d);
-        paint.setColor(0xB3FFFFFF);
-        canvas.drawText(state.phase == CubeUiState.Phase.GUIDING
-            ? "转动魔方，让目标面对准镜头" : "正在全画面寻找魔方", x, y + 52 * d, paint);
-        paint.setTextAlign(Paint.Align.LEFT);
-        paint.setStrokeCap(Paint.Cap.BUTT);
-    }
-
-    private void drawSolvingSpinner(Canvas canvas, float d, float width, float height) {
-        float x = width / 2f, y = height * 0.42f;
-        float angle = (SystemClock.uptimeMillis() % 900) / 900f * 360f;
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(4 * d);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setColor(MINT);
-        rect.set(x - 22 * d, y - 22 * d, x + 22 * d, y + 22 * d);
-        canvas.drawArc(rect, angle, 80, false, paint);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setStrokeCap(Paint.Cap.BUTT);
-    }
-
-    /** Rings and a check marking the restored cube, drawn over everything but the card. */
-    private void drawCelebration(Canvas canvas, float d, float width, float height) {
-        long elapsed = SystemClock.uptimeMillis() - celebrateStartedAt;
-        if (elapsed < 0 || elapsed > CELEBRATE_MS) return;
-        float t = elapsed / (float) CELEBRATE_MS;
-        float x = width / 2f, y = height * 0.42f;
-
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(3 * d);
-        for (int i = 0; i < 2; i++) {
-            float ringT = Math.max(0f, t - i * 0.18f) / (1f - i * 0.18f);
-            paint.setColor(MINT);
-            paint.setAlpha((int) (170 * (1 - ringT)));
-            canvas.drawCircle(x, y, (30 + 150 * ringT + i * 26) * d, paint);
-        }
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(MINT);
-        paint.setAlpha((int) (255 * Math.min(1f, t * 6) * (t > 0.85f ? (1 - t) / 0.15f : 1)));
-        canvas.drawCircle(x, y, 30 * d, paint);
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(4.5f * d);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setAlpha((int) (255 * Math.min(1f, t * 6) * (t > 0.85f ? (1 - t) / 0.15f : 1)));
-        path.reset();
-        path.moveTo(x - 12 * d, y + 1 * d);
-        path.lineTo(x - 3 * d, y + 10 * d);
-        path.lineTo(x + 13 * d, y - 9 * d);
-        canvas.drawPath(path, paint);
-        paint.setAlpha(255);
-        paint.setStrokeCap(Paint.Cap.BUTT);
-        paint.setStyle(Paint.Style.FILL);
-    }
-
-    private void drawTurnArrow(Canvas canvas, float d, RectF grid, String move) {
+    /**
+     * A circular arrow around the face to turn, flowing in the turn's direction. The camera looks
+     * at that face from outside, which is the viewpoint the move notation is defined from, so
+     * clockwise on screen is clockwise on the cube.
+     */
+    private void drawTurnArrow(Canvas canvas, float d, long now) {
+        String move = state.currentMove();
         if (move.isEmpty()) return;
         boolean counter = move.endsWith("'");
         boolean twice = move.endsWith("2");
-        RectF arc = new RectF(grid.left - 18 * d, grid.top - 18 * d,
-            grid.right + 18 * d, grid.bottom + 18 * d);
+        float cx = (shown[0] + shown[2] + shown[4] + shown[6]) / 4f;
+        float cy = (shown[1] + shown[3] + shown[5] + shown[7]) / 4f;
+        float radius = 0;
+        for (int i = 0; i < 4; i++) radius = Math.max(radius, (float) Math.hypot(shown[i * 2] - cx, shown[i * 2 + 1] - cy));
+        radius *= 0.72f;
+        float start = counter ? 120f : 60f;
+        float sweep = (counter ? -1 : 1) * (twice ? 300f : 240f);
+        rect.set(cx - radius, cy - radius, cx + radius, cy + radius);
+
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(8 * d);
         paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeWidth(9 * d);
+        paint.setColor(0x66000000);
+        canvas.drawArc(rect, start, sweep, false, paint);
+        paint.setStrokeWidth(6 * d);
         paint.setColor(MINT);
-        float start = counter ? 205 : -25;
-        float sweep = counter ? -230 : 230;
-        canvas.drawArc(arc, start, sweep, false, paint);
-        float angle = (float) Math.toRadians(start + sweep);
-        float x = arc.centerX() + arc.width() / 2f * (float) Math.cos(angle);
-        float y = arc.centerY() + arc.height() / 2f * (float) Math.sin(angle);
-        float direction = counter ? -1 : 1;
+        // The arc is drawn in the turn's own direction, so moving the dash phase forward along
+        // the path always flows the way the layer should go.
+        paint.setPathEffect(flow[(int) ((now / 45) % flow.length)]);
+        canvas.drawArc(rect, start, sweep, false, paint);
+        paint.setPathEffect(null);
+
+        double tip = Math.toRadians(start + sweep);
+        float tx = cx + radius * (float) Math.cos(tip), ty = cy + radius * (float) Math.sin(tip);
+        // Tangent in the direction of travel.
+        float dir = counter ? -1 : 1;
+        float ux = -(float) Math.sin(tip) * dir, uy = (float) Math.cos(tip) * dir;
+        float head = 16 * d;
         path.reset();
-        path.moveTo(x, y);
-        path.lineTo(x - 22 * d * direction, y - 4 * d);
-        path.lineTo(x - 5 * d * direction, y - 20 * d);
+        path.moveTo(tx + ux * head, ty + uy * head);
+        path.lineTo(tx - uy * head * 0.75f, ty + ux * head * 0.75f);
+        path.lineTo(tx + uy * head * 0.75f, ty - ux * head * 0.75f);
         path.close();
         paint.setStyle(Paint.Style.FILL);
         canvas.drawPath(path, paint);
         if (twice) {
             paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-            paint.setTextSize(24 * d);
+            paint.setTextSize(26 * d);
+            paint.setFakeBoldText(true);
+            paint.setColor(0xCC000000);
+            canvas.drawCircle(cx, cy, 22 * d, paint);
             paint.setColor(MINT);
-            canvas.drawText("×2", grid.centerX(), grid.top - 30 * d, paint);
+            canvas.drawText("×2", cx, cy + 9 * d, paint);
+            paint.setFakeBoldText(false);
             paint.setTextAlign(Paint.Align.LEFT);
         }
         paint.setStrokeCap(Paint.Cap.BUTT);
     }
 
-    private void drawBottomCard(Canvas canvas, float d, float width, float height) {
-        float cardTop = height - 192 * d;
-        paint.setColor(CARD_BG);
-        rect.set(14 * d, cardTop, width - 14 * d, height - 14 * d);
-        canvas.drawRoundRect(rect, 26 * d, 26 * d, paint);
-
-        drawFaceDots(canvas, d, width, cardTop);
-
-        if (state.phase == CubeUiState.Phase.GUIDING && !state.moves.isEmpty()) {
-            drawGuidingCard(canvas, d, width, cardTop);
-        } else {
-            drawInfoCard(canvas, d, width, cardTop);
-        }
-    }
-
-    /** Six centre-colour dots; a mint halo marks the face the current move wants during guidance. */
-    private void drawFaceDots(Canvas canvas, float d, float width, float cardTop) {
-        String[] faceOrder = {"U", "R", "F", "D", "L", "B"};
-        char targetFace = state.phase == CubeUiState.Phase.GUIDING && !state.currentMove().isEmpty()
-            ? state.currentMove().charAt(0) : '?';
-        float y = cardTop + 32 * d;
-        for (int i = 0; i < faceOrder.length; i++) {
-            CubeColor color = CubeColor.fromFace(faceOrder[i].charAt(0));
-            float x = 38 * d + i * 34 * d;
-            boolean scanned = state.scanned.contains(color);
-            boolean inferred = state.inferred == color;
-            paint.setColor((scanned || inferred) ? color.argb : (color.argb & 0x00FFFFFF) | 0x38000000);
-            canvas.drawCircle(x, y, scanned || inferred ? 7 * d : 5 * d, paint);
-            if (inferred && !scanned) {
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(2f * d);
-                paint.setColor(MINT);
-                paint.setPathEffect(new DashPathEffect(new float[]{4 * d, 3 * d}, 0));
-                canvas.drawCircle(x, y, 11 * d, paint);
-                paint.setPathEffect(null);
-                paint.setStyle(Paint.Style.FILL);
-            } else if (!scanned) {
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(1.6f * d);
-                paint.setColor(0x66FFFFFF);
-                canvas.drawCircle(x, y, 10 * d, paint);
-                paint.setStyle(Paint.Style.FILL);
-            }
-            if (color.face == targetFace) {
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(2.4f * d);
-                paint.setColor(MINT);
-                canvas.drawCircle(x, y, 13 * d, paint);
-                paint.setStyle(Paint.Style.FILL);
-            }
-        }
-        paint.setTextAlign(Paint.Align.RIGHT);
-        paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-        paint.setTextSize(13 * d);
-        paint.setColor(0xFFC7D6D0);
-        String progress = state.phase == CubeUiState.Phase.GUIDING
-            ? (state.moveIndex + 1) + " / " + state.moves.size() + " 步"
-            : state.scannedCount + " / 6 面";
-        canvas.drawText(progress, width - 34 * d, y + 5 * d, paint);
-        paint.setTextAlign(Paint.Align.LEFT);
-        paint.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-    }
-
-    /** Move notation, a target swatch, the step bar, and a peek at the next moves. */
-    private void drawGuidingCard(Canvas canvas, float d, float width, float cardTop) {
-        String move = state.currentMove();
-        CubeColor target = CubeColor.fromFace(move.charAt(0));
-
+    /** Four corner brackets breathing in the middle of the frame while nothing is tracked. */
+    private void drawSearching(Canvas canvas, float d, long now) {
+        float w = getWidth(), h = getHeight();
+        float cx = w / 2f, cy = h * 0.40f;
+        float breath = (float) (0.5 + 0.5 * Math.sin(now / 520.0));
+        float half = Math.min(w, h) * (0.30f + 0.02f * breath);
+        float arm = half * 0.28f;
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(4 * d);
         paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setColor(0x22FFFFFF);
-        rect.set(34 * d, cardTop + 52 * d, width - 34 * d, cardTop + 56 * d);
-        canvas.drawRoundRect(rect, 2 * d, 2 * d, paint);
-        paint.setColor(MINT);
-        float fraction = (float) state.moveIndex / Math.max(1, state.moves.size());
-        rect.set(34 * d, cardTop + 52 * d,
-            34 * d + (width - 68 * d) * Math.max(0.03f, fraction), cardTop + 56 * d);
-        canvas.drawRoundRect(rect, 2 * d, 2 * d, paint);
-        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeWidth(4 * d);
+        paint.setColor(0xFFFFFFFF);
+        paint.setAlpha((int) (110 + 90 * breath));
+        float[][] corners = {{-1, -1}, {1, -1}, {1, 1}, {-1, 1}};
+        for (float[] c : corners) {
+            float x = cx + c[0] * half, y = cy + c[1] * half;
+            canvas.drawLine(x, y, x - c[0] * arm, y, paint);
+            canvas.drawLine(x, y, x, y - c[1] * arm, paint);
+        }
         paint.setStrokeCap(Paint.Cap.BUTT);
-
-        paint.setColor(Color.WHITE);
-        paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-        paint.setTextSize(44 * d);
-        String label = prettyMove(move);
-        canvas.drawText(label, 34 * d, cardTop + 112 * d, paint);
-        float swatchX = 34 * d + paint.measureText(label) + 20 * d;
-        paint.setColor(target.argb);
-        canvas.drawCircle(swatchX, cardTop + 98 * d, 11 * d, paint);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2 * d);
-        paint.setColor(0x66FFFFFF);
-        canvas.drawCircle(swatchX, cardTop + 98 * d, 14 * d, paint);
         paint.setStyle(Paint.Style.FILL);
-
-        paint.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-        float chipX = swatchX + 30 * d;
-        float chipY = cardTop + 87 * d;
-        paint.setTextSize(11 * d);
-        for (int i = state.moveIndex + 1; i < Math.min(state.moveIndex + 4, state.moves.size()); i++) {
-            String next = plainMove(state.moves.get(i));
-            paint.setColor(0x2474F5C5);
-            rect.set(chipX, chipY, chipX + 36 * d, chipY + 24 * d);
-            canvas.drawRoundRect(rect, 8 * d, 8 * d, paint);
-            paint.setColor(0xFF9FE8CC);
-            paint.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText(next, chipX + 18 * d, chipY + 16 * d, paint);
-            paint.setTextAlign(Paint.Align.LEFT);
-            chipX += 42 * d;
-        }
-
-        paint.setTextSize(12.5f * d);
-        paint.setColor(TEXT_DIM);
-        canvas.drawText(state.detail, 34 * d, cardTop + 148 * d, paint);
-        paint.setTextSize(11 * d);
-        paint.setColor(0xFF6E8079);
-        canvas.drawText("看右上角 3D 动画，层怎么转你就怎么拧", 34 * d, cardTop + 168 * d, paint);
     }
 
-    private void drawInfoCard(Canvas canvas, float d, float width, float cardTop) {
-        paint.setColor(Color.WHITE);
-        paint.setTypeface(Typeface.create("sans-serif-medium", Typeface.BOLD));
-        paint.setTextSize(21 * d);
-        canvas.drawText(state.title, 34 * d, cardTop + 84 * d, paint);
-        paint.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-        paint.setTextSize(13.5f * d);
-        paint.setColor(0xFFB8C9C3);
-        canvas.drawText(state.detail, 34 * d, cardTop + 114 * d, paint);
-        paint.setTextSize(11 * d);
-        paint.setColor(0xFF6E8079);
-        canvas.drawText("无需对准固定框 · 自动跟踪 · 数据仅在本机处理", 34 * d, cardTop + 146 * d, paint);
-    }
-
-    private static void drawFittedText(Canvas canvas, String text, float x, float y,
-                                       float maxWidth, Paint paint) {
-        if (text == null || text.isEmpty()) return;
-        if (paint.measureText(text) <= maxWidth) {
-            canvas.drawText(text, x, y, paint);
-            return;
-        }
-        String ellipsis = "…";
-        float ellipsisWidth = paint.measureText(ellipsis);
-        int end = text.length();
-        while (end > 0 && paint.measureText(text, 0, end) + ellipsisWidth > maxWidth) end--;
-        canvas.drawText(end <= 0 ? ellipsis : text.substring(0, end) + ellipsis, x, y, paint);
-    }
-
-    private static String prettyMove(String move) {
-        if (move.endsWith("'")) return move.substring(0, 1) + " 逆时针";
-        if (move.endsWith("2")) return move.substring(0, 1) + " 转两次";
-        return move.substring(0, 1) + " 顺时针";
-    }
-
-    private static String plainMove(String move) {
-        if (move.endsWith("'")) return move.substring(0, 1) + "′";
-        return move;
-    }
-
-    private static float[] bilinear(float[] q, float u, float v) {
-        float topX = q[0] + (q[2] - q[0]) * u;
-        float topY = q[1] + (q[3] - q[1]) * u;
-        float bottomX = q[6] + (q[4] - q[6]) * u;
-        float bottomY = q[7] + (q[5] - q[7]) * u;
-        return new float[]{topX + (bottomX - topX) * v, topY + (bottomY - topY) * v};
-    }
-
-    private void drawCell(Canvas canvas, float[] corners, float u0, float v0, float u1, float v1,
-                          float inset) {
-        float du = (u1 - u0) * inset, dv = (v1 - v0) * inset;
-        float[] a = bilinear(corners, u0 + du, v0 + dv);
-        float[] b = bilinear(corners, u1 - du, v0 + dv);
-        float[] c = bilinear(corners, u1 - du, v1 - dv);
-        float[] e = bilinear(corners, u0 + du, v1 - dv);
-        path.reset(); path.moveTo(a[0], a[1]); path.lineTo(b[0], b[1]);
-        path.lineTo(c[0], c[1]); path.lineTo(e[0], e[1]); path.close();
-        canvas.drawPath(path, paint);
-    }
-
-    private float[] mapDetectedCorners(float viewWidth, float viewHeight) {
-        DetectedFace detection = state.detectedFace;
-        if (detection == null || detection.imageWidth <= 0 || detection.imageHeight <= 0) return null;
-        float scale = Math.max(viewWidth / detection.imageWidth, viewHeight / detection.imageHeight);
-        float offsetX = (viewWidth - detection.imageWidth * scale) / 2f;
-        float offsetY = (viewHeight - detection.imageHeight * scale) / 2f;
-        float[] mapped = new float[8];
-        for (int i = 0; i < 4; i++) {
-            mapped[i * 2] = offsetX + detection.corners[i * 2] * scale;
-            mapped[i * 2 + 1] = offsetY + detection.corners[i * 2 + 1] * scale;
-        }
-        return mapped;
-    }
-
-    @Override public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP && resetBounds.contains(event.getX(), event.getY())) {
-            performClick();
-            onReset.run();
-            return true;
+    private boolean drawConfetti(Canvas canvas, float d, long now, float dt) {
+        long elapsed = now - celebrateAt;
+        if (elapsed < 0 || elapsed > CELEBRATE_MS) return false;
+        float fade = elapsed > CELEBRATE_MS - 500 ? (CELEBRATE_MS - elapsed) / 500f : 1f;
+        float g = getHeight() * 1.6f;
+        float s = dt / 1000f;
+        paint.setStyle(Paint.Style.FILL);
+        for (int i = 0; i < confetti.length; i++) {
+            float[] c = confetti[i];
+            c[3] += g * s;
+            c[2] *= 0.985f;
+            c[0] += c[2] * s;
+            c[1] += c[3] * s;
+            c[4] += c[5] * s;
+            canvas.save();
+            canvas.rotate(c[4], c[0], c[1]);
+            paint.setColor(confettiColor[i]);
+            paint.setAlpha((int) (255 * fade));
+            float size = 7 * d * c[6];
+            rect.set(c[0] - size, c[1] - size * 0.45f, c[0] + size, c[1] + size * 0.45f);
+            canvas.drawRoundRect(rect, size * 0.3f, size * 0.3f, paint);
+            canvas.restore();
         }
         return true;
     }
 
-    @Override public boolean performClick() { super.performClick(); return true; }
+    private void drawDumpBadge(Canvas canvas, float d) {
+        DetectionDump dump = DetectionDump.active();
+        if (dump == null) return;
+        String text = String.format(java.util.Locale.US, "DEBUG  p=%.2f  %s/%s  dump=%d",
+            dump.lastPresence, dump.lastSource, dump.lastReject, dump.imagesWritten());
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(0xCC1A0A08);
+        rect.set(16 * d, getHeight() * 0.5f, getWidth() - 16 * d, getHeight() * 0.5f + 26 * d);
+        canvas.drawRoundRect(rect, 10 * d, 10 * d, paint);
+        paint.setColor(0xFFFFB4A2);
+        paint.setTextSize(11 * d);
+        canvas.drawText(text, 26 * d, getHeight() * 0.5f + 17 * d, paint);
+    }
 }

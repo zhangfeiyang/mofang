@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Surfaces: deep teal-black glass over the camera. -->
     <color name="night">#07110F</color>
+    <color name="glass">#E00A1513</color>
+    <color name="glass_strong">#F20A1513</color>
+    <color name="glass_stroke">#26FFFFFF</color>
+    <color name="glass_raised">#1AFFFFFF</color>
+    <!-- Accent: the mint the app has always used, plus an ink colour for text on it. -->
+    <color name="mint">#6FF2C2</color>
+    <color name="mint_soft">#336FF2C2</color>
+    <color name="mint_ink">#05261D</color>
+    <!-- Text. -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B6C9C3</color>
+    <color name="text_tertiary">#7E928C</color>
+    <!-- Status. -->
+    <color name="amber">#FFC857</color>
+    <color name="coral">#FF6B5E</color>
 </resources>

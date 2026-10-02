@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="gutter">12dp</dimen>
+    <dimen name="panel_padding">20dp</dimen>
+    <dimen name="radius_panel">28dp</dimen>
+    <dimen name="radius_pill">26dp</dimen>
+    <dimen name="icon_button">44dp</dimen>
+    <dimen name="top_bar_height">56dp</dimen>
+    <dimen name="guide_card_size">172dp</dimen>
+</resources>

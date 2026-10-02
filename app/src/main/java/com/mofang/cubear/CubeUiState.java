@@ -3,74 +3,121 @@ package com.mofang.cubear;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+/** Everything the screen shows for one moment, built by {@link MainActivity}. */
 public final class CubeUiState {
-    public enum Phase { PERMISSION, SCANNING, SOLVING, GUIDING, SOLVED, ERROR }
+    public enum Phase { PERMISSION, SCANNING, READY, GUIDING, SOLVED, ERROR }
 
     public final Phase phase;
     public final String title;
     public final String detail;
-    public final FaceSample liveFace;
+    /** A short, situational nudge ("再靠近一点"), or null. */
+    public final String hint;
+    /** The tracked face, possibly bridged over a dropped frame, or null. */
     public final DetectedFace detectedFace;
+    /** The live reading with display names, or null. */
+    public final FaceSample liveFace;
+    /** 0..1 how far the current steady run is towards a capture. */
+    public final float stabilizeProgress;
+    /** True when a face is tracked but too distant for its readings to be trusted. */
+    public final boolean tooFarToCapture;
+    /** Colours whose face has been collected. */
     public final Set<CubeColor> scanned;
-    /** Faces actually captured. Can exceed {@link #scanned} when two centres share a provisional colour. */
+    /** Collected faces, 0..6. */
     public final int scannedCount;
+    /** Per face letter (URFDLB), nine ARGB colours previewing what was scanned, 0 = unread. */
+    public final Map<Character, int[]> preview;
+    /** Colour of the face inferred rather than scanned, or null. */
+    public final CubeColor inferred;
+    /** 54-facelet URFDLB string once the cube is known, else null. */
+    public final String cubeState;
     public final List<String> moves;
     public final int moveIndex;
-    /** 0..1 how far the current face's stability run has progressed, for the capture ring. */
-    public final float stabilizeProgress;
-    /** True when a face is tracked but sits too far away for its readings to be trusted. */
-    public final boolean tooFarToCapture;
-    /** Colour of the face inferred rather than scanned, or null when all six were seen. */
-    public final CubeColor inferred;
-    /** 54-facelet URFDLB string used by the 3D guide cube, or null before a solve. */
-    public final String cubeState;
+    /** True while a background assembly is running. */
+    public final boolean busy;
+    /** Guidance: the camera currently sees the face the move turns. */
+    public final boolean targetInView;
 
-    public CubeUiState(Phase phase, String title, String detail, FaceSample liveFace,
-                       DetectedFace detectedFace, Set<CubeColor> scanned, int scannedCount,
-                       List<String> moves, int moveIndex) {
-        this(phase, title, detail, liveFace, detectedFace, scanned, scannedCount,
-            moves, moveIndex, 0f, false, null, null);
-    }
-
-    public CubeUiState(Phase phase, String title, String detail, FaceSample liveFace,
-                       DetectedFace detectedFace, Set<CubeColor> scanned, int scannedCount,
-                       List<String> moves, int moveIndex, float stabilizeProgress,
-                       boolean tooFarToCapture) {
-        this(phase, title, detail, liveFace, detectedFace, scanned, scannedCount,
-            moves, moveIndex, stabilizeProgress, tooFarToCapture, null, null);
-    }
-
-    public CubeUiState(Phase phase, String title, String detail, FaceSample liveFace,
-                       DetectedFace detectedFace, Set<CubeColor> scanned, int scannedCount,
-                       List<String> moves, int moveIndex, float stabilizeProgress,
-                       boolean tooFarToCapture, CubeColor inferred) {
-        this(phase, title, detail, liveFace, detectedFace, scanned, scannedCount,
-            moves, moveIndex, stabilizeProgress, tooFarToCapture, inferred, null);
-    }
-
-    public CubeUiState(Phase phase, String title, String detail, FaceSample liveFace,
-                       DetectedFace detectedFace, Set<CubeColor> scanned, int scannedCount,
-                       List<String> moves, int moveIndex, float stabilizeProgress,
-                       boolean tooFarToCapture, CubeColor inferred, String cubeState) {
-        this.scannedCount = scannedCount;
-        this.phase = phase;
-        this.title = title;
-        this.detail = detail;
-        this.liveFace = liveFace;
-        this.detectedFace = detectedFace;
-        this.scanned = scanned == null || scanned.isEmpty()
-            ? Collections.emptySet() : EnumSet.copyOf(scanned);
-        this.moves = moves == null ? Collections.emptyList() : moves;
-        this.moveIndex = moveIndex;
-        this.stabilizeProgress = stabilizeProgress;
-        this.tooFarToCapture = tooFarToCapture;
-        this.inferred = inferred;
-        this.cubeState = cubeState;
+    private CubeUiState(Builder b) {
+        phase = b.phase;
+        title = b.title;
+        detail = b.detail;
+        hint = b.hint;
+        detectedFace = b.detectedFace;
+        liveFace = b.liveFace;
+        stabilizeProgress = b.stabilizeProgress;
+        tooFarToCapture = b.tooFar;
+        scanned = b.scanned == null || b.scanned.isEmpty()
+            ? Collections.emptySet() : EnumSet.copyOf(b.scanned);
+        scannedCount = b.scannedCount;
+        preview = b.preview == null ? Collections.emptyMap() : b.preview;
+        inferred = b.inferred;
+        cubeState = b.cubeState;
+        moves = b.moves == null ? Collections.emptyList() : b.moves;
+        moveIndex = b.moveIndex;
+        busy = b.busy;
+        targetInView = b.targetInView;
     }
 
     public String currentMove() {
         return moveIndex >= 0 && moveIndex < moves.size() ? moves.get(moveIndex) : "";
+    }
+
+    public static Builder builder(Phase phase) { return new Builder(phase); }
+
+    public static final class Builder {
+        private final Phase phase;
+        private String title = "", detail = "", hint;
+        private DetectedFace detectedFace;
+        private FaceSample liveFace;
+        private float stabilizeProgress;
+        private boolean tooFar, busy, targetInView;
+        private Set<CubeColor> scanned;
+        private int scannedCount;
+        private Map<Character, int[]> preview;
+        private CubeColor inferred;
+        private String cubeState;
+        private List<String> moves;
+        private int moveIndex = -1;
+
+        private Builder(Phase phase) { this.phase = phase; }
+
+        public Builder text(String title, String detail) {
+            this.title = title == null ? "" : title;
+            this.detail = detail == null ? "" : detail;
+            return this;
+        }
+        public Builder hint(String hint) { this.hint = hint; return this; }
+        public Builder detection(DetectedFace face, FaceSample live) {
+            detectedFace = face;
+            liveFace = live;
+            return this;
+        }
+        public Builder progress(float progress, boolean tooFar) {
+            stabilizeProgress = progress;
+            this.tooFar = tooFar;
+            return this;
+        }
+        public Builder scan(Set<CubeColor> scanned, int count, Map<Character, int[]> preview) {
+            this.scanned = scanned;
+            scannedCount = count;
+            this.preview = preview;
+            return this;
+        }
+        public Builder cube(String state, CubeColor inferred) {
+            cubeState = state;
+            this.inferred = inferred;
+            return this;
+        }
+        public Builder moves(List<String> moves, int index, boolean targetInView) {
+            this.moves = moves;
+            moveIndex = index;
+            this.targetInView = targetInView;
+            return this;
+        }
+        public Builder busy(boolean busy) { this.busy = busy; return this; }
+        public CubeUiState build() { return new CubeUiState(this); }
     }
 }

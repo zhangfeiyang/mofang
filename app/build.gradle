@@ -10,11 +10,13 @@ android {
         applicationId 'com.mofang.cubear'
         minSdk 26
         targetSdk 35
-        versionCode 10
-        versionName '1.2.7-assemble'
+        versionCode 11
+        versionName '2.0.0'
 
         ndk {
             abiFilters 'arm64-v8a'
+            // `-Pemulator` adds the x86_64 libraries so the app also runs on an x86 emulator.
+            if (project.hasProperty('emulator')) abiFilters 'x86_64'
         }
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -44,7 +46,6 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"
     implementation "androidx.camera:camera-view:${camerax_version}"
     implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'org.opencv:opencv:4.14.0'
     implementation 'com.microsoft.onnxruntime:onnxruntime-android:1.20.0'
 
 

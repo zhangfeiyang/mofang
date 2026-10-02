@@ -20,33 +20,6 @@ public final class CubeMoves {
         return offset < 0 ? "" : state.substring(offset, offset + 9);
     }
 
-    /** Stickers that must be readable and agree before a face counts as recognised. */
-    private static final int MIN_MATCHING_STICKERS = 7;
-
-    /**
-     * Whether an observed face is the given face at some camera roll.
-     *
-     * <p>Patches the sampler could not read are skipped rather than counted as mismatches. Demanding
-     * all nine meant a single finger or highlight stalled the walkthrough on an otherwise correct
-     * face, which is the difference between guidance that advances and guidance that appears stuck.
-     */
-    public static boolean faceMatchesAnyRotation(String canonicalFace, FaceSample observed) {
-        if (canonicalFace == null || canonicalFace.length() != 9 || observed == null) return false;
-        FaceSample rotated = observed;
-        for (int turn = 0; turn < 4; turn++) {
-            int agreed = 0;
-            boolean conflict = false;
-            for (int i = 0; i < 9; i++) {
-                if (rotated.stickers[i] == CubeColor.UNKNOWN) continue;
-                if (rotated.stickers[i].face == canonicalFace.charAt(i)) agreed++;
-                else { conflict = true; break; }
-            }
-            if (!conflict && agreed >= MIN_MATCHING_STICKERS) return true;
-            rotated = rotated.rotateClockwise();
-        }
-        return false;
-    }
-
     private static String clockwise(String state, char face) {
         Vec axis = normalForFace(face);
         if (axis == null) return state;

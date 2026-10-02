@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Cube AR</string>
+    <string name="phase_scan">扫描</string>
+    <string name="phase_ready">就绪</string>
+    <string name="phase_guide">还原</string>
+    <string name="phase_done">完成</string>
+    <string name="phase_error">出错</string>
+    <string name="cd_torch">补光灯</string>
+    <string name="cd_voice">语音播报</string>
+    <string name="cd_help">使用帮助</string>
+    <string name="cd_restart">重新扫描</string>
+    <string name="cd_cube_net">已扫描的六个面</string>
+    <string name="cd_guide_cube">当前步骤的三维动画</string>
+    <string name="action_prev">上一步</string>
+    <string name="action_next">下一步</string>
+    <string name="action_start">开始还原</string>
+    <string name="action_rescan">重新扫描</string>
+    <string name="action_again">再来一次</string>
+    <string name="action_got_it">知道了</string>
+    <string name="action_grant">授权相机</string>
+    <string name="tip_scan_1">一次只对准一个面，整个面都露出来</string>
+    <string name="tip_scan_2">保持 20–30 厘米，光线均匀</string>
+    <string name="tip_scan_3">任意顺序；扫到 5 个面即可推算</string>
+    <string name="help_title">怎么用</string>
+    <string name="help_body">1  扫描：把魔方的一个面正对镜头，网格变绿、圆环走满就采好了。依次露出其余各面，顺序随意；第六面通常能自动推算。\n\n2  核对：识别完成后会展示整个魔方的展开图，颜色对上了就点“开始还原”。\n\n3  还原：按右上角动画拧动对应颜色中心的那一面。镜头看到动作完成会自动进入下一步，也可以随时点“下一步”。\n\n转动记号：R 表示红色中心面顺时针转 90°（正对该面看），R′ 是逆时针，R2 是转 180°。\n\n小技巧：别用手指挡住色块；光线暗时点右上角的补光灯。</string>
 </resources>

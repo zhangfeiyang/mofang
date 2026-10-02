@@ -399,18 +399,18 @@ public class CubeCoreTest {
         CubeColor[] stickers = new CubeColor[9];
         java.util.Arrays.fill(stickers, CubeColor.WHITE);
         stickers[3] = CubeColor.UNKNOWN;
-        assertTrue("one unreadable patch must not stall the walkthrough",
-            CubeMoves.faceMatchesAnyRotation(face, new FaceSample(stickers, 1f)));
+        assertEquals("one unreadable patch must not stall the walkthrough",
+            0b1111, MoveTracker.matchMask(face, new FaceSample(stickers, 1f)));
 
         stickers[3] = CubeColor.RED;
-        assertFalse("a genuinely different sticker must still fail",
-            CubeMoves.faceMatchesAnyRotation(face, new FaceSample(stickers, 1f)));
+        assertEquals("a genuinely different sticker must still fail",
+            0, MoveTracker.matchMask(face, new FaceSample(stickers, 1f)));
 
         CubeColor[] tooFew = new CubeColor[9];
         java.util.Arrays.fill(tooFew, CubeColor.UNKNOWN);
         tooFew[0] = CubeColor.WHITE;
-        assertFalse("a mostly unreadable face proves nothing",
-            CubeMoves.faceMatchesAnyRotation(face, new FaceSample(tooFew, 1f)));
+        assertEquals("a mostly unreadable face proves nothing",
+            0, MoveTracker.matchMask(face, new FaceSample(tooFew, 1f)));
     }
 
     @Test public void minSideFractionMeasuresTheShortestEdgeAgainstTheShortFrameEdge() {
@@ -649,26 +649,35 @@ public class CubeCoreTest {
 
     @Test public void cornerSmootherAveragesSmallMotionAndSnapsOnLargeMotion() {
         CornerSmoother smoother = new CornerSmoother();
-        org.opencv.core.Point[] first = quad(0, 0, 100);
-        org.opencv.core.Point[] nudged = quad(4, 4, 100);
-        assertEquals(0.0, smoother.update(first)[0].x, 1e-6);
+        double[] first = quad(0, 0, 100);
+        double[] nudged = quad(4, 4, 100);
+        assertEquals(0.0, smoother.update(first)[0], 1e-6);
 
-        org.opencv.core.Point[] blended = smoother.update(nudged);
+        double[] blended = smoother.update(nudged);
         assertTrue("a small nudge is averaged, not followed exactly",
-            blended[0].x > 0.0 && blended[0].x < 4.0);
+            blended[0] > 0.0 && blended[0] < 4.0);
 
         // A turn of the cube moves corners far; tracking must snap rather than lag behind.
-        org.opencv.core.Point[] jumped = quad(90, 90, 100);
-        assertEquals(90.0, smoother.update(jumped)[0].x, 1e-6);
+        double[] jumped = quad(90, 90, 100);
+        assertEquals(90.0, smoother.update(jumped)[0], 1e-6);
 
         smoother.reset();
-        assertEquals(0.0, smoother.update(first)[0].x, 1e-6);
+        assertEquals(0.0, smoother.update(first)[0], 1e-6);
         assertNull(smoother.update(null));
     }
 
-    private static org.opencv.core.Point[] quad(double x, double y, double size) {
-        return new org.opencv.core.Point[]{
-            new org.opencv.core.Point(x, y), new org.opencv.core.Point(x + size, y),
-            new org.opencv.core.Point(x + size, y + size), new org.opencv.core.Point(x, y + size)};
+    @Test public void cornerSmootherMatchesARotatedCornerOrder() {
+        CornerSmoother smoother = new CornerSmoother();
+        smoother.update(quad(0, 0, 100));
+        // The same square, listed from its second corner: must not be read as a jump.
+        double[] q = quad(2, 2, 100);
+        double[] rolled = {q[2], q[3], q[4], q[5], q[6], q[7], q[0], q[1]};
+        double[] out = smoother.update(rolled);
+        assertTrue(out[0] > 0.0 && out[0] < 2.0);
+        assertTrue(out[1] > 0.0 && out[1] < 2.0);
+    }
+
+    private static double[] quad(double x, double y, double size) {
+        return new double[]{x, y, x + size, y, x + size, y + size, x, y + size};
     }
 }

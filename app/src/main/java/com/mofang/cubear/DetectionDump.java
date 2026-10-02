@@ -13,13 +13,7 @@ import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
+import android.graphics.Matrix;
 
 /**
  * Session diagnostics for a low-recall investigation.
@@ -106,24 +100,25 @@ public final class DetectionDump {
     public int framesSeen() { return seq; }
     public int imagesWritten() { return imagesWritten; }
 
-    public void recordCnn(Mat rgba, CubeFaceModel.DebugResult cnn, DetectedFace face,
-                          String extraReject) {
+    public void recordCnn(byte[] rgba, int width, int height, CubeFaceModel.DebugResult cnn,
+                          DetectedFace face, String extraReject) {
         String reject = extraReject != null ? extraReject
             : (cnn == null ? "no_model" : cnn.reject);
         boolean hit = face != null && reject == null;
-        Point[] corners = face != null ? cornersOf(face) : (cnn == null ? null : cnn.corners);
+        double[] corners = face != null ? cornersOf(face) : (cnn == null ? null : cnn.corners);
         float presence = cnn == null ? -1f : cnn.presence;
-        record(rgba, "cnn", presence, hit, reject, corners, face, cnn);
+        record(rgba, width, height, "cnn", presence, hit, reject, corners, face, cnn);
     }
 
-    public void recordGeometry(Mat rgba, DetectedFace face, int declines) {
-        Point[] corners = face == null ? null : cornersOf(face);
-        String reject = face == null ? "geometry_miss" : null;
-        record(rgba, "geometry", face == null ? -1f : face.detectionScore,
+    /** A detection from the network-free anchor search, after the network declined. */
+    public void recordAnchors(byte[] rgba, int width, int height, DetectedFace face, int declines) {
+        double[] corners = face == null ? null : cornersOf(face);
+        String reject = face == null ? "anchors_miss" : null;
+        record(rgba, width, height, "anchors", face == null ? -1f : face.detectionScore,
             face != null, reject, corners, face, null);
         if (face != null) {
             synchronized (lock) { geometryHits++; }
-            log("geometry hit after " + declines + " cnn declines");
+            log("anchor search hit after " + declines + " cnn declines");
         }
     }
 
@@ -141,8 +136,9 @@ public final class DetectionDump {
         log("event " + event + (face == null ? "" : " side=" + fmt(face.minSideFraction())));
     }
 
-    private void record(Mat rgba, String source, float presence, boolean hit, String reject,
-                        Point[] corners, DetectedFace face, CubeFaceModel.DebugResult cnn) {
+    private void record(byte[] rgba, int width, int height, String source, float presence,
+                        boolean hit, String reject, double[] corners, DetectedFace face,
+                        CubeFaceModel.DebugResult cnn) {
         int n;
         synchronized (lock) {
             n = ++seq;
@@ -156,10 +152,11 @@ public final class DetectionDump {
         lastKnown = face == null ? -1 : countKnown(face.sample);
 
         boolean dumpImage = shouldDump(n, source, presence, reject, hit, face);
-        String imageName = dumpImage ? saveImages(n, rgba, corners, hit, presence, reject, source)
-            : null;
+        String imageName = dumpImage
+            ? saveImages(n, rgba, width, height, corners, hit, presence, reject, source) : null;
 
-        String json = toJson(n, rgba, source, presence, hit, reject, corners, face, cnn, imageName);
+        String json = toJson(n, width, height, source, presence, hit, reject, corners, face, cnn,
+            imageName);
         append(new File(dir, "session.jsonl"), json + "\n");
         log(summaryLine(n, source, presence, reject, face, imageName));
         if (n % 30 == 0) writeSummary();
@@ -172,30 +169,36 @@ public final class DetectionDump {
         if (n % IMAGE_EVERY == 0) return true;
         if (!hit && presence >= 0.40f && presence < PRESENCE_THRESHOLD) return true;
         if (reject != null && reject.startsWith("implausible")) return true;
-        if ("geometry".equals(source) && hit) return true;
+        if ("anchors".equals(source) && hit) return true;
         if (hit && face != null && (face.sample.unreliableCount() >= 2 || countKnown(face.sample) < 7)) {
             return true;
         }
         return false;
     }
 
-    private String saveImages(int n, Mat rgba, Point[] corners, boolean hit, float presence,
-                              String reject, String source) {
+    private String saveImages(int n, byte[] rgba, int width, int height, double[] corners,
+                              boolean hit, float presence, String reject, String source) {
         String stem = String.format(Locale.US, "f%05d_%s", n, hit ? "hit" : "miss");
         try {
-            Bitmap overlay = overlayBitmap(rgba, corners, hit, presence, reject, source);
+            Bitmap full = rgbaToBitmap(rgba, width, height);
+            // The untouched frame, so a dump can be replayed through the pipeline offline.
+            writeJpeg(new File(framesDir, stem + "_raw.jpg"), full, 90);
+            Bitmap overlay = overlayBitmap(full, corners, hit, presence, reject, source);
             writeJpeg(new File(framesDir, stem + ".jpg"), overlay, 72);
             overlay.recycle();
-            Bitmap input = networkInputBitmap(rgba);
+            Bitmap input = rgbaToBitmap(new AreaResizer(width, height, CubeFaceModel.INPUT_WIDTH,
+                CubeFaceModel.INPUT_HEIGHT).resizeToRgba(rgba),
+                CubeFaceModel.INPUT_WIDTH, CubeFaceModel.INPUT_HEIGHT);
             writeJpeg(new File(framesDir, stem + "_in.jpg"), input, 85);
             input.recycle();
-            if (hit && corners != null && corners.length == 4) {
-                Bitmap warp = warpedFace(rgba, corners);
+            if (hit && corners != null && corners.length == 8) {
+                Bitmap warp = warpedFace(full, corners);
                 if (warp != null) {
                     writeJpeg(new File(framesDir, stem + "_warp.jpg"), warp, 80);
                     warp.recycle();
                 }
             }
+            full.recycle();
             synchronized (lock) { imagesWritten++; }
             return "frames/" + stem + ".jpg";
         } catch (Throwable error) {
@@ -204,29 +207,28 @@ public final class DetectionDump {
         }
     }
 
-    private static Bitmap overlayBitmap(Mat rgba, Point[] corners, boolean hit, float presence,
+    private static Bitmap overlayBitmap(Bitmap full, double[] corners, boolean hit, float presence,
                                         String reject, String source) {
-        int srcW = rgba.cols(), srcH = rgba.rows();
+        int srcW = full.getWidth(), srcH = full.getHeight();
         int dstW = Math.min(360, srcW);
         int dstH = Math.max(1, srcH * dstW / srcW);
-        Bitmap full = rgbaToBitmap(rgba);
         Bitmap scaled = Bitmap.createScaledBitmap(full, dstW, dstH, true);
-        if (scaled != full) full.recycle();
+        if (scaled == full) scaled = full.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(scaled);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        if (corners != null && corners.length == 4) {
+        if (corners != null && corners.length == 8) {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(3f);
             paint.setColor(hit ? Color.rgb(80, 220, 120) : Color.rgb(255, 80, 70));
             float sx = dstW / (float) srcW, sy = dstH / (float) srcH;
             for (int i = 0; i < 4; i++) {
-                Point a = corners[i], b = corners[(i + 1) % 4];
-                canvas.drawLine((float) a.x * sx, (float) a.y * sy,
-                    (float) b.x * sx, (float) b.y * sy, paint);
+                int j = (i + 1) % 4;
+                canvas.drawLine((float) corners[i * 2] * sx, (float) corners[i * 2 + 1] * sy,
+                    (float) corners[j * 2] * sx, (float) corners[j * 2 + 1] * sy, paint);
             }
             paint.setStyle(Paint.Style.FILL);
-            for (Point corner : corners) {
-                canvas.drawCircle((float) corner.x * sx, (float) corner.y * sy, 5f, paint);
+            for (int i = 0; i < 4; i++) {
+                canvas.drawCircle((float) corners[i * 2] * sx, (float) corners[i * 2 + 1] * sy, 5f, paint);
             }
         }
         paint.setStyle(Paint.Style.FILL);
@@ -240,44 +242,21 @@ public final class DetectionDump {
         return scaled;
     }
 
-    private static Bitmap networkInputBitmap(Mat rgba) {
-        Mat resized = new Mat();
-        try {
-            Imgproc.resize(rgba, resized,
-                new Size(CubeFaceModel.INPUT_WIDTH, CubeFaceModel.INPUT_HEIGHT),
-                0, 0, Imgproc.INTER_AREA);
-            return rgbaToBitmap(resized);
-        } finally {
-            resized.release();
-        }
+    /** The face rectified onto a 300 px square, as the sampler sees it. */
+    private static Bitmap warpedFace(Bitmap full, double[] corners) {
+        float[] src = new float[8];
+        for (int i = 0; i < 8; i++) src[i] = (float) corners[i];
+        float[] dst = {0, 0, 300, 0, 300, 300, 0, 300};
+        Matrix matrix = new Matrix();
+        if (!matrix.setPolyToPoly(src, 0, dst, 0, 4)) return null;
+        Bitmap warped = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+        new Canvas(warped).drawBitmap(full, matrix, new Paint(Paint.FILTER_BITMAP_FLAG));
+        return warped;
     }
 
-    private static Bitmap warpedFace(Mat rgba, Point[] corners) {
-        MatOfPoint2f source = new MatOfPoint2f(corners);
-        MatOfPoint2f target = new MatOfPoint2f(
-            new Point(0, 0), new Point(300, 0), new Point(300, 300), new Point(0, 300));
-        Mat transform = Imgproc.getPerspectiveTransform(source, target);
-        Mat warped = new Mat();
-        try {
-            Imgproc.warpPerspective(rgba, warped, transform, new Size(300, 300),
-                Imgproc.INTER_LINEAR, Core.BORDER_REPLICATE, Scalar.all(0));
-            return rgbaToBitmap(warped);
-        } catch (Throwable ignored) {
-            return null;
-        } finally {
-            source.release();
-            target.release();
-            transform.release();
-            warped.release();
-        }
-    }
-
-    private static Bitmap rgbaToBitmap(Mat rgba) {
-        int width = rgba.cols(), height = rgba.rows();
-        byte[] pixels = new byte[width * height * 4];
-        rgba.get(0, 0, pixels);
+    private static Bitmap rgbaToBitmap(byte[] rgba, int width, int height) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(pixels));
+        bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(rgba, 0, width * height * 4));
         return bitmap;
     }
 
@@ -287,14 +266,14 @@ public final class DetectionDump {
         }
     }
 
-    private String toJson(int n, Mat rgba, String source, float presence, boolean hit,
-                          String reject, Point[] corners, DetectedFace face,
+    private String toJson(int n, int width, int height, String source, float presence, boolean hit,
+                          String reject, double[] corners, DetectedFace face,
                           CubeFaceModel.DebugResult cnn, String image) {
         StringBuilder out = new StringBuilder(420);
         out.append("{\"t\":").append(System.currentTimeMillis())
             .append(",\"seq\":").append(n)
-            .append(",\"w\":").append(rgba.cols())
-            .append(",\"h\":").append(rgba.rows())
+            .append(",\"w\":").append(width)
+            .append(",\"h\":").append(height)
             .append(",\"src\":\"").append(source).append('"')
             .append(",\"p\":").append(fmt(presence))
             .append(",\"thr\":").append(fmt(PRESENCE_THRESHOLD))
@@ -309,12 +288,14 @@ public final class DetectionDump {
             out.append(",\"quad\":[");
             for (int i = 0; i < 4; i++) {
                 if (i > 0) out.append(',');
-                out.append('[').append(fmt((float) corners[i].x)).append(',')
-                    .append(fmt((float) corners[i].y)).append(']');
+                out.append('[').append(fmt((float) corners[i * 2])).append(',')
+                    .append(fmt((float) corners[i * 2 + 1])).append(']');
             }
             out.append(']');
         }
         if (face != null) {
+            out.append(",\"refined\":").append(face.refined)
+                .append(",\"disputed\":").append(face.disputed);
             out.append(",\"side\":").append(fmt(face.minSideFraction()))
                 .append(",\"known\":").append(countKnown(face.sample))
                 .append(",\"unreliable\":").append(face.sample.unreliableCount())
@@ -360,11 +341,9 @@ public final class DetectionDump {
         if (active == this) active = null;
     }
 
-    private static Point[] cornersOf(DetectedFace face) {
-        Point[] points = new Point[4];
-        for (int i = 0; i < 4; i++) {
-            points[i] = new Point(face.corners[i * 2], face.corners[i * 2 + 1]);
-        }
+    private static double[] cornersOf(DetectedFace face) {
+        double[] points = new double[8];
+        for (int i = 0; i < 8; i++) points[i] = face.corners[i];
         return points;
     }
 
