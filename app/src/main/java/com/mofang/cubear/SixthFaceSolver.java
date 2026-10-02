@@ -61,6 +61,15 @@ public final class SixthFaceSolver {
 
     /** @param faces exactly five observations, one per scanned face, carrying Lab readings */
     public static Result solve(FaceSample[] faces) {
+        return solve(faces, Long.MAX_VALUE);
+    }
+
+    /**
+     * As {@link #solve(FaceSample[])}, giving up at {@code deadlineNanos} ({@link System#nanoTime()}).
+     * Inconsistent readings make the completion search wander to its node budget on every naming;
+     * the caller retries as looks accumulate, so a bounded refusal costs little.
+     */
+    public static Result solve(FaceSample[] faces, long deadlineNanos) {
         if (faces == null || faces.length != 5) return null;
         float[][] prototypes = new float[5][];
         for (int i = 0; i < 5; i++) {
@@ -69,6 +78,7 @@ public final class SixthFaceSolver {
         }
 
         for (int naming = 0; naming <= NAMING_RETRIES; naming++) {
+            if (System.nanoTime() > deadlineNanos) return null;
             CubeColor[] names = ColorAssignment.namePrototypes(prototypes, naming);
             if (names == null) break;
             CubeColor missingColor = leftover(names);
@@ -87,7 +97,7 @@ public final class SixthFaceSolver {
                     nameStickers(faces, prototypes, names, missingColor, sixth, untrust);
                 Set<String> found = new LinkedHashSet<>();
                 searchRolls(named, names, new FaceSample[6], 0, missingColor.face, found,
-                    new int[]{NODE_BUDGET});
+                    new long[]{NODE_BUDGET, deadlineNanos});
                 // Five faces do not always pin the sixth down — leftover D-layer edges can
                 // share a visible colour, and two fillings then both pass the solver. Guessing
                 // would restore the wrong cube, so an ambiguous primary naming stops here.
@@ -296,7 +306,8 @@ public final class SixthFaceSolver {
 
     /** Tries every combination of the five faces' unknown rolls; each face's centre is fixed. */
     private static void searchRolls(FaceSample[] named, CubeColor[] names, FaceSample[] slots,
-                                    int index, char missing, Set<String> found, int[] budget) {
+                                    int index, char missing, Set<String> found, long[] budget) {
+        if (budget[0] <= 0) return;
         if (index == named.length) {
             char[] state = new char[54];
             for (int face = 0; face < FACES.length(); face++) {
@@ -340,6 +351,13 @@ public final class SixthFaceSolver {
      */
     private static final int NODE_BUDGET = 60_000;
 
+    /** Takes one node from {@code budget} = {nodes, deadline}; false once either is used up. */
+    private static boolean spend(long[] budget) {
+        if (budget[0] <= 0) return false;
+        if ((--budget[0] & 1023) == 0 && System.nanoTime() > budget[1]) budget[0] = 0;
+        return true;
+    }
+
     /**
      * Fills every '?' facelet or rejects the arrangement.
      *
@@ -353,9 +371,8 @@ public final class SixthFaceSolver {
      * legal filling is recorded: the sixth face is not always unique, and returning the first
      * one would silently restore the wrong cube.
      */
-    private static void fillMissing(char[] state, Set<String> found, int[] budget) {
-        if (budget[0] <= 0) return;
-        budget[0]--;
+    private static void fillMissing(char[] state, Set<String> found, long[] budget) {
+        if (!spend(budget)) return;
         boolean[] edgeUsed = new boolean[12];
         boolean[] cornerUsed = new boolean[8];
         List<Integer> openEdges = new ArrayList<>();
@@ -400,9 +417,8 @@ public final class SixthFaceSolver {
     /** Depth-first placement of the unused edges on open positions; corners follow. */
     private static void placeEdges(char[] state, List<Integer> openEdges, int edgeIndex,
                                    boolean[] edgeUsed, List<Integer> openCorners,
-                                   boolean[] cornerUsed, Set<String> found, int[] budget) {
-        if (budget[0] <= 0) return;
-        budget[0]--;
+                                   boolean[] cornerUsed, Set<String> found, long[] budget) {
+        if (!spend(budget)) return;
         if (edgeIndex == openEdges.size()) {
             placeCorners(state, openCorners, 0, cornerUsed, found, budget);
             return;
@@ -428,14 +444,16 @@ public final class SixthFaceSolver {
     }
 
     private static void placeCorners(char[] state, List<Integer> openCorners, int index,
-                                     boolean[] cornerUsed, Set<String> found, int[] budget) {
-        if (budget[0] <= 0) return;
-        budget[0]--;
+                                     boolean[] cornerUsed, Set<String> found, long[] budget) {
+        if (!spend(budget)) return;
         if (index == openCorners.size()) {
             String candidate = new String(state);
             // The cheap structural check prunes before the solver's own tables have to run.
             if (CubeRules.piecesArePlausible(candidate) && Tools.verify(candidate) == 0) {
                 found.add(candidate);
+                // Two legal completions already mean "ambiguous"; the rest of the search could
+                // only confirm that, and on a poor naming it is most of the work.
+                if (found.size() > 1) budget[0] = 0;
             }
             return;
         }
@@ -481,9 +499,8 @@ public final class SixthFaceSolver {
     /** Places the chosen piece's remaining colours on the position's open facelets, every order. */
     private static void placeRest(char[] state, int[] unknowns, char[] rest, int restIndex,
                                   List<Integer> openCorners, int cornerIndex,
-                                  boolean[] cornerUsed, Set<String> found, int[] budget) {
-        if (budget[0] <= 0) return;
-        budget[0]--;
+                                  boolean[] cornerUsed, Set<String> found, long[] budget) {
+        if (!spend(budget)) return;
         if (restIndex == rest.length) {
             placeCorners(state, openCorners, cornerIndex + 1, cornerUsed, found, budget);
             return;

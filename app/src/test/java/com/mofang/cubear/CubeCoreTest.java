@@ -193,7 +193,9 @@ public class CubeCoreTest {
             }
             FaceSample sample = new FaceSample(provisional, lab, 1f);
             for (int turn = 0; turn < face % 4; turn++) sample = sample.rotateClockwise();
-            assertTrue("face " + face + " should be new", assembler.put(sample));
+            // One look is not yet a face; the second confirms it.
+            assertFalse("a single look is unconfirmed", assembler.put(sample));
+            assertTrue("face " + face + " should be new", assembler.put(sample.rotateClockwise()));
         }
         assertEquals(6, assembler.size());
 
@@ -458,6 +460,7 @@ public class CubeCoreTest {
         for (char letter : "URFDLB".toCharArray()) {
             if (letter == 'D') continue;
             assembler.put(canonicalFace(state, letter, face % 4));
+            assembler.put(canonicalFace(state, letter, (face + 2) % 4));
             face++;
         }
         assertEquals(5, assembler.size());
