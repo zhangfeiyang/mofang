@@ -39,6 +39,22 @@ public class GuideCubeTest {
         assertEquals(CubeColor.YELLOW.argb, ufr[4]);
     }
 
+    /**
+     * Three sides of nine cubies face the viewer, each a plastic shell plus a sticker, and a
+     * turning layer briefly shows more; all of it must fit the fixed quad buffers.
+     */
+    @Test public void everyVisibleFaceFitsTheQuadBuffers() {
+        GuideCube cube = new GuideCube();
+        String scrambled = SOLVED;
+        for (String move : "R U F' L2 D B'".split(" ")) scrambled = CubeMoves.apply(scrambled, move);
+        for (char face : "URFDLB".toCharArray()) {
+            for (float twist = 0f; twist > -3.2f; twist -= 0.4f) {
+                int quads = cube.collectFaces(scrambled, face, twist);
+                assertTrue(face + " twist " + twist + ": " + quads, quads >= 36 && quads <= 160);
+            }
+        }
+    }
+
     @Test public void orientPutsEachFaceOnPositiveZ() {
         assertFront('F', 0, 0, 1);
         assertFront('B', 0, 0, -1);

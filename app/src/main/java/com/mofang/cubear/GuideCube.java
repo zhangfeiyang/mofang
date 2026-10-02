@@ -16,7 +16,7 @@ import android.graphics.Typeface;
  */
 final class GuideCube {
     private static final long CYCLE_MS = 2000;
-    private static final float CUBIE = 0.92f;
+    private static final float CUBIE = 0.96f;
     private static final float STICKER = 0.78f;
     private static final int PLASTIC = 0xFF141414;
     private static final int PLASTIC_TURN = 0xFF2A2A2A;
@@ -32,6 +32,7 @@ final class GuideCube {
     private final float[] depth = new float[160];
     private final int[] order = new int[160];
     private final boolean[] turning = new boolean[160];
+    private final boolean[] isPlastic = new boolean[160];
     private final float[] tmp = new float[3];
     private final float[] tmp2 = new float[3];
     private final float[] scr = new float[2];
@@ -49,8 +50,10 @@ final class GuideCube {
         if (move == null || move.isEmpty()) move = "R";
 
         float cx = box.centerX();
-        float cy = box.centerY() - box.height() * 0.08f;
-        float scale = box.width() * 0.28f;
+        float cy = box.centerY() - box.height() * 0.09f;
+        // At this yaw and pitch the cube's silhouette spans about 4.0 x 4.4 units; this keeps it
+        // inside the box with the caption chip below it.
+        float scale = Math.min(box.width(), box.height()) * 0.165f;
 
         char face = move.charAt(0);
         int turns = move.endsWith("2") ? 2 : move.endsWith("'") ? 3 : 1;
@@ -68,7 +71,7 @@ final class GuideCube {
             projectQuad(corners[id], cx, cy, scale);
             fill.setColor(colors[id]);
             canvas.drawPath(path, fill);
-            if (colors[id] != PLASTIC && colors[id] != PLASTIC_TURN) {
+            if (!isPlastic[id]) {
                 stroke.setColor(turning[id] ? 0xCC74F5C5 : 0x33000000);
                 stroke.setStrokeWidth(box.width() * (turning[id] ? 0.012f : 0.008f));
                 canvas.drawPath(path, stroke);
@@ -89,7 +92,7 @@ final class GuideCube {
         return target * ease;
     }
 
-    private int collectFaces(String state, char moveFace, float twist) {
+    int collectFaces(String state, char moveFace, float twist) {
         cameraFace = moveFace;
         int n = 0;
         float[] axis = axisFor(moveFace);
@@ -98,7 +101,8 @@ final class GuideCube {
                 for (int z = -1; z <= 1; z++) {
                     if (x == 0 && y == 0 && z == 0) continue;
                     boolean layer = onLayer(x, y, z, moveFace);
-                    n += emitCubie(n, state, x, y, z, layer ? twist : 0f, layer ? axis : null);
+                    // emitCubie returns the next free slot, not a count.
+                    n = emitCubie(n, state, x, y, z, layer ? twist : 0f, layer ? axis : null);
                 }
             }
         }
@@ -126,8 +130,15 @@ final class GuideCube {
 
     private int emitFace(int n, int cx, int cy, int cz, int nx, int ny, int nz, int color,
                          float twist, float[] axis) {
+        // Faces turned away from the viewer are skipped: drawn first and painted over, they still
+        // showed through the gaps between cubies as stray coloured lines.
+        setCorner(normal, nx, ny, nz, twist, axis);
+        if (normal[2] <= 0.04f) return n;
         boolean plastic = color == 0;
-        int paint = plastic ? (axis != null ? PLASTIC_TURN : PLASTIC) : color;
+        int base = plastic ? (axis != null ? PLASTIC_TURN : PLASTIC) : color;
+        // Soft light from the upper left so the three visible sides read as a solid.
+        float light = normal[0] * -0.38f + normal[1] * 0.74f + normal[2] * 0.56f;
+        int paint = shade(base, 0.74f + 0.26f * Math.max(0f, light));
         float half = CUBIE * 0.5f;
         float sticker = (plastic ? CUBIE : STICKER) * 0.5f;
         float ox = nx * half, oy = ny * half, oz = nz * half;
@@ -142,10 +153,22 @@ final class GuideCube {
         setCorner(quad[3], cx + ox - ux + vx, cy + oy - uy + vy, cz + oz - uz + vz, twist, axis);
         float dz = 0;
         for (int i = 0; i < 4; i++) dz += quad[i][2];
-        depth[n] = dz / 4f;
+        // A sticker shares its plane with the plastic shell under it; without a bias rounding
+        // decides which is painted last and the shell blots out stickers.
+        depth[n] = dz / 4f + (plastic ? 0f : 0.01f);
         colors[n] = paint;
+        isPlastic[n] = plastic;
         turning[n] = axis != null && !plastic;
         return n + 1;
+    }
+
+    private final float[] normal = new float[3];
+
+    private static int shade(int argb, float k) {
+        int r = Math.min(255, Math.round(((argb >> 16) & 0xFF) * k));
+        int g = Math.min(255, Math.round(((argb >> 8) & 0xFF) * k));
+        int b = Math.min(255, Math.round((argb & 0xFF) * k));
+        return (argb & 0xFF000000) | (r << 16) | (g << 8) | b;
     }
 
     private void setCorner(float[] out, float x, float y, float z, float twist, float[] axis) {
