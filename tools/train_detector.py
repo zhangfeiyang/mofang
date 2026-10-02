@@ -254,7 +254,8 @@ def save_val_preview(model, dataset, device, path, count=12):
 
 
 def build_datasets(args):
-    train_sets, val_dataset = [], None
+    """Training mix plus validation sets keyed by name; real validation decides checkpoints."""
+    train_sets, val_sets = [], {}
     if args.data:
         usable = usable_indices(args.data)
         rng = np.random.default_rng(0)
@@ -262,7 +263,7 @@ def build_datasets(args):
         n_val = min(args.val, max(1, len(order) // 5))
         val_idx, train_idx = order[:n_val], order[n_val:]
         train_sets.append(SynthDataset(args.data, train_idx, True))
-        val_dataset = SynthDataset(args.data, val_idx, False)
+        val_sets['synth'] = SynthDataset(args.data, val_idx, False)
         print(f'synth {len(train_idx)} train / {len(val_idx)} val')
     if args.real:
         _, split, _ = load_packed(args.real)
@@ -270,13 +271,16 @@ def build_datasets(args):
                                      args.input_width, args.input_height)
         real_val = RealCubeDataset(args.real, split['val'], False,
                                    args.input_width, args.input_height)
-        train_sets.append(real_train)
-        val_dataset = real_val
-        print(f'real {len(real_train)} train / {len(real_val)} val')
+        # A hundred real frames next to tens of thousands of renders would be a rounding error
+        # in every batch; repeating them keeps the real domain a fixed share of what is seen.
+        repeat = max(1, args.real_repeat)
+        train_sets.extend([real_train] * repeat)
+        val_sets['real'] = real_val
+        print(f'real {len(real_train)} train (x{repeat}) / {len(real_val)} val')
     if not train_sets:
         raise SystemExit('provide --data and/or --real')
     train_dataset = train_sets[0] if len(train_sets) == 1 else torch.utils.data.ConcatDataset(train_sets)
-    return train_dataset, val_dataset
+    return train_dataset, val_sets
 
 
 def main():
@@ -292,6 +296,9 @@ def main():
     parser.add_argument('--workers', type=int, default=6)
     parser.add_argument('--input-width', type=int, default=INPUT_WIDTH)
     parser.add_argument('--input-height', type=int, default=INPUT_HEIGHT)
+    parser.add_argument('--real-repeat', type=int, default=1,
+                        help='times the real training set appears per epoch')
+    parser.add_argument('--init', default=None, help='checkpoint to start from')
     args = parser.parse_args()
     if not args.data and not args.real:
         parser.error('provide --data and/or --real')
@@ -301,8 +308,10 @@ def main():
     torch.manual_seed(0)
     np.random.seed(0)
 
-    train_dataset, val_dataset = build_datasets(args)
-    print(f'{len(train_dataset)} train / {len(val_dataset)} val on {device}')
+    train_dataset, val_sets = build_datasets(args)
+    print(f'{len(train_dataset)} train / ' +
+          ', '.join(f'{k} {len(v)}' for k, v in val_sets.items()) + f' val on {device}')
+    select = 'real' if 'real' in val_sets else 'synth'
 
     drop_last = len(train_dataset) >= args.batch * 2
     workers = args.workers if len(train_dataset) > 32 else 0
@@ -310,12 +319,18 @@ def main():
         train_dataset, batch_size=min(args.batch, len(train_dataset)), shuffle=True,
         num_workers=workers, pin_memory=device == 'cuda', drop_last=drop_last,
         persistent_workers=workers > 0)
-    val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=min(args.batch, len(val_dataset)), shuffle=False,
-        num_workers=min(2, workers), pin_memory=device == 'cuda',
-        persistent_workers=workers > 0)
+    val_loaders = {
+        name: torch.utils.data.DataLoader(
+            dataset, batch_size=min(args.batch, len(dataset)), shuffle=False,
+            num_workers=min(2, workers), pin_memory=device == 'cuda',
+            persistent_workers=workers > 0)
+        for name, dataset in val_sets.items()}
 
     model = CubeFaceNet(args.width).to(device)
+    if args.init:
+        state = torch.load(args.init, map_location='cpu', weights_only=False)['state']
+        model.load_state_dict(state)
+        print(f'initialised from {args.init}')
     params = sum(p.numel() for p in model.parameters())
     print(f'{params/1e6:.2f}M parameters')
 
@@ -359,22 +374,26 @@ def main():
             schedule.step()
             running += loss.item()
 
-        error, accuracy = evaluate(model, val_loader, device)
-        print(f'epoch {epoch+1}/{args.epochs} loss={running/len(train_loader):.4f} '
-              f'corner_err={error:.4f} presence_acc={accuracy:.4f}', flush=True)
+        scores = {name: evaluate(model, loader, device) for name, loader in val_loaders.items()}
+        report = ' '.join(f'{name}_err={err:.4f} {name}_acc={acc:.3f}'
+                          for name, (err, acc) in scores.items())
+        print(f'epoch {epoch+1}/{args.epochs} loss={running/len(train_loader):.4f} {report}',
+              flush=True)
+        error = scores[select][0]
         if error < best:
             best = error
             torch.save({'state': model.state_dict(), 'width': args.width,
                         'input_width': args.input_width, 'input_height': args.input_height},
                        os.path.join(args.out, 'cubeface.pt'))
-            save_val_preview(model, val_dataset, device,
+            save_val_preview(model, val_sets[select], device,
                              os.path.join(args.out, 'val_preview.jpg'))
 
     print(f'best mean corner error {best:.4f} of image width')
     metrics = {
         'best_corner_err': best,
+        'selected_on': select,
         'train_size': len(train_dataset),
-        'val_size': len(val_dataset),
+        'val_size': {name: len(dataset) for name, dataset in val_sets.items()},
         'width': args.width,
         'input_width': args.input_width,
         'input_height': args.input_height,

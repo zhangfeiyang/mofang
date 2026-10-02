@@ -167,11 +167,22 @@ class CubeRenderer:
     def background(self):
         rng = self.rng
         size = self.size
-        if BACKGROUNDS and rng.random() < 0.55:
-            src = cv2.imread(BACKGROUNDS[rng.integers(len(BACKGROUNDS))])
+        if BACKGROUNDS and rng.random() < BACKGROUND_SHARE:
+            src = _background_image(BACKGROUNDS[rng.integers(len(BACKGROUNDS))])
             if src is not None and src.shape[0] > 8 and src.shape[1] > 8:
-                src = cv2.resize(src, (size, self.height))
-                return cv2.GaussianBlur(src.astype(np.float32), (0, 0), rng.uniform(0.5, 3.0))
+                # A random window of a real scene, so 100 frames yield far more than 100 contexts.
+                zoom = rng.uniform(0.45, 1.0)
+                h, w = src.shape[:2]
+                ch = max(8, int(h * zoom))
+                cw = max(8, min(w, int(ch * size / self.height)))
+                y = int(rng.integers(0, h - ch + 1))
+                x = int(rng.integers(0, w - cw + 1))
+                src = src[y:y + ch, x:x + cw]
+                if rng.random() < 0.5:
+                    src = src[:, ::-1]
+                src = cv2.resize(np.ascontiguousarray(src), (size, self.height)).astype(np.float32)
+                src = src * rng.uniform(0.8, 1.2, 3) + rng.uniform(-15, 15)
+                return cv2.GaussianBlur(np.clip(src, 0, 255), (0, 0), rng.uniform(0.3, 2.0))
         base = rng.uniform(30, 210, 3)
         canvas = np.ones((self.height, size, 3), np.float32) * base
         for _ in range(int(rng.integers(2, 9))):
@@ -298,6 +309,18 @@ def order_corners(pts):
 
 
 BACKGROUNDS = []
+# Share of renders drawn over a real background when any were supplied.
+BACKGROUND_SHARE = 0.75
+_BACKGROUND_CACHE = {}
+
+
+def _background_image(path):
+    image = _BACKGROUND_CACHE.get(path)
+    if image is None:
+        image = cv2.imread(path)
+        if image is not None and len(_BACKGROUND_CACHE) < 512:
+            _BACKGROUND_CACHE[path] = image
+    return image
 
 
 def load_backgrounds(paths):

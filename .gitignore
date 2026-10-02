@@ -6,3 +6,7 @@ local.properties
 captures/
 __pycache__/
 *.pyc
+
+# Generated training data (regenerate with tools/synth_cube.py / tools/make_backgrounds.py)
+data/synth*/
+data/backgrounds/

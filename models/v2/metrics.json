@@ -1,0 +1,13 @@
+{
+  "best_corner_err": 0.06194141932896206,
+  "selected_on": "real",
+  "train_size": 63800,
+  "val_size": {
+    "synth": 3000,
+    "real": 21
+  },
+  "width": 1.5,
+  "input_width": 160,
+  "input_height": 288,
+  "epochs": 30
+}
