@@ -20,6 +20,9 @@ final class ScanPalette {
     private var names: [CubeColor]
     /// 尚无原型的颜色;集齐六色后为 nil。
     private(set) var missing: CubeColor?
+    /// Java 的 missingColor()。
+    var missingColor: CubeColor? { missing }
+
 
     private init(_ prototypes: [[Float]], _ names: [CubeColor], _ missing: CubeColor?) {
         self.prototypes = prototypes

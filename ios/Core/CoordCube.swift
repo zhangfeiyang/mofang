@@ -215,9 +215,6 @@ enum CoordCube {
 
         var depth = getPruning(PrunTable, N_SIZE) - 1
         var done = 0
-        #if CUBEAR_PRUN_DEBUG
-        var printedDepth = -2
-        #endif
 
         if depth == -1 {
             for i in 0..<(N_SIZE / 8 + 1) {
@@ -229,9 +226,6 @@ enum CoordCube {
         }
 
         while depth < SEARCH_DEPTH {
-            #if CUBEAR_PRUN_DEBUG
-            if depth != printedDepth { print("  prun depth \(depth)/\(SEARCH_DEPTH) done=\(done)"); printedDepth = depth }
-            #endif
             let mask = UInt32((depth + 1) * 0x11111111) ^ 0xffffffff
             for i in 0..<PrunTable.count {
                 var val = PrunTable[i] ^ mask
@@ -388,12 +382,6 @@ final class CoordCubeNode {
     }
 
     func setWithPrun(_ cc: CubieCube, _ depth: Int) -> Bool {
-        #if CUBEAR_SEARCH_DEBUG
-        Search.dbgSetWithPrunCalls += 1
-        if Search.dbgSetWithPrunCalls <= 40 {
-            print("  setWithPrun #\(Search.dbgSetWithPrunCalls) depth=\(depth) ca=\(cc.ca) ea=\(cc.ea)")
-        }
-        #endif
         twist = cc.getTwistSym()
         flip = cc.getFlipSym()
         tsym = twist & 7

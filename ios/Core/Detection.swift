@@ -17,8 +17,8 @@ final class DetectedFace {
     /// 这种帧会显示但绝不采集。
     let disputed: Bool
 
-    init(_ sample: FaceSample, _ corners: [Float], _ imageWidth: Int, _ imageHeight: Int,
-         _ detectionScore: Float) {
+    convenience init(_ sample: FaceSample, _ corners: [Float], _ imageWidth: Int, _ imageHeight: Int,
+                     _ detectionScore: Float) {
         self.init(sample, corners, imageWidth, imageHeight, detectionScore, false, false)
     }
 

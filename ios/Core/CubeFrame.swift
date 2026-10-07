@@ -29,9 +29,9 @@ struct CubeFrame: Equatable {
 
     /// face 朝镜头、其读数顺时针旋转 rotation 次后与 facelet 串布局吻合的 frame。
     static func seen(_ face: Character, _ rotation: Int) -> CubeFrame {
-        let front = CubeFrame.normal(face)
+        let frontVec = CubeFrame.normalOf(face)
         let layoutUp = CubeFrame.layoutUp(face)
-        let layoutRight = CubeFrame.cross(layoutUp, front)
+        let layoutRight = CubeFrame.cross(layoutUp, frontVec)
         let up: [Int]
         switch rotation & 3 {
         case 1:
@@ -44,7 +44,7 @@ struct CubeFrame: Equatable {
         default:
             up = layoutUp
         }
-        return CubeFrame(right: CubeFrame.cross(up, front), up: up, front: front)
+        return CubeFrame(right: CubeFrame.cross(up, frontVec), up: up, front: frontVec)
     }
 
     /// 一次稳定注视隐含的 frame;注视与任何旋转都不匹配时为 nil。
@@ -55,7 +55,7 @@ struct CubeFrame: Equatable {
     /// - Parameter mask: 这次注视对期望面的 matchMask
     static func fromLook(_ face: Character, _ mask: Int, _ rollStable: Bool, _ previous: CubeFrame?) -> CubeFrame? {
         guard CubeFrame.FACES.contains(face), (mask & 0xF) != 0 else { return nil }
-        if let previous = previous, previous.front() == face {
+        if let previous = previous, previous.frontFace() == face {
             // 同一面仍在前面:只有读数可信且旧滚转不再吻合时才相信新的滚转。
             if !rollStable || (mask & (1 << previous.rotation())) != 0 { return previous }
         }
@@ -115,7 +115,10 @@ struct CubeFrame: Equatable {
     }
 
     /// 24 种握持方式的稠密下标 0..23。
-    var id: Int { CubeFrame.FACES.firstIndex(of: frontFace())! * 4 + rotation() }
+    var id: Int {
+        let idx = CubeFrame.FACES.firstIndex(of: frontFace())!
+        return CubeFrame.FACES.distance(from: CubeFrame.FACES.startIndex, to: idx) * 4 + rotation()
+    }
 
     /// 两 frame 间旋转的迹:3 相同,1 相差 90°,-1 相差 180°。
     func agreement(_ other: CubeFrame) -> Int {
@@ -127,7 +130,7 @@ struct CubeFrame: Equatable {
     }
 
     /// 面的外法向,CubeMoves 的坐标。
-    static func normal(_ face: Character) -> [Int] {
+    static func normalOf(_ face: Character) -> [Int] {
         switch face {
         case "U": return [0, 1, 0]
         case "R": return [1, 0, 0]

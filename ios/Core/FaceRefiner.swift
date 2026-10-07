@@ -131,7 +131,6 @@ final class FaceRefiner {
             previous = ordered
             current = ordered
         }
-        _ = toImage
         return result
     }
 

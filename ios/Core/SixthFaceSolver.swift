@@ -16,6 +16,7 @@ import Foundation
 
 enum SixthFaceSolver {
     static let FACES = "URFDLB"
+    private static let FACE_CHARS: [Character] = Array("URFDLB")
     static let NAMING_RETRIES = 6
     /// 贴块要比任何已扫原型更接近缺失色估计 OUTLIER_MARGIN 以上,才被采信为该色的样本。
     private static let OUTLIER_MARGIN: Float = 8
@@ -74,8 +75,8 @@ enum SixthFaceSolver {
                 var found: [String] = []
                 var foundSet = Set<String>()
                 var budget = [Double(Double(SixthFaceSolver.NODE_BUDGET)), deadlineNanos]
-                searchRolls(named, names, [FaceSample?](repeating: nil, count: 6), 0,
-                            missingColor.face, &foundSet, &budget)
+                var slots = [FaceSample?](repeating: nil, count: 6)
+                searchRolls(named, names, &slots, 0, missingColor.face, &foundSet, &budget)
                 found = Array(foundSet)
                 // 五个面不一定锁定第六面——剩余 D 层棱可能共享可见色,两个补全都通过
                 // 求解。猜会还原成错误的魔方,因此主命名有歧义即止;只有这种着色一无所获
@@ -86,7 +87,7 @@ enum SixthFaceSolver {
                 }
                 if found.count == 1 {
                     return Result(state: found[0],
-                                  palette: ScanPalette.fromFive(prototypes, names, missingColor)!)
+                                  palette: ScanPalette.fromFive(prototypes, names, missingColor))
                 }
             }
         }
@@ -97,7 +98,7 @@ enum SixthFaceSolver {
     private static func leftover(_ names: [CubeColor]) -> CubeColor? {
         var seen = [Bool](repeating: false, count: FACES.count)
         for name in names {
-            guard let index = FACES.firstIndex(of: name.face), !seen[index] else { return nil }
+            guard let index = FACE_CHARS.firstIndex(of: name.face), !seen[index] else { return nil }
             seen[index] = true
         }
         var missingIndex = -1
@@ -106,7 +107,7 @@ enum SixthFaceSolver {
             missingIndex = i
         }
         guard missingIndex >= 0 else { return nil }
-        return CubeColor.fromFace(FACES[missingIndex])
+        return CubeColor.fromFace(FACE_CHARS[missingIndex])
     }
 
     /// 缺失色的标准读数,按五个已扫中心相对自身标准读数的平均 Lab 偏移平移。
@@ -186,7 +187,8 @@ enum SixthFaceSolver {
             for cell in 0..<9 where face.reliable[cell] { rows += 1 }
         }
         var cost = [[Double]](repeating: [Double](repeating: 0, count: slots), count: rows)
-        var stickers = [[CubeColor]](repeating: [CubeColor](repeating: .unknown, count: 9), count: faces.count)
+        // nil = 待定(可靠但未命名),UNKNOWN = 不可靠 —— Java 靠 null/UNKNOWN 区分。
+        var stickers = [[CubeColor?]](repeating: [CubeColor?](repeating: nil, count: 9), count: faces.count)
         var assignedResidual = [Float](repeating: 0, count: rows)
         var faceResidual = [Float](repeating: 0, count: 9)
         var faceRows = [Int](repeating: -1, count: 9)
@@ -194,7 +196,10 @@ enum SixthFaceSolver {
         for f in 0..<faces.count {
             let own = names[f]
             for cell in 0..<9 {
-                if !faces[f].reliable[cell] { continue }
+                if !faces[f].reliable[cell] {
+                    stickers[f][cell] = .unknown
+                    continue
+                }
                 for s in 0..<slots {
                     cost[row][s] = (cell == 4 && slotColor[s] != own)
                         ? FORBIDDEN
@@ -211,6 +216,7 @@ enum SixthFaceSolver {
             // 每面读数最差的格子正是错标所在;按残差置无名前 K 个(有下限),让块约束重推。
             for cell in 0..<9 { faceRows[cell] = -1 }
             for cell in 0..<9 {
+                // 跳过不可靠贴纸(nil = 可靠待命名,必须处理;Java 靠 null != UNKNOWN 区分)
                 if stickers[f][cell] == .unknown { continue }
                 let slot = assignment[row]
                 assignedResidual[row] = Lab.distance(faces[f].lab![cell], slotPrototype[slot])
@@ -239,7 +245,8 @@ enum SixthFaceSolver {
             for cell in 0..<9 where faceRows[cell] >= 0 {
                 stickers[f][cell] = slotColor[assignment[faceRows[cell]]]
             }
-            named[f] = FaceSample(stickers[f], faces[f].lab, faces[f].reliable, faces[f].confidence)
+            let finalStickers = stickers[f].map { $0 ?? CubeColor.unknown }
+            named[f] = FaceSample(finalStickers, faces[f].lab, faces[f].reliable, faces[f].confidence)
         }
         return named.compactMap { $0 }
     }
@@ -250,8 +257,13 @@ enum SixthFaceSolver {
                                     _ found: inout Set<String>, _ budget: inout [Double]) {
         if budget[0] <= 0 { return }
         if index == named.count {
+            var sig = ""
+            for f in 0..<6 {
+                if let slot = slots[f] { sig += "[\(slot.signature)]" } else { sig += "(nil)" }
+            }
+        }
             var state = [Character](repeating: "?", count: 54)
-            for face in 0..<FACES.count {
+            for face in 0..<FACE_CHARS.count {
                 let slot = slots[face]
                 for cell in 0..<9 {
                     if slot == nil {
@@ -266,7 +278,7 @@ enum SixthFaceSolver {
             fillMissing(&state, &found, &budget)
             return
         }
-        guard let slotIdx = FACES.firstIndex(of: names[index].face) else { return }
+        guard let slotIdx = FACE_CHARS.firstIndex(of: names[index].face) else { return }
         var rotated = named[index]
         for _ in 0..<4 {
             slots[slotIdx] = rotated
@@ -303,6 +315,7 @@ enum SixthFaceSolver {
     private static func fillMissing(_ state: inout [Character], _ found: inout Set<String>,
                                     _ budget: inout [Double]) {
         if !spend(&budget) { return }
+        dbgFills += 1
         var edgeUsed = [Bool](repeating: false, count: 12)
         var cornerUsed = [Bool](repeating: false, count: 8)
         var openEdges: [Int] = []
@@ -316,7 +329,9 @@ enum SixthFaceSolver {
                 let identified = edgePiece(state[a], state[b])
                 if identified < 0 || edgeUsed[identified] {
                     burnedEdges += 1
-                    if burnedEdges > MAX_BURNED_EDGES { return }
+                    if burnedEdges > MAX_BURNED_EDGES {
+                        return
+                    }
                     continue
                 }
                 edgeUsed[identified] = true
@@ -481,13 +496,17 @@ enum SixthFaceSolver {
     }
 
     private static func edgeColors(_ piece: Int) -> [Character] {
-        [FACES[EDGE_FACELETS[piece][0] / 9], FACES[EDGE_FACELETS[piece][1] / 9]]
+        [FACE_CHARS[EDGE_FACELETS[piece][0] / 9], FACE_CHARS[EDGE_FACELETS[piece][1] / 9]]
     }
 
     private static func cornerColors(_ piece: Int) -> [Character] {
-        [FACES[CORNER_FACELETS[piece][0] / 9], FACES[CORNER_FACELETS[piece][1] / 9],
-         FACES[CORNER_FACELETS[piece][2] / 9]]
+        [FACE_CHARS[CORNER_FACELETS[piece][0] / 9], FACE_CHARS[CORNER_FACELETS[piece][1] / 9],
+         FACE_CHARS[CORNER_FACELETS[piece][2] / 9]]
     }
+
+    private static var dbgFills = 0
+    static var dbgSR = 0
+
 
     private static func nowNanos() -> Double {
         Double(DispatchTime.now().uptimeNanoseconds)

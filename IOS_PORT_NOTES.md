@@ -2,13 +2,30 @@
 
 > 本文件是移植工作的进度载体,每完成一批更新一次。新会话从这里继续。
 
-## 已完成(2026-10-07)
+## 已完成(2026-10-07/08)
 
 - `ios/Core/*.swift` — 已移植并实测通过:
   - 基础:CubeColor, CubeRules, CubeMoves, Lab, FaceSample, Hungarian, CornerSmoother,
     ColorAssignment, ScanPalette, AreaResizer, FaceStabilizer, FaceSampler, Homography
   - min2phase 求解器:MUtil, CubieCube, CoordCube(+CoordCubeNode), MTools, Search
   - **求解器冒烟测试通过**:`fromScramble("R U R' U'")` → 解 `U R U' R'`,应用后回到恒等态。
+  - 额外移植:CubeFrame, GuideStep, MoveTracker, GuideSession, SixthFaceSolver,
+    CubeStateAssembler(1160行), FaceRefiner(520行), DetectedFace, DetectionTracker,
+    AnchorSearch, CaptureGate, CubeUiState
+  - **35 个核心测试全部通过**(Linux Swift XCTest):包括六面组装、五面推断、
+    漂移颜色分配、稳定器、匈牙利分配、调色板、MoveTracker 等。
+
+### 额外坑位(核心逻辑移植)
+
+8. **Java null vs 枚举**:Java 的 `stickers[cell] == UNKNOWN` 依赖 null(待定)与
+   UNKNOWN(不可靠)的区别;Swift 用 `[CubeColor?]` + nil 表示待定。
+   `== nil` 和 `== .unknown` 的条件不能写反(曾导致 SixthFaceSolver 全部返回空)。
+9. **属性与方法名冲突**:CubeFrame 有 `front` 属性和 `front()` 方法;Swift 不允许,
+   方法改名 `frontFace()`。
+10. **convenience init**:Swift 的委托初始化器必须标记 `convenience`。
+11. **inout 数组**:无法直接传数组字面量,先建 var 再 & 传递。
+12. **for→where 双条件**:Swift 不允许 `for x in a where b where c`,用 if 嵌套。
+13. **release 的负数范围**:`0..<(-1)` 在 Java 是空循环,Swift 崩溃,要 guard。
 
 ## Java→Swift 移植坑位(务必遵守)
 

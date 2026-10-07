@@ -61,8 +61,12 @@ final class GuideStep {
         self.axis = axis
         self.layer = layer
         self.quarters = quarters
+        let resolvedSeen = seen ?? ({
+            let va = frame.toView(axis)
+            return va[2] == 0 || (layer != GuideStep.MIDDLE && va[2] == 1)
+        })()
+        self.seen = resolvedSeen
         self.after = layer == GuideStep.OUTER ? frame : frame.turned(frame.toView(axis), quarters)
-        self.seen = seen ?? (viewAxis()[2] == 0 || turnsFrontFace())
         self.then = nil
     }
 
@@ -121,7 +125,7 @@ final class GuideStep {
     private final class Planner {
         let moves: [String]
         let states: [String]?
-        let memo: [Float]
+        var memo: [Float]
 
         init(_ moves: [String], _ states: [String]?) {
             self.moves = moves
@@ -145,9 +149,9 @@ final class GuideStep {
 
         /// 从 index 开始的所有做法:单转,再把不可见的接上。
         private func options(_ index: Int, _ held: CubeFrame) -> [GuideStep] {
-            let singles = singles(index, held)
-            var all = singles
-            for single in singles {
+            let singleSteps = singles(index, held)
+            var all = singleSteps
+            for single in singleSteps {
                 let next = index + single.count
                 if single.seen || next >= moves.count { continue }
                 for follow in singles(next, single.after) {
@@ -219,24 +223,24 @@ final class GuideStep {
     /// 单个求解步。
     static func outerStep(_ move: String, _ index: Int, _ frame: CubeFrame) -> GuideStep {
         let face = Array(move)[0]
-        let quarters = amount(move) == 1 ? -1 : amount(move) == 3 ? 1 : -2
+        let quarters = GuideStep.amount(move) == 1 ? -1 : GuideStep.amount(move) == 3 ? 1 : -2
         return GuideStep(first: index, count: 1, frame: frame, face: face,
-                         axis: CubeFrame.normal(face), layer: OUTER, quarters: quarters, seen: nil)
+                         axis: CubeFrame.normalOf(face), layer: OUTER, quarters: quarters, seen: nil)
     }
 
     /// 对面外层对 X^a Y^-a,作为反向的中间层转动。
     static func middleStep(_ move: String, _ index: Int, _ frame: CubeFrame) -> GuideStep {
         let face = Array(move)[0]
-        let quarters = amount(move) == 1 ? 1 : amount(move) == 3 ? -1 : 2
+        let quarters = GuideStep.amount(move) == 1 ? 1 : GuideStep.amount(move) == 3 ? -1 : 2
         return GuideStep(first: index, count: 2, frame: frame, face: " ",
-                         axis: CubeFrame.normal(face), layer: MIDDLE, quarters: quarters, seen: nil)
+                         axis: CubeFrame.normalOf(face), layer: MIDDLE, quarters: quarters, seen: nil)
     }
 
     /// 保持本层不动、转动另外两层:状态相同。
     static func wideStep(_ move: String, _ index: Int, _ frame: CubeFrame) -> GuideStep {
         let face = Array(move)[0]
-        let normal = CubeFrame.normal(face)
-        let quarters = amount(move) == 1 ? -1 : amount(move) == 3 ? 1 : -2
+        let normal = CubeFrame.normalOf(face)
+        let quarters = GuideStep.amount(move) == 1 ? -1 : GuideStep.amount(move) == 3 ? 1 : -2
         let opposite = [-normal[0], -normal[1], -normal[2]]
         return GuideStep(first: index, count: 1, frame: frame, face: " ",
                          axis: opposite, layer: WIDE, quarters: quarters, seen: nil)
@@ -246,9 +250,11 @@ final class GuideStep {
     static func pairsIntoMiddle(_ a: String?, _ b: String?) -> Bool {
         guard let a = a, let b = b, !a.isEmpty, !b.isEmpty else { return false }
         let ac = Array(a), bc = Array(b)
-        guard let fa = CubeFrame.FACES.firstIndex(of: ac[0]),
-              let fb = CubeFrame.FACES.firstIndex(of: bc[0]),
-              (fa + 3) % 6 == fb else { return false }
+        guard let fa = FACES.firstIndex(of: ac[0]),
+              let fb = FACES.firstIndex(of: bc[0]) else { return false }
+        let faIdx = FACES.distance(from: FACES.startIndex, to: fa)
+        let fbIdx = FACES.distance(from: FACES.startIndex, to: fb)
+        if (faIdx + 3) % 6 != fbIdx { return false }
         return (amount(a) + amount(b)) % 4 == 0
     }
 
@@ -259,26 +265,26 @@ final class GuideStep {
 
     /// 轴坐标 along 处的块是否属于转动块。
     static func turns(_ layer: Int, _ along: Int) -> Bool {
-        layer == WIDE ? along >= 0 : along == layer
+        layer == GuideStep.WIDE ? along >= 0 : along == layer
     }
 
     /// 视图空间中的转动轴。
     func viewAxis() -> [Int] { frame.toView(axis) }
 
-    var isMiddle: Bool { layer == MIDDLE }
+    var isMiddle: Bool { layer == GuideStep.MIDDLE }
 
-    var isWide: Bool { layer == WIDE }
+    var isWide: Bool { layer == GuideStep.WIDE }
 
     var isHalfTurn: Bool { abs(quarters) == 2 }
 
     /// 背对观看者的外层。
-    var isBack: Bool { layer == OUTER && viewAxis()[2] == -1 }
+    var isBack: Bool { layer == GuideStep.OUTER && viewAxis()[2] == -1 }
 
     /// 朝向观看者的外层。
-    var isFront: Bool { layer == OUTER && viewAxis()[2] == 1 }
+    var isFront: Bool { layer == GuideStep.OUTER && viewAxis()[2] == 1 }
 
     /// 朝镜头的整面原地转:前层或前两层。
-    func turnsFrontFace() -> Bool { layer != MIDDLE && viewAxis()[2] == 1 }
+    func turnsFrontFace() -> Bool { layer != GuideStep.MIDDLE && viewAxis()[2] == 1 }
 
     /// 该层在视图法向 faceNormal 的面上贴纸移动的视图方向。
     func motion(_ faceNormal: [Int]) -> [Int] {
@@ -296,9 +302,9 @@ final class GuideStep {
         let n = viewAxis()
         let letter: String
         let clockwise: Int
-        if layer != MIDDLE {
+        if layer != GuideStep.MIDDLE {
             letter = (n[0] == 1 ? "R" : n[0] == -1 ? "L" : n[1] == 1 ? "U"
-                : n[1] == -1 ? "D" : n[2] == 1 ? "F" : "B") + (layer == WIDE ? "w" : "")
+                : n[1] == -1 ? "D" : n[2] == 1 ? "F" : "B") + (layer == GuideStep.WIDE ? "w" : "")
             clockwise = ((-quarters % 4) + 4) % 4
         } else if n[0] != 0 {
             // M 像 L:绕 +x 的正转。
@@ -319,12 +325,12 @@ final class GuideStep {
     /// 手中的层位描述。
     func place() -> String {
         let n = viewAxis()
-        if layer == MIDDLE {
+        if layer == GuideStep.MIDDLE {
             return n[0] != 0 ? "中间竖层" : n[1] != 0 ? "中间横层" : "中间夹层"
         }
         let side = n[0] != 0 ? (n[0] > 0 ? "右" : "左") : n[1] != 0 ? (n[1] > 0 ? "顶" : "底")
             : n[2] > 0 ? "前" : "后"
-        if layer == WIDE {
+        if layer == GuideStep.WIDE {
             return (side == "顶" ? "上" : side == "底" ? "下" : side) + "两层"
         }
         return side + "层"
@@ -335,7 +341,7 @@ final class GuideStep {
         if isHalfTurn { return "半圈" }
         if turnsFrontFace() { return quarters < 0 ? "顺时针" : "逆时针" }
         let n = viewAxis()
-        let moving = motion(n[2] == 0 ? VIEW_FRONT : VIEW_UP)
+        let moving = motion(n[2] == 0 ? GuideStep.VIEW_FRONT : GuideStep.VIEW_UP)
         if moving[0] != 0 { return moving[0] > 0 ? "向右" : "向左" }
         return moving[1] > 0 ? "向上" : "向下"
     }

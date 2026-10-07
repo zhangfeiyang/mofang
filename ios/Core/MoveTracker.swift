@@ -14,7 +14,7 @@ final class MoveTracker {
     enum Outcome { case none, confirmed, advanced, mismatch }
 
     let moves: [String]
-    let states: [String]
+    var states: [String]
     private(set) var index = 0
     /// 每个面字母(URFDLB)上次与当前状态吻合的旋转角,或 -1。
     private var reference = [-1, -1, -1, -1, -1, -1]

@@ -5,15 +5,6 @@ import Foundation
 // 版权 (C) 2015 Shuang Chen,GPL-3.0(与安卓端一致地引入)。
 
 final class Search {
-    #if CUBEAR_SEARCH_DEBUG
-    static var dbgPhase1Calls = 0
-    static var dbgSetWithPrunPass = 0
-    static var dbgSetWithPrunFail = 0
-    static var dbgInitP2 = 0
-    static var dbgPreMovesCalls = 0
-    static var dbgSetWithPrunCalls = 0
-    static var dbgPhase2Calls = 0
-    #endif
     static let USE_TWIST_FLIP_PRUN = true
 
     // 研究用途选项
@@ -177,12 +168,6 @@ final class Search {
 
     func phase1PreMoves(_ maxl: Int, _ lmIn: Int, _ cc: CubieCube, _ ssym: Int) -> Int {
         var lm = lmIn
-        #if CUBEAR_SEARCH_DEBUG
-        Search.dbgPreMovesCalls += 1
-        if Search.dbgPreMovesCalls <= 60 {
-            print("premove call #\(Search.dbgPreMovesCalls): maxl=\(maxl) lm=\(lm) preMoveLen=\(preMoveLen) len1=\(length1) swpass=\(Search.dbgSetWithPrunPass) swfail=\(Search.dbgSetWithPrunFail)")
-        }
-        #endif
         preMoveLen = maxPreMoves - maxl
         if isRec ? depth1 == length1 - preMoveLen
             : (preMoveLen == 0 || (0x36FB7 >> lm & 1) == 0) {
@@ -191,11 +176,6 @@ final class Search {
             allowShorter = depth1 == Search.MIN_P1LENGTH_PRE && preMoveLen != 0
 
             let ok = nodeUD[depth1 + 1].setWithPrun(cc, depth1)
-            #if CUBEAR_SEARCH_DEBUG
-            if ok { Search.dbgSetWithPrunPass += 1 } else { Search.dbgSetWithPrunFail += 1
-                if Search.dbgSetWithPrunFail % 200000 == 0 { print("p1calls=\(Search.dbgPhase1Calls) swpass=\(Search.dbgSetWithPrunPass) swfail=\(Search.dbgSetWithPrunFail) initP2=\(Search.dbgInitP2)") }
-            }
-            #endif
             if ok && phase1(nodeUD[depth1 + 1], ssym, depth1, -1) == 0 {
                 return 0
             }
@@ -235,23 +215,14 @@ final class Search {
     }
 
     func search() -> String {
-        #if CUBEAR_SEARCH_DEBUG
-        defer { print("search ended: solLen=\(solLen) solution=\(solution?.toStringValue(Search.INVERSE_SOLUTION, Search.USE_SEPARATOR, Search.APPEND_LENGTH) ?? "nil"))") }
-        #endif
         for length1 in (isRec ? self.length1 : 0)..<solLen {
             self.length1 = length1
-            #if CUBEAR_SEARCH_DEBUG
-            print("length1=\(length1) maxDep2=\(maxDep2)")
-            #endif
             maxDep2 = min(Search.MAX_DEPTH2, solLen - length1 - 1)
             for urfIdx in (isRec ? self.urfIdx : 0)..<6 {
                 self.urfIdx = urfIdx
                 if (conjMask & 1 << urfIdx) != 0 {
                     continue
                 }
-                #if CUBEAR_SEARCH_DEBUG
-                print("  urfIdx=\(urfIdx) probes so far=\(probe)")
-                #endif
                 if phase1PreMoves(maxPreMoves, -30, urfCubieCube[urfIdx], Int(selfSym & 0xffff)) == 0 {
                     return solution == nil ? "Error 8" : solution!.toStringValue(Search.INVERSE_SOLUTION, Search.USE_SEPARATOR, Search.APPEND_LENGTH)
                 }
@@ -262,10 +233,6 @@ final class Search {
 
     /// 0: 找到或超过探测上限;1: 还差 1+maxDep2 步,试下一个 power;2: 还差 2+maxDep2 步,试下一个 axis
     func initPhase2Pre() -> Int {
-        #if CUBEAR_SEARCH_DEBUG
-        Search.dbgInitP2 += 1
-        print("initPhase2Pre entry #\(Search.dbgInitP2): depth1=\(depth1) preMoveLen=\(preMoveLen) maxDep2=\(maxDep2)")
-        #endif
         isRec = false
         if probe >= (solution == nil ? probeMax : probeMin) {
             return 0
@@ -392,12 +359,6 @@ final class Search {
 
     /// 0: 找到或超探测上限;1: 试下一个 power;2: 试下一个 axis
     func phase1(_ node: CoordCubeNode, _ ssym: Int, _ maxl: Int, _ lm: Int) -> Int {
-        #if CUBEAR_SEARCH_DEBUG
-        Search.dbgPhase1Calls += 1
-        if Search.dbgPhase1Calls <= 80 {
-            print("phase1 #\(Search.dbgPhase1Calls): prun=\(node.prun) maxl=\(maxl) lm=\(lm) ssym=\(ssym)")
-        }
-        #endif
         if node.prun == 0 && maxl < 5 {
             if allowShorter || maxl == 0 {
                 depth1 -= maxl
@@ -555,12 +516,6 @@ final class Search {
     func phase2(_ edgeIn: Int, _ esymIn: Int, _ cornIn: Int, _ csymIn: Int, _ midIn: Int,
                 _ maxl: Int, _ depth: Int, _ lm: Int) -> Int {
         let edge = edgeIn, esym = esymIn, corn = cornIn, csym = csymIn, mid = midIn
-        #if CUBEAR_SEARCH_DEBUG
-        Search.dbgPhase2Calls += 1
-        if Search.dbgPhase2Calls <= 60 {
-            print("  phase2 #\(Search.dbgPhase2Calls): maxl=\(maxl) depth=\(depth) lm=\(lm)")
-        }
-        #endif
         if edge == 0 && corn == 0 && mid == 0 {
             return maxl
         }

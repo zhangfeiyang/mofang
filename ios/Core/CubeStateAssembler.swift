@@ -201,7 +201,7 @@ final class CubeStateAssembler {
             if size[id] < CubeStateAssembler.MIN_LOOKS_PER_FACE { continue }
             var group: [FaceSample] = []
             for i in 0..<label.count where label[i] == id { group.append(pool[i]) }
-            if let central = mostCentral(largestCluster(group), -1) {
+            if let central = CubeStateAssembler.mostCentral(CubeStateAssembler.largestCluster(group), -1) {
                 representatives.append(central)
             }
         }
@@ -452,10 +452,10 @@ final class CubeStateAssembler {
         // 共享中心颜色的观察不全是同一个面:压在边上的四边形有合理的中心,落进那个颜色
         // 的桶,然后毒化中位数。
         var groups: [[FaceSample]] = []
-        for group in raw { groups.append(largestCluster(group)) }
+        for group in raw { groups.append(CubeStateAssembler.largestCluster(group)) }
 
         var chosen: [FaceSample?] = []
-        for i in 0..<6 { chosen.append(consensus(groups[i], -1)!) }
+        for i in 0..<6 { chosen.append(CubeStateAssembler.consensus(groups[i], -1)!) }
         var state = tryAssemble(chosen.compactMap { $0 })
         if state != nil { return state }
 
@@ -463,7 +463,7 @@ final class CubeStateAssembler {
         for i in 0..<6 {
             let group = groups[i]
             trimmed[i] = group.count < 2 ? chosen[i]
-                : consensus(group, byDisagreement(group)[0])
+                : CubeStateAssembler.consensus(group, CubeStateAssembler.byDisagreement(group)[0])
         }
         state = tryAssemble(trimmed.compactMap { $0 })
         if state != nil { return state }
@@ -472,9 +472,9 @@ final class CubeStateAssembler {
             let group = groups[face]
             if group.count < 2 { continue }
             let original = chosen[face]
-            let worstFirst = byDisagreement(group)
+            let worstFirst = CubeStateAssembler.byDisagreement(group)
             for attempt in 0..<min(2, worstFirst.count) {
-                chosen[face] = consensus(group, worstFirst[attempt])
+                chosen[face] = CubeStateAssembler.consensus(group, worstFirst[attempt])
                 state = tryAssemble(chosen.compactMap { $0 })
                 if state != nil { return state }
             }
@@ -485,7 +485,7 @@ final class CubeStateAssembler {
         state = tryClusterCombinations(raw)
         if state != nil { return state }
 
-        for i in 0..<6 { chosen[i] = consensus(groups[i], -1)! }
+        for i in 0..<6 { chosen[i] = CubeStateAssembler.consensus(groups[i], -1)! }
         state = repairBySwaps(chosen.compactMap { $0 })
         if state != nil { return state }
 
@@ -495,7 +495,8 @@ final class CubeStateAssembler {
     }
 
     private func tryClusterCombinations(_ raw: [[FaceSample]]) -> String? {
-        cartesianAssemble(CubeStateAssembler.clusterChoices(raw), 0, [FaceSample?](repeating: nil, count: 6))
+        var chosen = [FaceSample?](repeating: nil, count: 6)
+        return cartesianAssemble(CubeStateAssembler.clusterChoices(raw), 0, &chosen)
     }
 
     private static func meanSplit(_ group: [FaceSample]) -> Float {
@@ -508,11 +509,11 @@ final class CubeStateAssembler {
     private static func clusterChoices(_ raw: [[FaceSample]]) -> [[FaceSample]] {
         var options: [[FaceSample]] = []
         for group in raw {
-            var parts = partitionLooks(group)
-            parts.sort { a, b in compareClusters(a, b) }
+            var parts = CubeStateAssembler.partitionLooks(group)
+            parts.sort { a, b in CubeStateAssembler.compareClusters(a, b) }
             var choices: [FaceSample] = []
             let limit = min(4, parts.count)
-            for i in 0..<limit { choices.append(consensus(parts[i], -1)!) }
+            for i in 0..<limit { choices.append(CubeStateAssembler.consensus(parts[i], -1)!) }
             options.append(choices)
         }
         return options
@@ -550,7 +551,7 @@ final class CubeStateAssembler {
         var dist = [[Float]](repeating: [Float](repeating: 0, count: n), count: n)
         for i in 0..<n {
             for j in (i + 1)..<n {
-                let d = meanCellDistance(group[i], alignTo(group[i], group[j]))
+                let d = CubeStateAssembler.meanCellDistance(group[i], CubeStateAssembler.alignTo(group[i], group[j]))
                 dist[i][j] = d
                 dist[j][i] = d
             }
@@ -592,9 +593,9 @@ final class CubeStateAssembler {
     }
 
     static func largestCluster(_ group: [FaceSample]) -> [FaceSample] {
-        var parts = partitionLooks(group)
+        var parts = CubeStateAssembler.partitionLooks(group)
         if parts.isEmpty { return group }
-        parts.sort { a, b in compareClusters(a, b) }
+        parts.sort { a, b in CubeStateAssembler.compareClusters(a, b) }
         return parts[0]
     }
 
@@ -620,10 +621,10 @@ final class CubeStateAssembler {
             lastFailure = "还没有 5 个独立面"
             return nil
         }
-        for i in 0..<groups.count { groups[i] = largestCluster(groups[i]) }
+        for i in 0..<groups.count { groups[i] = CubeStateAssembler.largestCluster(groups[i]) }
 
         var chosen: [FaceSample?] = []
-        for i in 0..<5 { chosen.append(consensus(groups[i], -1)!) }
+        for i in 0..<5 { chosen.append(CubeStateAssembler.consensus(groups[i], -1)!) }
         var result = SixthFaceSolver.solve(chosen.compactMap { $0 }, deadlineNanos: deadlineNanos)
         if let result = result {
             palette = result.palette
@@ -633,7 +634,7 @@ final class CubeStateAssembler {
         var trimmed = [FaceSample?](repeating: nil, count: 5)
         for i in 0..<5 {
             let group = groups[i]
-            trimmed[i] = group.count < 2 ? chosen[i] : consensus(group, byDisagreement(group)[0])
+            trimmed[i] = group.count < 2 ? chosen[i] : CubeStateAssembler.consensus(group, CubeStateAssembler.byDisagreement(group)[0])
         }
         result = SixthFaceSolver.solve(trimmed.compactMap { $0 }, deadlineNanos: deadlineNanos)
         if let result = result {
@@ -645,10 +646,10 @@ final class CubeStateAssembler {
             let group = groups[face]
             if group.count < 2 { continue }
             let original = chosen[face]
-            let worstFirst = byDisagreement(group)
+            let worstFirst = CubeStateAssembler.byDisagreement(group)
             for attempt in 0..<min(2, worstFirst.count) {
                 if expired { return nil }
-                chosen[face] = consensus(group, worstFirst[attempt])
+                chosen[face] = CubeStateAssembler.consensus(group, worstFirst[attempt])
                 result = SixthFaceSolver.solve(chosen.compactMap { $0 }, deadlineNanos: deadlineNanos)
                 if let result = result {
                     palette = result.palette
@@ -697,15 +698,15 @@ final class CubeStateAssembler {
     ///
     /// - Parameter skip: 要排除的观察下标,-1 表示全用
     static func consensus(_ group: [FaceSample], _ skip: Int) -> FaceSample? {
-        guard let reference = mostCentral(group, skip) else { return nil }
+        guard let reference = CubeStateAssembler.mostCentral(group, skip) else { return nil }
 
         var aligned: [FaceSample] = []
         var close: [FaceSample] = []
         for i in 0..<group.count {
             if i == skip { continue }
-            let candidate = alignTo(reference, group[i])
+            let candidate = CubeStateAssembler.alignTo(reference, group[i])
             aligned.append(candidate)
-            if meanCellDistance(reference, candidate) <= SAME_LOOK_CUT { close.append(candidate) }
+            if CubeStateAssembler.meanCellDistance(reference, candidate) <= SAME_LOOK_CUT { close.append(candidate) }
         }
         // 跨界四边形置信度高,不得以多胜少压过几张诚实观察。丢弃与组质心不符的观察。
         if close.count >= 2 && close.count < aligned.count { aligned = close }
@@ -759,7 +760,7 @@ final class CubeStateAssembler {
             let pivot = group[i]
             for j in 0..<group.count {
                 if j == skip || j == i { continue }
-                cost += Double(meanCellDistance(pivot, alignTo(pivot, group[j])))
+                cost += Double(CubeStateAssembler.meanCellDistance(pivot, CubeStateAssembler.alignTo(pivot, group[j])))
                 n += 1
             }
             let mean = n == 0 ? 0 : cost / Double(n)
@@ -782,11 +783,11 @@ final class CubeStateAssembler {
 
     /// 按与组共识的距离排序观察,最差在前。
     private static func byDisagreement(_ group: [FaceSample]) -> [Int] {
-        guard let agreed = consensus(group, -1) else { return Array(0..<group.count) }
+        guard let agreed = CubeStateAssembler.consensus(group, -1) else { return Array(0..<group.count) }
         var cost = [Double](repeating: 0, count: group.count)
         var order: [Int] = []
         for i in 0..<group.count {
-            let aligned = alignTo(agreed, group[i])
+            let aligned = CubeStateAssembler.alignTo(agreed, group[i])
             for cell in 0..<9 {
                 cost[i] += Double(Lab.distance(agreed.lab![cell], aligned.lab![cell]))
             }
@@ -832,7 +833,7 @@ final class CubeStateAssembler {
     private func repairBySwaps(_ chosen: [FaceSample]) -> String? {
         guard let result = ColorAssignment.assign(chosen, 0) else { return nil }
         var prototypeOf = [[Float]](repeating: [], count: CubeColor.allCases.count)
-        for f in 0..<6 { prototypeOf[result.faceColors[f].ordinal] = result.prototypes[f] }
+        for f in 0..<6 { prototypeOf[result.faceColors[f].rawValue] = result.prototypes[f] }
 
         // 把贴纸 i 命名为颜色 c 的代价,相对其当前颜色。
         var cells = [Int](repeating: 0, count: 48)
@@ -850,11 +851,11 @@ final class CubeStateAssembler {
             let f = cells[i] / 9, c = cells[i] % 9
             let own = result.colors[f][c]
             let evidence = chosen[f].reliable[c]
-            let base = evidence ? Double(Lab.distanceSquared(chosen[f].lab![c], prototypeOf[own.ordinal])) : 0
+            let base = evidence ? Double(Lab.distanceSquared(chosen[f].lab![c], prototypeOf[own.rawValue])) : 0
             for k in 0..<6 {
                 let other = result.faceColors[k]
                 let cost = evidence ? Double(Lab.distanceSquared(chosen[f].lab![c], result.prototypes[k])) : 0
-                extra[i][other.ordinal] = cost - base
+                extra[i][other.rawValue] = cost - base
                 if evidence && other != own && cost - base < leastMargin {
                     leastMargin = cost - base
                     leastCertain = f
@@ -869,7 +870,7 @@ final class CubeStateAssembler {
             for j in (i + 1)..<48 {
                 let b = result.colors[cells[j] / 9][cells[j] % 9]
                 if a == b { continue }
-                swaps.append((extra[i][b.ordinal] + extra[j][a.ordinal], i, j))
+                swaps.append((extra[i][b.rawValue] + extra[j][a.rawValue], i, j))
             }
         }
         swaps.sort { x, y in x.cost < y.cost }
@@ -948,6 +949,23 @@ final class CubeStateAssembler {
         return best
     }
 
+    static func testOrderFaces(_ state: String) -> [FaceSample] {
+        var byCenter: [CubeColor: FaceSample] = [:]
+        for face in 0..<6 {
+            let chars = Array(state)
+            var colors = [CubeColor](repeating: .unknown, count: 9)
+            for i in 0..<9 { colors[i] = CubeColor.fromFace(chars[face * 9 + i]) }
+            var sample = FaceSample(colors, 1)
+            for _ in 0..<face { sample = sample.rotateClockwise() }
+            byCenter[colors[4]] = sample
+        }
+        var ordered = [FaceSample?](repeating: nil, count: 6)
+        for i in 0..<ORDER.count {
+            ordered[i] = byCenter[CubeColor.fromFace(ORDER[i])]
+        }
+        return ordered.compactMap { $0 }
+    }
+
     /// 没有 Lab 读数的样本的后备方案,让组装器独立可用。
     private func assembleWithoutReadings() -> String? {
         var byCenter: [CubeColor: FaceSample] = [:]
@@ -1010,15 +1028,15 @@ final class CubeStateAssembler {
         for _ in 0..<4 {
             let oldLength = state.count
             for color in rotated.stickers { state.append(color.face) }
-            let edgesTaken = claim(&state, CubeRules.EDGES, CubeStateAssembler.EDGES_DONE_AT[index], &usedEdges)
+            let edgesTaken = CubeStateAssembler.claim(&state, CubeRules.EDGES, CubeStateAssembler.EDGES_DONE_AT[index], &usedEdges)
             let cornersTaken = edgesTaken < 0 ? -1
-                : claim(&state, CubeRules.CORNERS, CubeStateAssembler.CORNERS_DONE_AT[index], &usedCorners)
+                : CubeStateAssembler.claim(&state, CubeRules.CORNERS, CubeStateAssembler.CORNERS_DONE_AT[index], &usedCorners)
             if edgesTaken >= 0 && cornersTaken >= 0 {
                 let found = searchRotations(faces, index + 1, &state, &usedEdges, &usedCorners)
                 if found != nil { return found }
             }
-            release(&state, CubeRules.EDGES, CubeStateAssembler.EDGES_DONE_AT[index], &usedEdges, edgesTaken)
-            release(&state, CubeRules.CORNERS, CubeStateAssembler.CORNERS_DONE_AT[index], &usedCorners, cornersTaken)
+            CubeStateAssembler.release(&state, CubeRules.EDGES, CubeStateAssembler.EDGES_DONE_AT[index], &usedEdges, edgesTaken)
+            CubeStateAssembler.release(&state, CubeRules.CORNERS, CubeStateAssembler.CORNERS_DONE_AT[index], &usedCorners, cornersTaken)
             state.removeSubrange(oldLength..<state.count)
             rotated = rotated.rotateClockwise()
         }
@@ -1045,6 +1063,7 @@ final class CubeStateAssembler {
 
     private static func release(_ state: inout [Character], _ pieces: [[Int]], _ completed: [Int],
                                 _ used: inout [Bool], _ claimed: Int) {
+        guard claimed > 0 else { return }  // Java 的 for 循环对负数不执行;Swift 的 Range 会崩溃
         for q in 0..<claimed {
             used[pieceKey(state, pieces[completed[q]])] = false
         }
