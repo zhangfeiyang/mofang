@@ -57,6 +57,9 @@ final class MoveTracker {
     /** The cube as it should look before the current move. */
     String state() { return states[index]; }
 
+    /** The cube before every move, and solved at the end; callers must not modify it. */
+    String[] states() { return states; }
+
     /** Consecutive observations that matched no expected state. */
     int mismatches() { return mismatches; }
 

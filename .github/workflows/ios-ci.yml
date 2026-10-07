@@ -1,0 +1,47 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [master]
+    paths: ["ios/**", ".github/workflows/ios-ci.yml"]
+  workflow_dispatch:
+
+jobs:
+  # 核心逻辑单元测试（与 Linux 本地验证同一套 XCTest）
+  core-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.0.3"
+      - name: Run core unit tests
+        run: swift test --scratch-path .build-ci
+        working-directory: ios
+
+  # Xcode 真机工具链编译验证（无需签名）
+  ios-build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode 26（与发布流水线一致）
+        run: |
+          X26=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          [ -n "$X26" ] && sudo xcode-select -s "$X26"
+          xcodebuild -version && swift --version
+      - name: Show toolchain
+        run: xcodebuild -version && swift --version
+      - name: Build app (iOS Simulator, unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild -project CrystalGrid.xcodeproj -scheme CrystalGrid \
+            -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug build CODE_SIGNING_ALLOWED=NO | xcbeautify
+        working-directory: ios
+      - name: Build app (device arch, compile-only)
+        run: |
+          set -o pipefail
+          xcodebuild -project CrystalGrid.xcodeproj -scheme CrystalGrid \
+            -destination 'generic/platform=iOS' \
+            -configuration Release build CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=NO | xcbeautify
+        working-directory: ios

@@ -1,0 +1,117 @@
+# App Store 发布流水线（无 Mac 依赖，全部在 GitHub Actions macOS 机器上执行）。
+# 需要的环境变量（由 workflow 注入，见 ios-release.yml）：
+#   AC_API_KEY_ID / AC_API_ISSUER_ID / AC_API_KEY_P8(base64) — App Store Connect API 密钥
+#   TEAM_ID — 开发者账号 Team ID
+#   KEYCHAIN_PASSWORD — 临时登录密钥链的解锁密码（仅 CI 使用）
+# 拆分为 sign / archive / upload 三个 lane，workflow 分三步调用，便于定位卡点。
+# App 记录需在 App Store Connect 网页创建（API 创建仅限 Account Holder 角色）。
+
+default_platform(:ios)
+
+# 跨 App 复用:设置环境变量 APP_IDENTIFIER 即可用于其他 App(见 ios/REUSABLE_PIPELINE.md)
+APP_ID = ENV["APP_IDENTIFIER"] || "com.zhangfeiyang.blockgrid"
+
+platform :ios do
+  desc "解锁 keychain → 签发证书 → 生成描述文件 → 配置工程签名"
+  lane :sign do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["AC_API_KEY_ID"],
+      issuer_id: ENV["AC_API_ISSUER_ID"],
+      key_content: ENV["AC_API_KEY_P8"],
+      is_key_content_base64: true,
+      duration: 1200,
+    )
+
+    # CI runner 是临时的,每次 force 重建分发证书。
+    # keychain_path/keychain_password 指向 workflow 创建的专用密钥链,
+    # cert 会对其中的私钥执行 set-key-partition-list,避免归档签名时弹授权 UI。
+    cert(api_key: api_key, platform: "ios", output_path: "../build/cert", force: true,
+         keychain_path: ENV["KC_PATH"], keychain_password: ENV["KEYCHAIN_PASSWORD"])
+
+    sigh(
+      api_key: api_key,
+      app_identifier: APP_ID,
+      adhoc: false,
+      skip_certificate_verification: true,
+    )
+    profile_path = Actions.lane_context[SharedValues::SIGH_PROFILE_PATH]
+    UI.user_error!("sigh 未产出描述文件") unless profile_path && File.exist?(profile_path)
+    # .mobileprovision 是 CMS 包裹的 plist(可能是二进制),用 security 解码后取内部 Name
+    profile_xml = Actions.sh("security", "cms", "-D", "-i", profile_path)
+    profile_name = profile_xml[/<key>Name<\/key>\s*<string>([^<]+)<\/string>/, 1]
+    UI.user_error!("无法解析描述文件名称") unless profile_name
+    UI.important("使用描述文件: #{profile_name}")
+
+    # 把工程切到手动签名并显式指定刚生成的描述文件
+    update_code_signing_settings(
+      path: "CrystalGrid.xcodeproj",
+      bundle_identifier: APP_ID,
+      team_id: ENV["TEAM_ID"],
+      profile_name: profile_name,
+      code_sign_identity: "Apple Distribution",
+      use_automatic_signing: false,
+    )
+    # 供 archive lane 读取(lane 之间无共享状态)
+    require "fileutils"
+    FileUtils.mkdir_p("../build")
+    File.write("../build/profile_name.txt", profile_name)
+  end
+
+  desc "归档并导出 App Store IPA"
+  lane :archive do
+    profile_name = File.read("../build/profile_name.txt") if File.exist?("../build/profile_name.txt")
+    unless profile_name
+      # 兜底:扫描 Xcode 15 及更早 / Xcode 16 之后的描述文件安装目录
+      dirs = [
+        File.expand_path("~/Library/MobileDevice/Provisioning Profiles"),
+        File.expand_path("~/Library/Developer/Xcode/UserData/Provisioning Profiles"),
+      ]
+      candidates = dirs.flat_map { |d| Dir.glob(File.join(d, "*.mobileprovision")) }
+                       .map { |p| [p, File.mtime(p)] }.sort_by { |_, t| -t.to_i }.map { |p, _| p }
+      UI.user_error!("未找到已安装的描述文件") if candidates.empty?
+      xml = Actions.sh("security", "cms", "-D", "-i", candidates.first)
+      profile_name = xml[/<key>Name<\/key>\s*<string>([^<]+)<\/string>/, 1]
+    end
+    UI.user_error!("无法解析描述文件名称") unless profile_name
+    UI.important("归档使用描述文件: #{profile_name}")
+
+    gym(
+      project: "CrystalGrid.xcodeproj",
+      scheme: "CrystalGrid",
+      clean: true,
+      export_method: "app-store",
+      export_options: {
+        method: "app-store",
+        teamID: ENV["TEAM_ID"],
+        signingStyle: "manual",
+        provisioningProfiles: {
+          APP_ID => profile_name,
+        },
+        uploadSymbols: true,
+      },
+    )
+  end
+
+  desc "上传到 App Store Connect（TestFlight，不等待处理完成）"
+  lane :upload do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["AC_API_KEY_ID"],
+      issuer_id: ENV["AC_API_ISSUER_ID"],
+      key_content: ENV["AC_API_KEY_P8"],
+      is_key_content_base64: true,
+      duration: 1200,
+    )
+    pilot(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true,
+      distribute_external: false,
+    )
+  end
+
+  desc "一键发布（等价于 sign → archive → upload）"
+  lane :release do
+    sign
+    archive
+    upload
+  end
+end

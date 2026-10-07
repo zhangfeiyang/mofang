@@ -132,8 +132,9 @@ public final class CubeOverlayView extends View {
             drawLattice(canvas, d);
             animating |= drawRing(canvas, d, dt);
             animating |= drawFlash(canvas, d, now);
-            if (state.phase == CubeUiState.Phase.GUIDING && state.targetInView && tracked) {
-                drawTurnArrow(canvas, d, now);
+            if (state.phase == CubeUiState.Phase.GUIDING && state.guideStep != null
+                    && state.stepOnLiveFace && tracked) {
+                drawStepArrow(canvas, d, now);
                 animating = true;
             }
         }
@@ -357,15 +358,86 @@ public final class CubeOverlayView extends View {
     }
 
     /**
+     * The current step's direction cue, on the face the user is holding up: a ring when that whole
+     * face turns, an arrow along the row or column a side or middle layer carries across it.
+     * The back layer gets none: an arrow above the face landed on the top bar whenever the cube
+     * was held high, and the guide card already shows that layer's top row moving.
+     */
+    private void drawStepArrow(Canvas canvas, float d, long now) {
+        GuideStep step = state.guideStep;
+        if (step.turnsFrontFace()) {
+            drawRingArrow(canvas, d, now, step.quarters > 0, step.isHalfTurn());
+            return;
+        }
+        int[] axis = step.viewAxis();
+        if (axis[2] != 0) return;
+        // The frame was read in the detection's own corner order; the drawn quad may start from
+        // another corner, so map the detection's grid rather than the drawn one.
+        for (int j = 0; j < 4; j++) {
+            int i = (j - shownShift + 4) % 4;
+            quad[j * 2] = shown[i * 2];
+            quad[j * 2 + 1] = shown[i * 2 + 1];
+        }
+        double[] toView = Homography.fromSquare(3, quad);
+        if (toView == null) return;
+        // Grid units: u to the right, v down, one sticker each; view +y is grid -v.
+        int[] dir = step.motion(GuideStep.VIEW_FRONT);
+        double cu = 1.5 + axis[0] * step.layer, cv = 1.5 - axis[1] * step.layer;
+        double du = dir[0], dv = -dir[1], reach = 1.3;
+        Homography.apply(toView, cu - du * reach, cv - dv * reach, point);
+        float x0 = (float) point[0], y0 = (float) point[1];
+        Homography.apply(toView, cu + du * reach, cv + dv * reach, point);
+        float x1 = (float) point[0], y1 = (float) point[1];
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeWidth(10 * d);
+        paint.setColor(0x66000000);
+        canvas.drawLine(x0, y0, x1, y1, paint);
+        paint.setStrokeWidth(6 * d);
+        paint.setColor(MINT);
+        path.reset();
+        path.moveTo(x0, y0);
+        path.lineTo(x1, y1);
+        paint.setPathEffect(flow[(int) ((now / 45) % flow.length)]);
+        canvas.drawPath(path, paint);
+        paint.setPathEffect(null);
+        paint.setStrokeCap(Paint.Cap.BUTT);
+
+        float len = (float) Math.hypot(x1 - x0, y1 - y0);
+        if (len < 1f) return;
+        float ux = (x1 - x0) / len, uy = (y1 - y0) / len;
+        float head = 16 * d;
+        path.reset();
+        path.moveTo(x1 + ux * head * 0.5f, y1 + uy * head * 0.5f);
+        path.lineTo(x1 - ux * head * 0.6f - uy * head * 0.75f, y1 - uy * head * 0.6f + ux * head * 0.75f);
+        path.lineTo(x1 - ux * head * 0.6f + uy * head * 0.75f, y1 - uy * head * 0.6f - ux * head * 0.75f);
+        path.close();
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawPath(path, paint);
+
+        if (step.isHalfTurn()) drawTwiceBadge(canvas, d, (x0 + x1) / 2f, (y0 + y1) / 2f);
+    }
+
+    private void drawTwiceBadge(Canvas canvas, float d, float x, float y) {
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(26 * d);
+        paint.setFakeBoldText(true);
+        paint.setColor(0xCC000000);
+        canvas.drawCircle(x, y, 22 * d, paint);
+        paint.setColor(MINT);
+        canvas.drawText("×2", x, y + 9 * d, paint);
+        paint.setFakeBoldText(false);
+        paint.setTextAlign(Paint.Align.LEFT);
+    }
+
+    /**
      * A circular arrow around the face to turn, flowing in the turn's direction. The camera looks
      * at that face from outside, which is the viewpoint the move notation is defined from, so
      * clockwise on screen is clockwise on the cube.
      */
-    private void drawTurnArrow(Canvas canvas, float d, long now) {
-        String move = state.currentMove();
-        if (move.isEmpty()) return;
-        boolean counter = move.endsWith("'");
-        boolean twice = move.endsWith("2");
+    private void drawRingArrow(Canvas canvas, float d, long now, boolean counter, boolean twice) {
         float cx = (shown[0] + shown[2] + shown[4] + shown[6]) / 4f;
         float cy = (shown[1] + shown[3] + shown[5] + shown[7]) / 4f;
         float radius = 0;
@@ -401,17 +473,7 @@ public final class CubeOverlayView extends View {
         path.close();
         paint.setStyle(Paint.Style.FILL);
         canvas.drawPath(path, paint);
-        if (twice) {
-            paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(26 * d);
-            paint.setFakeBoldText(true);
-            paint.setColor(0xCC000000);
-            canvas.drawCircle(cx, cy, 22 * d, paint);
-            paint.setColor(MINT);
-            canvas.drawText("×2", cx, cy + 9 * d, paint);
-            paint.setFakeBoldText(false);
-            paint.setTextAlign(Paint.Align.LEFT);
-        }
+        if (twice) drawTwiceBadge(canvas, d, cx, cy);
         paint.setStrokeCap(Paint.Cap.BUTT);
     }
 

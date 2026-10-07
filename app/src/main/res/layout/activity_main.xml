@@ -363,6 +363,16 @@
                     android:textAppearance="@style/Text.Body"
                     android:textColor="@color/text_primary" />
 
+                <TextView
+                    android:id="@+id/link_privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="@string/link_privacy"
+                    android:textAppearance="@style/Text.Caption"
+                    android:textColor="@color/mint" />
+
                 <Button
                     android:id="@+id/btn_help_close"
                     style="@style/PrimaryButton"

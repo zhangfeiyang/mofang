@@ -37,8 +37,15 @@ public final class CubeUiState {
     public final int moveIndex;
     /** True while a background assembly is running. */
     public final boolean busy;
-    /** Guidance: the camera currently sees the face the move turns. */
-    public final boolean targetInView;
+    /** Guidance: the current step, named from how the cube is held, or null. */
+    public final GuideStep guideStep;
+    /** Guidance: notation of the steps after the current one. */
+    public final List<String> upcoming;
+    /**
+     * Guidance: the face in view is the front of {@link #guideStep}'s frame, read upright, so its
+     * lattice can carry the step's arrow.
+     */
+    public final boolean stepOnLiveFace;
 
     private CubeUiState(Builder b) {
         phase = b.phase;
@@ -58,11 +65,9 @@ public final class CubeUiState {
         moves = b.moves == null ? Collections.emptyList() : b.moves;
         moveIndex = b.moveIndex;
         busy = b.busy;
-        targetInView = b.targetInView;
-    }
-
-    public String currentMove() {
-        return moveIndex >= 0 && moveIndex < moves.size() ? moves.get(moveIndex) : "";
+        guideStep = b.guideStep;
+        upcoming = b.upcoming == null ? Collections.emptyList() : b.upcoming;
+        stepOnLiveFace = b.stepOnLiveFace;
     }
 
     public static Builder builder(Phase phase) { return new Builder(phase); }
@@ -73,7 +78,9 @@ public final class CubeUiState {
         private DetectedFace detectedFace;
         private FaceSample liveFace;
         private float stabilizeProgress;
-        private boolean tooFar, busy, targetInView;
+        private boolean tooFar, busy, stepOnLiveFace;
+        private GuideStep guideStep;
+        private List<String> upcoming;
         private Set<CubeColor> scanned;
         private int scannedCount;
         private Map<Character, int[]> preview;
@@ -111,10 +118,15 @@ public final class CubeUiState {
             this.inferred = inferred;
             return this;
         }
-        public Builder moves(List<String> moves, int index, boolean targetInView) {
+        public Builder moves(List<String> moves, int index) {
             this.moves = moves;
             moveIndex = index;
-            this.targetInView = targetInView;
+            return this;
+        }
+        public Builder guide(GuideStep step, List<String> upcoming, boolean onLiveFace) {
+            guideStep = step;
+            this.upcoming = upcoming;
+            stepOnLiveFace = onLiveFace;
             return this;
         }
         public Builder busy(boolean busy) { this.busy = busy; return this; }

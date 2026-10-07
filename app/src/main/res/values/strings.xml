@@ -21,7 +21,9 @@
     <string name="action_grant">授权相机</string>
     <string name="tip_scan_1">一次只对准一个面，整个面都露出来</string>
     <string name="tip_scan_2">保持 20–30 厘米，光线均匀</string>
-    <string name="tip_scan_3">任意顺序；扫到 5 个面即可推算</string>
+    <string name="tip_scan_3">任意顺序；六个面都要扫到</string>
     <string name="help_title">怎么用</string>
-    <string name="help_body">1  扫描：把魔方的一个面正对镜头，网格变绿、圆环走满就采好了。依次露出其余各面，顺序随意；第六面通常能自动推算。\n\n2  核对：识别完成后会展示整个魔方的展开图，颜色对上了就点“开始还原”。\n\n3  还原：按右上角动画拧动对应颜色中心的那一面。镜头看到动作完成会自动进入下一步，也可以随时点“下一步”。\n\n转动记号：R 表示红色中心面顺时针转 90°（正对该面看），R′ 是逆时针，R2 是转 180°。\n\n小技巧：别用手指挡住色块；光线暗时点右上角的补光灯。</string>
+    <string name="link_privacy">隐私政策：相机画面只在本机处理，不收集任何数据 ›</string>
+    <string name="privacy_url" translatable="false">https://zhangfeiyang.github.io/gewu-privacy/cube-ar-privacy.html</string>
+    <string name="help_body">1  扫描：把魔方的一个面正对镜头，网格变绿、圆环走满就采好了。依次露出其余各面，顺序随意，六个面都要扫到。\n\n2  核对：识别完成后会展示整个魔方的展开图，颜色对上了就点“开始还原”。\n\n3  还原：哪一面朝着镜头都行，不用来回找颜色面。提示按你手里魔方的朝向来说，比如“顶层向左拧”“右层向上拧”，右上角的小魔方也和你手里的摆得一样。镜头看到动作完成会自动进入下一步；个别镜头看不出变化的步骤会提示你怎么做，也可以点“下一步”或按音量键翻步。\n\n转动记号：按你拿着的朝向，R L U D F B 分别是右、左、顶、底、前、后层，M 是中间竖层，E 是中间横层。不带符号是顺时针（正对那一层看），′ 是逆时针，2 是转半圈。\n\n小技巧：别用手指挡住色块；光线暗时点右上角的补光灯。</string>
 </resources>

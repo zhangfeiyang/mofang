@@ -1,0 +1,165 @@
+name: iOS Release (App Store)
+
+# 前置条件（详见 ios/APP_STORE_GUIDE.md）：
+# 1. 已加入 Apple Developer Program（$99/年）
+# 2. 已在 App Store Connect 创建 API 密钥（App Manager/Admin 角色）
+# 3. 已在仓库 Settings → Secrets → Actions 配置：
+#      AC_API_KEY_ID      API 密钥的 Key ID
+#      AC_API_ISSUER_ID   Issuer ID
+#      AC_API_KEY_P8      .p8 私钥文件内容（base64：base64 -i AuthKey_XXX.p8）
+#      TEAM_ID            开发者账号 Team ID（10 位字母数字，ASC 首页/Membership 可查）
+# 4. 已在 App Store Connect 创建 App 记录（Bundle ID: com.zhangfeiyang.blockgrid）
+# 满足后，在 Actions 页手动 Run workflow 即可：自动签名 → 归档 → 上传 TestFlight。
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_identifier:
+        description: "Bundle ID(不同 App 复用此流水线时填写;默认 Crystal Grid)"
+        required: false
+        default: "com.zhangfeiyang.blockgrid"
+      app_id:
+        description: "App Store Connect 的 App 数字 ID(新 App 首次配置后填写)"
+        required: false
+        default: "6819887855"
+
+env:
+  # 仅用于 CI runner 上临时登录密钥链的分区列表设置；密钥链本身随 runner 销毁
+  KEYCHAIN_PASSWORD: "fastlane-ci-keychain"
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 26（App Store 要求 iOS 26 SDK）
+        run: |
+          ls -d /Applications/Xcode*.app
+          X26=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          if [ -z "$X26" ]; then
+            echo "::error::runner 镜像上没有 Xcode 26,请改用 macos-26 runner"
+            exit 1
+          fi
+          sudo xcode-select -s "$X26"
+          xcodebuild -version
+
+      - name: Preflight — 校验 secrets 是否已配置
+        env:
+          KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          ISSUER: ${{ secrets.AC_API_ISSUER_ID }}
+          P8: ${{ secrets.AC_API_KEY_P8 }}
+          TEAM: ${{ secrets.TEAM_ID }}
+        run: |
+          missing=""
+          [ -z "$KEY_ID" ] && missing="$missing AC_API_KEY_ID"
+          [ -z "$ISSUER" ] && missing="$missing AC_API_ISSUER_ID"
+          [ -z "$P8" ] && missing="$missing AC_API_KEY_P8"
+          [ -z "$TEAM" ] && missing="$missing TEAM_ID"
+          if [ -n "$missing" ]; then
+            echo "::error::缺少 GitHub Secrets:$missing —— 配置方法见 ios/APP_STORE_GUIDE.md 第 3 步"
+            exit 1
+          fi
+          echo "secrets OK"
+
+      - name: Revoke stale distribution certificates
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+        run: |
+          python3 -m venv /tmp/asc-venv
+          /tmp/asc-venv/bin/pip install --quiet cryptography
+          /tmp/asc-venv/bin/python ios/tools/asc_revoke_certs.py
+
+      - name: Install fastlane
+        run: gem install fastlane --no-document
+
+      - name: Prepare keychain（创建专用密钥链）
+        run: |
+          KC=~/Library/Keychains/crystalgrid-build.keychain
+          security delete-keychain "$KC" 2>/dev/null || true
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KC"
+          security default-keychain -s "$KC"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KC"
+          security set-keychain-settings -t 3600 "$KC"
+          # macOS 新版会在名字后追加 -db 作为实际文件
+          KC_DB=~/Library/Keychains/crystalgrid-build.keychain-db
+          [ -f "$KC_DB" ] || KC_DB=~/Library/Keychains/crystalgrid-build.keychain
+          echo "KC_PATH=$KC_DB" >> "$GITHUB_ENV"
+
+      - name: Sign（证书 + 描述文件）
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          APP_IDENTIFIER: ${{ inputs.app_identifier || 'com.zhangfeiyang.blockgrid' }}
+          CI: "true"
+        run: fastlane ios sign
+        working-directory: ios
+
+      - name: Fix key partitions（防 codesign 授权弹窗）
+        run: |
+          security find-identity -v -p codesigning "$KC_PATH"
+          # 必须成功:未设置分区列表的私钥会让 codesign 等待 GUI 授权,在 CI 上永久挂起
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KC_PATH"
+
+      - name: Archive（归档并导出 IPA）
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          CI: "true"
+        run: |
+          # 看门狗:15 分钟未结束则 dump gym/xcodebuild 日志并失败,避免无限挂起
+          fastlane ios archive &
+          PID=$!
+          for i in $(seq 1 90); do
+            kill -0 $PID 2>/dev/null || break
+            sleep 10
+          done
+          if kill -0 $PID 2>/dev/null; then
+            echo "::warning::archive 超过 15 分钟未完成,转储日志用于诊断"
+            echo "== gym build log =="
+            tail -120 ~/Library/Logs/gym/*.log 2>/dev/null
+            echo "== 进程 =="
+            ps aux | grep -iE "codesign|xcodebuild" | grep -v grep
+            kill -9 $PID 2>/dev/null
+            exit 1
+          fi
+          wait $PID
+        working-directory: ios
+
+      - name: Upload（上传 TestFlight）
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          CI: "true"
+        run: fastlane ios upload
+        working-directory: ios
+
+      - name: Submit & verify（自动提交审核并校验最终状态）
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+          APP_ID: ${{ inputs.app_id || '6819887855' }}
+          POLL_SECONDS: "900"
+        run: |
+          python3 -m venv /tmp/asc-venv
+          /tmp/asc-venv/bin/pip install --quiet cryptography
+          /tmp/asc-venv/bin/python ios/tools/asc_submit_and_verify.py
+
+      - name: Collect artifacts (IPA / dSYM)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-store-build
+          path: |
+            ios/*.ipa
+            ios/*.app.dSYM.zip
+          if-no-files-found: ignore

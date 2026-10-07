@@ -30,9 +30,17 @@ public final class CubeStateAssembler {
     private static final int NAMING_RETRIES = 6;
 
     private final List<FaceSample> pool = new ArrayList<>();
+    /**
+     * Observations ever accepted, eviction notwithstanding. The pool's size stops at
+     * {@link #POOL_LIMIT}, so it cannot tell a retry loop whether anything changed: once full, a
+     * failed attempt was never repeated and the scan sat on its stale refusal for good.
+     */
+    private int accepted;
     private int lastGroupCount;
     private ScanPalette palette;
     private String lastFailure = "";
+    /** See {@link #suspect()}. */
+    private CubeColor suspect;
     /** Remaining attempts across the retry ladders of one {@link #assemble()} call. */
     private int searchBudget;
     /**
@@ -42,7 +50,6 @@ public final class CubeStateAssembler {
      * is cheap.
      */
     private long deadlineNanos = Long.MAX_VALUE;
-    static final long FIVE_FACE_BUDGET_NANOS = 400_000_000L;
     static final long SIX_FACE_BUDGET_NANOS = 1_500_000_000L;
 
     private boolean expired() { return System.nanoTime() > deadlineNanos; }
@@ -67,6 +74,7 @@ public final class CubeStateAssembler {
     public CubeStateAssembler copy() {
         CubeStateAssembler copy = new CubeStateAssembler();
         copy.pool.addAll(pool);
+        copy.accepted = accepted;
         copy.lastGroupCount = lastGroupCount;
         copy.palette = palette;
         copy.lastFailure = lastFailure;
@@ -90,6 +98,7 @@ public final class CubeStateAssembler {
         // and every rejected look is a slower scan. Straddles are dealt with where evidence
         // accumulates: per-colour clustering, the consensus close-filter, and the retry ladder.
         pool.add(face);
+        accepted++;
         labelCache = null;
         namedCache = null;
         if (pool.size() > POOL_LIMIT) evict();
@@ -250,9 +259,12 @@ public final class CubeStateAssembler {
 
     public String lastFailure() { return lastFailure; }
     public List<FaceSample> observations() { return new ArrayList<>(pool); }
+    /** Grows with every accepted observation, even once the pool is full and evicting. */
+    public int accepted() { return accepted; }
 
     public void clear() {
         pool.clear();
+        accepted = 0;
         labelCache = null;
         namedCache = null;
         lastGroupCount = 0;
@@ -428,34 +440,64 @@ public final class CubeStateAssembler {
     }
 
     /**
-     * Best-effort assembly. Six grouped faces are tried first; if they cannot form a legal cube
-     * — usually because a straddling quad contaminated one colour — the noisiest face is dropped
-     * and rebuilt from the other five, the same way a five-face scan infers the missing side.
+     * Assembles the cube from six scanned faces, or returns null with {@link #lastFailure()} set.
+     *
+     * <p>Five faces are never enough. Inferring the sixth used to rescue scans whose six faces
+     * contradicted each other, but the contradiction is a misread sticker, and a misread face
+     * passed to the inference produced a legal cube that was not the one in the hands: a phone
+     * scan swapped one red and one orange sticker, the inference rebuilt yellow from the other
+     * five, and the solve went wrong at step 15. A six-face scan whose readings cannot be
+     * repaired asks for a face to be shown again instead ({@link #suspect()}).
      */
     public String assemble() {
-        boolean complete = isComplete();
-        deadlineNanos = System.nanoTime() + (complete ? SIX_FACE_BUDGET_NANOS : FIVE_FACE_BUDGET_NANOS);
+        suspect = null;
+        if (!isComplete()) {
+            lastFailure = "还没有六个面";
+            return null;
+        }
+        deadlineNanos = System.nanoTime() + SIX_FACE_BUDGET_NANOS;
         timedOut = false;
         try {
-            if (complete) {
-                String six = assembleLegalState();
-                if (six != null) return six;
-                String five = assembleByDroppingAFace();
-                if (five == null && expired()) {
-                    timedOut = true;
-                    lastFailure = "核对超时，继续采集后会再试";
-                }
-                return five;
-            }
-            String five = assembleFromFiveFaces();
-            if (five == null && expired()) {
+            String six = assembleLegalState();
+            if (six == null && expired()) {
                 timedOut = true;
-                lastFailure = "推算超时，继续采集后会再试";
+                lastFailure = "核对超时，继续采集后会再试";
             }
-            return five;
+            return six;
         } finally {
             deadlineNanos = Long.MAX_VALUE;
         }
+    }
+
+    /**
+     * After a failed {@link #assemble()}: the colour of the face whose readings are most in doubt,
+     * to be shown to the camera again, or null when no face stands out.
+     */
+    public CubeColor suspect() { return suspect; }
+
+    /** Forgets every look at the face with this centre colour, so it is read afresh. */
+    public void forget(CubeColor color) {
+        int[] label = clusteredLabels();
+        List<FaceSample> keep = new ArrayList<>();
+        List<NamedGroup> named = namedGroups();
+        FaceSample representative = null;
+        for (NamedGroup group : named) if (group.name == color) representative = group.representative;
+        for (int i = 0; i < pool.size(); i++) {
+            boolean same = representative != null && label != null && label[i] >= 0
+                && label[i] == labelOf(representative, label);
+            if (!same) keep.add(pool.get(i));
+        }
+        if (keep.size() == pool.size()) return;
+        pool.clear();
+        pool.addAll(keep);
+        labelCache = null;
+        namedCache = null;
+        lastGroupCount = distinctFaceCount();
+    }
+
+    private int labelOf(FaceSample look, int[] label) {
+        for (int i = 0; i < pool.size(); i++) if (pool.get(i) == look) return label[i];
+        return Integer.MIN_VALUE;
     }
 
     public String assembleLegalState() {
@@ -509,54 +551,12 @@ public final class CubeStateAssembler {
         state = tryClusterCombinations(raw);
         if (state != null) return state;
 
-        lastFailure = "六面色块对不上魔方结构";
-        return null;
-    }
+        for (int i = 0; i < 6; i++) chosen[i] = consensus(groups.get(i), -1);
+        state = repairBySwaps(chosen);
+        if (state != null) return state;
 
-    /**
-     * Drops the most internally-inconsistent colour group and infers that face from the rest.
-     *
-     * <p>Once the pool reports six colours, {@link #assembleFromFiveFaces()} refuses to run
-     * because it demands exactly five groups. That is what made 6/6 scans stick while 5/6 ones
-     * sometimes proceeded: the extra group was often a contaminated look, not a better cube.
-     */
-    private String assembleByDroppingAFace() {
-        searchBudget = 120;
-        List<List<FaceSample>> raw = groupsOf(6);
-        if (raw == null) return null;
-        List<List<FaceSample>> options = clusterChoices(raw);
-        Integer[] order = {0, 1, 2, 3, 4, 5};
-        java.util.Arrays.sort(order, (a, b) -> {
-            int split = Float.compare(meanSplit(raw.get(b)), meanSplit(raw.get(a)));
-            if (split != 0) return split;
-            int wasteA = raw.get(a).size() - largestCluster(raw.get(a)).size();
-            int wasteB = raw.get(b).size() - largestCluster(raw.get(b)).size();
-            if (wasteA != wasteB) return Integer.compare(wasteB, wasteA);
-            return Integer.compare(raw.get(b).size(), raw.get(a).size());
-        });
-        for (int drop : order) {
-            List<List<FaceSample>> fiveOptions = new ArrayList<>();
-            for (int i = 0; i < 6; i++) if (i != drop) fiveOptions.add(options.get(i));
-            String state = cartesianFive(fiveOptions, 0, new FaceSample[5]);
-            if (state != null) return state;
-        }
-        return null;
-    }
-
-    private String cartesianFive(List<List<FaceSample>> options, int index, FaceSample[] chosen) {
-        if (index == options.size()) {
-            if (searchBudget-- <= 0 || expired()) return null;
-            SixthFaceSolver.Result result = SixthFaceSolver.solve(chosen, deadlineNanos);
-            if (result == null) return null;
-            palette = result.palette;
-            lastFailure = "";
-            return result.state;
-        }
-        for (FaceSample pick : options.get(index)) {
-            chosen[index] = pick;
-            String state = cartesianFive(options, index + 1, chosen);
-            if (state != null) return state;
-        }
+        lastFailure = suspect == null ? "六面色块对不上魔方结构"
+            : "有色块读得不准，请把" + suspect.chinese + "色中心那面再正对镜头看一眼";
         return null;
     }
 
@@ -901,6 +901,144 @@ public final class CubeStateAssembler {
             }
         }
         return null;
+    }
+
+    /** Single swaps tried, cheapest first, before pairs of swaps. */
+    private static final int SWAP_CANDIDATES = 160;
+    /** Cheapest swaps combined into pairs of swaps. */
+    private static final int DOUBLE_SWAP_BASE = 40;
+    /**
+     * A repair is accepted only when the next legal one costs this many times more: two repairs
+     * of similar cost mean the readings cannot tell the cubes apart, and guessing is how a wrong
+     * cube reaches the solver. Exchanging two well-read stickers costs about twice what undoing a
+     * red and an orange read fully the wrong way round does, so the margin must stay below two.
+     */
+    private static final double REPAIR_MARGIN = 1.8;
+
+    /**
+     * Six faces whose colouring is illegal, repaired by exchanging colours between stickers.
+     *
+     * <p>Nine stickers per colour is enforced, so a misread never comes alone: a red read as orange
+     * pushes some orange onto red. Measured on the phone, red and orange swapped on two faces and
+     * the cube failed its check with the counts intact. Exchanging the colours of the two
+     * stickers that sit closest to each other's colour undoes exactly that, and a random exchange
+     * almost never yields a legal cube, so a legal result that clearly beats every other is the
+     * real one. When none does, {@link #suspect} names the face holding the least certain sticker.
+     */
+    private String repairBySwaps(FaceSample[] chosen) {
+        ColorAssignment.Result result = ColorAssignment.assign(chosen, 0);
+        if (result == null) return null;
+        float[][] prototypeOf = new float[CubeColor.values().length][];
+        for (int f = 0; f < 6; f++) prototypeOf[result.faceColors[f].ordinal()] = result.prototypes[f];
+
+        // Cost of naming sticker i colour c, relative to its current colour.
+        int[] cells = new int[48];
+        int n = 0;
+        for (int f = 0; f < 6; f++) for (int c = 0; c < 9; c++) if (c != 4) cells[n++] = f * 9 + c;
+        double[][] extra = new double[48][CubeColor.values().length];
+        double leastMargin = Double.MAX_VALUE;
+        int leastCertain = -1;
+        for (int i = 0; i < 48; i++) {
+            int f = cells[i] / 9, c = cells[i] % 9;
+            CubeColor own = result.colors[f][c];
+            boolean evidence = chosen[f].reliable[c];
+            double base = evidence ? Lab.distanceSquared(chosen[f].lab[c], prototypeOf[own.ordinal()]) : 0;
+            for (int k = 0; k < 6; k++) {
+                CubeColor other = result.faceColors[k];
+                double cost = evidence ? Lab.distanceSquared(chosen[f].lab[c], result.prototypes[k]) : 0;
+                extra[i][other.ordinal()] = cost - base;
+                if (evidence && other != own && cost - base < leastMargin) {
+                    leastMargin = cost - base;
+                    leastCertain = f;
+                }
+            }
+        }
+        suspect = leastCertain < 0 ? null : result.faceColors[leastCertain];
+
+        List<double[]> swaps = new ArrayList<>();
+        for (int i = 0; i < 48; i++) {
+            CubeColor a = result.colors[cells[i] / 9][cells[i] % 9];
+            for (int j = i + 1; j < 48; j++) {
+                CubeColor b = result.colors[cells[j] / 9][cells[j] % 9];
+                if (a == b) continue;
+                swaps.add(new double[]{extra[i][b.ordinal()] + extra[j][a.ordinal()], i, j});
+            }
+        }
+        swaps.sort((x, y) -> Double.compare(x[0], y[0]));
+
+        List<int[]> tries = new ArrayList<>();
+        List<Double> costs = new ArrayList<>();
+        for (int k = 0; k < Math.min(SWAP_CANDIDATES, swaps.size()); k++) {
+            tries.add(new int[]{(int) swaps.get(k)[1], (int) swaps.get(k)[2]});
+            costs.add(swaps.get(k)[0]);
+        }
+        String state = bestRepair(chosen, result, cells, tries, costs);
+        // An ambiguous single swap must not fall through to pairs: a pair that is the only legal
+        // one at its own cost is still a guess when a cheaper rival already exists.
+        if (state != null || ambiguous || expired()) return state;
+
+        // Two independent slips: pairs of the cheapest swaps that share no sticker.
+        List<double[]> doubles = new ArrayList<>();
+        int base = Math.min(DOUBLE_SWAP_BASE, swaps.size());
+        for (int x = 0; x < base; x++) {
+            for (int y = x + 1; y < base; y++) {
+                double[] p = swaps.get(x), q = swaps.get(y);
+                if (p[1] == q[1] || p[1] == q[2] || p[2] == q[1] || p[2] == q[2]) continue;
+                doubles.add(new double[]{p[0] + q[0], x, y});
+            }
+        }
+        doubles.sort((x, y) -> Double.compare(x[0], y[0]));
+        tries.clear();
+        costs.clear();
+        for (double[] d : doubles) {
+            double[] p = swaps.get((int) d[1]), q = swaps.get((int) d[2]);
+            tries.add(new int[]{(int) p[1], (int) p[2], (int) q[1], (int) q[2]});
+            costs.add(d[0]);
+        }
+        return bestRepair(chosen, result, cells, tries, costs);
+    }
+
+    /** Set by {@link #bestRepair} when two legal repairs cost about the same. */
+    private boolean ambiguous;
+
+    /** The cheapest legal repair among {@code tries}, if it clearly beats the next legal one. */
+    private String bestRepair(FaceSample[] chosen, ColorAssignment.Result result, int[] cells,
+                              List<int[]> tries, List<Double> costs) {
+        ambiguous = false;
+        String best = null;
+        double bestCost = 0;
+        for (int t = 0; t < tries.size(); t++) {
+            if (expired()) return null;
+            double cost = costs.get(t);
+            if (best != null && cost > Math.max(bestCost, 1.0) * REPAIR_MARGIN) break;
+            CubeColor[][] colors = new CubeColor[6][];
+            for (int f = 0; f < 6; f++) colors[f] = result.colors[f].clone();
+            int[] swap = tries.get(t);
+            for (int k = 0; k < swap.length; k += 2) {
+                int a = cells[swap[k]], b = cells[swap[k + 1]];
+                CubeColor held = colors[a / 9][a % 9];
+                colors[a / 9][a % 9] = colors[b / 9][b % 9];
+                colors[b / 9][b % 9] = held;
+            }
+            FaceSample[] resolved = new FaceSample[6];
+            for (int f = 0; f < 6; f++) {
+                resolved[f] = new FaceSample(colors[f], chosen[f].lab, chosen[f].reliable,
+                    chosen[f].confidence);
+            }
+            String state = orderAndSearch(resolved);
+            if (state == null || state.equals(best)) continue;
+            if (best != null) {
+                ambiguous = true;
+                return null;
+            }
+            best = state;
+            bestCost = cost;
+        }
+        if (best != null) {
+            palette = ScanPalette.from(result);
+            suspect = null;
+        }
+        return best;
     }
 
     /** Fallback for samples without Lab readings, which keeps the assembler usable on its own. */

@@ -50,6 +50,40 @@ public class ScanFailReplayTest {
         assertTrue(dump.get(4).spatialSplit() < CubeStateAssembler.STRADDLE_SPLIT);
     }
 
+    /**
+     * 2026-10-04, vivo V2502DA: five faces filled the 40-look pool, their inference was
+     * genuinely ambiguous (two green faces both legal), and the green face shown afterwards was
+     * never assembled — the retry gate compared pool sizes, which stay at the cap forever.
+     */
+    @Test public void sixthFaceAfterFullPoolStillAssembles() throws Exception {
+        List<FaceSample> dump = load("/scan-fail-20261004-1935.json");
+        assertEquals(40, dump.size());
+        CubeStateAssembler assembler = new CubeStateAssembler();
+        for (FaceSample face : dump) assembler.put(face);
+        assertEquals(5, assembler.size());
+        assertNull("five faces leave two legal green faces", assembler.copy().assemble());
+
+        int before = assembler.accepted();
+        float[] y = {77, -11, 72}, b = {44, -1, -42}, o = {63, 31, 50}, g = {67, -54, 57},
+            w = {79, -3, 5};
+        float[][] green = {y, b, o, o, g, b, b, w, w};
+        for (int look = 0; look < 2; look++) {
+            CubeColor[] stickers = new CubeColor[9];
+            java.util.Arrays.fill(stickers, CubeColor.UNKNOWN);
+            stickers[4] = CubeColor.GREEN;
+            boolean[] reliable = new boolean[9];
+            java.util.Arrays.fill(reliable, true);
+            float[][] lab = new float[9][];
+            for (int cell = 0; cell < 9; cell++) lab[cell] = green[cell].clone();
+            assembler.put(new FaceSample(stickers, lab, reliable, 1f));
+        }
+        assertEquals(40, assembler.observations().size());
+        assertEquals("the retry gate needs a counter that moves past the pool cap",
+            before + 2, assembler.accepted());
+        assertTrue(assembler.isComplete());
+        assertEquals("FDBDUUFUDBRLRRFFLRDBLLFBBUURLLBDFDUURBLRLDBLUURDDBFFFR", assembler.assemble());
+    }
+
     static List<FaceSample> load(String resource) throws Exception {
         InputStream in = ScanFailReplayTest.class.getResourceAsStream(resource);
         assertNotNull("missing " + resource, in);

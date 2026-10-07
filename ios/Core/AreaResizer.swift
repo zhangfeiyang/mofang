@@ -17,7 +17,8 @@ final class AreaResizer {
     private var horizontal: [Float]
 
     init(srcWidth: Int, srcHeight: Int, dstWidth: Int, dstHeight: Int) {
-        self.srcWidth = srcWidth
+        self.srcWidth = max(srcWidth, 1)
+        self.srcHeight = max(srcHeight, 1)
         self.srcHeight = srcHeight
         self.dstWidth = dstWidth
         self.dstHeight = dstHeight

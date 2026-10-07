@@ -10,3 +10,7 @@ __pycache__/
 # Generated training data (regenerate with tools/synth_cube.py / tools/make_backgrounds.py)
 data/synth*/
 data/backgrounds/
+
+keystore.properties
+*.jks
+*.keystore

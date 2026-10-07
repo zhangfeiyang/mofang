@@ -2,6 +2,8 @@
 <resources>
     <!-- Surfaces: deep teal-black glass over the camera. -->
     <color name="night">#07110F</color>
+    <!-- The launcher icon render's own edge colour, so the adaptive background meets it seamlessly. -->
+    <color name="icon_background">#040F0D</color>
     <color name="glass">#E00A1513</color>
     <color name="glass_strong">#F20A1513</color>
     <color name="glass_stroke">#26FFFFFF</color>

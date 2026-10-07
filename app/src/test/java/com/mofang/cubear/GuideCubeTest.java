@@ -41,34 +41,26 @@ public class GuideCubeTest {
 
     /**
      * Three sides of nine cubies face the viewer, each a plastic shell plus a sticker, and a
-     * turning layer briefly shows more; all of it must fit the fixed quad buffers.
+     * turning layer briefly shows more, cut faces included; all of it must fit the quad buffers
+     * however the cube is held and whichever layer turns.
      */
     @Test public void everyVisibleFaceFitsTheQuadBuffers() {
         GuideCube cube = new GuideCube();
         String scrambled = SOLVED;
         for (String move : "R U F' L2 D B'".split(" ")) scrambled = CubeMoves.apply(scrambled, move);
-        for (char face : "URFDLB".toCharArray()) {
-            for (float twist = 0f; twist > -3.2f; twist -= 0.4f) {
-                int quads = cube.collectFaces(scrambled, face, twist);
-                assertTrue(face + " twist " + twist + ": " + quads, quads >= 36 && quads <= 160);
+        for (char front : "URFDLB".toCharArray()) {
+            CubeFrame held = CubeFrame.seen(front, front % 4);
+            for (String moves : new String[]{"U", "R", "F", "D", "L", "B", "R L'", "U D'"}) {
+                GuideStep step = GuideStep.plan(java.util.Arrays.asList(moves.split(" ")), null, 0, held, 1).get(0);
+                GuideStep wide = GuideStep.wide(moves.split(" ")[0], 0, held);
+                for (float twist = 0f; twist > -3.2f; twist -= 0.4f) {
+                    for (GuideStep turning : new GuideStep[]{step, wide}) {
+                        int quads = cube.collectFaces(scrambled, held, turning.axis, turning.layer, twist);
+                        assertTrue(front + " " + moves + " twist " + twist + ": " + quads,
+                            quads >= 36 && quads < 256);
+                    }
+                }
             }
         }
-    }
-
-    @Test public void orientPutsEachFaceOnPositiveZ() {
-        assertFront('F', 0, 0, 1);
-        assertFront('B', 0, 0, -1);
-        assertFront('U', 0, 1, 0);
-        assertFront('D', 0, -1, 0);
-        assertFront('R', 1, 0, 0);
-        assertFront('L', -1, 0, 0);
-    }
-
-    private static void assertFront(char face, float x, float y, float z) {
-        float[] out = new float[3];
-        GuideCube.orientFaceToFront(new float[]{x, y, z}, face, out);
-        assertEquals(face + " x", 0f, out[0], 1e-5f);
-        assertEquals(face + " y", 0f, out[1], 1e-5f);
-        assertEquals(face + " z", 1f, out[2], 1e-5f);
     }
 }

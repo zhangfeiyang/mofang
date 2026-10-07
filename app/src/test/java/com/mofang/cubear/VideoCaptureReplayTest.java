@@ -14,7 +14,8 @@ import org.junit.Test;
  * sticker or two, which is what the assembler has to survive. Before the pool fixes a single junk
  * look evicted a real face, and before the gate a thumb over the face formed a junk group that
  * stalled the five-face inference: the same video needed 72 captures and seconds of failed
- * attempts. Now the cube must come out right as soon as the fifth face is collected, and fast.
+ * attempts. The five-face inference is gone (it built wrong cubes from misread faces), so the
+ * cube must come out right soon after the sixth face is collected, and fast.
  */
 public class VideoCaptureReplayTest {
     /** The demo cube, recovered from an earlier full assembly and confirmed by every capture. */
@@ -25,17 +26,15 @@ public class VideoCaptureReplayTest {
         assertTrue(captures.size() > 150);
 
         CubeStateAssembler assembler = new CubeStateAssembler();
-        int lastAttempt = -1, solvedAt = -1, attempts = 0;
+        int lastAttempt = -1, solvedAt = -1, attempts = 0, completeAt = -1;
         String state = null;
         long spent = 0;
         for (int i = 0; i < captures.size() && state == null; i++) {
             assembler.put(captures.get(i));
-            // MainActivity.maybeAssemble: six collected faces whenever the pool changed, five
-            // once the pool has grown by three since the last try.
-            int pool = assembler.observations().size();
-            boolean due = assembler.isComplete() ? pool != lastAttempt
-                : assembler.size() == 5 && (lastAttempt < 0 || pool - lastAttempt >= 3);
-            if (!due) continue;
+            // MainActivity.maybeAssemble: six collected faces, whenever the pool changed.
+            int pool = assembler.accepted();
+            if (!assembler.isComplete() || pool == lastAttempt) continue;
+            if (completeAt < 0) completeAt = i;
             lastAttempt = pool;
             attempts++;
             long start = System.nanoTime();
@@ -43,10 +42,12 @@ public class VideoCaptureReplayTest {
             spent += System.nanoTime() - start;
             if (state != null) solvedAt = i;
         }
-        System.out.println("video replay: solved at capture " + solvedAt + " after " + attempts
+        System.out.println("video replay: six faces at capture " + completeAt + ", solved at "
+            + solvedAt + " after " + attempts
             + " attempts, " + spent / 1_000_000 + " ms of assembly");
         assertEquals("the demo cube", TRUTH, state);
-        assertTrue("solved by capture " + solvedAt, solvedAt >= 0 && solvedAt < 40);
+        assertTrue("solved at capture " + solvedAt + ", six faces at " + completeAt,
+            solvedAt >= 0 && solvedAt - completeAt <= 3);
         assertTrue(attempts + " attempts took " + spent / 1_000_000 + " ms", spent < 1_000_000_000L);
     }
 }

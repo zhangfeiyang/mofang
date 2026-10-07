@@ -69,6 +69,8 @@ public final class MainActivity extends AppCompatActivity {
     private static final long CAPTURE_SPAN_NANOS = 90_000_000L;
     /** Consecutive failed six-face verifications after which the pool is presumed poisoned. */
     private static final int POISONED_AFTER = 3;
+    /** How long looks must keep matching nothing before the user is told something went wrong. */
+    private static final long MISMATCH_GRACE_MS = 2500;
     private static final String PREFS = "cubear";
 
     // --- views
@@ -120,7 +122,20 @@ public final class MainActivity extends AppCompatActivity {
     private String cubeState;
     private CubeColor inferredColor;
     private final List<String> solution = new ArrayList<>();
-    private MoveTracker moveTracker;
+    private GuideSession guide;
+    /**
+     * How the cube is held before guiding starts, learned from the last scan look and from steady
+     * looks on the review screen; the guide takes it over and keeps it up to date.
+     */
+    private CubeFrame frame = CubeFrame.DEFAULT;
+    /** False until a look at the cube has established {@link #frame} for this cube. */
+    private boolean frameKnown;
+    /** The last look captured while scanning: it tells how the cube is held once the state is known. */
+    private FaceSample lastScanLook;
+    private boolean lastScanLookUpright;
+    private String spokenStep = "";
+    /** When a look last matched an expected state; mid-turn looks match nothing for a moment. */
+    private long lastMatchAt;
     private long guideStartedAt;
     private long solvedAfterMillis;
     private String errorTitle = "", errorDetail = "";
@@ -241,6 +256,14 @@ public final class MainActivity extends AppCompatActivity {
         });
         findViewById(R.id.btn_help).setOnClickListener(v -> showHelp(true));
         findViewById(R.id.btn_help_close).setOnClickListener(v -> showHelp(false));
+        findViewById(R.id.link_privacy).setOnClickListener(v -> {
+            try {
+                startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW,
+                    android.net.Uri.parse(getString(R.string.privacy_url))));
+            } catch (android.content.ActivityNotFoundException ignored) {
+                // No browser on the device: nothing sensible to do.
+            }
+        });
         findViewById(R.id.btn_restart).setOnClickListener(v -> confirmRestart());
         prevButton.setOnClickListener(v -> stepBy(-1));
         nextButton.setOnClickListener(v -> stepBy(+1));
@@ -381,14 +404,19 @@ public final class MainActivity extends AppCompatActivity {
         liveFace = face == null ? null : face.sample;
         if (face != null) lastSeenAt = SystemClock.uptimeMillis();
         tooFar = liveDetection != null && liveDetection.minSideFraction() < MIN_CAPTURE_SIDE_FRACTION;
-        boolean tracking = phase == CubeUiState.Phase.SCANNING || phase == CubeUiState.Phase.GUIDING;
+        // The review screen keeps watching too: by the time "开始还原" is tapped, the first
+        // instruction already knows which face the user is holding up.
+        boolean tracking = phase == CubeUiState.Phase.SCANNING || phase == CubeUiState.Phase.GUIDING
+            || phase == CubeUiState.Phase.READY;
         if (tracking) {
             boolean admitted = gate.admit(face) && !tooFar;
             FaceSample stable = stabilizer.push(admitted ? face.sample : null, nanos);
             if (stable != null) {
                 stabilizer.resetCandidate();
-                if (phase == CubeUiState.Phase.SCANNING) onCapture(stable);
-                else onGuideObservation(stable, face);
+                boolean upright = face != null && MoveTracker.rollStable(face.corners);
+                if (phase == CubeUiState.Phase.SCANNING) onCapture(stable, upright);
+                else if (phase == CubeUiState.Phase.READY) learnFrame(stable, cubeState, upright);
+                else onGuideObservation(stable, upright);
             }
             meterOn(face);
         }
@@ -397,8 +425,10 @@ public final class MainActivity extends AppCompatActivity {
 
     // ------------------------------------------------------------------------------ scanning
 
-    private void onCapture(FaceSample face) {
+    private void onCapture(FaceSample face, boolean upright) {
         if (face.lab == null && face.center() == CubeColor.UNKNOWN) return;
+        lastScanLook = face;
+        lastScanLookUpright = upright;
         boolean wasNew = assembler.put(face);
         if (wasNew) {
             overlay.onFaceCaptured();
@@ -413,15 +443,11 @@ public final class MainActivity extends AppCompatActivity {
      */
     private void maybeAssemble() {
         if (busy || phase != CubeUiState.Phase.SCANNING) return;
-        int pool = assembler.observations().size();
-        boolean complete = assembler.isComplete();
-        if (complete) {
-            if (pool == lastAttemptPool) return;
-        } else if (assembler.size() == 5) {
-            if (lastAttemptPool >= 0 && pool - lastAttemptPool < 3) return;
-        } else {
-            return;
-        }
+        int pool = assembler.accepted();
+        // Six scanned faces or nothing: inferring the sixth turned misread stickers into a wrong
+        // cube that only showed itself halfway through the solve.
+        if (!assembler.isComplete() || pool == lastAttemptPool) return;
+        final boolean complete = true;
         lastAttemptPool = pool;
         busy = true;
         final int generation = session;
@@ -435,9 +461,14 @@ public final class MainActivity extends AppCompatActivity {
             }
             final ScanPalette found = snapshot.palette();
             final String why = snapshot.lastFailure();
+            final CubeColor suspect = state == null ? snapshot.suspect() : null;
             // A search that ran out of time proves nothing about the pool.
             final boolean conclusive = complete && !snapshot.lastAttemptTimedOut();
-            runOnUiThread(() -> onAssembled(generation, conclusive, state, moves, found, why));
+            runOnUiThread(() -> {
+                // The doubtful face is read afresh: its old looks would outvote new ones.
+                if (generation == session && suspect != null) assembler.forget(suspect);
+                onAssembled(generation, conclusive, state, moves, found, why);
+            });
         });
         publish();
     }
@@ -480,6 +511,9 @@ public final class MainActivity extends AppCompatActivity {
         inferredColor = found == null ? null : found.missingColor();
         solution.clear();
         solution.addAll(moves);
+        frame = CubeFrame.DEFAULT;
+        frameKnown = false;
+        if (lastScanLook != null) learnFrame(lastScanLook, state, lastScanLookUpright);
         pulse(true);
         if (solution.isEmpty()) {
             phase = CubeUiState.Phase.SOLVED;
@@ -496,7 +530,9 @@ public final class MainActivity extends AppCompatActivity {
 
     private void startGuiding() {
         if (cubeState == null) return;
-        moveTracker = new MoveTracker(cubeState, solution);
+        guide = new GuideSession(cubeState, solution, frame, frameKnown);
+        spokenStep = "";
+        lastMatchAt = SystemClock.uptimeMillis();
         guideStartedAt = SystemClock.uptimeMillis();
         stabilizer.resetCandidate();
         phase = CubeUiState.Phase.GUIDING;
@@ -504,24 +540,43 @@ public final class MainActivity extends AppCompatActivity {
         publish();
     }
 
-    private void onGuideObservation(FaceSample stable, DetectedFace face) {
-        if (moveTracker == null) return;
+    private void onGuideObservation(FaceSample stable, boolean upright) {
+        if (guide == null) return;
         if (palette != null) palette.maybeLearn(stable);
         FaceSample named = palette == null ? stable : palette.relabel(stable);
-        MoveTracker.Outcome outcome = moveTracker.observe(named,
-            face != null && MoveTracker.rollStable(face.corners));
-        if (outcome == MoveTracker.Outcome.ADVANCED) onStepChanged(true);
+        GuideSession.Result result = guide.observe(named, upright);
+        if (result == GuideSession.Result.ADVANCED || result == GuideSession.Result.CONFIRMED) {
+            lastMatchAt = SystemClock.uptimeMillis();
+        }
+        if (result == GuideSession.Result.ADVANCED) onStepChanged(true);
+        else if (result == GuideSession.Result.CONFIRMED) respeakIfReworded();
+    }
+
+    /** Updates {@link #frame} from a steady look on the review screen. */
+    private void learnFrame(FaceSample stable, String state, boolean upright) {
+        if (stable == null) return;
+        FaceSample named = palette == null ? stable : palette.relabel(stable);
+        CubeFrame next = GuideSession.fromLook(named, state, upright, frameKnown ? frame : null);
+        if (next == null) return;
+        frame = next;
+        frameKnown = true;
+    }
+
+    /** The step to show now, or null when there is none. */
+    private GuideStep currentStep() {
+        return guide == null ? null : guide.currentStep();
     }
 
     private void stepBy(int delta) {
-        if (moveTracker == null) return;
-        if (delta > 0) moveTracker.next(); else moveTracker.previous();
+        if (guide == null) return;
+        if (delta > 0) guide.next(); else guide.previous();
         stabilizer.resetCandidate();
+        lastMatchAt = SystemClock.uptimeMillis();
         onStepChanged(delta > 0);
     }
 
     private void onStepChanged(boolean forward) {
-        if (moveTracker.done()) {
+        if (guide.done()) {
             phase = CubeUiState.Phase.SOLVED;
             solvedAfterMillis = SystemClock.uptimeMillis() - guideStartedAt;
             overlay.celebrate();
@@ -535,9 +590,23 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private void speakCurrentMove() {
-        if (moveTracker == null || moveTracker.done()) return;
-        String move = moveTracker.currentMove();
-        speak("第 " + (moveTracker.index() + 1) + " 步，" + faceName(move) + "，" + turnName(move));
+        GuideStep step = currentStep();
+        if (step == null) return;
+        spokenStep = step.first + ":" + step.caption();
+        speak(stepTitle(step).replace("–", " 到 ") + "，" + step.caption()
+            + (step.seen ? "" : isLastStep(step) ? "，拧完把魔方转个面给镜头看" : "，拧完点下一步"));
+    }
+
+    /** Re-reads the instruction when a re-grip changed its words but not the step. */
+    private void respeakIfReworded() {
+        GuideStep step = currentStep();
+        if (step != null && !spokenStep.equals(step.first + ":" + step.caption())) speakCurrentMove();
+    }
+
+    private static String stepTitle(GuideStep step) {
+        return step.count == 1
+            ? "第 " + (step.first + 1) + " 步"
+            : "第 " + (step.first + 1) + "–" + (step.first + step.count) + " 步";
     }
 
     private void speak(String text) {
@@ -590,7 +659,10 @@ public final class MainActivity extends AppCompatActivity {
         cubeState = null;
         inferredColor = null;
         solution.clear();
-        moveTracker = null;
+        guide = null;
+        frame = CubeFrame.DEFAULT;
+        frameKnown = false;
+        lastScanLook = null;
         liveFace = null;
         liveDetection = null;
         tooFar = false;
@@ -654,9 +726,9 @@ public final class MainActivity extends AppCompatActivity {
                     : faces == 5 ? "再转出最后一个面" : "正在核对颜色";
                 String detail;
                 if (!lastFailure.isEmpty() && !busy) {
-                    detail = lastFailure + (faces >= 5 ? "，再把各面正对镜头看一眼" : "");
+                    detail = lastFailure;
                 } else if (busy) {
-                    detail = faces == 5 ? "正在根据五个面推算第六面…" : "六个面已集齐，正在校验…";
+                    detail = "六个面已集齐，正在校验…";
                 } else if (faces == 0) {
                     detail = "整个面露出来，保持不动，圆环走满就采好了";
                 } else {
@@ -671,14 +743,27 @@ public final class MainActivity extends AppCompatActivity {
                     "核对一下展开图的颜色，然后开始还原。共 " + solution.size() + " 步");
                 break;
             case GUIDING: {
-                String move = moveTracker.currentMove();
-                b.moves(moveTracker.moves(), moveTracker.index(), targetInView(move));
-                String detail = targetInView(move)
-                    ? "按箭头方向拧" + faceName(move) + "，完成后自动进入下一步"
-                    : "把" + faceName(move) + "（" + CubeColor.fromFace(move.charAt(0)).chinese
-                        + "色中心）对准镜头，或直接按动画拧";
-                b.text("第 " + (moveTracker.index() + 1) + " 步", detail);
-                if (moveTracker.mismatches() >= 4) b.hint("画面和预期不一致：拧错了可以点“上一步”");
+                b.moves(guide.tracker().moves(), guide.tracker().index());
+                List<GuideStep> plan = guide.plan(5);
+                if (plan.isEmpty()) break;
+                GuideStep step = plan.get(0);
+                List<String> upcoming = new ArrayList<>();
+                for (int i = 1; i < plan.size(); i++) upcoming.add(plan.get(i).notation());
+                b.guide(step, upcoming, stepOnLiveFace(step));
+                b.text(stepTitle(step), guideDetail(step, plan.size() > 1 ? plan.get(1) : null));
+                // Looks taken mid-turn match nothing; only a cube at rest in an unexpected state
+                // means a slip.
+                if (guide.settledMismatches() >= 3
+                        && SystemClock.uptimeMillis() - lastMatchAt > MISMATCH_GRACE_MS) {
+                    b.hint("画面和预期不一致：拧错了可以点“上一步”");
+                } else if (!guide.frameKnown()) {
+                    b.hint("先把魔方任意一面对准镜头，提示会按你手里的朝向来说");
+                } else if (!step.seen) {
+                    // In grey body text this was missed: people kept turning a layer that never
+                    // advanced. It belongs where the eye already goes.
+                    b.hint(isLastStep(step) ? "最后一下镜头看不出来：拧完把魔方转到旁边一面给镜头看"
+                        : "这一步镜头看不出来，拧完点“下一步”");
+                }
                 break;
             }
             case SOLVED:
@@ -703,10 +788,55 @@ public final class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    private boolean targetInView(String move) {
-        if (move.isEmpty() || liveFace == null || liveDetection == null) return false;
+    /**
+     * What to do with the hands for this step, beyond its caption.
+     *
+     * @param next the step after it, or null
+     */
+    private String guideDetail(GuideStep step, GuideStep next) {
+        if (!step.seen && isLastStep(step)) {
+            // The cube comes out solved: every side shows it, so any side the camera sees will do.
+            return "拧完魔方就复原了，但朝你这面看不出变化。把魔方转到旁边任意一面给镜头看，或点“下一步”";
+        }
+        if (step.then != null) {
+            return step.seen ? "第一下镜头看不出来，两下连着拧完，会自动进入下一步"
+                : "两下连着拧完点“下一步”";
+        }
+        if (step.isWide()) {
+            return "等于拧后层：捏住最后面那层不动，前面两层一起拧。这样镜头看得到，拧完自动进入下一步";
+        }
+        if (!step.seen) {
+            // The tracker looks ahead: the next visible move proves this one was made too.
+            String onward = next != null && next.seen
+                ? "；也可以直接接着做「" + next.caption() + "」，会自动跟上" : "";
+            if (!step.isBack()) return "这一步镜头看不出变化，拧完点“下一步”" + onward;
+            String how = step.isHalfTurn() ? "拧半圈"
+                : "顶上那排往" + (step.direction().equals("向左") ? "左" : "右") + "推";
+            return "后层离你最远，" + how + "。镜头看不到后层，拧完点“下一步”" + onward;
+        }
+        if (step.isMiddle()) {
+            return (step.viewAxis()[0] != 0 ? "左右两层不动，只拧中间那一列" : "上下两层不动，只拧中间那一行")
+                + "。拧完朝你的中心块会换颜色，这是正常的";
+        }
+        return "保持这一面朝着镜头，按箭头拧，拧完自动进入下一步";
+    }
+
+    /** Whether nothing comes after this step. */
+    private boolean isLastStep(GuideStep step) {
+        return guide != null && step.first + step.count >= guide.tracker().size();
+    }
+
+    /**
+     * Whether the live face can carry the step's arrow: it is the front of the step's frame and
+     * upright enough that its corners are read in the same order the frame was learned in.
+     */
+    private boolean stepOnLiveFace(GuideStep step) {
+        if (guide == null || !guide.frameKnown() || liveFace == null || liveDetection == null) {
+            return false;
+        }
         FaceSample named = palette == null ? liveFace : palette.relabel(liveFace);
-        return named.center().face == move.charAt(0);
+        return named.center().face == step.frame.front()
+            && MoveTracker.rollStable(liveDetection.corners);
     }
 
     private void render(CubeUiState s) {
@@ -748,18 +878,19 @@ public final class MainActivity extends AppCompatActivity {
 
         guideSection.setVisibility(guiding ? View.VISIBLE : View.GONE);
         guideCard.setVisibility(guiding ? View.VISIBLE : View.GONE);
-        if (guiding) {
-            String move = s.currentMove();
-            guideCube.show(moveTracker.state(), move);
+        if (guiding && s.guideStep != null) {
+            GuideStep step = s.guideStep;
+            String partway = step.then == null ? null
+                : guide.tracker().states()[step.first + step.alone().count];
+            guideCube.show(guide.tracker().state(), partway, step);
             stepProgress.setProgress((int) (1000L * s.moveIndex / Math.max(1, s.moves.size())));
-            setText(moveBig, prettyMove(move));
-            setText(moveDesc, faceName(move) + " · " + turnName(move));
-            moveDesc.setCompoundDrawablesRelativeWithIntrinsicBounds(swatch(move), null, null, null);
+            setText(moveBig, step.notation());
+            moveBig.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, step.then == null ? 52 : 34);
+            setText(moveDesc, step.caption() + (step.isHalfTurn() ? "" : " 90°"));
+            moveDesc.setCompoundDrawablesRelativeWithIntrinsicBounds(swatch(step.face), null, null, null);
             StringBuilder next = new StringBuilder("接下来");
-            for (int i = s.moveIndex + 1; i < Math.min(s.moves.size(), s.moveIndex + 5); i++) {
-                next.append("   ").append(prettyMove(s.moves.get(i)));
-            }
-            setText(moveNext, s.moveIndex + 1 < s.moves.size() ? next.toString() : "最后一步");
+            for (String notation : s.upcoming) next.append("   ").append(notation);
+            setText(moveNext, s.upcoming.isEmpty() ? "最后一步" : next.toString());
             prevButton.setEnabled(s.moveIndex > 0);
             prevButton.setAlpha(s.moveIndex > 0 ? 1f : 0.45f);
         }
@@ -789,18 +920,21 @@ public final class MainActivity extends AppCompatActivity {
     private android.graphics.drawable.Drawable swatchCache;
     private char swatchFace = '?';
 
-    /** A small dot in the colour of the face to turn, next to its description. */
-    private android.graphics.drawable.Drawable swatch(String move) {
-        if (move.isEmpty()) return null;
-        if (swatchCache == null || swatchFace != move.charAt(0)) {
+    /**
+     * A small dot in the centre colour of the layer to turn, next to its description: a check
+     * that the app and the hands agree on how the cube is held. None for a middle layer.
+     */
+    private android.graphics.drawable.Drawable swatch(char face) {
+        if (face == 0) return null;
+        if (swatchCache == null || swatchFace != face) {
             android.graphics.drawable.GradientDrawable dot = new android.graphics.drawable.GradientDrawable();
             dot.setShape(android.graphics.drawable.GradientDrawable.OVAL);
-            dot.setColor(CubeColor.fromFace(move.charAt(0)).argb);
+            dot.setColor(CubeColor.fromFace(face).argb);
             dot.setStroke(Math.round(getResources().getDisplayMetrics().density), 0x66FFFFFF);
             int size = Math.round(14 * getResources().getDisplayMetrics().density);
             dot.setSize(size, size);
             swatchCache = dot;
-            swatchFace = move.charAt(0);
+            swatchFace = face;
         }
         return swatchCache;
     }
@@ -828,23 +962,6 @@ public final class MainActivity extends AppCompatActivity {
             case SOLVED: return solvedAfterMillis > 0 ? "用时 " + formatDuration(solvedAfterMillis) : "";
             default: return "";
         }
-    }
-
-    static String prettyMove(String move) {
-        if (move == null || move.isEmpty()) return "";
-        return move.endsWith("'") ? move.charAt(0) + "′" : move;
-    }
-
-    static String faceName(String move) {
-        if (move == null || move.isEmpty()) return "";
-        return CubeColor.fromFace(move.charAt(0)).chinese + "色面";
-    }
-
-    static String turnName(String move) {
-        if (move == null || move.isEmpty()) return "";
-        if (move.endsWith("'")) return "逆时针 90°";
-        if (move.endsWith("2")) return "转 180°";
-        return "顺时针 90°";
     }
 
     private static String formatDuration(long millis) {
