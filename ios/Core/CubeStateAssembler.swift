@@ -92,7 +92,9 @@ final class CubeStateAssembler {
         var victim = -1
         if let label = label {
             let size = CubeStateAssembler.groupSizes(label)
-            for i in 0..<newest where victim < 0 where label[i] < 0 { victim = i }
+            for i in 0..<newest where victim < 0 {
+                if label[i] < 0 { victim = i }
+            }
             for i in 0..<newest where victim < 0 {
                 if size[label[i]] < CubeStateAssembler.MIN_LOOKS_PER_FACE { victim = i }
             }
@@ -101,7 +103,9 @@ final class CubeStateAssembler {
                 for id in 0..<size.count {
                     if largest < 0 || size[id] > size[largest] { largest = id }
                 }
-                for i in 0..<newest where victim < 0 where label[i] == largest { victim = i }
+                for i in 0..<newest where victim < 0 {
+                    if label[i] == largest { victim = i }
+                }
             }
         }
         pool.remove(at: victim < 0 ? 0 : victim)
