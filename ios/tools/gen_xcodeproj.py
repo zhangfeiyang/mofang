@@ -49,8 +49,7 @@ SOURCES = [
     "CubeAR/Views/GuideCubeView.swift",
 ]
 
-LPROJS = ["en", "ar", "bn", "de", "es", "fa", "fr", "hi", "id", "it", "ja", "ko",
-          "ms", "nl", "pl", "pt", "ru", "sv", "th", "tr", "uk", "vi", "zh-Hans", "zh-Hant"]
+LPROJS = ["en", "zh-Hans"]
 
 _bundle_id = "com.mofang.cubear"  # 与安卓 applicationId 一致
 _marketing_version = "1.0.0"               # 与安卓 versionName 一致
@@ -137,7 +136,7 @@ def main():
     g_res = add_group("Resources", "Resources",
                       [assets_ref.uuid, ], "grp:Resources")
     g_game = add_group("CubeAR", "CubeAR",
-                       [g_app.uuid, g_audio.uuid, g_support.uuid, g_ui.uuid, g_res.uuid], "grp:CubeAR")
+                       [g_app.uuid, g_ui.uuid, g_res.uuid], "grp:CubeAR")
     g_products = add_group("Products", None, [app_ref.uuid], "grp:Products")
     g_main = Obj("PBXGroup", uuid=uid("grp:main"), comment="main",
                  children=lst([g_core.uuid, g_game.uuid, g_products.uuid]),
