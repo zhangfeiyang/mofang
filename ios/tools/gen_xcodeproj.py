@@ -132,37 +132,10 @@ def main():
                      lastKnownFileType="folder.assetcatalog", path=q("Assets.xcassets"), sourceTree='"<group>"')
     objects.append(assets_ref)
 
-    # 本地化资源：PBXVariantGroup + 各 lproj 的 PBXFileReference
-    variant_groups = {}
-    for table in ("Localizable.strings", "InfoPlist.strings"):
-        children = []
-        for lproj in LPROJS:
-            rel = f"CubeAR/Resources/{lproj}.lproj/{table}"
-            fr = Obj("PBXFileReference", uuid=uid("fr:" + rel), comment=lproj,
-                     lastKnownFileType="text.plist.strings", name=q(lproj),
-                     path=q(f"{lproj}.lproj/{table}"), sourceTree='"<group>"')
-            objects.append(fr)
-            children.append(fr.uuid)
-        vg = Obj("PBXVariantGroup", uuid=uid("vg:" + table), comment=table,
-                 children=lst(children), name=q(table), sourceTree='"<group>"')
-        objects.append(vg)
-        variant_groups[table] = vg
+    # Cube AR 是单语言 App
 
-    # ---- 分组 ----
-    g_core = add_group("Core", "Core", [file_refs[rel].uuid for rel in SOURCES if rel.startswith("Core/")], "grp:Core")
-    g_app = Obj("PBXGroup", uuid=uid("grp:App"), comment="App",
-                children=lst([file_refs["CubeAR/App/CubeARApp.swift"].uuid, info_ref.uuid]),
-                name=q("App"), path=q("App"), sourceTree='"<group>"')
-    objects.append(g_app)
-    g_audio = add_group("Audio", "Audio",
-                        [file_refs[rel].uuid for rel in SOURCES if rel.startswith("CubeAR/Audio/")], "grp:Audio")
-    g_support = add_group("Support", "Support",
-                          [file_refs[rel].uuid for rel in SOURCES if rel.startswith("CubeAR/Support/")], "grp:Support")
-    g_ui = add_group("UI", "UI",
-                     [file_refs[rel].uuid for rel in SOURCES if rel.startswith("CubeAR/UI/")], "grp:UI")
     g_res = add_group("Resources", "Resources",
-                      [assets_ref.uuid, variant_groups["Localizable.strings"].uuid,
-                       variant_groups["InfoPlist.strings"].uuid], "grp:Resources")
+                      [assets_ref.uuid, ], "grp:Resources")
     g_game = add_group("CubeAR", "CubeAR",
                        [g_app.uuid, g_audio.uuid, g_support.uuid, g_ui.uuid, g_res.uuid], "grp:CubeAR")
     g_products = add_group("Products", None, [app_ref.uuid], "grp:Products")
@@ -189,11 +162,7 @@ def main():
     res_build_files = [
         Obj("PBXBuildFile", uuid=uid("bf:assets"), comment="Assets.xcassets in Resources",
             fileRef=assets_ref.uuid),
-        Obj("PBXBuildFile", uuid=uid("bf:vg-local"), comment="Localizable.strings in Resources",
-            fileRef=variant_groups["Localizable.strings"].uuid),
-        Obj("PBXBuildFile", uuid=uid("bf:vg-info"), comment="InfoPlist.strings in Resources",
-            fileRef=variant_groups["InfoPlist.strings"].uuid),
-    ]
+                    ]
     for bf in res_build_files:
         objects.append(bf)
     resources_phase = Obj("PBXResourcesBuildPhase", uuid=uid("phase:resources"), comment="Resources",
