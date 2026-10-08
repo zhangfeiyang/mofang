@@ -1,2 +1,2 @@
-app_identifier("com.zhangfeiyang.blockgrid") # 与安卓 applicationId 一致
+app_identifier("com.mofang.cubear") # 与安卓 applicationId 一致
 # 团队信息通过环境变量/密钥在 CI 中提供（见 .github/workflows/ios-release.yml）

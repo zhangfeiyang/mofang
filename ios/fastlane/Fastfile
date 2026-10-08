@@ -9,7 +9,7 @@
 default_platform(:ios)
 
 # 跨 App 复用:设置环境变量 APP_IDENTIFIER 即可用于其他 App(见 ios/REUSABLE_PIPELINE.md)
-APP_ID = ENV["APP_IDENTIFIER"] || "com.zhangfeiyang.blockgrid"
+APP_ID = ENV["APP_IDENTIFIER"] || "com.mofang.cubear"
 
 platform :ios do
   desc "解锁 keychain → 签发证书 → 生成描述文件 → 配置工程签名"
@@ -44,7 +44,7 @@ platform :ios do
 
     # 把工程切到手动签名并显式指定刚生成的描述文件
     update_code_signing_settings(
-      path: "CrystalGrid.xcodeproj",
+      path: "CubeAR.xcodeproj",
       bundle_identifier: APP_ID,
       team_id: ENV["TEAM_ID"],
       profile_name: profile_name,
@@ -76,8 +76,8 @@ platform :ios do
     UI.important("归档使用描述文件: #{profile_name}")
 
     gym(
-      project: "CrystalGrid.xcodeproj",
-      scheme: "CrystalGrid",
+      project: "CubeAR.xcodeproj",
+      scheme: "CubeAR",
       clean: true,
       export_method: "app-store",
       export_options: {
