@@ -48,26 +48,35 @@ jobs:
           APP=$(find ios/build/sim/Build/Products -name "CubeAR.app" -type d | head -1)
           [ -n "$APP" ] || { echo "::error::CubeAR.app not found"; exit 1; }
           xcrun simctl install "$UDID" "$APP"
-          xcrun simctl launch "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 1
+          xcrun simctl launch --console-pty "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 1 > shots/app1.log 2>&1 &
           sleep 10
           xcrun simctl io "$UDID" screenshot --type=png shots/01_scanning.png
           xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
+          tail -20 shots/app1.log || true
+          xcrun simctl spawn "$UDID" log show --last 1m --predicate 'processImagePath CONTAINS "CubeAR"' --style compact 2>/dev/null | tail -30 || true
 
       - name: Screenshot 2 — ready（扫描完成）
         run: |
           xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
-          xcrun simctl launch "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 2
+          xcrun simctl launch --console-pty "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 2 > shots/app2.log 2>&1 &
           sleep 10
           xcrun simctl io "$UDID" screenshot --type=png shots/02_ready.png
           xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
+          tail -20 shots/app2.log || true
 
       - name: Screenshot 3 — guiding（引导中）
         run: |
-          xcrun simctl launch "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 3
+          xcrun simctl launch --console-pty "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 3 > shots/app3.log 2>&1 &
           sleep 10
           xcrun simctl io "$UDID" screenshot --type=png shots/03_guiding.png
+          tail -20 shots/app3.log || true
+          # 收集模拟器崩溃报告便于诊断
+          find ~/Library/Logs/DiagnosticReports -name "CubeAR*" -mmin -10 -exec tail -40 {} \; 2>/dev/null || true
 
       - uses: actions/upload-artifact@v4
         with:
           name: appstore-screenshots
-          path: shots/*.png
+          path: |
+            shots/*.png
+            shots/*.log
+
