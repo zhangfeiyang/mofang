@@ -131,6 +131,7 @@ jobs:
         working-directory: ios
 
       - name: Submit & verify
+        if: always()  # 即使上传因构建号冲突失败,已上传的构建仍需提审
         env:
           AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
           AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
