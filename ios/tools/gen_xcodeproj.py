@@ -39,7 +39,7 @@ if not os.path.isdir(os.path.join(IOS, MLMODEL)):
 
 _bundle_id = "com.mofang.cubear"  # 与安卓 applicationId 一致
 _marketing_version = "1.0.0"               # 与安卓 versionName 一致
-_build_number = "2"                        # TestFlight 每次上传需递增
+_build_number = "3"                        # TestFlight 每次上传需递增
 
 _counter = [0]
 _prefix = "C0"

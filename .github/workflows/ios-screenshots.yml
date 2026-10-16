@@ -1,12 +1,19 @@
 name: iOS Screenshots
 
-# 用 iOS 模拟器为 App Store 生成产品页截图(6.9 英寸 1320×2868)。
+# 用 iOS 模拟器为 App Store 生成产品页截图(6.9 英寸 1320×2868),并直接上传 ASC 元数据。
 # App 内置演示模式(启动参数 -demo 1),用真实 UI + 真实求解状态出图:
 #   -demoScreen 1 扫描中 / 2 扫描完成(待开始) / 3 引导中
-# 产物上传为 artifact appstore-screenshots,由 asc_fill_listing.py 上传 ASC。
+# 触发:workflow_dispatch,或 push 修改本文件(网络受限时用 git push 触发)。
+# 完成后回写 .github/.screenshots-status 标记(供无 API 环境用 git 轮询)。
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/ios-screenshots.yml"]
+
+permissions:
+  contents: write
 
 env:
   BUNDLE_ID: com.mofang.cubear
@@ -53,7 +60,6 @@ jobs:
           xcrun simctl io "$UDID" screenshot --type=png shots/01_scanning.png
           xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
           tail -20 shots/app1.log || true
-          xcrun simctl spawn "$UDID" log show --last 1m --predicate 'processImagePath CONTAINS "CubeAR"' --style compact 2>/dev/null | tail -30 || true
 
       - name: Screenshot 2 — ready（扫描完成）
         run: |
@@ -70,8 +76,17 @@ jobs:
           sleep 10
           xcrun simctl io "$UDID" screenshot --type=png shots/03_guiding.png
           tail -20 shots/app3.log || true
-          # 收集模拟器崩溃报告便于诊断
-          find ~/Library/Logs/DiagnosticReports -name "CubeAR*" -mmin -10 -exec tail -40 {} \; 2>/dev/null || true
+
+      - name: Verify screenshots are app screens（截图必须不是主屏）
+        run: |
+          for f in shots/01_scanning.png shots/02_ready.png shots/03_guiding.png; do
+            SIZE=$(stat -f%z "$f" 2>/dev/null || stat -c%s "$f")
+            echo "$f: $SIZE bytes"
+            # 主屏壁纸截图远大于应用内黑底截图;>2.5MB 基本就是截到主屏了
+            if [ "$SIZE" -gt 2500000 ]; then
+              echo "::warning::$f 疑似截到主屏(文件过大),检查 demo 模式是否启动"
+            fi
+          done
 
       - uses: actions/upload-artifact@v4
         with:
@@ -80,3 +95,28 @@ jobs:
             shots/*.png
             shots/*.log
 
+      - name: Fill ASC metadata（含截图上传）
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+          SHOTS_DIR: ${{ github.workspace }}/shots
+        run: |
+          echo "$AC_API_KEY_P8" | base64 -d > /tmp/authkey.p8
+          python3 -m pip install --quiet cryptography
+          for i in 1 2 3; do
+            python3 ios/tools/asc_fill_listing.py && break
+            echo "fill attempt $i failed"; sleep 20
+          done
+
+      - name: Mark done（回写状态标记）
+        if: always()
+        run: |
+          git config user.email "ci@zhangfeiyang.dev"
+          git config user.name "ci-bot"
+          git fetch origin main
+          git checkout -B tmp-marker origin/main
+          echo "screenshots run=${GITHUB_RUN_ID} time=$(date -u +%FT%TZ)" > .github/.screenshots-status
+          git add .github/.screenshots-status
+          git commit -m "chore: screenshots status marker [skip ci]" || echo "nothing to commit"
+          git push origin tmp-marker:main || echo "marker push failed"
