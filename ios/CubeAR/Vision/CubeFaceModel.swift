@@ -63,16 +63,14 @@ final class CubeFaceModel {
         resizer!.resize(rgba, &input)
 
         // 构建 CVPixelBuffer 或 MLMultiArray 输入
-        guard let array = try? MLMultiArray(shape: [1, 3, NSNumber(value: INPUT_HEIGHT), NSNumber(value: INPUT_WIDTH)],
+        let inW = Self.INPUT_WIDTH, inH = Self.INPUT_HEIGHT
+        guard let array = try? MLMultiArray(shape: [1, 3, NSNumber(value: inH), NSNumber(value: inW)],
                                             dataType: .float32) else {
             return DebugResult(corners: nil, presence: -1, accepted: false, reject: "tensor",
                                areaFraction: 0, aspect: 0, shortest: 0)
         }
-        let plane = INPUT_WIDTH * INPUT_HEIGHT
-        for i in 0..<plane {
-            array[i] = NSNumber(value: input[i])
-            array[plane + i] = NSNumber(value: input[plane + i])
-            array[2 * plane + i] = NSNumber(value: input[2 * plane + i])
+        input.withUnsafeBufferPointer { src in
+            memcpy(array.dataPointer, src.baseAddress!, input.count * MemoryLayout<Float>.size)
         }
 
         guard let output = try? model.prediction(from: array) else {

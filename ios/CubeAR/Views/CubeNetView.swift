@@ -20,7 +20,7 @@ final class CubeNetView: UIView {
         for f in 0..<6 {
             var argb = [Int](repeating: 0, count: 9)
             for i in 0..<9 {
-                argb[i] = Int(CubeColor.fromFace(chars[face * 9 + i]).rgb)
+                argb[i] = Int(CubeColor.fromFace(chars[f * 9 + i]).rgb)
             }
             full[order[f]] = argb
         }
@@ -66,7 +66,7 @@ final class CubeNetView: UIView {
                 let ct = top + CGFloat(i / 3) * step + inner * 0.5
                 let colorValue: Int
                 if colors == nil {
-                    colorValue = i == 4 ? PaletteHelper.withAlpha(centre, 0x99) : 0x1FFFFFFF
+                    colorValue = i == 4 ? PaletteHelper.withAlpha(Int(centre), 0x99) : 0x1FFFFFFF
                 } else {
                     colorValue = colors![i] == 0 ? 0x33FFFFFF : colors![i]
                 }
