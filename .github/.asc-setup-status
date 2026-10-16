@@ -1,0 +1,7 @@
+asc-setup run=38887297291 time=2026-10-16T10:27:14Z
+--- setup log tail ---
+contentRightsDeclaration(DOES_NOT_USE_THIRD_PARTY_CONTENT): 200
+template review detail missing: 404 {"errors": [{"id": "d08b4e23-4b5e-4921-a679-978436c17f5b", "status": "404", "code": "PATH_ERROR", "title": "The URL path is not valid", "detail": "The relationship 'appStoreReviewDetail' does not exist"}]}
+appDataUsages: mine=-1 template=-1
+appPrices: mine has -1 entries
+REVIEW SETUP DONE
