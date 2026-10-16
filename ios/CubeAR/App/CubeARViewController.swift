@@ -3,16 +3,23 @@ import AVFoundation
 
 // Port of com.mofang.cubear.MainActivity.java — 主控制器:相机 + 分析 + 引导 + UI。
 // 安卓端使用音量键翻步;iOS 无等价物理键,改为屏幕大按钮。
+// 帧管线与安卓一致:CubeAnalyzer(网络+精化+锚点兜底)→ CaptureGate 采集门控 →
+// FaceStabilizer 多帧确认 → 进入扫描池/引导观察。
 
 final class CubeARViewController: UIViewController {
     enum Phase { case permission, scanning, ready, guiding, solved }
 
+    /// 中心过小(离得太远)的面不采集。
+    static let MIN_CAPTURE_SIDE_FRACTION: Float = 0.08
+    /// 两次可采集读数之间的最小间隔(纳秒),与安卓 CAPTURE_SPAN_NANOS 一致。
+    static let CAPTURE_SPAN_NANOS: Double = 90_000_000
+
     private let cameraManager = CameraManager()
-    private let captureGate = CaptureGate()
     private let assembler = CubeStateAssembler()
-    private let analyzer: CubeAnalyzer
+    private let gate = CaptureGate()
+    private let stabilizer = FaceStabilizer(framesRequired: 2, minSpanNanos: CAPTURE_SPAN_NANOS)
     private let detectionTracker = DetectionTracker()
-    private let captureGateRef = CaptureGate()
+    private var analyzer: CubeAnalyzer?
 
     private var phase: Phase = .scanning
     private var solutionMoves: [String] = []
@@ -34,9 +41,6 @@ final class CubeARViewController: UIViewController {
     private let torchButton = UIButton(type: .system)
     private let helpButton = UIButton(type: .system)
 
-    private let analyzer_ = CubeAnalyzer { face in
-        // 分析回调由 CameraManager 驱动
-    }
     private var model: CubeFaceModel?
     private let speech = AVSpeechSynthesizer()
     private var voiceEnabled = true
@@ -46,10 +50,8 @@ final class CubeARViewController: UIViewController {
     private var cubeState = ""
     private var lastStepTime: Double = 0
 
-    init() {
-        analyzer = CubeAnalyzer { _ in }
-        super.init(nibName: nil, bundle: nil)
-    }
+    /// 截图/演示模式:启动参数 `-demo 1` 打开;`-demoScreen N` 选择画面。
+    private let demoMode = UserDefaults.standard.bool(forKey: "demo")
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
@@ -59,8 +61,13 @@ final class CubeARViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupUI()
-        setupCamera()
         model = CubeFaceModel.create()
+        analyzer = CubeAnalyzer(model: model)
+        if demoMode {
+            setupDemo()
+        } else {
+            setupCamera()
+        }
         // 预热求解器表
         solveWorker.async {
             Search.initTables()
@@ -69,7 +76,9 @@ final class CubeARViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkCameraPermission()
+        if !demoMode {
+            checkCameraPermission()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,6 +122,7 @@ final class CubeARViewController: UIViewController {
         detailLabel.textColor = .lightGray
         detailLabel.font = .systemFont(ofSize: 14)
         detailLabel.textAlignment = .center
+        detailLabel.numberOfLines = 2
         view.addSubview(detailLabel)
 
         // 按钮
@@ -198,48 +208,29 @@ final class CubeARViewController: UIViewController {
 
     // MARK: - 帧处理管线
 
+    /// 相机分析线程:CubeAnalyzer 产出检测面后交主线程处理。
     private func processFrame(_ rgba: [UInt8], width: Int, height: Int) {
-        guard let model = model else { return }
-        let detection = model.detect(rgba, width: width, height: height)
-        guard let result = detection else { return }
-
-        let refiner = FaceRefiner()
-        let lattice = result.toResult != nil
-            ? refiner.refine(rgba, width: width, height: height, quad: result.toResult!.corners)
-            : nil
-
-        guard let lattice = lattice else { return }
-        let sample = FaceSampler.sample(rgba, width: width, height: height,
-                                        quad: lattice.quad, refined: true,
-                                        quality: Float(lattice.support / 9))
-        guard let sample = sample else { return }
-
+        guard let face = analyzer?.process(rgba, width: width, height: height) else { return }
         DispatchQueue.main.async { [weak self] in
-            self?.updateUI(sample: sample, quad: lattice.quad, width: width, height: height)
+            self?.handleFace(face)
         }
     }
 
-    @objc private func processFrame(rgba: [UInt8], width: Int, height: Int) {
-        // 由 CameraManager 回调
-    }
+    /// 主线程:按阶段消费检测面(对应安卓 handleFrame)。
+    private func handleFace(_ face: DetectedFace) {
+        let nanos = Double(DispatchTime.now().uptimeNanoseconds)
 
-    private func updateUI(sample: FaceSample, quad: [Double], width: Int, height: Int) {
         switch phase {
         case .scanning:
-            let grew = assembler.put(sample)
-            netView.setState(assembler.lastState ?? "")
-            statusLabel.text = "扫描魔方 (\(assembler.size)/6 面)"
-            if assembler.isComplete {
-                phase = .ready
-                solveWorker.async { [weak self] in
-                    let result = self?.assembler.assembleLegalState()
-                    DispatchQueue.main.async {
-                        self?.onAssembled(result)
-                    }
-                }
+            let admitted = gate.admit(face)
+                && face.minSideFraction >= CubeARViewController.MIN_CAPTURE_SIDE_FRACTION
+            if let stable = stabilizer.push(admitted ? face.sample : nil, nowNanos: nanos) {
+                stabilizer.resetCandidate()
+                onCapture(stable)
             }
         case .guiding:
-            let result = guideSession?.observe(sample, true)
+            let upright = MoveTracker.rollStable(face.corners)
+            let result = guideSession?.observe(face.sample, upright)
             if result == .advanced {
                 speakCurrentStep()
                 if guideSession?.isDone == true {
@@ -251,13 +242,26 @@ final class CubeARViewController: UIViewController {
             break
         }
 
-        // 更新叠加层
-        let corners: [Float] = quad.enumerated().map { i, v in
-            i % 2 == 0 ? Float(v) * Float(bounds.width) / Float(width)
-                : Float(v) * Float(bounds.height) / Float(height)
-        }
-        overlayView.detectedFace = DetectedFace(sample, corners, width, height, 1)
+        // AR 叠加层:跟踪器桥接丢失帧,四边形不闪烁
+        overlayView.detectedFace = detectionTracker.update(face)
         overlayView.stabilizeProgress = 0
+    }
+
+    /// 一条稳定的可采集读数进入扫描池(对应安卓 onCapture)。
+    private func onCapture(_ face: FaceSample) {
+        if face.centerLab == nil { return }
+        assembler.put(face)
+        netView.setFaces(assembler.preview())
+        statusLabel.text = "扫描魔方 (\(assembler.size)/6 面)"
+        if assembler.isComplete {
+            phase = .ready
+            solveWorker.async { [weak self] in
+                let result = self?.assembler.assembleLegalState()
+                DispatchQueue.main.async {
+                    self?.onAssembled(result)
+                }
+            }
+        }
     }
 
     private func onAssembled(_ result: String?) {
@@ -294,12 +298,63 @@ final class CubeARViewController: UIViewController {
     }
 
     private func speakCurrentStep() {
-        guard voiceEnabled, let step = guideSession?.currentStep else { return }
-        let utterance = AVSpeechUtterance(string: step.caption())
-        utterance.language = "zh-CN"
-        speech.speak(utterance)
+        guard let step = guideSession?.currentStep else { return }
+        if voiceEnabled {
+            let utterance = AVSpeechUtterance(string: step.caption())
+            utterance.language = "zh-CN"
+            speech.speak(utterance)
+        }
         detailLabel.text = step.caption()
         guideCubeView.step = step
+    }
+
+    // MARK: - 演示模式(截图/无相机环境)
+
+    /// `-demo 1` 启动时构造真实扫描/引导画面;
+    /// `-demoScreen 1` 扫描中,2 待开始,3 引导中。
+    private func setupDemo() {
+        voiceEnabled = false
+        let state = MTools.fromScramble("R U R' U' F2 D' L B2 R' D F U2 L' D2 B R2 U' F2 L2 D")
+        switch UserDefaults.standard.integer(forKey: "demoScreen") {
+        case 1:
+            // 扫描中:展开图只显示已"扫到"的两个面
+            let chars = Array(state)
+            let order = Array("URFDLB")
+            var faces: [Character: [Int]] = [:]
+            for (f, ch) in order.enumerated() where f < 2 {
+                faces[ch] = (0..<9).map { Int(CubeColor.fromFace(chars[f * 9 + $0]).rgb) }
+            }
+            netView.setFaces(faces)
+            statusLabel.text = "扫描魔方 (2/6 面)"
+            detailLabel.text = "把魔方的一个面正对镜头"
+        default:
+            solveWorker.async { [weak self] in
+                Search.initTables()
+                let search = Search()
+                let solution = search.solution(state, 24, 1_000_000, 200, 0)
+                DispatchQueue.main.async {
+                    self?.showDemoSolved(state: state, solution: solution, guiding: UserDefaults.standard.integer(forKey: "demoScreen") == 3)
+                }
+            }
+        }
+    }
+
+    private func showDemoSolved(state: String, solution: String, guiding: Bool) {
+        guard !solution.hasPrefix("Error") else { return }
+        cubeState = state
+        solutionMoves = solution.split(separator: " ").map { String($0) }
+        guideSession = GuideSession(state, solutionMoves, nil, false)
+        netView.setState(state)
+        guideCubeView.isHidden = false
+        if guiding {
+            guideSession?.next()
+            startTapped()
+        } else {
+            phase = .ready
+            speakCurrentStep()
+            statusLabel.text = "共 \(solutionMoves.count) 步"
+            startButton.isHidden = false
+        }
     }
 
     // MARK: - 按钮事件
@@ -328,6 +383,8 @@ final class CubeARViewController: UIViewController {
 
     @objc private func rescanTapped() {
         assembler.clear()
+        gate.reset()
+        stabilizer.resetCandidate()
         phase = .scanning
         startButton.isHidden = true
         nextButton.isHidden = true

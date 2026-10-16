@@ -257,11 +257,6 @@ enum SixthFaceSolver {
                                     _ found: inout Set<String>, _ budget: inout [Double]) {
         if budget[0] <= 0 { return }
         if index == named.count {
-            var sig = ""
-            for f in 0..<6 {
-                if let slot = slots[f] { sig += "[\(slot.signature)]" } else { sig += "(nil)" }
-            }
-        }
             var state = [Character](repeating: "?", count: 54)
             for face in 0..<FACE_CHARS.count {
                 let slot = slots[face]

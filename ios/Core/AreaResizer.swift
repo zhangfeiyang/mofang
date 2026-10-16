@@ -19,7 +19,6 @@ final class AreaResizer {
     init(srcWidth: Int, srcHeight: Int, dstWidth: Int, dstHeight: Int) {
         self.srcWidth = max(srcWidth, 1)
         self.srcHeight = max(srcHeight, 1)
-        self.srcHeight = srcHeight
         self.dstWidth = dstWidth
         self.dstHeight = dstHeight
         var colIndex: [[Int]] = []

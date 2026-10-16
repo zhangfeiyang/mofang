@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-"""Generate ios/CubeAR.xcodeproj (classic pbxproj, Xcode 14+) from a fixed file list.
+"""Generate ios/CubeAR.xcodeproj (classic pbxproj, Xcode 14+) from the file tree.
 
 Deterministic output; safe to re-run. Run from repo root:  python3 ios/tools/gen_xcodeproj.py
+
+注意:
+- Core/*.swift 由目录 glob 得来,新增核心文件无需改这里;
+- cubeface.mlmodel 必须在 Sources 构建阶段(Xcode 会用 coremlc 编译成 .mlmodelc 入包);
+- 构建配置名必须是 "Debug"/"Release" 首字母大写——scheme 的 ArchiveAction 写死 "Release"。
 """
+import glob
 import json
 import os
 
@@ -10,36 +16,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 IOS = os.path.join(ROOT, "ios")
 PROJ_DIR = os.path.join(IOS, "CubeAR.xcodeproj")
 
-SOURCES = [
-    "Core/Board.swift",
-    "Core/CubeAnalyzer.swift",
-    "Core/CubeColor.swift",
-    "Core/CubeFrame.swift",
-    "Core/CubeMoves.swift",
-    "Core/CubeRules.swift",
-    "Core/CubeStateAssembler.swift",
-    "Core/CubeUiState.swift",
-    "Core/Detection.swift",
-    "Core/FaceRefiner.swift",
-    "Core/FaceSample.swift",
-    "Core/FaceSampler.swift",
-    "Core/FaceStabilizer.swift",
-    "Core/GuideSession.swift",
-    "Core/GuideStep.swift",
-    "Core/Homography.swift",
-    "Core/Hungarian.swift",
-    "Core/Lab.swift",
-    "Core/MTools.swift",
-    "Core/MoveTracker.swift",
-    "Core/MUtil.swift",
-    "Core/CubieCube.swift",
-    "Core/CoordCube.swift",
-    "Core/Search.swift",
-    "Core/ScanPalette.swift",
-    "Core/ColorAssignment.swift",
-    "Core/AreaResizer.swift",
-    "Core/SixthFaceSolver.swift",
-    "Core/Tutorial.swift",
+CORE_SOURCES = sorted(
+    os.path.relpath(p, IOS) for p in glob.glob(os.path.join(IOS, "Core", "*.swift"))
+)
+
+SOURCES = CORE_SOURCES + [
     "CubeAR/App/CubeARApp.swift",
     "CubeAR/App/CubeARViewController.swift",
     "CubeAR/Vision/CubeFaceModel.swift",
@@ -48,8 +29,13 @@ SOURCES = [
     "CubeAR/Views/CubeNetView.swift",
     "CubeAR/Views/GuideCubeView.swift",
 ]
+for rel in SOURCES:
+    if not os.path.isfile(os.path.join(IOS, rel)):
+        raise SystemExit(f"source file missing: {rel}")
 
-LPROJS = ["en", "zh-Hans"]
+MLMODEL = "CubeAR/Resources/cubeface.mlpackage"
+if not os.path.isdir(os.path.join(IOS, MLMODEL)):
+    raise SystemExit(f"missing {MLMODEL} —— 先运行 ONNX→CoreML 转换(见 IOS_PORT_NOTES.md)")
 
 _bundle_id = "com.mofang.cubear"  # 与安卓 applicationId 一致
 _marketing_version = "1.0.0"               # 与安卓 versionName 一致
@@ -67,11 +53,10 @@ def uid(tag):
     _cache[tag] = u
     return u
 
-def comment_for(u):
-    names = _names
-    return names.get(u, u)
-
 _names = {}
+
+def comment_for(u):
+    return _names.get(u, u)
 
 class Obj:
     def __init__(self, isa, **fields):
@@ -79,14 +64,6 @@ class Obj:
         self.fields = fields
         self.uuid = fields.pop("uuid")
         _names[self.uuid] = fields.pop("comment", self.uuid)
-
-    def render(self):
-        lines = [f"\t\t{self.uuid} = {{"]
-        lines.append(f"\t\t\tisa = {self.isa};")
-        for k, v in self.fields.items():
-            lines.append(f"\t\t\t{k} = {v};")
-        lines.append("\t\t};")
-        return "\n".join(lines)
 
 def q(s):
     return f'"{s}"'
@@ -106,16 +83,6 @@ def main():
     objects.append(app_ref)
 
     file_refs = {}
-    groups = {}
-
-    def add_group(name, path, children, parent_tag):
-        g = Obj("PBXGroup", uuid=uid(parent_tag), comment=name, children=lst(children), name=q(name) if name else '""',
-                path=q(path) if path else None, sourceTree='"<group>"')
-        # 移除 None 字段
-        g.fields = {k: v for k, v in g.fields.items() if v is not None}
-        objects.append(g)
-        return g
-
     for rel in SOURCES:
         base = os.path.basename(rel)
         fr = Obj("PBXFileReference", uuid=uid("fr:" + rel), comment=base,
@@ -131,13 +98,38 @@ def main():
                      lastKnownFileType="folder.assetcatalog", path=q("Assets.xcassets"), sourceTree='"<group>"')
     objects.append(assets_ref)
 
-    # Cube AR 是单语言 App
+    # mlpackage 是目录 bundle,Xcode 用 folder.mlpackage 类型(Apple 官方示例同款写法)
+    mlmodel_ref = Obj("PBXFileReference", uuid=uid("mlmodel"), comment="cubeface.mlpackage",
+                      lastKnownFileType="folder.mlpackage",
+                      path=q("cubeface.mlpackage"), sourceTree='"<group>"')
+    objects.append(mlmodel_ref)
 
-    g_res = add_group("Resources", "Resources",
-                      [assets_ref.uuid, ], "grp:Resources")
-    g_game = add_group("CubeAR", "CubeAR",
-                       [g_app.uuid, g_ui.uuid, g_res.uuid], "grp:CubeAR")
-    g_products = add_group("Products", None, [app_ref.uuid], "grp:Products")
+    groups = {}
+
+    def add_group(tag, name, path, children):
+        g = Obj("PBXGroup", uuid=uid(tag), comment=name, children=lst(children), name=q(name),
+                path=q(path) if path else None, sourceTree='"<group>"')
+        g.fields = {k: v for k, v in g.fields.items() if v is not None}
+        objects.append(g)
+        groups[tag] = g
+        return g
+
+    g_core = add_group("grp:Core", "Core", "Core", [file_refs[r].uuid for r in CORE_SOURCES])
+    g_app = add_group("grp:App", "App", "App",
+                      [file_refs["CubeAR/App/CubeARApp.swift"].uuid,
+                       file_refs["CubeAR/App/CubeARViewController.swift"].uuid,
+                       info_ref.uuid])
+    g_vision = add_group("grp:Vision", "Vision", "Vision",
+                         [file_refs["CubeAR/Vision/CubeFaceModel.swift"].uuid,
+                          file_refs["CubeAR/Vision/CameraManager.swift"].uuid])
+    g_ui = add_group("grp:UI", "Views", "Views",
+                     [file_refs["CubeAR/Views/CubeOverlayView.swift"].uuid,
+                      file_refs["CubeAR/Views/CubeNetView.swift"].uuid,
+                      file_refs["CubeAR/Views/GuideCubeView.swift"].uuid])
+    g_res = add_group("grp:Resources", "Resources", "Resources", [assets_ref.uuid, mlmodel_ref.uuid])
+    g_game = add_group("grp:CubeAR", "CubeAR", "CubeAR",
+                       [g_app.uuid, g_vision.uuid, g_ui.uuid, g_res.uuid])
+    g_products = add_group("grp:Products", "Products", None, [app_ref.uuid])
     g_main = Obj("PBXGroup", uuid=uid("grp:main"), comment="main",
                  children=lst([g_core.uuid, g_game.uuid, g_products.uuid]),
                  sourceTree='"<group>"')
@@ -151,6 +143,12 @@ def main():
         objects.append(bf)
         src_build_files.append(bf.uuid)
 
+    # mlpackage 与 Swift 源码一样放 Sources 阶段,Xcode 构建时编译为 .mlmodelc 入包(Apple 示例工程同款)
+    mlmodel_bf = Obj("PBXBuildFile", uuid=uid("bf:mlmodel"), comment="cubeface.mlpackage in Sources",
+                     fileRef=mlmodel_ref.uuid)
+    objects.append(mlmodel_bf)
+    src_build_files.append(mlmodel_bf.uuid)
+
     sources_phase = Obj("PBXSourcesBuildPhase", uuid=uid("phase:sources"), comment="Sources",
                         buildActionMask=2147483647, files=lst(src_build_files),
                         runOnlyForDeploymentPostprocessing=0)
@@ -158,15 +156,12 @@ def main():
     frameworks_phase = Obj("PBXFrameworksBuildPhase", uuid=uid("phase:frameworks"), comment="Frameworks",
                            buildActionMask=2147483647, files=lst([]), runOnlyForDeploymentPostprocessing=0)
     objects.append(frameworks_phase)
-    res_build_files = [
-        Obj("PBXBuildFile", uuid=uid("bf:assets"), comment="Assets.xcassets in Resources",
-            fileRef=assets_ref.uuid),
-                    ]
-    for bf in res_build_files:
-        objects.append(bf)
+    assets_bf = Obj("PBXBuildFile", uuid=uid("bf:assets"), comment="Assets.xcassets in Resources",
+                    fileRef=assets_ref.uuid)
+    objects.append(assets_bf)
     resources_phase = Obj("PBXResourcesBuildPhase", uuid=uid("phase:resources"), comment="Resources",
                           buildActionMask=2147483647,
-                          files=lst([bf.uuid for bf in res_build_files]),
+                          files=lst([assets_bf.uuid]),
                           runOnlyForDeploymentPostprocessing=0)
     objects.append(resources_phase)
 
@@ -216,7 +211,7 @@ def main():
                    buildSettings=render_settings(fields), name=q(name))
 
     cfg_debug = build_config("Debug", "cfg:debug", debug_extra)
-    cfg_release = build_config("release", "cfg:release", release_extra)
+    cfg_release = build_config("Release", "cfg:release", release_extra)
     objects.append(cfg_debug)
     objects.append(cfg_release)
 
@@ -233,7 +228,7 @@ def main():
                          defaultConfigurationIsVisible=0, defaultConfigurationName=q("Release"))
     objects.append(cfglist_target)
 
-    known_regions = lst([q(r) for r in ["en"] + [l for l in LPROJS if l != "en"]], indent=6)
+    known_regions = lst([q("en"), q("zh-Hans")], indent=6)
 
     # OpenStep 格式里每个字典条目都必须以 ';' 结尾——嵌套字典最容易漏
     attributes_value = (
@@ -252,7 +247,7 @@ def main():
                   attributes=attributes_value,
                   buildConfigurationList=uid("cfglist:project"),
                   compatibilityVersion=q("Xcode 14.0"),
-                  developmentRegion=q("en"), hasScannedForEncodings=0,
+                  developmentRegion=q("zh-Hans"), hasScannedForEncodings=0,
                   knownRegions=known_regions, mainGroup=g_main.uuid,
                   productRefGroup=g_products.uuid, projectDirPath=q(""),
                   projectRoot=q(""), targets=lst([target.uuid]))
@@ -351,14 +346,15 @@ def main():
     print(f"wrote {scheme_path}")
 
     # ---- Info.plist ----
+    # 界面文案为中文,开发区域 zh-Hans;相机权限 purpose string 必填(缺失会被 App Store 拒审)
     info_plist = f"""<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>zh-Hans</string>
 	<key>CFBundleDisplayName</key>
-	<string>Crystal Grid</string>
+	<string>Cube AR</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -373,14 +369,12 @@ def main():
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>CFBundleLocalizations</key>
-	<array>
-{chr(10).join('\t\t<string>' + l + '</string>' for l in LPROJS)}
-	</array>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>需要使用相机拍摄魔方,识别六个面的颜色后生成还原步骤。</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIRequiresFullScreen</key>

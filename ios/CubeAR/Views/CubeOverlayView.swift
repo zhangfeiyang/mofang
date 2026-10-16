@@ -82,7 +82,7 @@ final class CubeOverlayView: UIView {
     }
 
     private func drawStickers(_ ctx: CGContext, _ face: DetectedFace) {
-        guard let sample = face.sample else { return }
+        let sample = face.sample
         let scaleX = bounds.width / CGFloat(face.imageWidth)
         let scaleY = bounds.height / CGFloat(face.imageHeight)
         for i in 0..<9 {

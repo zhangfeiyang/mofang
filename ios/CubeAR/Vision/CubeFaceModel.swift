@@ -51,7 +51,6 @@ final class CubeFaceModel {
     func detect(_ rgba: [UInt8], width: Int, height: Int) -> DebugResult? {
         evaluate(rgba, width: width, height: height).toResult
     }
-
     func evaluate(_ rgba: [UInt8], width: Int, height: Int) -> DebugResult {
         guard let model = model else {
             return DebugResult(corners: nil, presence: -1, accepted: false, reject: "no_model",
@@ -141,5 +140,14 @@ final class CubeFaceModel {
         else if shortest <= 12 { reject = "implausible_short" }
         else if aspect >= 2.2 { reject = "implausible_aspect" }
         return ShapeStats(areaFraction: areaFraction, aspect: aspect, shortest: shortest, reject: reject)
+    }
+}
+
+// 面向核心逻辑的平台无关接口(见 Core/FaceDetecting.swift)
+extension CubeFaceModel: FaceDetecting {
+    func detectFace(_ rgba: [UInt8], width: Int, height: Int) -> FaceDetection? {
+        evaluate(rgba, width: width, height: height).toResult.map {
+            FaceDetection(corners: $0.corners, presence: $0.presence)
+        }
     }
 }

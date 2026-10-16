@@ -2,7 +2,7 @@ name: iOS CI
 
 on:
   push:
-    branches: [master]
+    branches: [main, cube-ar-2.0]
     paths: ["ios/**", ".github/workflows/ios-ci.yml"]
   workflow_dispatch:
 
@@ -29,19 +29,17 @@ jobs:
           X26=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
           [ -n "$X26" ] && sudo xcode-select -s "$X26"
           xcodebuild -version && swift --version
-      - name: Show toolchain
-        run: xcodebuild -version && swift --version
       - name: Build app (iOS Simulator, unsigned)
         run: |
           set -o pipefail
-          xcodebuild -project CrystalGrid.xcodeproj -scheme CrystalGrid \
+          xcodebuild -project CubeAR.xcodeproj -scheme CubeAR \
             -destination 'generic/platform=iOS Simulator' \
             -configuration Debug build CODE_SIGNING_ALLOWED=NO | xcbeautify
         working-directory: ios
       - name: Build app (device arch, compile-only)
         run: |
           set -o pipefail
-          xcodebuild -project CrystalGrid.xcodeproj -scheme CrystalGrid \
+          xcodebuild -project CubeAR.xcodeproj -scheme CubeAR \
             -destination 'generic/platform=iOS' \
             -configuration Release build CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=NO | xcbeautify
         working-directory: ios
