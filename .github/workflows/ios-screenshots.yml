@@ -100,9 +100,10 @@ jobs:
           AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
           AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
           AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+          ASC_KEY_PATH: /tmp/authkey.p8
           SHOTS_DIR: ${{ github.workspace }}/shots
         run: |
-          echo "$AC_API_KEY_P8" | base64 -d > /tmp/authkey.p8
+          echo "$AC_API_KEY_P8" | base64 -d > "$ASC_KEY_PATH"
           python3 -m pip install --quiet cryptography || python3 -m pip install --quiet --break-system-packages cryptography
           set +e
           for i in 1 2 3; do
@@ -127,6 +128,15 @@ jobs:
             tail -25 "$GITHUB_WORKSPACE/shots/fill_result.log" 2>/dev/null || echo "(no fill log)"
             echo "--- shot sizes ---"
             ls -la "$GITHUB_WORKSPACE/shots/"*.png 2>/dev/null || echo "(no shots)"
+            echo "--- app1 launch log ---"
+            cat "$GITHUB_WORKSPACE/shots/app1.log" 2>/dev/null | tail -30 || echo "(no app log)"
+            echo "--- app2 launch log ---"
+            cat "$GITHUB_WORKSPACE/shots/app2.log" 2>/dev/null | tail -30 || echo "(no app log)"
+            echo "--- crash reports ---"
+            find ~/Library/Logs/DiagnosticReports -name "CubeAR*" -mmin -30 2>/dev/null | head -3
+            for f in $(find ~/Library/Logs/DiagnosticReports -name "CubeAR*" -mmin -30 2>/dev/null | head -1); do
+              head -40 "$f"
+            done
           } > .github/.screenshots-status
           git add .github/.screenshots-status
           git commit -m "chore: screenshots status marker [skip ci]" || echo "nothing to commit"
