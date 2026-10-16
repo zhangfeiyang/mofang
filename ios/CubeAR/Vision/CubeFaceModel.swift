@@ -83,8 +83,8 @@ final class CubeFaceModel {
         // 输出: corners [1,8], presence [1,1,1]
         var cornerValues = [Float](repeating: 0, count: 8)
         var presence: Float = 0
-        for key in output.keys {
-            let arr = output[key]!
+        for key in output.featureNames {
+            guard let arr = output.featureValue(for: key)?.multiArrayValue else { continue }
             let shape = arr.shape.map { $0.intValue }
             if shape.count >= 2 && shape.last! == 8 {
                 for i in 0..<8 { cornerValues[i] = arr[i].floatValue }
