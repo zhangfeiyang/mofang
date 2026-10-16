@@ -120,7 +120,26 @@ def main():
                          {"data": {"type": "appStoreVersionSubmissions",
                                    "relationships": {"appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
         print(f"create submission: {code}")
-        if code not in (201, 409):  # 409 = 已在审核中,视为成功
+        if code == 403:
+            # 提交资源已存在("Allowed operation is DELETE"):查真实状态,
+            # 未提交则清掉旧 submission 重建,已提交则直接进入轮询
+            code, resp = api("GET", f"/v1/appStoreVersions/{vid}")
+            st = resp["data"]["attributes"]["appStoreState"]
+            print(f"state after 403: {st}")
+            if st in FINAL_STATES:
+                print(f"FINAL STATE REACHED: {st}")
+                return
+            _, subs = api("GET", f"/v1/appStoreVersions/{vid}/appStoreVersionSubmissions")
+            for s in subs.get("data", []):
+                api("DELETE", f"/v1/appStoreVersionSubmissions/{s['id']}")
+                print(f"deleted stale submission {s['id']}")
+            code, resp = api("POST", "/v1/appStoreVersionSubmissions",
+                             {"data": {"type": "appStoreVersionSubmissions",
+                                       "relationships": {"appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
+            print(f"create submission after cleanup: {code}")
+            if code not in (201, 409):
+                raise SystemExit(f"提交失败: {json.dumps(resp)[:300]}")
+        elif code not in (201, 409):  # 409 = 已在审核中,视为成功
             raise SystemExit(f"提交失败: {json.dumps(resp)[:300]}")
 
     # 3. 轮询到最终状态为止

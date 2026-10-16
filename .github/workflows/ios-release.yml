@@ -162,3 +162,5 @@ jobs:
           git add .github/.release-status
           git commit -m "chore: release status marker [skip ci]" || echo "nothing to commit"
           git push origin tmp-marker:main || echo "marker push failed"
+
+# retrigger release
