@@ -1,1 +1,13 @@
-screenshots run=38862409337 time=2026-10-16T06:45:14Z
+screenshots run=38864322836 time=2026-10-16T07:05:27Z
+--- fill log tail ---
+Traceback (most recent call last):
+  File "/Users/runner/work/mofang/mofang/ios/tools/asc_fill_listing.py", line 102, in <module>
+    TOKEN = make_token()
+  File "/Users/runner/work/mofang/mofang/ios/tools/asc_fill_listing.py", line 92, in make_token
+    key = serialization.load_pem_private_key(open(KEY_PATH, "rb").read(), password=None)
+                                             ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/zhangfy/AuthKey_X8P2F2J3V8.p8'
+--- shot sizes ---
+-rw-r--r--@ 1 runner  staff  4480454 Oct 16 07:03 /Users/runner/work/mofang/mofang/shots/01_scanning.png
+-rw-r--r--@ 1 runner  staff  4480454 Oct 16 07:03 /Users/runner/work/mofang/mofang/shots/02_ready.png
+-rw-r--r--@ 1 runner  staff  4479807 Oct 16 07:04 /Users/runner/work/mofang/mofang/shots/03_guiding.png
