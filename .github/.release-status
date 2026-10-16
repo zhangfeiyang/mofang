@@ -1,23 +1,18 @@
-release run=38883467126 time=2026-10-16T09:56:45Z
+release run=38884776867 time=2026-10-16T10:07:21Z
 --- upload log tail ---
-[09:56:04]: [32m--- Step: default_platform ---[0m
-[09:56:04]: [32m------------------------------[0m
-[09:56:04]: [32mDriving the lane 'ios upload' 🚀[0m
-[09:56:04]: [32m---------------------------------------[0m
-[09:56:04]: [32m--- Step: app_store_connect_api_key ---[0m
-[09:56:04]: [32m---------------------------------------[0m
-[09:56:04]: [32m-------------------[0m
-[09:56:04]: [32m--- Step: pilot ---[0m
-[09:56:04]: [32m-------------------[0m
-[09:56:04]: Creating authorization token for App Store Connect API
-[09:56:04]: [32mReady to upload new build to TestFlight (App: 6820316386)...[0m
-[09:56:04]: Going to upload updated app to App Store Connect
-[09:56:04]: [32mThis might take a few minutes. Please don't interrupt the script.[0m
-[09:56:33]: [32m--------------------------------------------------------------------[0m
-[09:56:33]: [32mSuccessfully uploaded package to App Store Connect. It might take a few minutes until it's visible online.[0m
-[09:56:33]: [32m--------------------------------------------------------------------[0m
-[09:56:33]: [32mSuccessfully uploaded the new binary to App Store Connect[0m
-[09:56:33]: [33m`skip_waiting_for_build_processing` used and no `changelog` supplied - skipping waiting for build processing[0m
++------------------+------------+
+| DEFAULT_PLATFORM | ios        |
+| PLATFORM_NAME    | ios        |
+| LANE_NAME        | ios upload |
++------------------+------------+
+[10:07:06]: [31mCalled from Fastfile at line 104[0m
+[10:07:06]: [31m```[0m
+[10:07:06]: [31m    102:	      duration: 1200,[0m
+[10:07:06]: [31m    103:	    )[0m
+[10:07:06]: [31m => 104:	    pilot([0m
+[10:07:06]: [31m    105:	      api_key: api_key,[0m
+[10:07:06]: [31m    106:	      skip_waiting_for_build_processing: true,[0m
+[10:07:06]: [31m```[0m
 
 +------------------------------------------------+
 |                [32mfastlane summary[0m                |
@@ -26,17 +21,22 @@ release run=38883467126 time=2026-10-16T09:56:45Z
 +------+---------------------------+-------------+
 | 1    | default_platform          | 0           |
 | 2    | app_store_connect_api_key | 0           |
-| 3    | pilot                     | 29          |
+| 💥   | [31mpilot[0m                     | 7           |
 +------+---------------------------+-------------+
 
-[09:56:33]: [32mfastlane.tools finished successfully 🎉[0m
+[10:07:06]: [31mfastlane finished with errors[0m
+[31m
+[!] Error uploading ipa file: 
+ [Application Loader Error Output]: [ContentDelivery.Uploader.600000F7C4C0] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘5’. (ID: a1ce4ef2-7335-4cf9-b27e-07a19bb3a4e4)
+[Application Loader Error Output]: [altool.600000F7C4C0] Failed to upload package.[0m
+[Application Loader Error Output]: [altool.600000F7C4C0] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘5’. (ID: a1ce4ef2-7335-4cf9-b27e-07a19bb3a4e4)[0m
 --- ipa files ---
--rw-r--r--  1 runner  staff  3061771 Oct 16 09:55 /Users/runner/work/mofang/mofang/ios/CubeAR.ipa
+-rw-r--r--  1 runner  staff  3061935 Oct 16 10:06 /Users/runner/work/mofang/mofang/ios/CubeAR.ipa
 --- submit log tail ---
 version 1.0 initial state: PREPARE_FOR_SUBMISSION
-build 4 is VALID
-attach build 4: 204
-whatsNew PATCH: 409 {"errors": [{"id": "f7ec5759-8952-48a3-8cf7-90828425edce", "status": "409", "code": "STATE_ERROR", "title": "The request cannot be fulfilled because o
-create review submission: 201 {"data": {"type": "reviewSubmissions", "id": "37cb729b-8b97-48f6-b81c-c212a4b94da2", "attributes": {"platform": "IOS", "submittedDate": null, "state": "READY_FOR_REVIEW"}, "relationships": {"items": {"links": {"self": "https://api.appstoreconnect.app
-add review item: 409 {"errors": [{"id": "8abeb4dd-d77b-4838-a0e3-3d21fc7182ea", "status": "409", "code": "STATE_ERROR.ENTITY_STATE_INVALID", "title": "appStoreVersions with id 'e802d111-145d-44d2-9453-ab67befd53f1' is not in valid state.", "detail": "This resource cannot
-add item failed: {"data": [], "links": {"self": "https://api.appstoreconnect.apple.com/v1/reviewSubmissions/37cb729b-8b97-48f6-b81c-c212a4b94da2/items"}, "meta": {"paging": {"total": 0, "limit": 50}}}
+build 5 is VALID
+attach build 5: 204
+whatsNew PATCH: 409 {"errors": [{"id": "22777b45-04cc-417f-94bd-6acf691c62cc", "status": "409", "code": "STATE_ERROR", "title": "The request cannot be fulfilled because o
+open submission 37cb729b-8b97-48f6-b81c-c212a4b94da2 (state READY_FOR_REVIEW, contains version: False)
+add review item: 409 {"errors": [{"id": "0c678549-d562-4c69-9230-57d23facaf8b", "status": "409", "code": "STATE_ERROR.ENTITY_STATE_INVALID", "title": "appStoreVersions with id 'e802d111-145d-44d2-9453-ab67befd53f1' is not in valid state.", "detail": "This resource cannot
+add item failed: {"errors": [{"id": "0c678549-d562-4c69-9230-57d23facaf8b", "status": "409", "code": "STATE_ERROR.ENTITY_STATE_INVALID", "title": "appStoreVersions with id 'e802d111-145d-44d2-9453-ab67befd53f1' is not in valid state.", "detail": "This resource cannot be reviewed, please check associated errors to see why.", "meta": {"associatedErrors": {"/v1/appStoreVersions/e802d111-145d-44d2-9453-ab67befd53f1": 
