@@ -124,7 +124,10 @@ jobs:
           AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
           AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
           CI: "true"
-        run: fastlane ios upload
+        run: |
+          set -o pipefail
+          ls -la ios/*.ipa 2>/dev/null || echo "(no ipa in ios/)"
+          fastlane ios upload 2>&1 | tee upload_result.log
         working-directory: ios
 
       - name: Submit & verify
@@ -149,6 +152,10 @@ jobs:
           git checkout -B tmp-marker origin/main
           {
             echo "release run=${GITHUB_RUN_ID} time=$(date -u +%FT%TZ)"
+            echo "--- upload log tail ---"
+            tail -30 "$GITHUB_WORKSPACE/ios/upload_result.log" 2>/dev/null || echo "(no upload log)"
+            echo "--- ipa files ---"
+            ls -la "$GITHUB_WORKSPACE/ios/"*.ipa 2>/dev/null || echo "(none)"
             echo "--- submit log tail ---"
             tail -15 "$GITHUB_WORKSPACE/submit_result.log" 2>/dev/null || echo "(no submit log)"
           } > .github/.release-status
