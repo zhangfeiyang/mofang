@@ -1,64 +1,21 @@
-screenshots run=38866523286 time=2026-10-16T07:29:04Z
+screenshots run=38869675686 time=2026-10-16T07:59:43Z
 --- fill log tail ---
 appInfo=95d88fdd-9afc-4d55-95c5-29704e3bae0f version=e802d111-145d-44d2-9453-ab67befd53f1
 ageRating PATCH: 405 {"errors": [{"status": "405", "code": "METHOD_NOT_ALLOWED", "title": "The request method is not valid for the resource path.", "detail": "The request method used for this request is not valid for the resource path. Please consult the documentation."}]}
 category PATCH (EDUCATION): 200
-Traceback (most recent call last):
-  File "/Users/runner/work/mofang/mofang/ios/tools/asc_fill_listing.py", line 235, in <module>
-    main()
-    ~~~~^^
-  File "/Users/runner/work/mofang/mofang/ios/tools/asc_fill_listing.py", line 148, in main
-    _, existing = api(f"/v1/appInfos/{app_info_id}/appInfoLocalizations?limit=200")
-                  ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: api() missing 1 required positional argument: 'path'
+appInfo PATCH zh-Hans: 200
+copyright PATCH: 200
+version PATCH zh-Hans: 409 {"errors": [{"id": "c45193fb-f6c6-4774-bf03-e99c046eda32", "status": "409", "code": "STATE_ERROR", "title": "The request cannot be fulfilled because of the state of another resource.", "detail": "Attribute 'whatsNew' cannot be edited at this time"}]}
+shot 01_scanning.png: commit 200
+shot 02_ready.png: commit 200
+shot 03_guiding.png: commit 200
+ALL DONE
 --- shot sizes ---
--rw-r--r--@ 1 runner  staff   384804 Oct 16 07:22 /Users/runner/work/mofang/mofang/shots/01_scanning.png
--rw-r--r--@ 1 runner  staff  4478694 Oct 16 07:27 /Users/runner/work/mofang/mofang/shots/02_ready.png
--rw-r--r--@ 1 runner  staff  4479162 Oct 16 07:27 /Users/runner/work/mofang/mofang/shots/03_guiding.png
+-rw-r--r--@ 1 runner  staff  400714 Oct 16 07:52 /Users/runner/work/mofang/mofang/shots/01_scanning.png
+-rw-r--r--@ 1 runner  staff  118994 Oct 16 07:59 /Users/runner/work/mofang/mofang/shots/02_ready.png
+-rw-r--r--@ 1 runner  staff  113204 Oct 16 07:59 /Users/runner/work/mofang/mofang/shots/03_guiding.png
 --- app1 launch log ---
-com.mofang.cubear: 19498
+com.mofang.cubear: 26670
 --- app2 launch log ---
-CubeAR/MTools.swift:45: Fatal error: Unexpectedly found nil while unwrapping an Optional value
-com.mofang.cubear: 19888
+com.mofang.cubear: 27164
 --- crash reports ---
-/Users/runner/Library/Logs/DiagnosticReports/CubeAR-2026-10-16-072755.ips
-{"app_name":"CubeAR","timestamp":"2026-10-16 07:27:55.00 +0000","app_version":"1.0.0","slice_uuid":"927c00d7-c0f2-372f-a7d9-c1321d31f8e2","build_version":"3","platform":7,"bundleID":"com.mofang.cubear","share_with_app_devs":0,"is_first_party":0,"bug_type":"309","os_version":"macOS 15.7.9 (24G830)","roots_installed":0,"name":"CubeAR","incident_id":"377AE40C-8DE9-495D-9792-E885896B9850"}
-{
-  "uptime" : 730,
-  "procRole" : "Foreground",
-  "version" : 2,
-  "userID" : 501,
-  "deployVersion" : 210,
-  "modelCode" : "VirtualMac2,1",
-  "coalitionID" : 1793,
-  "osVersion" : {
-    "train" : "macOS 15.7.9",
-    "build" : "24G830",
-    "releaseType" : "User"
-  },
-  "captureTime" : "2026-10-16 07:27:37.5449 +0000",
-  "codeSigningMonitor" : 0,
-  "incident" : "377AE40C-8DE9-495D-9792-E885896B9850",
-  "pid" : 20317,
-  "translated" : false,
-  "cpuType" : "ARM-64",
-  "roots_installed" : 0,
-  "bug_type" : "309",
-  "procLaunch" : "2026-10-16 07:27:36.5431 +0000",
-  "procStartAbsTime" : 17714115810,
-  "procExitAbsTime" : 17734911874,
-  "procName" : "CubeAR",
-  "procPath" : "\/Users\/USER\/Library\/Developer\/CoreSimulator\/Devices\/F1218AE5-3D29-4CE5-9D0F-6F21CEAA502C\/data\/Containers\/Bundle\/Application\/CE47FA18-EF35-4B55-A6F5-3AE3A029ADB9\/CubeAR.app\/CubeAR",
-  "bundleInfo" : {"CFBundleShortVersionString":"1.0.0","CFBundleVersion":"3","CFBundleIdentifier":"com.mofang.cubear"},
-  "storeInfo" : {"deviceIdentifierForVendor":"3CAD6D7C-78DD-5ACB-B10D-3D493815F2C2","thirdParty":true},
-  "parentProc" : "launchd_sim",
-  "parentPid" : 5429,
-  "coalitionName" : "com.apple.CoreSimulator.SimDevice.F1218AE5-3D29-4CE5-9D0F-6F21CEAA502C",
-  "crashReporterKey" : "ADDE7254-8956-057B-324C-1789E3C481AE",
-  "appleIntelligenceStatus" : {"state":"unavailable","reasons":["deviceNotCapable","countryLocationIneligible","selectedSiriLanguageIneligible","countryBillingIneligible"]},
-  "responsiblePid" : 4454,
-  "responsibleProc" : "SimulatorTrampoline",
-  "codeSigningID" : "CubeAR",
-  "codeSigningTeamID" : "",
-  "codeSigningFlags" : 570556929,
-  "codeSigningValidationCategory" : 10,
