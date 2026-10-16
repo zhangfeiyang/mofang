@@ -1,14 +1,15 @@
 name: iOS Screenshots
 
-# 用 iOS 模拟器为 App Store 生成产品页截图（6.9 英寸 1320×2868）。
-# 通过注入 UserDefaults 存档让 App 分别处于：新手引导 / 对局中 / 每日奖励面板。
-# 截图产物上传为 artifact appstore-screenshots。
+# 用 iOS 模拟器为 App Store 生成产品页截图(6.9 英寸 1320×2868)。
+# App 内置演示模式(启动参数 -demo 1),用真实 UI + 真实求解状态出图:
+#   -demoScreen 1 扫描中 / 2 扫描完成(待开始) / 3 引导中
+# 产物上传为 artifact appstore-screenshots,由 asc_fill_listing.py 上传 ASC。
 
 on:
   workflow_dispatch:
 
 env:
-  BUNDLE_ID: com.zhangfeiyang.blockgrid
+  BUNDLE_ID: com.mofang.cubear
 
 jobs:
   screenshots:
@@ -25,7 +26,7 @@ jobs:
       - name: Build app for simulator
         run: |
           set -o pipefail
-          xcodebuild -project CrystalGrid.xcodeproj -scheme CrystalGrid \
+          xcodebuild -project CubeAR.xcodeproj -scheme CubeAR \
             -configuration Debug -destination 'generic/platform=iOS Simulator' build \
             -derivedDataPath build/sim CODE_SIGNING_ALLOWED=NO | xcbeautify
         working-directory: ios
@@ -41,95 +42,29 @@ jobs:
           echo "UDID=$UDID" >> "$GITHUB_ENV"
           xcrun simctl boot "$UDID" || true
 
-      - name: Prepare state payloads
+      - name: Screenshot 1 — scanning（扫描中）
         run: |
-          mkdir -p shots
-          python3 - <<'PY'
-          import json, random
-          random.seed(42)
-          # --- 构造一盘看起来进行到中盘的棋盘（约 55% 占用，底部留空间） ---
-          board = [-1] * 64
-          for r in range(6):
-              for c in range(8):
-                  if random.random() < 0.78:
-                      board[r * 8 + c] = random.randrange(7)
-          # 避免满行（保证局面合法、不满线）
-          for r in range(8):
-              if all(board[r * 8 + c] >= 0 for c in range(8)):
-                  board[r * 8 + random.randrange(8)] = -1
-          for c in range(8):
-              if all(board[r * 8 + c] >= 0 for r in range(8)):
-                  board[random.randrange(8) * 8 + c] = -1
-          # 放两个特殊块：金币与炸弹
-          filled = [i for i, v in enumerate(board) if v >= 0]
-          board[filled[-1]] = 4   # COIN
-          board[filled[-3]] = 2   # BOMB
-          sp = [0] * 64
-          sp[filled[-1]] = 4
-          sp[filled[-3]] = 2
-          game = {
-              "v": 2, "runId": 123456789, "score": 12480, "bestAtStart": 12060,
-              "combo": 0, "msc": 1, "moves": 128, "rng": 987654321,
-              "over": False, "ended": False, "lines": 96, "maxCombo": 5,
-              "trig": 23, "coinBlocks": 12, "rss": 1,
-              "board": board, "sp": sp,
-              "tray": [{"s": "11", "c": 5, "x": 0, "xi": -1},
-                        {"s": "1/1/1", "c": 2, "x": 0, "xi": -1},
-                        {"s": "1111", "c": 0, "x": 0, "xi": -1}],
-          }
-          meta_play = {
-              "v": 1, "coins": 860, "items": [3, 2, 2],
-              "ciDay": 20000, "ciStreak": 4,
-              "missions": {"day": 20000, "chest": False,
-                           "m": [{"k": "CLEAR_LINES", "t": 30, "r": 50, "p": 22, "c": False},
-                                  {"k": "REACH_COMBO", "t": 4, "r": 50, "p": 3, "c": False},
-                                  {"k": "SCORE_IN_GAME", "t": 700, "r": 50, "p": 412, "c": False}]},
-              "seen": 30, "starter": True, "autoDaily": 20000,
-              "games": 26, "totalLines": 2140, "bestCombo": 7,
-          }
-          meta_daily = dict(meta_play)
-          meta_daily["ciDay"] = -1073741824   # NEVER → 启动时自动弹每日奖励
-          meta_daily["autoDaily"] = -1073741824
-          import time
-          meta_play["autoDaily"] = int(time.time() // 86400)  # 今天 → 抑制启动弹窗
-          open("shots/game_v1.json", "w").write(json.dumps(game, separators=(",", ":")))
-          open("shots/meta_play.json", "w").write(json.dumps(meta_play, separators=(",", ":")))
-          open("shots/meta_daily.json", "w").write(json.dumps(meta_daily, separators=(",", ":")))
-          PY
-
-      - name: Screenshot — tutorial（新手引导）
-        run: |
-          APP=$(find ios/build/sim/Build/Products -name "CrystalGrid.app" -type d | head -1)
-          [ -n "$APP" ] || { echo "::error::CrystalGrid.app not found"; exit 1; }
+          APP=$(find ios/build/sim/Build/Products -name "CubeAR.app" -type d | head -1)
+          [ -n "$APP" ] || { echo "::error::CubeAR.app not found"; exit 1; }
           xcrun simctl install "$UDID" "$APP"
-          xcrun simctl launch "$UDID" "$BUNDLE_ID"
-          sleep 6
-          xcrun simctl io "$UDID" screenshot --type=png shots/01_tutorial.png
+          xcrun simctl launch "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 1
+          sleep 10
+          xcrun simctl io "$UDID" screenshot --type=png shots/01_scanning.png
           xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
 
-      - name: Screenshot — gameplay（对局中）
+      - name: Screenshot 2 — ready（扫描完成）
         run: |
-          APP=$(find ios/build/sim/Build/Products -name "CrystalGrid.app" -type d | head -1)
-          [ -n "$APP" ] || { echo "::error::CrystalGrid.app not found"; exit 1; }
-          xcrun simctl uninstall "$UDID" "$BUNDLE_ID" || true
-          xcrun simctl install "$UDID" "$APP"
-          xcrun simctl spawn "$UDID" defaults write "$BUNDLE_ID" tutorial_done -bool true
-          xcrun simctl spawn "$UDID" defaults write "$BUNDLE_ID" game_v1 -string "$(cat shots/game_v1.json)"
-          xcrun simctl spawn "$UDID" defaults write "$BUNDLE_ID" meta_v1 -string "$(cat shots/meta_play.json)"
-          xcrun simctl launch "$UDID" "$BUNDLE_ID"
-          sleep 6
-          xcrun simctl io "$UDID" screenshot --type=png shots/02_gameplay.png
+          xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
+          xcrun simctl launch "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 2
+          sleep 10
+          xcrun simctl io "$UDID" screenshot --type=png shots/02_ready.png
           xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
 
-      - name: Screenshot — daily（每日奖励面板）
+      - name: Screenshot 3 — guiding（引导中）
         run: |
-          APP=$(find ios/build/sim/Build/Products -name "CrystalGrid.app" -type d | head -1)
-          [ -n "$APP" ] || { echo "::error::CrystalGrid.app not found"; exit 1; }
-          xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
-          xcrun simctl spawn "$UDID" defaults write "$BUNDLE_ID" meta_v1 -string "$(cat shots/meta_daily.json)"
-          xcrun simctl launch "$UDID" "$BUNDLE_ID"
-          sleep 6
-          xcrun simctl io "$UDID" screenshot --type=png shots/03_daily.png
+          xcrun simctl launch "$UDID" "$BUNDLE_ID" -demo 1 -demoScreen 3
+          sleep 10
+          xcrun simctl io "$UDID" screenshot --type=png shots/03_guiding.png
 
       - uses: actions/upload-artifact@v4
         with:

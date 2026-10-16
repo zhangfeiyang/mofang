@@ -48,7 +48,7 @@ final class CubeFaceModel {
     }
 
     /// 运行网络于一帧 RGBA。无可信面时返回 nil。
-    func detect(_ rgba: [UInt8], width: Int, height: Int) -> DebugResult? {
+    func detect(_ rgba: [UInt8], width: Int, height: Int) -> Result? {
         evaluate(rgba, width: width, height: height).toResult
     }
     func evaluate(_ rgba: [UInt8], width: Int, height: Int) -> DebugResult {

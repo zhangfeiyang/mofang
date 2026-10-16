@@ -74,7 +74,7 @@ final class CubeOverlayView: UIView {
         }
         path.close()
 
-        let color: UIColor = face.disputed ? .orange : (face.refined ? .mint : .white)
+        let color: UIColor = face.disputed ? .orange : (face.refined ? .systemTeal : .white)
         ctx.setStrokeColor(color.withAlphaComponent(0.8).cgColor)
         ctx.setLineWidth(2.5)
         ctx.addPath(path.cgPath)
@@ -89,7 +89,7 @@ final class CubeOverlayView: UIView {
             let color = sample.stickers[i]
             guard color != .unknown else { continue }
             // 在四边形内绘制贴纸色圆点
-            let t = (i % 3 + 0.5) / 3, u = (i / 3 + 0.5) / 3
+            let t = (Double(i % 3) + 0.5) / 3, u = (Double(i / 3) + 0.5) / 3
             let c = face.corners
             // 双线性插值四边形内的点
             let px = CGFloat(c[0]) * (1 - t) * (1 - u) + CGFloat(c[2]) * t * (1 - u)

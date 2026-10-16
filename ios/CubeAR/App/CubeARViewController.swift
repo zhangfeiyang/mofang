@@ -53,6 +53,14 @@ final class CubeARViewController: UIViewController {
     /// 截图/演示模式:启动参数 `-demo 1` 打开;`-demoScreen N` 选择画面。
     private let demoMode = UserDefaults.standard.bool(forKey: "demo")
 
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+
+    convenience init() {
+        self.init(nibName: nil, bundle: nil)
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
@@ -301,7 +309,7 @@ final class CubeARViewController: UIViewController {
         guard let step = guideSession?.currentStep else { return }
         if voiceEnabled {
             let utterance = AVSpeechUtterance(string: step.caption())
-            utterance.language = "zh-CN"
+            utterance.voice = AVSpeechSynthesisVoice(language: "zh-CN")
             speech.speak(utterance)
         }
         detailLabel.text = step.caption()
