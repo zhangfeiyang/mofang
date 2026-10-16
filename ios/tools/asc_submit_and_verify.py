@@ -96,6 +96,14 @@ def main():
             print(f"attach build {bver}: {code}")
             if code not in (200, 204):
                 raise SystemExit(f"挂构建失败: {json.dumps(resp)[:300]}")
+            # 构建挂上后 whatsNew 才可编辑;失败不阻断(可能已由 fill 流程写入)
+            _, vlocs = api("GET", f"/v1/appStoreVersions/{vid}/appStoreVersionLocalizations")
+            for l in vlocs.get("data", []):
+                if l["attributes"]["locale"] == "zh-Hans":
+                    code, resp = api("PATCH", f"/v1/appStoreVersionLocalizations/{l['id']}",
+                                     {"data": {"type": "appStoreVersionLocalizations", "id": l["id"],
+                                               "attributes": {"whatsNew": "首次发布。"}}})
+                    print(f"whatsNew PATCH: {code}")
         # 2. 创建提交
         code, resp = api("POST", "/v1/appStoreVersionSubmissions",
                          {"data": {"type": "appStoreVersionSubmissions",

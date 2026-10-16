@@ -131,7 +131,7 @@ def main():
     decl_id = decl["data"]["id"]
     body = {"data": {"type": "ageRatingDeclarations", "id": decl_id,
                      "attributes": dict(AGE_RATING_SAFE)}}
-    code, resp = api("PATCH", f"/v1/appInfos/{app_info_id}/ageRatingDeclaration", body)
+    code, resp = api("PATCH", f"/v1/ageRatingDeclarations/{decl_id}", body)
     print(f"ageRating PATCH: {code}" + ("" if code == 200 else " " + json.dumps(resp)[:300]))
 
     # 2. 主分类:教育
@@ -165,11 +165,11 @@ def main():
     print(f"copyright PATCH: {code}" + ("" if code == 200 else " " + json.dumps(resp)[:300]))
 
     # 5. versionLocalization zh-Hans(描述/关键词/推广/更新说明)
+    # whatsNew 有单独的编辑窗口限制(409),与主体拆开、失败不阻断
     _, vlocs = api("GET", f"/v1/appStoreVersions/{version_id}/appStoreVersionLocalizations?limit=200")
     vby_locale = {d["attributes"]["locale"]: d["id"] for d in vlocs.get("data", [])}
     vattrs = {"description": DESCRIPTION, "keywords": KEYWORDS,
-              "promotionalText": PROMO, "whatsNew": WHATS_NEW,
-              "supportUrl": SITE}
+              "promotionalText": PROMO, "supportUrl": SITE}
     if "zh-Hans" in vby_locale:
         code, resp = api("PATCH", f"/v1/appStoreVersionLocalizations/{vby_locale['zh-Hans']}",
                          {"data": {"type": "appStoreVersionLocalizations", "id": vby_locale["zh-Hans"], "attributes": vattrs}})
@@ -179,6 +179,15 @@ def main():
                          {"data": {"type": "appStoreVersionLocalizations", "attributes": dict(vattrs, locale="zh-Hans"),
                                    "relationships": {"appStoreVersion": {"data": {"type": "appStoreVersions", "id": version_id}}}}})
         print(f"version POST zh-Hans: {code}" + ("" if code == 201 else " " + json.dumps(resp)[:200]))
+
+    # 5b. whatsNew 单独提交(挂上构建后才能编辑;失败留给提审前重试)
+    _, vlocs = api("GET", f"/v1/appStoreVersions/{version_id}/appStoreVersionLocalizations?limit=200")
+    vby_locale = {d["attributes"]["locale"]: d["id"] for d in vlocs.get("data", [])}
+    if "zh-Hans" in vby_locale:
+        code, resp = api("PATCH", f"/v1/appStoreVersionLocalizations/{vby_locale['zh-Hans']}",
+                         {"data": {"type": "appStoreVersionLocalizations", "id": vby_locale["zh-Hans"],
+                                   "attributes": {"whatsNew": WHATS_NEW}}})
+        print(f"whatsNew PATCH zh-Hans: {code}" + ("" if code == 200 else " " + json.dumps(resp)[:200]))
 
     # 6. 截图:zh-Hans,6.9 英寸(APP_IPHONE_67,与 Crystal Grid 相同做法)
     _, vlocs = api("GET", f"/v1/appStoreVersions/{version_id}/appStoreVersionLocalizations?limit=200")
