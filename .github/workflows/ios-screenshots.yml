@@ -103,20 +103,31 @@ jobs:
           SHOTS_DIR: ${{ github.workspace }}/shots
         run: |
           echo "$AC_API_KEY_P8" | base64 -d > /tmp/authkey.p8
-          python3 -m pip install --quiet cryptography
+          python3 -m pip install --quiet cryptography || python3 -m pip install --quiet --break-system-packages cryptography
+          set +e
           for i in 1 2 3; do
-            python3 ios/tools/asc_fill_listing.py && break
-            echo "fill attempt $i failed"; sleep 20
+            python3 ios/tools/asc_fill_listing.py > shots/fill.log 2>&1 && { echo FILL_OK; break; }
+            echo "fill attempt $i failed"; tail -5 shots/fill.log
+            sleep 20
           done
+          set -e
+          [ -f shots/fill.log ] && cp shots/fill.log shots/fill_result.log || echo "no fill log" > shots/fill_result.log
+          tail -30 shots/fill_result.log
 
-      - name: Mark done（回写状态标记）
+      - name: Mark done（回写状态标记,含 fill 日志尾部）
         if: always()
         run: |
           git config user.email "ci@zhangfeiyang.dev"
           git config user.name "ci-bot"
           git fetch origin main
           git checkout -B tmp-marker origin/main
-          echo "screenshots run=${GITHUB_RUN_ID} time=$(date -u +%FT%TZ)" > .github/.screenshots-status
+          {
+            echo "screenshots run=${GITHUB_RUN_ID} time=$(date -u +%FT%TZ)"
+            echo "--- fill log tail ---"
+            tail -25 "$GITHUB_WORKSPACE/shots/fill_result.log" 2>/dev/null || echo "(no fill log)"
+            echo "--- shot sizes ---"
+            ls -la "$GITHUB_WORKSPACE/shots/"*.png 2>/dev/null || echo "(no shots)"
+          } > .github/.screenshots-status
           git add .github/.screenshots-status
           git commit -m "chore: screenshots status marker [skip ci]" || echo "nothing to commit"
           git push origin tmp-marker:main || echo "marker push failed"
