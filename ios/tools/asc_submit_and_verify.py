@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Submit the App Store version for review and VERIFY the final state.
 
-发布流水线的收尾步骤,消除"卡在可供审核却误报完成"的风险:
-1. 若版本还在 PREPARE_FOR_SUBMISSION:自动挂最新构建 + 创建提交;
-2. 轮询 appStoreState,直到进入 WAITING_FOR_REVIEW / IN_REVIEW;
-3. 超时仍停在 READY_FOR_REVIEW 则以非零退出——流水线会明确失败,
-   绝不会把"卡住"当成"完成"。
+发布流水线的收尾步骤:
+1. 等待最新构建处理完成(VALID)并挂到版本上;
+2. 用 Review Submissions API 提交审核(旧 appStoreVersionSubmissions 端点已废弃,
+   POST 会 403 "does not allow CREATE");
+3. 轮询 appStoreState 直到 WAITING_FOR_REVIEW 等最终状态;
+4. 超时未提交则以非零退出,绝不把"卡住"当成"完成"。
 
 环境变量:AC_API_KEY_ID / AC_API_ISSUER_ID / AC_API_KEY_P8(base64)
-可选:APP_ID(默认 6819887855)、POLL_SECONDS(默认 900)
+可选:APP_ID、POLL_SECONDS(构建等待+状态轮询共用,默认 2400)
 """
 import base64
 import json
@@ -22,8 +23,8 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
 
-APP_ID = os.environ.get("APP_ID", "6819887855")
-POLL_SECONDS = int(os.environ.get("POLL_SECONDS", "900"))
+APP_ID = os.environ.get("APP_ID", "6820316386")
+POLL_SECONDS = int(os.environ.get("POLL_SECONDS", "2400"))
 FINAL_STATES = {"WAITING_FOR_REVIEW", "IN_REVIEW", "ACCEPTED", "PENDING_DEVELOPER_RELEASE"}
 
 
@@ -91,6 +92,63 @@ def wait_valid_build(timeout_s: int):
     raise SystemExit("等待构建处理超时——请人工在 ASC 检查构建状态")
 
 
+def whats_new(vid):
+    """whatsNew 仅在构建挂上后可编辑;失败不阻断(首次发布可不填)。"""
+    _, vlocs = api("GET", f"/v1/appStoreVersions/{vid}/appStoreVersionLocalizations")
+    for l in vlocs.get("data", []):
+        if l["attributes"]["locale"] == "zh-Hans":
+            code, resp = api("PATCH", f"/v1/appStoreVersionLocalizations/{l['id']}",
+                             {"data": {"type": "appStoreVersionLocalizations", "id": l["id"],
+                                       "attributes": {"whatsNew": "首次发布。"}}})
+            print(f"whatsNew PATCH: {code}" + ("" if code == 200 else " " + json.dumps(resp)[:150]))
+
+
+def ensure_review_submission():
+    """复用已打开的 READY_FOR_REVIEW 提交,否则创建(避免 409)。"""
+    code, resp = api("GET", f"/v1/apps/{APP_ID}/reviewSubmissions?filter[state]=READY_FOR_REVIEW")
+    if code == 200 and resp.get("data"):
+        sub = resp["data"][0]
+        print(f"reuse open review submission {sub['id']}")
+        return sub["id"]
+    body = {"data": {"type": "reviewSubmissions",
+                     "attributes": {"platform": "IOS"},
+                     "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}}}}
+    code, resp = api("POST", "/v1/reviewSubmissions", body)
+    print(f"create review submission: {code} {json.dumps(resp)[:250]}")
+    if code != 201:
+        raise SystemExit(f"review submission create failed: {json.dumps(resp)[:400]}")
+    return resp["data"]["id"]
+
+
+def add_item(sub_id: str, vid: str):
+    body = {"data": {"type": "reviewSubmissionItems",
+                     "relationships": {"reviewSubmission": {"data": {"type": "reviewSubmissions", "id": sub_id}},
+                                        "appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}}
+    code, resp = api("POST", "/v1/reviewSubmissionItems", body)
+    print(f"add review item: {code} {json.dumps(resp)[:250]}")
+    if code == 201:
+        return resp["data"]["id"]
+    # 可能已加过:找现有 item
+    code, resp = api("GET", f"/v1/reviewSubmissions/{sub_id}/items")
+    for it in resp.get("data", []):
+        rel = (it.get("relationships", {}).get("appStoreVersion", {}) or {}).get("data", {}) or {}
+        if rel.get("id") == vid:
+            print(f"item already present: {it['id']}")
+            return it["id"]
+    raise SystemExit(f"add item failed: {json.dumps(resp)[:400]}")
+
+
+def submit_for_review(sub_id: str):
+    body = {"data": {"type": "reviewSubmissions", "id": sub_id,
+                     "attributes": {"submitted": True}}}
+    code, resp = api("PATCH", f"/v1/reviewSubmissions/{sub_id}", body)
+    state = (resp.get("data", {}).get("attributes", {}) or {}).get("state")
+    print(f"submit review submission: {code} state={state}")
+    if code not in (200, 204):
+        print(f"submit body: {json.dumps(resp)[:400]}")
+    return code in (200, 204)
+
+
 def main():
     ver = get_version()
     vid = ver["id"]
@@ -98,7 +156,7 @@ def main():
     print(f"version {ver['attributes']['versionString']} initial state: {state}")
 
     if state == "PREPARE_FOR_SUBMISSION":
-        # 1. 挂最新有效构建(必要时等待 Apple 处理完成)
+        # 1. 等待并挂最新有效构建
         _, v = api("GET", f"/v1/appStoreVersions/{vid}/builds")
         if not v.get("data"):
             bid, bver = wait_valid_build(POLL_SECONDS)
@@ -107,40 +165,15 @@ def main():
             print(f"attach build {bver}: {code}")
             if code not in (200, 204):
                 raise SystemExit(f"挂构建失败: {json.dumps(resp)[:300]}")
-            # 构建挂上后 whatsNew 才可编辑;失败不阻断(可能已由 fill 流程写入)
-            _, vlocs = api("GET", f"/v1/appStoreVersions/{vid}/appStoreVersionLocalizations")
-            for l in vlocs.get("data", []):
-                if l["attributes"]["locale"] == "zh-Hans":
-                    code, resp = api("PATCH", f"/v1/appStoreVersionLocalizations/{l['id']}",
-                                     {"data": {"type": "appStoreVersionLocalizations", "id": l["id"],
-                                               "attributes": {"whatsNew": "首次发布。"}}})
-                    print(f"whatsNew PATCH: {code}")
-        # 2. 创建提交
-        code, resp = api("POST", "/v1/appStoreVersionSubmissions",
-                         {"data": {"type": "appStoreVersionSubmissions",
-                                   "relationships": {"appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
-        print(f"create submission: {code}")
-        if code == 403:
-            # 提交资源已存在("Allowed operation is DELETE"):查真实状态,
-            # 未提交则清掉旧 submission 重建,已提交则直接进入轮询
-            code, resp = api("GET", f"/v1/appStoreVersions/{vid}")
-            st = resp["data"]["attributes"]["appStoreState"]
-            print(f"state after 403: {st}")
-            if st in FINAL_STATES:
-                print(f"FINAL STATE REACHED: {st}")
-                return
-            _, subs = api("GET", f"/v1/appStoreVersions/{vid}/appStoreVersionSubmissions")
-            for s in subs.get("data", []):
-                api("DELETE", f"/v1/appStoreVersionSubmissions/{s['id']}")
-                print(f"deleted stale submission {s['id']}")
-            code, resp = api("POST", "/v1/appStoreVersionSubmissions",
-                             {"data": {"type": "appStoreVersionSubmissions",
-                                       "relationships": {"appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}})
-            print(f"create submission after cleanup: {code}")
-            if code not in (201, 409):
-                raise SystemExit(f"提交失败: {json.dumps(resp)[:300]}")
-        elif code not in (201, 409):  # 409 = 已在审核中,视为成功
-            raise SystemExit(f"提交失败: {json.dumps(resp)[:300]}")
+            whats_new(vid)
+        # 2. Review Submissions 流程(旧 appStoreVersionSubmissions 端点已废弃)
+        sub_id = ensure_review_submission()
+        add_item(sub_id, vid)
+        if not submit_for_review(sub_id):
+            raise SystemExit("提审失败——见上方响应")
+    elif state in FINAL_STATES:
+        print(f"FINAL STATE REACHED: {state}")
+        return
 
     # 3. 轮询到最终状态为止
     deadline = time.time() + POLL_SECONDS
