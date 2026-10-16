@@ -22,7 +22,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
 
 APP_ID = "6820316386"
-KEY_PATH = "/home/zhangfy/AuthKey_X8P2F2J3V8.p8"
+KEY_PATH = os.environ.get("ASC_KEY_PATH", "/home/zhangfy/AuthKey_X8P2F2J3V8.p8")
 KEY_ID = os.environ["AC_API_KEY_ID"]
 ISSUER = os.environ["AC_API_ISSUER_ID"]
 SITE = "https://zhangfeiyang.github.io/cube-ar-site/"
