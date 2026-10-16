@@ -11,6 +11,12 @@ on:
         description: "ASC App ID"
         required: false
         default: "6820316386"
+  push:
+    branches: [main]
+    paths: [".github/workflows/ios-release.yml"]
+
+permissions:
+  contents: write
 
 env:
   KEYCHAIN_PASSWORD: "fastlane-ci-keychain"
@@ -56,6 +62,7 @@ jobs:
           AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
           AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
           AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+          PROTECTED_CERT_IDS: "62RDFCGTWC"
         run: |
           python3 -m venv /tmp/asc-venv
           /tmp/asc-venv/bin/pip install --quiet cryptography
@@ -128,6 +135,23 @@ jobs:
           APP_ID: "6820316386"
           POLL_SECONDS: "900"
         run: |
+          set -o pipefail
           python3 -m venv /tmp/asc-venv
           /tmp/asc-venv/bin/pip install --quiet cryptography
-          /tmp/asc-venv/bin/python ios/tools/asc_submit_and_verify.py
+          /tmp/asc-venv/bin/python ios/tools/asc_submit_and_verify.py 2>&1 | tee submit_result.log
+
+      - name: Mark done（回写发布状态标记）
+        if: always()
+        run: |
+          git config user.email "ci@zhangfeiyang.dev"
+          git config user.name "ci-bot"
+          git fetch origin main
+          git checkout -B tmp-marker origin/main
+          {
+            echo "release run=${GITHUB_RUN_ID} time=$(date -u +%FT%TZ)"
+            echo "--- submit log tail ---"
+            tail -15 "$GITHUB_WORKSPACE/submit_result.log" 2>/dev/null || echo "(no submit log)"
+          } > .github/.release-status
+          git add .github/.release-status
+          git commit -m "chore: release status marker [skip ci]" || echo "nothing to commit"
+          git push origin tmp-marker:main || echo "marker push failed"
