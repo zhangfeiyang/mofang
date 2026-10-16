@@ -67,3 +67,36 @@ swift test --scratch-path /tmp/mofang-build      # 单元测试(XCTest)
 python3 ios/tools/gen_xcodeproj.py               # 重新生成工程(改过文件列表后)
 ruby -e "require 'xcodeproj'; Xcodeproj::Project.open('ios/CubeAR.xcodeproj')"  # fastlane 同款解析
 ```
+
+## 2026-10-16 下午:发布管线实战记录(新会话从这里继续)
+
+当前 ASC 状态:App "Cube AR"(6820316386) v1.0 PREPARE_FOR_SUBMISSION,
+build 5 已上传 TestFlight,listing 全部就绪(描述/关键词/截图3张/年龄分级/分类/版权声明/审核联系信息)。
+
+### 阻塞提审的三件事(需在 ASC 网页手动完成,无 API)
+1. App Privacy(App 隐私 → 数据采集问卷):选"不收集数据"并发布(此节无公开 API)
+2. 定价与销售范围:设为"免费"(API 密钥角色无 pricing 权限)
+3. 审核联系信息电话是占位号 +8613800138000,请改成真实号码
+   (ASC → App 信息 → App 审核信息)
+
+### 完成后提审(二选一)
+- Actions 页手动 Run "iOS Release (App Store)"(归档会因 build 5 已占用而失败,
+  但 Submit 步骤 if:always() 会照跑并完成提审),或
+- 推送任何触碰 .github/workflows/ios-release.yml 的提交(push 触发器已配),或
+- 找 zhangfeiyang 重新触发。
+
+### 提审要点(2025+ 新 API)
+- 旧 POST /v1/appStoreVersionSubmissions 已废弃(403 CREATE 不允许)。
+  现用 Review Submissions 流程:GET /v1/apps/{id}/reviewSubmissions(复用打开的
+  DRAFT/READY_FOR_REVIEW 提交——挂构建时 ASC 会自动创建!)→
+  POST /v1/reviewSubmissionItems → PATCH /v1/reviewSubmissions/{id} {submitted:true}。
+- add item 409 "cannot be reviewed" = 版本有 associatedErrors,查 meta.associatedErrors
+  逐项补齐(版权声明/审核信息/隐私问卷/定价都是这么发现的)。
+- iOS 截图与元数据已全部由 CI 写入 ASC(asc_fill_listing.py / asc-metadata workflow)。
+- 证书回收脚本已改为保护其他 App 引用的证书(62RDFCGTWC = mini 长期证书,勿动)。
+
+### 教训
+- 快速排查 ASC 校验错误:把 POST reviewSubmissionItems 的完整 409 body 打出来,
+  meta.associatedErrors 会列全所有缺口。
+- GitHub API 断连时用 git push 触发器 + workflow 回写 marker 文件轮询(git 通道独立)。
+- Mac mini(192.168.1.17)的 SSH/Wi-Fi 不稳,不能当可靠节点。
