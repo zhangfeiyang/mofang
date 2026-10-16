@@ -1,7 +1,10 @@
-asc-setup run=38887297291 time=2026-10-16T10:27:14Z
+asc-setup run=38888057844 time=2026-10-16T10:34:01Z
 --- setup log tail ---
 contentRightsDeclaration(DOES_NOT_USE_THIRD_PARTY_CONTENT): 200
-template review detail missing: 404 {"errors": [{"id": "d08b4e23-4b5e-4921-a679-978436c17f5b", "status": "404", "code": "PATH_ERROR", "title": "The URL path is not valid", "detail": "The relationship 'appStoreReviewDetail' does not exist"}]}
-appDataUsages: mine=-1 template=-1
-appPrices: mine has -1 entries
+mine review detail GET: 403 {"errors": [{"id": "54317ff4-07df-4f30-92ae-f523b6d84a1d", "status": "403", "code": "FORBIDDEN_ERROR", "title": "The given operation is not allowed", "detail": "The resource 'appStoreReviewDetails' do
+template review detail missing: 403 {"errors": [{"id": "4b744e21-7162-45c4-8dbc-ee4f322b9663", "status": "403", "code": "FORBIDDEN_ERROR", "title": "The given operation is not allowed", "detail": "The resource 'appStoreReviewDetails' does not allow 'GET_COLLECTION'. Allowed operations are: CREATE, GET_INSTANCE, UPDATE"}]}
+mine appDataUsages GET: 404 {"errors": [{"id": "22dde6a5-7cc6-46ec-8716-7a6adec3dc7a", "status": "404", "code": "PATH_ERROR", "title": "The URL path is not valid", "detail": "The resource 'v1/appDataUsages' does not exist"}]}
+template appDataUsages GET: 404 {"errors": [{"id": "086bb90e-e893-449c-adce-c915511f4f24", "status": "404", "code": "PATH_ERROR", "title": "The URL path is not valid", "detail": "The resource 'v1/appDataUsages' does not exist"}]}
+mine v2 appPrices GET: 403 {"errors": [{"id": "a63f6784-df8f-4f25-8177-6a5b7dfc3bc6", "status": "403", "code": "FORBIDDEN_ERROR", "title": "The given operation is not allowed", "detail": "The resource 'appPrices' has no allowed
+REVIEW SETUP DONE
 REVIEW SETUP DONE
