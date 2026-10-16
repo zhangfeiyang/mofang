@@ -73,7 +73,9 @@ final class CubeFaceModel {
             memcpy(array.dataPointer, src.baseAddress!, input.count * MemoryLayout<Float>.size)
         }
 
-        guard let output = try? model.prediction(from: array) else {
+        let inputName = model.modelDescription.inputDescriptionsByName.first?.key ?? "image"
+        guard let provider = try? MLDictionaryFeatureProvider(dictionary: [inputName: MLFeatureValue(multiArray: array)]),
+              let output = try? model.prediction(from: provider) else {
             return DebugResult(corners: nil, presence: -1, accepted: false, reject: "inference",
                                areaFraction: 0, aspect: 0, shortest: 0)
         }
