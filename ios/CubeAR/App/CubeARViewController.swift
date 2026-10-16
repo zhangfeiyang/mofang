@@ -322,7 +322,17 @@ final class CubeARViewController: UIViewController {
     /// `-demoScreen 1` 扫描中,2 待开始,3 引导中。
     private func setupDemo() {
         voiceEnabled = false
-        let state = MTools.fromScramble("R U R' U' F2 D' L B2 R' D F U2 L' D2 B R2 U' F2 L2 D")
+        // fromScramble 依赖求解器表,必须在 initTables 之后(串行队列保证顺序)
+        solveWorker.async { [weak self] in
+            Search.initTables()
+            let state = MTools.fromScramble("R U R' U' F2 D' L B2 R' D F U2 L' D2 B R2 U' F2 L2 D")
+            DispatchQueue.main.async {
+                self?.showDemo(state: state)
+            }
+        }
+    }
+
+    private func showDemo(state: String) {
         switch UserDefaults.standard.integer(forKey: "demoScreen") {
         case 1:
             // 扫描中:展开图只显示已"扫到"的两个面
@@ -337,7 +347,6 @@ final class CubeARViewController: UIViewController {
             detailLabel.text = "把魔方的一个面正对镜头"
         default:
             solveWorker.async { [weak self] in
-                Search.initTables()
                 let search = Search()
                 let solution = search.solution(state, 24, 1_000_000, 200, 0)
                 DispatchQueue.main.async {

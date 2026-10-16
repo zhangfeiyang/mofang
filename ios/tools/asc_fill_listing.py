@@ -145,7 +145,7 @@ def main():
         print(f"category PATCH ({edu['id']}): {code}" + ("" if code == 200 else " " + json.dumps(resp)[:300]))
 
     # 3. appInfoLocalizations zh-Hans(名称/副标题/隐私政策)
-    _, existing = api(f"/v1/appInfos/{app_info_id}/appInfoLocalizations?limit=200")
+    _, existing = api("GET", f"/v1/appInfos/{app_info_id}/appInfoLocalizations?limit=200")
     by_locale = {d["attributes"]["locale"]: d["id"] for d in existing.get("data", [])}
     attrs = {"name": NAME, "subtitle": SUBTITLE, "privacyPolicyUrl": SITE}
     if "zh-Hans" in by_locale:
@@ -165,7 +165,7 @@ def main():
     print(f"copyright PATCH: {code}" + ("" if code == 200 else " " + json.dumps(resp)[:300]))
 
     # 5. versionLocalization zh-Hans(描述/关键词/推广/更新说明)
-    _, vlocs = api(f"/v1/appStoreVersions/{version_id}/appStoreVersionLocalizations?limit=200")
+    _, vlocs = api("GET", f"/v1/appStoreVersions/{version_id}/appStoreVersionLocalizations?limit=200")
     vby_locale = {d["attributes"]["locale"]: d["id"] for d in vlocs.get("data", [])}
     vattrs = {"description": DESCRIPTION, "keywords": KEYWORDS,
               "promotionalText": PROMO, "whatsNew": WHATS_NEW,
@@ -181,12 +181,12 @@ def main():
         print(f"version POST zh-Hans: {code}" + ("" if code == 201 else " " + json.dumps(resp)[:200]))
 
     # 6. 截图:zh-Hans,6.9 英寸(APP_IPHONE_67,与 Crystal Grid 相同做法)
-    _, vlocs = api(f"/v1/appStoreVersions/{version_id}/appStoreVersionLocalizations?limit=200")
+    _, vlocs = api("GET", f"/v1/appStoreVersions/{version_id}/appStoreVersionLocalizations?limit=200")
     vby_locale = {d["attributes"]["locale"]: d["id"] for d in vlocs.get("data", [])}
     loc_id = vby_locale.get("zh-Hans")
     if not loc_id:
         raise SystemExit("zh-Hans version localization 不存在,先完成第 5 步")
-    _, sets = api(f"/v1/appStoreVersionLocalizations/{loc_id}/appScreenshotSets?filter[screenshotDisplayType]=APP_IPHONE_67")
+    _, sets = api("GET", f"/v1/appStoreVersionLocalizations/{loc_id}/appScreenshotSets?filter[screenshotDisplayType]=APP_IPHONE_67")
     if sets.get("data"):
         set_id = sets["data"][0]["id"]
     else:
@@ -198,7 +198,7 @@ def main():
         set_id = resp["data"]["id"]
 
     # 已有截图先清掉,保证产物与本次上传一致
-    _, existing_shots = api(f"/v1/appScreenshotSets/{set_id}/appScreenshots")
+    _, existing_shots = api("GET", f"/v1/appScreenshotSets/{set_id}/appScreenshots")
     for s in existing_shots.get("data", []):
         api("DELETE", f"/v1/appScreenshots/{s['id']}")
         print(f"shot delete old: {s['id']}")
