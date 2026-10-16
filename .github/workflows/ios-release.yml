@@ -167,3 +167,5 @@ jobs:
 # retrigger release
 
 # retrigger with reviewSubmissions flow
+
+# retrigger: reuse open submission

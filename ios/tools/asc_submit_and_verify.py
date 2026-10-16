@@ -103,13 +103,30 @@ def whats_new(vid):
             print(f"whatsNew PATCH: {code}" + ("" if code == 200 else " " + json.dumps(resp)[:150]))
 
 
-def ensure_review_submission():
-    """复用已打开的 READY_FOR_REVIEW 提交,否则创建(避免 409)。"""
-    code, resp = api("GET", f"/v1/apps/{APP_ID}/reviewSubmissions?filter[state]=READY_FOR_REVIEW")
-    if code == 200 and resp.get("data"):
-        sub = resp["data"][0]
-        print(f"reuse open review submission {sub['id']}")
-        return sub["id"]
+def ensure_review_submission(vid: str):
+    """复用打开的(DRAFT/READY_FOR_REVIEW)提交,否则创建。
+
+    注意:挂载构建时 ASC 可能已自动创建包含本版本的 DRAFT 提交,
+    所以不能只看 READY_FOR_REVIEW,也要检查 item 是否已包含本版本。
+    """
+    code, resp = api("GET", f"/v1/apps/{APP_ID}/reviewSubmissions")
+    open_states = {"DRAFT", "READY_FOR_REVIEW", "UNRESOLVED_ISSUES"}
+    if code == 200:
+        for sub in resp.get("data", []):
+            if sub["attributes"].get("state") not in open_states:
+                continue
+            sub_id = sub["id"]
+            code2, items = api("GET", f"/v1/reviewSubmissions/{sub_id}/items")
+            has_version = False
+            if code2 == 200:
+                for it in items.get("data", []):
+                    rel = (it.get("relationships", {}).get("appStoreVersion", {}) or {}).get("data", {}) or {}
+                    if rel.get("id") == vid:
+                        has_version = True
+            print(f"open submission {sub_id} (state {sub['attributes'].get('state')}, contains version: {has_version})")
+            if has_version:
+                return sub_id
+            return sub_id  # 打开提交即使暂无 item 也直接用它
     body = {"data": {"type": "reviewSubmissions",
                      "attributes": {"platform": "IOS"},
                      "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}}}}
@@ -121,6 +138,14 @@ def ensure_review_submission():
 
 
 def add_item(sub_id: str, vid: str):
+    # 先查现有 items(版本可能已被 ASC 自动加入)
+    code, resp = api("GET", f"/v1/reviewSubmissions/{sub_id}/items")
+    if code == 200:
+        for it in resp.get("data", []):
+            rel = (it.get("relationships", {}).get("appStoreVersion", {}) or {}).get("data", {}) or {}
+            if rel.get("id") == vid:
+                print(f"item already present: {it['id']}")
+                return it["id"]
     body = {"data": {"type": "reviewSubmissionItems",
                      "relationships": {"reviewSubmission": {"data": {"type": "reviewSubmissions", "id": sub_id}},
                                         "appStoreVersion": {"data": {"type": "appStoreVersions", "id": vid}}}}}
@@ -128,13 +153,6 @@ def add_item(sub_id: str, vid: str):
     print(f"add review item: {code} {json.dumps(resp)[:250]}")
     if code == 201:
         return resp["data"]["id"]
-    # 可能已加过:找现有 item
-    code, resp = api("GET", f"/v1/reviewSubmissions/{sub_id}/items")
-    for it in resp.get("data", []):
-        rel = (it.get("relationships", {}).get("appStoreVersion", {}) or {}).get("data", {}) or {}
-        if rel.get("id") == vid:
-            print(f"item already present: {it['id']}")
-            return it["id"]
     raise SystemExit(f"add item failed: {json.dumps(resp)[:400]}")
 
 
@@ -167,7 +185,7 @@ def main():
                 raise SystemExit(f"挂构建失败: {json.dumps(resp)[:300]}")
             whats_new(vid)
         # 2. Review Submissions 流程(旧 appStoreVersionSubmissions 端点已废弃)
-        sub_id = ensure_review_submission()
+        sub_id = ensure_review_submission(vid)
         add_item(sub_id, vid)
         if not submit_for_review(sub_id):
             raise SystemExit("提审失败——见上方响应")
