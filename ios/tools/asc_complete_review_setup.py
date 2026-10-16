@@ -72,13 +72,14 @@ def main():
         print("  ", json.dumps(resp)[:250])
 
     # 2. 审核联系信息(复用 CG 的)
-    code, mine = api("GET", f"/v1/apps/{APP_ID}/appStoreReviewDetail")
+    code, mine = api("GET", f"/v1/appStoreReviewDetails?filter[app]={APP_ID}")
     if code == 200 and mine.get("data"):
         print("appStoreReviewDetail already exists")
     else:
-        code, cg = api("GET", f"/v1/apps/{TEMPLATE_APP_ID}/appStoreReviewDetail")
+        print(f"mine review detail GET: {code} {json.dumps(mine)[:200]}")
+        code, cg = api("GET", f"/v1/appStoreReviewDetails?filter[app]={TEMPLATE_APP_ID}")
         if code != 200 or not cg.get("data"):
-            print(f"template review detail missing: {code} {json.dumps(cg)[:250]}")
+            print(f"template review detail missing: {code} {json.dumps(cg)[:400]}")
         else:
             attrs = dict(cg["data"]["attributes"])
             for k in ("notes", "demoAccountName", "demoAccountPassword"):
@@ -89,40 +90,37 @@ def main():
             print(f"appStoreReviewDetail POST: {code} " + ("" if code == 201 else json.dumps(resp)[:300]))
 
     # 3. App Privacy 数据使用问卷(复用 CG 的答案)
-    code, mine = api("GET", f"/v1/apps/{APP_ID}/appDataUsages")
+    code, mine = api("GET", f"/v1/appDataUsages?filter[app]={APP_ID}")
+    print(f"mine appDataUsages GET: {code} {json.dumps(mine)[:200]}")
     existing = len(mine.get("data", [])) if code == 200 else -1
-    code, cg = api("GET", f"/v1/apps/{TEMPLATE_APP_ID}/appDataUsages")
-    cg_usage_count = len(cg.get("data", [])) if code == 200 else -1
-    print(f"appDataUsages: mine={existing} template={cg_usage_count}")
-    if existing == 0:
-        if cg_usage_count == 0:
-            # CG 也未声明任何数据采集:逐类目补"不采集"的声明不可行,改为
-            # 创建一个最简 PUBLIC/APP_FUNCTIONALITY 用途与 CG 对齐
-            print("template has no usages either — nothing to copy")
+    code, cg = api("GET", f"/v1/appDataUsages?filter[app]={TEMPLATE_APP_ID}")
+    print(f"template appDataUsages GET: {code} {json.dumps(cg, ensure_ascii=False)[:600]}")
+    cg_count = len(cg.get("data", [])) if code == 200 else -1
+    if existing == 0 and cg_count > 0:
         for u in cg.get("data", []):
-            attrs = {k: v for k, v in u["attributes"].items()}
+            attrs = dict(u["attributes"])
             body = {"data": {"type": "appDataUsages", "attributes": attrs,
                              "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}}}}
             code, resp = api("POST", "/v1/appDataUsages", body)
             print(f"appDataUsage POST {attrs.get('dataCategory')}/{attrs.get('dataGroup')}: {code} "
                   + ("" if code == 201 else json.dumps(resp)[:250]))
 
-    # 4. 定价(v2,免费)
+    # 4. 定价(v2,免费;模板价目结构不可用时报错打印)
     code, mine = api("GET", f"/v2/appPrices?filter[app]={APP_ID}")
+    print(f"mine v2 appPrices GET: {code} {json.dumps(mine)[:200]}")
     existing = len(mine.get("data", [])) if code == 200 else -1
-    print(f"appPrices: mine has {existing} entries")
     if existing == 0:
         code, cg = api("GET", f"/v2/appPrices?filter[app]={TEMPLATE_APP_ID}")
+        print(f"template v2 appPrices GET: {code} {json.dumps(cg, ensure_ascii=False)[:600]}")
         for p in (cg.get("data", []) or [])[:1]:
-            body = {"data": {"type": "appPrices",
-                             "attributes": dict(p.get("attributes", {})),
-                             "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}}}}
-            # 移除模板的价格点关系,改为 tier 0(免费)
             rel = dict(p.get("relationships", {}))
             rel["app"] = {"data": {"type": "apps", "id": APP_ID}}
-            body["data"]["relationships"] = rel
+            body = {"data": {"type": "appPrices",
+                             "attributes": dict(p.get("attributes", {})),
+                             "relationships": rel}}
             code, resp = api("POST", "/v2/appPrices", body)
-            print(f"appPrice POST (copy of CG {p['id']}): {code} " + ("" if code == 201 else json.dumps(resp)[:400]))
+            print(f"appPrice POST (copy of CG {p['id']}): {code} " + ("" if code == 201 else json.dumps(resp)[:600]))
+    print("REVIEW SETUP DONE")
     print("REVIEW SETUP DONE")
 
 
