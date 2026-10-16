@@ -1,21 +1,25 @@
-screenshots run=38869675686 time=2026-10-16T07:59:43Z
+screenshots run=38871775982 time=2026-10-16T08:13:25Z
 --- fill log tail ---
 appInfo=95d88fdd-9afc-4d55-95c5-29704e3bae0f version=e802d111-145d-44d2-9453-ab67befd53f1
-ageRating PATCH: 405 {"errors": [{"status": "405", "code": "METHOD_NOT_ALLOWED", "title": "The request method is not valid for the resource path.", "detail": "The request method used for this request is not valid for the resource path. Please consult the documentation."}]}
+ageRating PATCH: 200
 category PATCH (EDUCATION): 200
 appInfo PATCH zh-Hans: 200
 copyright PATCH: 200
-version PATCH zh-Hans: 409 {"errors": [{"id": "c45193fb-f6c6-4774-bf03-e99c046eda32", "status": "409", "code": "STATE_ERROR", "title": "The request cannot be fulfilled because of the state of another resource.", "detail": "Attribute 'whatsNew' cannot be edited at this time"}]}
+version PATCH zh-Hans: 200
+whatsNew PATCH zh-Hans: 409 {"errors": [{"id": "aa14a33a-ab1b-4941-9e12-d8c6869268c7", "status": "409", "code": "STATE_ERROR", "title": "The request cannot be fulfilled because of the state of another resource.", "detail": "Attr
+shot delete old: 5a000019-685c-84e2-8028-fba5bf606a73
+shot delete old: 8d800019-685c-84e2-802e-de65b5ddd351
+shot delete old: f1800019-685c-84e2-8011-0e70d1c3a32e
 shot 01_scanning.png: commit 200
 shot 02_ready.png: commit 200
 shot 03_guiding.png: commit 200
 ALL DONE
 --- shot sizes ---
--rw-r--r--@ 1 runner  staff  400714 Oct 16 07:52 /Users/runner/work/mofang/mofang/shots/01_scanning.png
--rw-r--r--@ 1 runner  staff  118994 Oct 16 07:59 /Users/runner/work/mofang/mofang/shots/02_ready.png
--rw-r--r--@ 1 runner  staff  113204 Oct 16 07:59 /Users/runner/work/mofang/mofang/shots/03_guiding.png
+-rw-r--r--@ 1 runner  staff  112080 Oct 16 08:11 /Users/runner/work/mofang/mofang/shots/01_scanning.png
+-rw-r--r--@ 1 runner  staff  118994 Oct 16 08:12 /Users/runner/work/mofang/mofang/shots/02_ready.png
+-rw-r--r--@ 1 runner  staff  113204 Oct 16 08:12 /Users/runner/work/mofang/mofang/shots/03_guiding.png
 --- app1 launch log ---
-com.mofang.cubear: 26670
+com.mofang.cubear: 6538
 --- app2 launch log ---
-com.mofang.cubear: 27164
+com.mofang.cubear: 7752
 --- crash reports ---
