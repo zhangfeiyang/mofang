@@ -55,7 +55,7 @@ DESCRIPTION = """Cube AR 是一款魔方扫描与还原指导应用:用相机"�
 
 拿起你的三阶魔方,打开 Cube AR 跟着提示转,还原魔方没那么难!"""
 WHATS_NEW = "首次发布。"
-# 年龄分级:全否(4+),与 Crystal Grid 相同
+# 年龄分级:全部否(4+),与 Crystal Grid 相同
 AGE_RATING_SAFE = {
     "advertising": False,
     "alcoholTobaccoOrDrugUseOrReferences": "NONE",
@@ -77,6 +77,10 @@ AGE_RATING_SAFE = {
     "horrorOrFearThemes": "NONE",
     "matureOrSuggestiveThemes": "NONE",
     "unrestrictedWebAccess": False,
+    "userGeneratedContent": False,
+    "violenceCartoonOrFantasy": "NONE",
+    "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+    "violenceRealistic": "NONE",
 }
 
 
@@ -165,8 +169,7 @@ def main():
     vby_locale = {d["attributes"]["locale"]: d["id"] for d in vlocs.get("data", [])}
     vattrs = {"description": DESCRIPTION, "keywords": KEYWORDS,
               "promotionalText": PROMO, "whatsNew": WHATS_NEW,
-              "supportUrl": SITE, "marketingUrl": None, "description": DESCRIPTION}
-    vattrs = {k: v for k, v in vattrs.items() if v is not None}
+              "supportUrl": SITE}
     if "zh-Hans" in vby_locale:
         code, resp = api("PATCH", f"/v1/appStoreVersionLocalizations/{vby_locale['zh-Hans']}",
                          {"data": {"type": "appStoreVersionLocalizations", "id": vby_locale["zh-Hans"], "attributes": vattrs}})

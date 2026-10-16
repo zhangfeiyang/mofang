@@ -44,6 +44,7 @@ jobs:
 
       - name: Screenshot 1 — scanning（扫描中）
         run: |
+          mkdir -p shots
           APP=$(find ios/build/sim/Build/Products -name "CubeAR.app" -type d | head -1)
           [ -n "$APP" ] || { echo "::error::CubeAR.app not found"; exit 1; }
           xcrun simctl install "$UDID" "$APP"
