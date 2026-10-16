@@ -71,55 +71,28 @@ def main():
             break
         print("  ", json.dumps(resp)[:250])
 
-    # 2. 审核联系信息(复用 CG 的)
-    code, mine = api("GET", f"/v1/appStoreReviewDetails?filter[app]={APP_ID}")
-    if code == 200 and mine.get("data"):
-        print("appStoreReviewDetail already exists")
-    else:
-        print(f"mine review detail GET: {code} {json.dumps(mine)[:200]}")
-        code, cg = api("GET", f"/v1/appStoreReviewDetails?filter[app]={TEMPLATE_APP_ID}")
-        if code != 200 or not cg.get("data"):
-            print(f"template review detail missing: {code} {json.dumps(cg)[:400]}")
-        else:
-            attrs = dict(cg["data"]["attributes"])
-            for k in ("notes", "demoAccountName", "demoAccountPassword"):
-                attrs.pop(k, None)
-            body = {"data": {"type": "appStoreReviewDetails", "attributes": attrs,
-                             "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}}}}
-            code, resp = api("POST", "/v1/appStoreReviewDetails", body)
-            print(f"appStoreReviewDetail POST: {code} " + ("" if code == 201 else json.dumps(resp)[:300]))
+    # 2. 审核联系信息(密钥无 GET_COLLECTION 权限,直接 CREATE;409=已存在)
+    #    电话为占位号,需在 ASC 网页改成真实号码(App Privacy 一节)
+    body = {"data": {"type": "appStoreReviewDetails",
+                     "attributes": {"contactFirstName": "Feiyang",
+                                    "contactLastName": "Zhang",
+                                    "contactEmail": "1173205582@qq.com",
+                                    "contactPhone": "+8613800138000",
+                                    "demoAccountRequired": False},
+                     "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}}}}
+    code, resp = api("POST", "/v1/appStoreReviewDetails", body)
+    print(f"appStoreReviewDetail POST: {code} " + ("" if code in (201, 409) else json.dumps(resp)[:400]))
 
-    # 3. App Privacy 数据使用问卷(复用 CG 的答案)
-    code, mine = api("GET", f"/v1/appDataUsages?filter[app]={APP_ID}")
-    print(f"mine appDataUsages GET: {code} {json.dumps(mine)[:200]}")
-    existing = len(mine.get("data", [])) if code == 200 else -1
-    code, cg = api("GET", f"/v1/appDataUsages?filter[app]={TEMPLATE_APP_ID}")
-    print(f"template appDataUsages GET: {code} {json.dumps(cg, ensure_ascii=False)[:600]}")
-    cg_count = len(cg.get("data", [])) if code == 200 else -1
-    if existing == 0 and cg_count > 0:
-        for u in cg.get("data", []):
-            attrs = dict(u["attributes"])
-            body = {"data": {"type": "appDataUsages", "attributes": attrs,
-                             "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}}}}}
-            code, resp = api("POST", "/v1/appDataUsages", body)
-            print(f"appDataUsage POST {attrs.get('dataCategory')}/{attrs.get('dataGroup')}: {code} "
-                  + ("" if code == 201 else json.dumps(resp)[:250]))
+    # 3. App Privacy 数据采集问卷:无公开 API,必须在 ASC 网页完成(见 README)
+    print("appDataUsages: UI-only — complete in App Store Connect web (App Privacy → 不收集数据)")
 
-    # 4. 定价(v2,免费;模板价目结构不可用时报错打印)
-    code, mine = api("GET", f"/v2/appPrices?filter[app]={APP_ID}")
-    print(f"mine v2 appPrices GET: {code} {json.dumps(mine)[:200]}")
-    existing = len(mine.get("data", [])) if code == 200 else -1
-    if existing == 0:
-        code, cg = api("GET", f"/v2/appPrices?filter[app]={TEMPLATE_APP_ID}")
-        print(f"template v2 appPrices GET: {code} {json.dumps(cg, ensure_ascii=False)[:600]}")
-        for p in (cg.get("data", []) or [])[:1]:
-            rel = dict(p.get("relationships", {}))
-            rel["app"] = {"data": {"type": "apps", "id": APP_ID}}
-            body = {"data": {"type": "appPrices",
-                             "attributes": dict(p.get("attributes", {})),
-                             "relationships": rel}}
-            code, resp = api("POST", "/v2/appPrices", body)
-            print(f"appPrice POST (copy of CG {p['id']}): {code} " + ("" if code == 201 else json.dumps(resp)[:600]))
+    # 4. 定价(免费 tier 0;密钥若无法读价目结构则按 v2 文档的 tier 关系直建)
+    body = {"data": {"type": "appPrices",
+                     "attributes": {"startDate": time.strftime("%Y-%m-%d")},
+                     "relationships": {"app": {"data": {"type": "apps", "id": APP_ID}},
+                                        "priceTier": {"data": {"type": "appPriceTiers", "id": "tier0"}}}}}
+    code, resp = api("POST", "/v2/appPrices", body)
+    print(f"appPrice POST tier0: {code} " + ("" if code == 201 else json.dumps(resp)[:600]))
     print("REVIEW SETUP DONE")
     print("REVIEW SETUP DONE")
 
