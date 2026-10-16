@@ -1,10 +1,8 @@
-asc-setup run=38888057844 time=2026-10-16T10:34:01Z
+asc-setup run=38888830126 time=2026-10-16T10:41:07Z
 --- setup log tail ---
 contentRightsDeclaration(DOES_NOT_USE_THIRD_PARTY_CONTENT): 200
-mine review detail GET: 403 {"errors": [{"id": "54317ff4-07df-4f30-92ae-f523b6d84a1d", "status": "403", "code": "FORBIDDEN_ERROR", "title": "The given operation is not allowed", "detail": "The resource 'appStoreReviewDetails' do
-template review detail missing: 403 {"errors": [{"id": "4b744e21-7162-45c4-8dbc-ee4f322b9663", "status": "403", "code": "FORBIDDEN_ERROR", "title": "The given operation is not allowed", "detail": "The resource 'appStoreReviewDetails' does not allow 'GET_COLLECTION'. Allowed operations are: CREATE, GET_INSTANCE, UPDATE"}]}
-mine appDataUsages GET: 404 {"errors": [{"id": "22dde6a5-7cc6-46ec-8716-7a6adec3dc7a", "status": "404", "code": "PATH_ERROR", "title": "The URL path is not valid", "detail": "The resource 'v1/appDataUsages' does not exist"}]}
-template appDataUsages GET: 404 {"errors": [{"id": "086bb90e-e893-449c-adce-c915511f4f24", "status": "404", "code": "PATH_ERROR", "title": "The URL path is not valid", "detail": "The resource 'v1/appDataUsages' does not exist"}]}
-mine v2 appPrices GET: 403 {"errors": [{"id": "a63f6784-df8f-4f25-8177-6a5b7dfc3bc6", "status": "403", "code": "FORBIDDEN_ERROR", "title": "The given operation is not allowed", "detail": "The resource 'appPrices' has no allowed
+appStoreReviewDetail POST: 409 
+appDataUsages: UI-only — complete in App Store Connect web (App Privacy → 不收集数据)
+appPrice POST tier0: 403 {"errors": [{"id": "5342ab9c-e624-46e8-bdb0-e96a2db449b4", "status": "403", "code": "FORBIDDEN_ERROR", "title": "The given operation is not allowed", "detail": "The resource 'appPrices' has no allowed operations defined."}]}
 REVIEW SETUP DONE
 REVIEW SETUP DONE
