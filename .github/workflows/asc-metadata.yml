@@ -1,0 +1,49 @@
+name: ASC Metadata
+
+# 纯 Python 的 ASC 元数据/审核前置补齐(无需 macOS):
+# asc_fill_listing.py(listing+截图)+ asc_complete_review_setup.py(审核前置四件套)。
+# push 触发本文件即重跑;结果写 .github/.asc-setup-status 标记。
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/asc-metadata.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  metadata:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fill listing + review setup
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
+        run: |
+          echo "$AC_API_KEY_P8" | base64 -d > /tmp/authkey.p8
+          pip3 install --quiet cryptography
+          python3 ios/tools/asc_fill_listing.py 2>&1 | tee fill.log || true
+          SHOTS_DIR=/tmp/none python3 ios/tools/asc_complete_review_setup.py 2>&1 | tee setup.log || true
+          tail -30 fill.log
+          tail -40 setup.log
+
+      - name: Mark done
+        if: always()
+        run: |
+          git config user.email "ci@zhangfeiyang.dev"
+          git config user.name "ci-bot"
+          git fetch origin main
+          git checkout -B tmp-marker origin/main
+          {
+            echo "asc-setup run=${GITHUB_RUN_ID} time=$(date -u +%FT%TZ)"
+            echo "--- setup log tail ---"
+            tail -40 "$GITHUB_WORKSPACE/setup.log" 2>/dev/null || echo "(no setup log)"
+          } > .github/.asc-setup-status
+          git add .github/.asc-setup-status
+          git commit -m "chore: asc setup status marker [skip ci]" || echo "nothing to commit"
+          git push origin tmp-marker:main || echo "marker push failed"
