@@ -1,18 +1,23 @@
-release run=38875895927 time=2026-10-16T08:47:23Z
+release run=38877025886 time=2026-10-16T08:59:25Z
 --- upload log tail ---
-+------------------+------------+
-| DEFAULT_PLATFORM | ios        |
-| PLATFORM_NAME    | ios        |
-| LANE_NAME        | ios upload |
-+------------------+------------+
-[08:47:22]: [31mCalled from Fastfile at line 104[0m
-[08:47:22]: [31m```[0m
-[08:47:22]: [31m    102:	      duration: 1200,[0m
-[08:47:22]: [31m    103:	    )[0m
-[08:47:22]: [31m => 104:	    pilot([0m
-[08:47:22]: [31m    105:	      api_key: api_key,[0m
-[08:47:22]: [31m    106:	      skip_waiting_for_build_processing: true,[0m
-[08:47:22]: [31m```[0m
+[08:58:44]: [32m--- Step: default_platform ---[0m
+[08:58:44]: [32m------------------------------[0m
+[08:58:44]: [32mDriving the lane 'ios upload' 🚀[0m
+[08:58:44]: [32m---------------------------------------[0m
+[08:58:44]: [32m--- Step: app_store_connect_api_key ---[0m
+[08:58:44]: [32m---------------------------------------[0m
+[08:58:44]: [32m-------------------[0m
+[08:58:44]: [32m--- Step: pilot ---[0m
+[08:58:44]: [32m-------------------[0m
+[08:58:44]: Creating authorization token for App Store Connect API
+[08:58:44]: [32mReady to upload new build to TestFlight (App: 6820316386)...[0m
+[08:58:44]: Going to upload updated app to App Store Connect
+[08:58:44]: [32mThis might take a few minutes. Please don't interrupt the script.[0m
+[08:59:16]: [32m--------------------------------------------------------------------[0m
+[08:59:16]: [32mSuccessfully uploaded package to App Store Connect. It might take a few minutes until it's visible online.[0m
+[08:59:16]: [32m--------------------------------------------------------------------[0m
+[08:59:16]: [32mSuccessfully uploaded the new binary to App Store Connect[0m
+[08:59:16]: [33m`skip_waiting_for_build_processing` used and no `changelog` supplied - skipping waiting for build processing[0m
 
 +------------------------------------------------+
 |                [32mfastlane summary[0m                |
@@ -21,16 +26,16 @@ release run=38875895927 time=2026-10-16T08:47:23Z
 +------+---------------------------+-------------+
 | 1    | default_platform          | 0           |
 | 2    | app_store_connect_api_key | 0           |
-| 💥   | [31mpilot[0m                     | 3           |
+| 3    | pilot                     | 32          |
 +------+---------------------------+-------------+
 
-[08:47:22]: [31mfastlane finished with errors[0m
-[31m
-[!] Error uploading ipa file: 
- [Application Loader Error Output]: [ContentDelivery.Uploader.6000038FC4C0] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘3’. (ID: 8434bd62-ffe9-41e2-a044-73cbac8b9647)
-[Application Loader Error Output]: [altool.6000038FC4C0] Failed to upload package.[0m
-[Application Loader Error Output]: [altool.6000038FC4C0] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘3’. (ID: 8434bd62-ffe9-41e2-a044-73cbac8b9647)[0m
+[08:59:16]: [32mfastlane.tools finished successfully 🎉[0m
 --- ipa files ---
--rw-r--r--  1 runner  staff  3061919 Oct 16 08:47 /Users/runner/work/mofang/mofang/ios/CubeAR.ipa
+-rw-r--r--  1 runner  staff  3061919 Oct 16 08:58 /Users/runner/work/mofang/mofang/ios/CubeAR.ipa
 --- submit log tail ---
-(no submit log)
+version 1.0 initial state: PREPARE_FOR_SUBMISSION
+build 3 is VALID
+attach build 3: 204
+whatsNew PATCH: 409
+create submission: 403
+提交失败: {"errors": [{"id": "e36a375d-ca0c-4159-8717-2be84673c093", "status": "403", "code": "FORBIDDEN_ERROR", "title": "The given operation is not allowed", "detail": "The resource 'appStoreVersionSubmissions' does not allow 'CREATE'. Allowed operation is: DELETE"}]}
