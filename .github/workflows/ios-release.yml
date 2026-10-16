@@ -136,7 +136,7 @@ jobs:
           AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
           AC_API_KEY_P8: ${{ secrets.AC_API_KEY_P8 }}
           APP_ID: "6820316386"
-          POLL_SECONDS: "900"
+          POLL_SECONDS: "2400"
         run: |
           set -o pipefail
           python3 -m venv /tmp/asc-venv

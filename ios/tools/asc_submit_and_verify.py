@@ -78,6 +78,19 @@ def latest_valid_build_id():
     return None, None
 
 
+def wait_valid_build(timeout_s: int):
+    """轮询等待最新构建处理完成(上传后 Apple 需几分钟校验,期间 state=PROCESSING)。"""
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        bid, bver = latest_valid_build_id()
+        if bid:
+            print(f"build {bver} is VALID")
+            return bid, bver
+        print(f"  build processing... {int(deadline - time.time())}s left")
+        time.sleep(30)
+    raise SystemExit("等待构建处理超时——请人工在 ASC 检查构建状态")
+
+
 def main():
     ver = get_version()
     vid = ver["id"]
@@ -85,12 +98,10 @@ def main():
     print(f"version {ver['attributes']['versionString']} initial state: {state}")
 
     if state == "PREPARE_FOR_SUBMISSION":
-        # 1. 挂最新有效构建
+        # 1. 挂最新有效构建(必要时等待 Apple 处理完成)
         _, v = api("GET", f"/v1/appStoreVersions/{vid}/builds")
         if not v.get("data"):
-            bid, bver = latest_valid_build_id()
-            if not bid:
-                raise SystemExit("没有可用构建,无法提交")
+            bid, bver = wait_valid_build(POLL_SECONDS)
             code, resp = api("PATCH", f"/v1/appStoreVersions/{vid}/relationships/build",
                              {"data": {"type": "builds", "id": bid}})
             print(f"attach build {bver}: {code}")
