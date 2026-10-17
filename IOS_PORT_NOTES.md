@@ -2,17 +2,44 @@
 
 > 本文件是移植工作的进度载体,每完成一批更新一次。新会话从这里继续。
 
-## 当前状态(2026-10-16)
+## 当前状态(2026-10-17)
 
-- **核心逻辑**:39 个 XCTest 全部通过(Linux Swift 6.0.3,`cd ios && swift test`)。
-- **模型**:cubeface.mlpackage 已生成并接入工程(ONNX→onnx2torch→CoreML mlprogram,
-  数值一致性验证误差 ~1e-6;转换环境 /tmp/mlconv-venv,coremltools 8.3 + torch CPU)。
-- **工程**:ios/tools/gen_xcodeproj.py 重写(Core 目录 glob、组结构补全、
-  Debug/Release 大小写修正、mlpackage 进 Sources 阶段);project.pbxproj 已重新生成,
-  并用 xcodeproj gem(fastlane 同款解析器)验证可解析。
-- **CI/发布**:.github/workflows 下 ios-ci.yml(编译验证)、ios-release.yml
-  (签名→归档→TestFlight→提审)已指向 CubeAR;bundle com.mofang.cubear,
-  ASC App ID 6820316386(记录已建,版本 1.0 PREPARE_FOR_SUBMISSION)。
+- **核心逻辑**:68 个 XCTest,67 个通过(Linux Swift 6.0.3,`cd ios && swift test`);
+  RefinerParityTests 需要先解码真机帧(见下),默认跳过。
+- **App 层已按安卓版重做**(2026-10-17,见下节)。Mac mini 上 Xcode 27.0 编译通过
+  (Debug 模拟器 + Release 真机架构,新文件零警告),模拟器里三个演示画面与首次启动截图正常。
+  尚未在真机上跑过相机。
+- **模型**:cubeface.mlpackage(ONNX→onnx2torch→CoreML mlprogram,数值一致误差 ~1e-6)。
+- **CI/发布**:ios-ci.yml(编译验证)、ios-release.yml(签名→归档→TestFlight→提审);
+  bundle com.mofang.cubear,ASC App ID 6820316386。build 号已升到 6(build 5 是旧 UI)。
+
+## 2026-10-17 对齐安卓版(App 层重做)
+
+旧 iOS 版只是安卓 MainActivity 的骨架,差距和修法:
+
+| 问题 | 修法 |
+|---|---|
+| 相机给 1920×1080 **横屏**帧,模型按 720×1280 竖屏训练 → 检测几乎全废 | CameraManager:720p + 连接旋转 90°(竖屏 720×1280);vImage 做 BGRA→RGBA |
+| 每帧(30fps)先转像素再节流 | 先问 `CubeAnalyzer.wantsFrame`,被跳过的帧不拷贝 |
+| 没检测到面的帧不上报 → 跟踪/稳定器永远不知道面丢了 | `process()` 每帧都报(含 nil),主线程只取最新一帧(安卓 pendingFrame) |
+| 工作线程直接对活池调 `assembleLegalState()`(数据竞争、无时间预算、无可疑面重扫) | 状态机整体移到 `Core/CubeSession.swift`(MainActivity 的平台无关部分):快照组装、`assemble()` 预算、suspect→forget、连续 3 次失败判池污染 |
+| `CubeColor.rgb` 不含 alpha,视图当 ARGB 用 → 展开图/小魔方颜色全透明 | 新增 `CubeColor.argb`,`preview()` 输出不透明 ARGB |
+| 没有"核对"阶段、不在核对页学持法、求解参数不同 | READY 阶段 + learnFrame;求解参数与安卓一致(21, 1e8) |
+| 3D 小魔方只画一个静态已还原展开角 | `Core/GuideCubeModel.swift`(GuideCube 几何)+ GuideCubeView 绘制:按持法摆放、转动层动画、箭头/圈/×2、链式两段 |
+| 叠加层:非等比映射、无滑动/对勾/箭头/彩纸 | CubeOverlayView 全量移植,用 CAShapeLayer + CAEmitterLayer(不整屏重绘) |
+| 界面:固定坐标、emoji 按钮 | 玻璃 HUD(HudViews.swift,对应 res/values 与 drawable):顶栏、引导卡、底部面板、提示条、帮助页(首次启动)、重扫确认 |
+| 缺:对焦测光、震动、常亮、语音设置持久化、隐私链接 | 全部补上;语音用 .playback + duckOthers,播完释放 |
+
+与安卓的有意差异:没有音量键翻步(App Store 2.5.9 不允许);语音开关存在 UserDefaults "voice";
+失败观测池写到 Documents/scan-fail.json(Xcode 下载容器取回,格式与安卓相同)。
+启动参数:`-demo 1 -demoScreen 1|2|3`(截图)、`-state <54位>`(跳到核对页,不开相机)。
+
+验证:
+- GuideTests 的随机还原模拟与安卓同口径:2391 步、手动"下一步"0 次(安卓记录 2376 步/0 次)。
+- CubeSessionTests 端到端:模拟相机六面各举两次 → 识别 → 照引导做到复原。
+- RefinerParityTests(真机 103 帧):精定位成功一致 103/103,格栅 0.08 间距内 85/88,
+  采样平均 ΔE 0.15。跑法:`python3 ios/tools/decode_parity_frames.py <目录>`,
+  再 `CUBEAR_PARITY_FRAMES=<目录> swift test -c release --filter RefinerParityTests`。
 
 ## 2026-10-16 修复的阻断问题
 
@@ -51,7 +78,9 @@
 
 ## 待办
 
-- [ ] CI 编译验证通过(推送后先看 ios-ci 的 macos 构建作业)
+- [x] 2026-10-17 新 App 层 Xcode 27 编译通过(Mac mini)
+- [ ] 新 App 层真机试用(相机、对焦、语音、震动);推送后看 ios-ci(Xcode 26)
+- [x] CI 编译验证通过(2026-10-16 旧 App 层)
 - [ ] 发布流水线跑通:签名→归档→TestFlight→提审(ios-release workflow_dispatch)
 - [ ] ASC 元数据:zh-Hans 描述/关键词/截图/隐私政策 URL(参考 crystal-grid 的
       ios/tools/asc_fill_listing.py 模式;隐私页需新建 cube-ar-site 或复用现有站点)
@@ -99,4 +128,8 @@ build 5 已上传 TestFlight,listing 全部就绪(描述/关键词/截图3张/�
 - 快速排查 ASC 校验错误:把 POST reviewSubmissionItems 的完整 409 body 打出来,
   meta.associatedErrors 会列全所有缺口。
 - GitHub API 断连时用 git push 触发器 + workflow 回写 marker 文件轮询(git 通道独立)。
-- Mac mini(192.168.1.17)的 SSH/Wi-Fi 不稳,不能当可靠节点。
+- Mac mini:`ssh zhangfeiyang@192.168.1.17`,有线 en0 已固定 192.168.1.17(手动地址 + DHCP 路由器,
+  2026-10-17)。开着 FileVault:断电重启后停在解锁界面、没有网络,要有人登录一次才连得上。
+  构建目录 `~/cubear-build/ios`(rsync 过去,别动它的 `~/mofang`):
+  `xcodebuild -project CubeAR.xcodeproj -scheme CubeAR -destination "generic/platform=iOS Simulator" -configuration Debug -derivedDataPath build/sim build CODE_SIGNING_ALLOWED=NO`。
+  远程脚本用 `ssh … 'bash -s'`,它的登录 shell 是 zsh(空通配符会报错)。

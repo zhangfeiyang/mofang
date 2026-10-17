@@ -24,7 +24,7 @@ enum CubeColor: Int, CaseIterable {
         }
     }
 
-    /// 0xFFRRGGBB(与安卓 argb 的低 24 位一致)。
+    /// 0xRRGGBB,不含透明度(与安卓 argb 的低 24 位一致);颜色计算用。
     var rgb: UInt32 {
         switch self {
         case .white: return 0xF4F4F0
@@ -36,6 +36,9 @@ enum CubeColor: Int, CaseIterable {
         case .unknown: return 0x777777
         }
     }
+
+    /// 0xFFRRGGBB,不透明;绘制用(安卓 argb)。
+    var argb: UInt32 { 0xFF00_0000 | rgb }
 
     var chinese: String {
         switch self {

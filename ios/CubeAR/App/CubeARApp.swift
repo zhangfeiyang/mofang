@@ -6,13 +6,12 @@ struct CubeARApp: App {
         WindowGroup {
             CubeARWrapperView()
                 .ignoresSafeArea()
-                .statusBarHidden()
                 .preferredColorScheme(.dark)
         }
     }
 }
 
-/// UIKit 包装,承载 CameraARViewController。
+/// UIKit 包装,承载 CubeARViewController。
 struct CubeARWrapperView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> CubeARViewController {
         CubeARViewController()

@@ -6,17 +6,20 @@ import Foundation
 //(iOS: CameraManager + CubeFaceModel;Linux 测试:直接喂帧)。
 
 final class CubeAnalyzer {
-    /// 分析线程限流:两次分析至少间隔的纳米秒。
+    /// 两次分析至少间隔的纳秒。比相机自身的 30fps 更快毫无收益;下限是为了让慢设备的
+    /// 主线程与求解器有喘息的余地。
     static let MIN_FRAME_NANOS: Double = 45_000_000
     /// 网络连续拒识达到该帧数后,改用锚点搜索兜底。
     static let FALLBACK_AFTER_DECLINES = 3
     /// 精化格栅的跟踪记忆(帧)。
     static let LATTICE_MEMORY = 2
 
-    private let refiner = FaceRefiner()
+    private let refiner: FaceRefiner
     private let anchors: AnchorSearch
     private let smoother = CornerSmoother()
-    private let model: FaceDetecting?
+    /// 加载前或加载失败时为 nil,此时只有锚点搜索。在分析线程上设置,任何一帧都不会
+    /// 看到半初始化的模型。
+    private var model: FaceDetecting?
     private var packedRgba: [UInt8] = []
     private var lastAnalysisNanos: Double = 0
     private var modelDeclines = 0
@@ -24,16 +27,31 @@ final class CubeAnalyzer {
     private var latticeAge = Int.max
 
     init(model: FaceDetecting?) {
+        let refiner = FaceRefiner()
+        self.refiner = refiner
+        anchors = AnchorSearch(refiner)
         self.model = model
-        anchors = AnchorSearch(FaceRefiner())
     }
 
-    /// 分析一帧打包 RGBA。分析线程调用。
+    /// 只能在分析线程调用。
+    func setModel(_ model: FaceDetecting?) {
+        self.model = model
+        modelDeclines = 0
+    }
+
+    /// 距上一次分析是否已过 MIN_FRAME_NANOS。相机路径在转换像素之前先问:被跳过的帧
+    /// 不是"没看到魔方",不能报给下游。
+    func wantsFrame(nowNanos: Double) -> Bool {
+        nowNanos - lastAnalysisNanos >= CubeAnalyzer.MIN_FRAME_NANOS
+    }
+
+    /// 分析一帧打包 RGBA(R,G,B,A 字节序)。相机与回放都走这里,分析线程调用。
+    /// 返回 nil 表示这帧没有可用的面——调用方要照样报告,跟踪与稳定都靠它知道面丢了。
     func process(_ rgba: [UInt8], width: Int, height: Int) -> DetectedFace? {
-        let now = Double(DispatchTime.now().uptimeNanoseconds)
-        if now - lastAnalysisNanos < CubeAnalyzer.MIN_FRAME_NANOS { return nil }
-        lastAnalysisNanos = now
+        lastAnalysisNanos = Double(DispatchTime.now().uptimeNanoseconds)
         packedRgba = rgba
+        // 不保留整帧:相机复用自己的缓冲区,这里多一个引用就会让它每帧复制一次。
+        defer { packedRgba = [] }
         return detect(width, height)
     }
 

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C0000000000000000000005C"
+               BlueprintIdentifier = "C00000000000000000000064"
                BuildableName = "CubeAR.app"
                BlueprintName = "CubeAR"
                ReferencedContainer = "container:CubeAR.xcodeproj">
@@ -36,7 +36,7 @@
          runnableDebuggingMode = "0">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C0000000000000000000005C"
+               BlueprintIdentifier = "C00000000000000000000064"
                BuildableName = "CubeAR.app"
                BlueprintName = "CubeAR"
                ReferencedContainer = "container:CubeAR.xcodeproj">

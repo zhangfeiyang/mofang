@@ -349,6 +349,6 @@ final class GuideStep {
     /// 完整指令:"顶层向左拧"、"前两层顺时针拧"等,链式用"再"连接。
     func caption() -> String {
         let own = place() + (isHalfTurn ? "拧半圈" : direction() + "拧")
-        return then == nil ? own : own + ",再" + then!.caption()
+        return then == nil ? own : own + "，再" + then!.caption()
     }
 }

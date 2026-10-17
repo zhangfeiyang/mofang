@@ -3,10 +3,6 @@ import Foundation
 // Port of com.mofang.cubear.CubeUiState.java
 // 屏幕某一刻要显示的全部内容,由主控制器构建。
 
-enum CubeUiPhase {
-    case permission, scanning, ready, guiding, solved, error
-}
-
 final class CubeUiState {
     enum Phase { case permission, scanning, ready, guiding, solved, error }
 
@@ -89,29 +85,34 @@ final class CubeUiState {
 
         init(_ phase: Phase) { self.phase = phase }
 
+        @discardableResult
         func text(_ title: String, _ detail: String) -> Builder {
             self.title = title
             self.detail = detail
             return self
         }
 
+        @discardableResult
         func hint(_ hint: String?) -> Builder {
             self.hint = hint
             return self
         }
 
+        @discardableResult
         func detection(_ face: DetectedFace?, _ live: FaceSample?) -> Builder {
             detectedFace = face
             liveFace = live
             return self
         }
 
+        @discardableResult
         func progress(_ progress: Float, _ tooFar: Bool) -> Builder {
             stabilizeProgress = progress
             self.tooFar = tooFar
             return self
         }
 
+        @discardableResult
         func scan(_ scanned: Set<CubeColor>?, _ count: Int, _ preview: [Character: [Int]]?) -> Builder {
             self.scanned = scanned
             scannedCount = count
@@ -119,18 +120,21 @@ final class CubeUiState {
             return self
         }
 
+        @discardableResult
         func cube(_ state: String?, _ inferred: CubeColor?) -> Builder {
             cubeState = state
             self.inferred = inferred
             return self
         }
 
+        @discardableResult
         func moves(_ moves: [String]?, _ index: Int) -> Builder {
             self.moves = moves
             moveIndex = index
             return self
         }
 
+        @discardableResult
         func guide(_ step: GuideStep?, _ upcoming: [String]?, _ onLiveFace: Bool) -> Builder {
             guideStep = step
             self.upcoming = upcoming
@@ -138,6 +142,7 @@ final class CubeUiState {
             return self
         }
 
+        @discardableResult
         func busy(_ busy: Bool) -> Builder {
             self.busy = busy
             return self

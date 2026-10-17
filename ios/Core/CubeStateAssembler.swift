@@ -167,9 +167,9 @@ final class CubeStateAssembler {
                 }
                 // 尚未收集的面离所有中心都远:显示临时猜测而不是强归到已收集的颜色。
                 if nearest > 30 && look.stickers[cell] != .unknown { best = look.stickers[cell] }
-                argb[cell] = best == nil ? 0 : Int(best!.rgb)
+                argb[cell] = best == nil ? 0 : Int(best!.argb)
             }
-            argb[4] = Int(group.name.rgb)
+            argb[4] = Int(group.name.argb)
             out[group.name.face] = argb
         }
         return out
@@ -400,7 +400,7 @@ final class CubeStateAssembler {
         let six = assembleLegalState()
         if six == nil && expired {
             timedOut = true
-            lastFailure = "核对超时,继续采集后会再试"
+            lastFailure = "核对超时，继续采集后会再试"
         }
         return six
     }
@@ -490,7 +490,7 @@ final class CubeStateAssembler {
         if state != nil { return state }
 
         lastFailure = suspect == nil ? "六面色块对不上魔方结构"
-            : "有色块读得不准,请把\(suspect!.chinese)色中心那面再正对镜头看一眼"
+            : "有色块读得不准，请把\(suspect!.chinese)色中心那面再正对镜头看一眼"
         return nil
     }
 
@@ -659,7 +659,7 @@ final class CubeStateAssembler {
             }
             chosen[face] = original
         }
-        lastFailure = "五面推算不出第六面,色块读数有歧义"
+        lastFailure = "五面推算不出第六面，色块读数有歧义"
         return nil
     }
 

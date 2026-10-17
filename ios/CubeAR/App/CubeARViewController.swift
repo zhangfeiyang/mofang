@@ -1,434 +1,730 @@
-import UIKit
 import AVFoundation
+import UIKit
 
-// Port of com.mofang.cubear.MainActivity.java — 主控制器:相机 + 分析 + 引导 + UI。
-// 安卓端使用音量键翻步;iOS 无等价物理键,改为屏幕大按钮。
-// 帧管线与安卓一致:CubeAnalyzer(网络+精化+锚点兜底)→ CaptureGate 采集门控 →
-// FaceStabilizer 多帧确认 → 进入扫描池/引导观察。
+// Port of com.mofang.cubear.MainActivity.java:扫描 → 核对 → 引导还原。
+//
+// 线程:相机线程只把帧变成 DetectedFace(CameraManager → CubeAnalyzer);持有扫描状态的
+// CubeSession 在主线程,只取最新一帧、丢掉过期的,从不排队积压。组装与求解在串行的
+// 求解队列上对池的快照进行。流程本身在 Core/CubeSession.swift(可在 Linux 上测试),
+// 这里是相机、语音、震动与界面。
+//
+// 安卓用音量键翻步;iOS 不允许 App 接管音量键(审核 2.5.9),只用屏幕按钮。
 
-final class CubeARViewController: UIViewController {
-    enum Phase { case permission, scanning, ready, guiding, solved }
+final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSynthesizerDelegate {
+    private static let privacyURL = URL(string: "https://zhangfeiyang.github.io/gewu-privacy/cube-ar-privacy.html")!
 
-    /// 中心过小(离得太远)的面不采集。
-    static let MIN_CAPTURE_SIDE_FRACTION: Float = 0.08
-    /// 两次可采集读数之间的最小间隔(纳秒),与安卓 CAPTURE_SPAN_NANOS 一致。
-    static let CAPTURE_SPAN_NANOS: Double = 90_000_000
+    // --- 相机与线程
+    private let camera = CameraManager()
+    private let analyzer = CubeAnalyzer(model: nil)
+    private let solver = DispatchQueue(label: "cubear.solver", qos: .userInitiated)
+    private let pendingLock = NSLock()
+    private var pending: (face: DetectedFace?, nanos: Double)?
+    private var frameScheduled = false
+    private var session: CubeSession!
+    private var lastMeteringAt: Double = 0
+    private var lastMeteringPoint: CGPoint?
 
-    private let cameraManager = CameraManager()
-    private let assembler = CubeStateAssembler()
-    private let gate = CaptureGate()
-    private let stabilizer = FaceStabilizer(framesRequired: 2, minSpanNanos: CAPTURE_SPAN_NANOS)
-    private let detectionTracker = DetectionTracker()
-    private var analyzer: CubeAnalyzer?
+    // --- 语音
+    private let synthesizer = AVSpeechSynthesizer()
+    private let voice = AVSpeechSynthesisVoice(language: "zh-CN")
+    private var voiceOn = true
+    private let defaults = UserDefaults.standard
 
-    private var phase: Phase = .scanning
-    private var solutionMoves: [String] = []
-    private var guideSession: GuideSession?
-    private var solveWorker: DispatchQueue = DispatchQueue(label: "solve", qos: .userInitiated)
+    /// 截图/演示:启动参数 `-demo 1 -demoScreen N`(1 扫描中,2 待开始,3 引导中)。
+    private let demoScreen = UserDefaults.standard.bool(forKey: "demo")
+        ? max(1, UserDefaults.standard.integer(forKey: "demoScreen")) : 0
+    private var demoGuideStarted = false
 
-    // UI
-    private let previewLayer = AVCaptureVideoPreviewLayer()
-    private let overlayView = CubeOverlayView()
-    private let netView = CubeNetView()
-    private let guideCubeView = GuideCubeView()
-    private let statusLabel = UILabel()
+    // --- 视图
+    private let previewView = PreviewView()
+    private let overlay = CubeOverlayView()
+    private let safe = UILayoutGuide()
+    private var safeConstraints: [NSLayoutConstraint] = []
+
+    private let phaseChip = PaddedLabel()
+    private let progressLabel = UILabel()
+    private let voiceButton = IconButton(symbol: "speaker.wave.2.fill", label: "语音播报")
+    private let torchButton = IconButton(symbol: "bolt", label: "补光灯")
+    private let helpButton = IconButton(symbol: "questionmark.circle", label: "使用帮助")
+    private let restartButton = IconButton(symbol: "arrow.clockwise", label: "重新扫描")
+
+    private let guideCard = GlassView(radius: Theme.radiusPanel)
+    private let guideCube = GuideCubeView()
+
+    private let panel = GlassView(radius: Theme.radiusPanel)
+    private let hintView = PaddedLabel()
+    private let hintRow = UIView()
+    private let titleLabel = UILabel()
     private let detailLabel = UILabel()
-    private let nextButton = UIButton(type: .system)
-    private let prevButton = UIButton(type: .system)
-    private let startButton = UIButton(type: .system)
-    private let rescanButton = UIButton(type: .system)
-    private let toggleVoiceButton = UIButton(type: .system)
-    private let torchButton = UIButton(type: .system)
-    private let helpButton = UIButton(type: .system)
 
-    private var model: CubeFaceModel?
-    private let speech = AVSpeechSynthesizer()
-    private var voiceEnabled = true
+    private let scanSection = UIStackView()
+    private let cubeNet = CubeNetView()
+    private let tips = UIStackView()
+    /// 扫描页展开图固定 144 宽、靠左;余下的宽度给它。
+    private let scanSpacer = UIView()
+    private var netWidth: NSLayoutConstraint!
+    private var netHeight: NSLayoutConstraint!
 
-    // 引导状态
-    private var currentIndex = 0
-    private var cubeState = ""
-    private var lastStepTime: Double = 0
+    private let guideSection = UIStackView()
+    private let stepProgress = ProgressBar()
+    private let moveBig = UILabel()
+    private let swatch = UIView()
+    private let moveDesc = UILabel()
+    private let moveNext = UILabel()
+    private let prevButton = PillButton.secondary("上一步", leadingSymbol: "chevron.left")
+    private let nextButton = PillButton.primary("下一步", trailingSymbol: "chevron.right")
 
-    /// 截图/演示模式:启动参数 `-demo 1` 打开;`-demoScreen N` 选择画面。
-    private let demoMode = UserDefaults.standard.bool(forKey: "demo")
+    private let actionSection = UIStackView()
+    private let secondaryButton = PillButton.secondary("重新扫描")
+    private let primaryButton = PillButton.primary("开始还原")
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
+    private var helpSheet: HelpSheet?
+    private var lastPhase: CubeUiState.Phase?
 
-    convenience init() {
-        self.init(nibName: nil, bundle: nil)
-    }
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) is not supported")
-    }
+    // MARK: - 生命周期
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
-        setupUI()
-        model = CubeFaceModel.create()
-        analyzer = CubeAnalyzer(model: model)
-        if demoMode {
-            setupDemo()
+        view.backgroundColor = Theme.night
+        voiceOn = defaults.object(forKey: "voice") as? Bool ?? true
+        synthesizer.delegate = self
+
+        let solver = self.solver
+        session = CubeSession(
+            background: { work in solver.async { work() } },
+            main: { work in DispatchQueue.main.async { work() } },
+            clock: { CACurrentMediaTime() * 1000 },
+            cameraAllowed: { AVCaptureDevice.authorizationStatus(for: .video) == .authorized })
+        session.host = self
+
+        buildViews()
+        wireCamera()
+        // min2phase 首次使用时才建剪枝表;现在建好,第一次求解就快。
+        solver.async { Search.initTables() }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(becameActive),
+                                               name: UIApplication.didBecomeActiveNotification, object: nil)
+
+        if demoScreen > 0 {
+            voiceOn = false
+            startDemo()
+        } else if let preset = defaults.string(forKey: "state"), preset.count == 54 {
+            // 调试:`-state <54 位>` 跳过扫描直接进核对页,不开相机。
+            session.startPreset(preset)
         } else {
-            setupCamera()
+            // 拒绝过的不自动跳"设置":停在授权页,等用户点按钮。
+            switch AVCaptureDevice.authorizationStatus(for: .video) {
+            case .authorized, .notDetermined: requestCamera()
+            default: break
+            }
+            if !defaults.bool(forKey: "help_seen") { showHelp(true) }
         }
-        // 预热求解器表
-        solveWorker.async {
-            Search.initTables()
-        }
+        publish()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !demoMode {
-            checkCameraPermission()
-        }
+        // 扫描和还原时双手都在魔方上,屏幕不能自己熄灭。
+        UIApplication.shared.isIdleTimerDisabled = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        cameraManager.stop()
+        UIApplication.shared.isIdleTimerDisabled = false
     }
 
-    // MARK: - UI 设置
-
-    private func setupUI() {
-        // 相机预览层
-        previewLayer.frame = view.bounds
-        previewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(previewLayer)
-
-        // AR 叠加层
-        overlayView.frame = view.bounds
-        overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(overlayView)
-
-        // 展开图
-        let netSize: CGFloat = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) * 0.35
-        netView.frame = CGRect(x: 8, y: 80, width: netSize, height: netSize * 0.75)
-        netView.autoresizingMask = [.flexibleTopMargin]
-        view.addSubview(netView)
-
-        // 3D 引导魔方
-        guideCubeView.frame = CGRect(x: UIScreen.main.bounds.width - netSize - 8, y: 80,
-                                     width: netSize, height: netSize * 0.75)
-        guideCubeView.isHidden = true
-        view.addSubview(guideCubeView)
-
-        // 状态标签
-        statusLabel.frame = CGRect(x: 16, y: 50, width: view.bounds.width - 32, height: 30)
-        statusLabel.textColor = .white
-        statusLabel.font = .boldSystemFont(ofSize: 18)
-        statusLabel.textAlignment = .center
-        view.addSubview(statusLabel)
-
-        detailLabel.frame = CGRect(x: 16, y: 82, width: view.bounds.width - 32, height: 24)
-        detailLabel.textColor = .lightGray
-        detailLabel.font = .systemFont(ofSize: 14)
-        detailLabel.textAlignment = .center
-        detailLabel.numberOfLines = 2
-        view.addSubview(detailLabel)
-
-        // 按钮
-        let buttonSize: CGFloat = 56
-        let bottomY = view.bounds.height - buttonSize - 32
-
-        nextButton.frame = CGRect(x: view.bounds.width / 2 - buttonSize / 2, y: bottomY,
-                                  width: buttonSize * 1.6, height: buttonSize)
-        nextButton.setTitle("下一步 ▶", for: .normal)
-        nextButton.setTitleColor(.white, for: .normal)
-        nextButton.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.7)
-        nextButton.layer.cornerRadius = 12
-        nextButton.isHidden = true
-        nextButton.addTarget(self, action: #selector(nextTapped), for: .touchUpInside)
-        view.addSubview(nextButton)
-
-        prevButton.frame = CGRect(x: nextButton.frame.minX - buttonSize * 1.8 - 8, y: bottomY,
-                                  width: buttonSize * 1.6, height: buttonSize)
-        prevButton.setTitle("◀ 上一步", for: .normal)
-        prevButton.setTitleColor(.white, for: .normal)
-        prevButton.backgroundColor = UIColor.systemGray.withAlphaComponent(0.7)
-        prevButton.layer.cornerRadius = 12
-        prevButton.isHidden = true
-        prevButton.addTarget(self, action: #selector(prevTapped), for: .touchUpInside)
-        view.addSubview(prevButton)
-
-        startButton.frame = CGRect(x: view.bounds.width / 2 - 80, y: bottomY - 60,
-                                   width: 160, height: 48)
-        startButton.setTitle("开始还原", for: .normal)
-        startButton.setTitleColor(.white, for: .normal)
-        startButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.8)
-        startButton.layer.cornerRadius = 12
-        startButton.isHidden = true
-        startButton.addTarget(self, action: #selector(startTapped), for: .touchUpInside)
-        view.addSubview(startButton)
-
-        rescanButton.frame = CGRect(x: view.bounds.width / 2 + 80 + 8, y: bottomY - 60,
-                                    width: 80, height: 44)
-        rescanButton.setTitle("重扫", for: .normal)
-        rescanButton.setTitleColor(.white, for: .normal)
-        rescanButton.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.7)
-        rescanButton.layer.cornerRadius = 8
-        rescanButton.isHidden = true
-        rescanButton.addTarget(self, action: #selector(rescanTapped), for: .touchUpInside)
-        view.addSubview(rescanButton)
-
-        // 右上角工具按钮
-        torchButton.frame = CGRect(x: view.bounds.width - 52, y: 8, width: 44, height: 44)
-        torchButton.setTitle("💡", for: .normal)
-        torchButton.addTarget(self, action: #selector(torchTapped), for: .touchUpInside)
-        view.addSubview(torchButton)
-
-        toggleVoiceButton.frame = CGRect(x: view.bounds.width - 100, y: 8, width: 44, height: 44)
-        toggleVoiceButton.setTitle("🔊", for: .normal)
-        toggleVoiceButton.addTarget(self, action: #selector(voiceTapped), for: .touchUpInside)
-        view.addSubview(toggleVoiceButton)
-
-        helpButton.frame = CGRect(x: view.bounds.width - 148, y: 8, width: 44, height: 44)
-        helpButton.setTitle("?", for: .normal)
-        helpButton.addTarget(self, action: #selector(helpTapped), for: .touchUpInside)
-        view.addSubview(helpButton)
-    }
-
-    private func setupCamera() {
-        cameraManager.onFrame = { [weak self] rgba, width, height in
-            self?.processFrame(rgba, width: width, height: height)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // SwiftUI 承载的视图控制器有时拿不到安全区,以窗口的为准。
+        let own = view.safeAreaInsets
+        let window = view.window?.safeAreaInsets ?? .zero
+        let insets = [max(own.top, window.top), max(own.left, window.left),
+                      max(own.bottom, window.bottom), max(own.right, window.right)]
+        let constants = [insets[0], insets[1], -insets[2], -insets[3]]
+        for (constraint, constant) in zip(safeConstraints, constants) where constraint.constant != constant {
+            constraint.constant = constant
         }
-        cameraManager.start(in: previewLayer)
     }
 
-    private func checkCameraPermission() {
+    @objc private func becameActive() {
+        // 从"设置"里打开了相机权限回来。
+        if session.phase == .permission && AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+            beginScanning()
+        }
+    }
+
+    // MARK: - 相机
+
+    private func wireCamera() {
+        let analyzer = self.analyzer
+        camera.wantsFrame = { nanos in analyzer.wantsFrame(nowNanos: nanos) }
+        camera.onFrame = { [weak self] rgba, width, height, nanos in
+            let face = analyzer.process(rgba, width: width, height: height)
+            self?.deliver(face, nanos)
+        }
+        // 网络在分析线程上加载并预热,排在第一帧分析之前:不占主线程,也不冻住第一帧。
+        camera.analysisQueue.async {
+            analyzer.setModel(CubeFaceModel.create())
+        }
+        previewView.previewLayer.session = camera.session
+        previewView.previewLayer.videoGravity = .resizeAspectFill
+    }
+
+    private func requestCamera() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            break
+            beginScanning()
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
-                if granted { self?.cameraManager.start(in: self!.previewLayer) }
-            }
-        default:
-            statusLabel.text = "需要相机权限"
-        }
-    }
-
-    // MARK: - 帧处理管线
-
-    /// 相机分析线程:CubeAnalyzer 产出检测面后交主线程处理。
-    private func processFrame(_ rgba: [UInt8], width: Int, height: Int) {
-        guard let face = analyzer?.process(rgba, width: width, height: height) else { return }
-        DispatchQueue.main.async { [weak self] in
-            self?.handleFace(face)
-        }
-    }
-
-    /// 主线程:按阶段消费检测面(对应安卓 handleFrame)。
-    private func handleFace(_ face: DetectedFace) {
-        let nanos = Double(DispatchTime.now().uptimeNanoseconds)
-
-        switch phase {
-        case .scanning:
-            let admitted = gate.admit(face)
-                && face.minSideFraction >= CubeARViewController.MIN_CAPTURE_SIDE_FRACTION
-            if let stable = stabilizer.push(admitted ? face.sample : nil, nowNanos: nanos) {
-                stabilizer.resetCandidate()
-                onCapture(stable)
-            }
-        case .guiding:
-            let upright = MoveTracker.rollStable(face.corners)
-            let result = guideSession?.observe(face.sample, upright)
-            if result == .advanced {
-                speakCurrentStep()
-                if guideSession?.isDone == true {
-                    phase = .solved
-                    statusLabel.text = "还原完成!🎉"
-                }
-            }
-        default:
-            break
-        }
-
-        // AR 叠加层:跟踪器桥接丢失帧,四边形不闪烁
-        overlayView.detectedFace = detectionTracker.update(face)
-        overlayView.stabilizeProgress = 0
-    }
-
-    /// 一条稳定的可采集读数进入扫描池(对应安卓 onCapture)。
-    private func onCapture(_ face: FaceSample) {
-        if face.centerLab == nil { return }
-        assembler.put(face)
-        netView.setFaces(assembler.preview())
-        statusLabel.text = "扫描魔方 (\(assembler.size)/6 面)"
-        if assembler.isComplete {
-            phase = .ready
-            solveWorker.async { [weak self] in
-                let result = self?.assembler.assembleLegalState()
                 DispatchQueue.main.async {
-                    self?.onAssembled(result)
+                    if granted { self?.beginScanning() } else { self?.publish() }
                 }
             }
+        default:
+            // 拒绝过一次后系统不再弹窗,只能去"设置"里打开。
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
     }
 
-    private func onAssembled(_ result: String?) {
-        guard let state = result else {
-            statusLabel.text = assembler.lastFailureValue
-            return
+    private func beginScanning() {
+        session.resetSession()
+        camera.start { [weak self] ok in
+            guard let self = self else { return }
+            if !ok { self.session.showError("相机启动失败", "没有可用的后置摄像头") }
+            self.publish()
         }
-        cubeState = state
-        phase = .ready
-        statusLabel.text = "扫描完成!"
+    }
 
-        // 求解
-        solveWorker.async { [weak self] in
-            let search = Search()
-            let solution = search.solution(state, 24, 1_000_000, 200, 0)
-            DispatchQueue.main.async {
-                self?.onSolved(solution: solution, state: state)
+    /// 相机线程。把最新的检测交给主线程,从不排队积压。
+    private func deliver(_ face: DetectedFace?, _ nanos: Double) {
+        pendingLock.lock()
+        pending = (face, nanos)
+        let schedule = !frameScheduled
+        frameScheduled = true
+        pendingLock.unlock()
+        guard schedule else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.pendingLock.lock()
+            let frame = self.pending
+            self.pending = nil
+            self.frameScheduled = false
+            self.pendingLock.unlock()
+            guard let frame = frame else { return }
+            self.session.handleFrame(frame.face, nanos: frame.nanos)
+            if self.session.isTracking { self.meter(on: frame.face) }
+        }
+    }
+
+    /// 对焦与测光对准魔方。连续对焦偏向画面主体——魔方举得近时常是它身后的背景——
+    /// 中心测光又会让亮桌面压暗贴纸。面停到新位置就重新对准,贴纸才清晰、曝光才对,
+    /// 读数靠的就是这两样。
+    private func meter(on face: DetectedFace?) {
+        guard let face = face, view.bounds.width > 0 else { return }
+        let now = CACurrentMediaTime() * 1000
+        let w = view.bounds.width, h = view.bounds.height
+        let iw = CGFloat(face.imageWidth), ih = CGFloat(face.imageHeight)
+        let scale = max(w / iw, h / ih)
+        let point = CGPoint(x: (w - iw * scale) / 2 + CGFloat(face.centerX) * scale,
+                            y: (h - ih * scale) / 2 + CGFloat(face.centerY) * scale)
+        let moved = lastMeteringPoint.map { hypot(point.x - $0.x, point.y - $0.y) / w } ?? .greatestFiniteMagnitude
+        if now - lastMeteringAt < 1500 || (moved < 0.12 && now - lastMeteringAt < 6000) { return }
+        lastMeteringAt = now
+        lastMeteringPoint = point
+        camera.focus(at: previewView.previewLayer.captureDevicePointConverted(fromLayerPoint: point))
+    }
+
+    // MARK: - CubeSessionHost
+
+    func sessionChanged() { publish() }
+
+    func speak(_ text: String) {
+        guard voiceOn, let voice = voice else { return }
+        let audio = AVAudioSession.sharedInstance()
+        // 播报时压低别的 App 的声音,说完再还回去;静音开关下也要能听到指引。
+        try? audio.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+        try? audio.setActive(true)
+        synthesizer.stopSpeaking(at: .immediate)
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = voice
+        synthesizer.speak(utterance)
+    }
+
+    func stopSpeaking() {
+        synthesizer.stopSpeaking(at: .immediate)
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        releaseAudio()
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        releaseAudio()
+    }
+
+    private func releaseAudio() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, !self.synthesizer.isSpeaking else { return }
+            try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        }
+    }
+
+    /// 采到一面、走了一步是轻震;认出魔方、还原完成是重震。
+    func pulse(strong: Bool) {
+        UIImpactFeedbackGenerator(style: strong ? .heavy : .light).impactOccurred()
+    }
+
+    func faceCaptured() { overlay.onFaceCaptured() }
+
+    func celebrate() { overlay.celebrate() }
+
+    /// 观测池写到 Documents/scan-fail.json(Xcode 下载容器取回),格式与安卓相同。
+    func scanFailed(_ observations: [FaceSample]) {
+        guard let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        DispatchQueue.global(qos: .utility).async {
+            ScanDump.write(observations, to: documents.appendingPathComponent("scan-fail.json"))
+        }
+    }
+
+    // MARK: - 操作
+
+    private func onPrimaryAction() {
+        switch session.phase {
+        case .ready: session.startGuiding()
+        case .solved: session.resetSession()
+        case .error, .permission: requestCamera()
+        default: break
+        }
+    }
+
+    private func confirmRestart() {
+        let losesProgress = session.phase == .guiding || session.phase == .ready
+        if !losesProgress {
+            if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+                session.resetSession()
+            } else {
+                requestCamera()
             }
-        }
-    }
-
-    private func onSolved(solution: String, state: String) {
-        guard !solution.hasPrefix("Error") else {
-            statusLabel.text = solution
             return
         }
-        solutionMoves = solution.split(separator: " ").map { String($0) }
-        statusLabel.text = "共 \(solutionMoves.count) 步"
-        guideSession = GuideSession(state, solutionMoves, nil, false)
-        phase = .guiding
-        startButton.isHidden = false
-        guideCubeView.isHidden = false
-        speakCurrentStep()
+        let alert = UIAlertController(title: "重新扫描？", message: "当前的还原进度会被放弃。", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
+        alert.addAction(UIAlertAction(title: "重新扫描", style: .destructive) { [weak self] _ in
+            self?.session.resetSession()
+        })
+        present(alert, animated: true)
     }
 
-    private func speakCurrentStep() {
-        guard let step = guideSession?.currentStep else { return }
-        if voiceEnabled {
-            let utterance = AVSpeechUtterance(string: step.caption())
-            utterance.voice = AVSpeechSynthesisVoice(language: "zh-CN")
-            speech.speak(utterance)
+    private func toggleVoice() {
+        voiceOn.toggle()
+        if demoScreen == 0 { defaults.set(voiceOn, forKey: "voice") }
+        if voiceOn { session.speakCurrentMove() } else { stopSpeaking() }
+        publish()
+    }
+
+    private func showHelp(_ show: Bool) {
+        if show {
+            guard helpSheet == nil else { return }
+            let sheet = HelpSheet()
+            sheet.onClose = { [weak self] in self?.showHelp(false) }
+            sheet.onPrivacy = { UIApplication.shared.open(CubeARViewController.privacyURL) }
+            sheet.frame = view.bounds
+            sheet.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            sheet.alpha = 0
+            view.addSubview(sheet)
+            UIView.animate(withDuration: 0.2) { sheet.alpha = 1 }
+            helpSheet = sheet
+        } else if let sheet = helpSheet {
+            helpSheet = nil
+            defaults.set(true, forKey: "help_seen")
+            UIView.animate(withDuration: 0.2, animations: { sheet.alpha = 0 }) { _ in sheet.removeFromSuperview() }
         }
-        detailLabel.text = step.caption()
-        guideCubeView.step = step
     }
 
-    // MARK: - 演示模式(截图/无相机环境)
+    // MARK: - 演示
 
-    /// `-demo 1` 启动时构造真实扫描/引导画面;
-    /// `-demoScreen 1` 扫描中,2 待开始,3 引导中。
-    private func setupDemo() {
-        voiceEnabled = false
-        // fromScramble 依赖求解器表,必须在 initTables 之后(串行队列保证顺序)
-        solveWorker.async { [weak self] in
+    private func startDemo() {
+        solver.async { [weak self] in
+            // fromScramble 依赖求解器表。
             Search.initTables()
             let state = MTools.fromScramble("R U R' U' F2 D' L B2 R' D F U2 L' D2 B R2 U' F2 L2 D")
-            DispatchQueue.main.async {
-                self?.showDemo(state: state)
-            }
+            DispatchQueue.main.async { self?.showDemo(state) }
         }
     }
 
-    private func showDemo(state: String) {
-        switch UserDefaults.standard.integer(forKey: "demoScreen") {
-        case 1:
-            // 扫描中:展开图只显示已"扫到"的两个面
-            let chars = Array(state)
-            let order = Array("URFDLB")
-            var faces: [Character: [Int]] = [:]
-            for (f, ch) in order.enumerated() where f < 2 {
-                faces[ch] = (0..<9).map { Int(CubeColor.fromFace(chars[f * 9 + $0]).rgb) }
-            }
-            netView.setFaces(faces)
-            statusLabel.text = "扫描魔方 (2/6 面)"
-            detailLabel.text = "把魔方的一个面正对镜头"
-        default:
-            solveWorker.async { [weak self] in
-                let search = Search()
-                let solution = search.solution(state, 24, 1_000_000, 200, 0)
-                DispatchQueue.main.async {
-                    self?.showDemoSolved(state: state, solution: solution, guiding: UserDefaults.standard.integer(forKey: "demoScreen") == 3)
+    private func showDemo(_ state: String) {
+        if demoScreen == 1 {
+            // 扫描中:两个面各看过两次,展开图上亮着这两面。
+            let faces: [Character] = ["U", "R", "U", "R"]
+            let looks = faces.map { face -> FaceSample in
+                let colors = GuideStep.reading(state, CubeFrame.seen(face, 0)).map { CubeColor.fromFace($0) }
+                let lab = colors.map { color -> [Float] in
+                    let rgb = color.rgb
+                    return Lab.fromRgb(Int((rgb >> 16) & 0xFF), Int((rgb >> 8) & 0xFF), Int(rgb & 0xFF))
                 }
+                return FaceSample(colors, lab, 1)
             }
-        }
-    }
-
-    private func showDemoSolved(state: String, solution: String, guiding: Bool) {
-        guard !solution.hasPrefix("Error") else { return }
-        cubeState = state
-        solutionMoves = solution.split(separator: " ").map { String($0) }
-        guideSession = GuideSession(state, solutionMoves, nil, false)
-        netView.setState(state)
-        guideCubeView.isHidden = false
-        if guiding {
-            guideSession?.next()
-            startTapped()
+            session.showScanned(looks)
         } else {
-            phase = .ready
-            speakCurrentStep()
-            statusLabel.text = "共 \(solutionMoves.count) 步"
-            startButton.isHidden = false
+            session.startPreset(state)
         }
     }
 
-    // MARK: - 按钮事件
+    // MARK: - 渲染
 
-    @objc private func nextTapped() {
-        guideSession?.next()
-        speakCurrentStep()
-        if guideSession?.isDone == true {
-            phase = .solved
-            statusLabel.text = "还原完成!🎉"
+    private func publish() {
+        let state = session.buildState()
+        if demoScreen == 3 && state.phase == .ready && !demoGuideStarted {
+            demoGuideStarted = true
+            session.startGuiding()
+            return
+        }
+        overlay.setState(state)
+        render(state)
+    }
+
+    private func render(_ s: CubeUiState) {
+        let scanning = s.phase == .scanning, guiding = s.phase == .guiding, ready = s.phase == .ready
+        let phaseChanged = s.phase != lastPhase
+        lastPhase = s.phase
+
+        setText(phaseChip, session.phaseLabel)
+        phaseChip.textColor = s.phase == .error ? Theme.coral : s.busy ? Theme.amber : Theme.mint
+        setText(progressLabel, session.progressText(s))
+
+        voiceButton.isHidden = !((guiding || ready) && voice != nil)
+        voiceButton.setSymbol(voiceOn ? "speaker.wave.2.fill" : "speaker.slash.fill")
+        voiceButton.isActivated = voiceOn
+        voiceButton.accessibilityValue = voiceOn ? "开" : "关"
+        torchButton.isHidden = !camera.hasTorch
+        torchButton.setSymbol(camera.torchOn ? "bolt.fill" : "bolt")
+        torchButton.isActivated = camera.torchOn
+        torchButton.accessibilityValue = camera.torchOn ? "开" : "关"
+
+        setText(titleLabel, s.title)
+        setText(detailLabel, s.detail)
+        hintRow.isHidden = s.hint == nil
+        if let hint = s.hint { setText(hintView, hint) }
+
+        scanSection.isHidden = !(scanning || ready)
+        tips.isHidden = !(scanning && s.scannedCount < 3)
+        sizeNet(large: ready)
+        if ready, let cube = s.cubeState {
+            cubeNet.setState(cube)
+            cubeNet.setInferred(s.inferred?.face ?? "?")
+            cubeNet.setHighlight("?")
+        } else if scanning {
+            cubeNet.setFaces(s.preview)
+            cubeNet.setInferred("?")
+            let live = s.liveFace
+            cubeNet.setHighlight(s.detectedFace != nil && live != nil && live!.center != .unknown
+                ? live!.center.face : "?")
+        }
+
+        guideSection.isHidden = !guiding
+        guideCard.isHidden = !guiding
+        if guiding, let step = s.guideStep, let guide = session.guide {
+            guideCube.show(guide.trackerValue.state, session.partwayState(step), step)
+            stepProgress.progress = CGFloat(s.moveIndex) / CGFloat(max(1, s.moves.count))
+            setText(moveBig, step.notation())
+            moveBig.font = Theme.font(step.then == nil ? 52 : 34, .bold)
+            setText(moveDesc, step.caption() + (step.isHalfTurn ? "" : " 90°"))
+            // 要拧那层的中心色:核对 App 与手上对魔方的拿法是否一致。中间层没有。
+            swatch.isHidden = step.face == " "
+            if step.face != " " { swatch.backgroundColor = UIColor(argb: CubeColor.fromFace(step.face).argb) }
+            setText(moveNext, s.upcoming.isEmpty ? "最后一步"
+                : "接下来" + s.upcoming.map { "   " + $0 }.joined())
+            prevButton.isEnabled = s.moveIndex > 0
+        }
+
+        let actions = ready || s.phase == .solved || s.phase == .error || s.phase == .permission
+        actionSection.isHidden = !actions
+        secondaryButton.isHidden = !ready
+        PillButton.setTitle(primaryButton, ready ? "开始还原" : s.phase == .solved ? "再来一次"
+            : s.phase == .permission ? "授权相机" : "重新扫描")
+
+        if phaseChanged && view.window != nil {
+            UIView.animate(withDuration: 0.25) { self.view.layoutIfNeeded() }
         }
     }
 
-    @objc private func prevTapped() {
-        guideSession?.previous()
-        speakCurrentStep()
+    private var netLarge = false
+
+    /// 核对页的重点是看展开图,让它占满面板宽度。
+    private func sizeNet(large: Bool) {
+        if large == netLarge { return }
+        netLarge = large
+        netWidth.isActive = !large
+        scanSpacer.isHidden = large
+        netHeight.constant = large ? 200 : 108
     }
 
-    @objc private func startTapped() {
-        startButton.isHidden = true
-        nextButton.isHidden = false
-        prevButton.isHidden = false
-        phase = .guiding
-        speakCurrentStep()
+    private func setText(_ label: UILabel, _ text: String) {
+        if label.text != text { label.text = text }
     }
 
-    @objc private func rescanTapped() {
-        assembler.clear()
-        gate.reset()
-        stabilizer.resetCandidate()
-        phase = .scanning
-        startButton.isHidden = true
-        nextButton.isHidden = true
-        prevButton.isHidden = true
-        statusLabel.text = "扫描魔方"
+    // MARK: - 视图搭建
+
+    private func buildViews() {
+        previewView.frame = view.bounds
+        previewView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(previewView)
+        overlay.frame = view.bounds
+        overlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(overlay)
+
+        view.addLayoutGuide(safe)
+        safeConstraints = [
+            safe.topAnchor.constraint(equalTo: view.topAnchor),
+            safe.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            safe.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            safe.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ]
+        NSLayoutConstraint.activate(safeConstraints)
+
+        buildTopBar()
+        buildGuideCard()
+        buildPanel()
     }
 
-    @objc private func torchTapped() {
-        guard let device = AVCaptureDevice.default(for: .video), device.hasTorch else { return }
-        try? device.lockForConfiguration()
-        device.torchMode = device.torchMode == .on ? .off : .on
-        device.unlockForConfiguration()
+    private func buildTopBar() {
+        let bar = GlassView(radius: Theme.topBarHeight / 2)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bar)
+
+        phaseChip.insets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 12)
+        phaseChip.font = Theme.font(13, .medium)
+        phaseChip.textAlignment = .center
+        phaseChip.backgroundColor = Theme.mintSoft
+        phaseChip.layer.cornerRadius = 14
+        phaseChip.clipsToBounds = true
+        phaseChip.setContentHuggingPriority(.required, for: .horizontal)
+        phaseChip.setContentCompressionResistancePriority(.required, for: .horizontal)
+        phaseChip.heightAnchor.constraint(equalToConstant: 28).isActive = true
+
+        progressLabel.font = Theme.font(13, .medium)
+        progressLabel.textColor = Theme.textPrimary
+        progressLabel.lineBreakMode = .byTruncatingTail
+        progressLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        progressLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        voiceButton.addAction(UIAction { [weak self] _ in self?.toggleVoice() }, for: .touchUpInside)
+        torchButton.addAction(UIAction { [weak self] _ in
+            guard let self = self else { return }
+            self.camera.setTorch(!self.camera.torchOn)
+            self.publish()
+        }, for: .touchUpInside)
+        torchButton.isHidden = true
+        helpButton.addAction(UIAction { [weak self] _ in self?.showHelp(true) }, for: .touchUpInside)
+        restartButton.addAction(UIAction { [weak self] _ in self?.confirmRestart() }, for: .touchUpInside)
+
+        let row = UIStackView(arrangedSubviews: [phaseChip, progressLabel, voiceButton, torchButton,
+                                                 helpButton, restartButton])
+        row.axis = .horizontal
+        row.alignment = .center
+        row.spacing = 4
+        row.setCustomSpacing(10, after: phaseChip)
+        row.translatesAutoresizingMaskIntoConstraints = false
+        bar.contentView.addSubview(row)
+
+        NSLayoutConstraint.activate([
+            bar.topAnchor.constraint(equalTo: safe.topAnchor, constant: Theme.gutter),
+            bar.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Theme.gutter),
+            bar.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Theme.gutter),
+            bar.heightAnchor.constraint(equalToConstant: Theme.topBarHeight),
+            row.leadingAnchor.constraint(equalTo: bar.contentView.leadingAnchor, constant: 8),
+            row.trailingAnchor.constraint(equalTo: bar.contentView.trailingAnchor, constant: -6),
+            row.centerYAnchor.constraint(equalTo: bar.contentView.centerYAnchor),
+        ])
+        topBar = bar
     }
 
-    @objc private func voiceTapped() {
-        voiceEnabled.toggle()
-        toggleVoiceButton.setTitle(voiceEnabled ? "🔊" : "🔇", for: .normal)
+    private var topBar: UIView!
+
+    private func buildGuideCard() {
+        guideCard.translatesAutoresizingMaskIntoConstraints = false
+        guideCard.isHidden = true
+        view.addSubview(guideCard)
+        guideCube.translatesAutoresizingMaskIntoConstraints = false
+        guideCard.contentView.addSubview(guideCube)
+        NSLayoutConstraint.activate([
+            guideCard.topAnchor.constraint(equalTo: topBar.bottomAnchor, constant: Theme.gutter),
+            guideCard.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Theme.gutter),
+            guideCard.widthAnchor.constraint(equalToConstant: Theme.guideCardSize),
+            guideCard.heightAnchor.constraint(equalToConstant: Theme.guideCardSize),
+            guideCube.leadingAnchor.constraint(equalTo: guideCard.contentView.leadingAnchor),
+            guideCube.trailingAnchor.constraint(equalTo: guideCard.contentView.trailingAnchor),
+            guideCube.topAnchor.constraint(equalTo: guideCard.contentView.topAnchor),
+            guideCube.bottomAnchor.constraint(equalTo: guideCard.contentView.bottomAnchor),
+        ])
     }
 
-    @objc private func helpTapped() {
-        let alert = UIAlertController(title: "使用说明", message: """
-        1. 扫描:把魔方的一个面正对镜头,整个面露出来。
-        2. 依次露出其他面,顺序不限。五个面即可。
-        3. 扫描完成后点"开始还原"。
-        4. 跟随语音和屏幕指引一步步还原。
-        """, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "知道了", style: .default))
-        present(alert, animated: true)
+    private func buildPanel() {
+        panel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(panel)
+
+        // 提示条:薄荷绿字、强玻璃底,左对齐、按内容宽(安卓 bg_hint)。
+        hintView.insets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+        hintView.font = Theme.font(13, .medium)
+        hintView.textColor = Theme.mint
+        hintView.numberOfLines = 0
+        hintView.backgroundColor = Theme.glassStrong
+        hintView.layer.cornerRadius = 16
+        hintView.layer.borderWidth = 1
+        hintView.layer.borderColor = Theme.mintSoft.cgColor
+        hintView.clipsToBounds = true
+        hintView.translatesAutoresizingMaskIntoConstraints = false
+        hintRow.addSubview(hintView)
+        hintRow.isHidden = true
+        NSLayoutConstraint.activate([
+            hintView.leadingAnchor.constraint(equalTo: hintRow.leadingAnchor),
+            hintView.trailingAnchor.constraint(lessThanOrEqualTo: hintRow.trailingAnchor),
+            hintView.topAnchor.constraint(equalTo: hintRow.topAnchor),
+            hintView.bottomAnchor.constraint(equalTo: hintRow.bottomAnchor),
+        ])
+
+        titleLabel.font = Theme.font(21, .bold)
+        titleLabel.textColor = Theme.textPrimary
+        titleLabel.numberOfLines = 2
+        detailLabel.font = Theme.font(14)
+        detailLabel.textColor = Theme.textSecondary
+        detailLabel.numberOfLines = 3
+
+        buildScanSection()
+        buildGuideSection()
+        buildActionSection()
+
+        let column = UIStackView(arrangedSubviews: [hintRow, titleLabel, detailLabel, scanSection,
+                                                    guideSection, actionSection])
+        column.axis = .vertical
+        column.spacing = 0
+        column.setCustomSpacing(12, after: hintRow)
+        column.setCustomSpacing(4, after: titleLabel)
+        column.setCustomSpacing(16, after: detailLabel)
+        column.setCustomSpacing(16, after: scanSection)
+        column.setCustomSpacing(16, after: guideSection)
+        column.translatesAutoresizingMaskIntoConstraints = false
+        panel.contentView.addSubview(column)
+
+        let pad = Theme.panelPadding
+        NSLayoutConstraint.activate([
+            panel.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: Theme.gutter),
+            panel.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -Theme.gutter),
+            panel.bottomAnchor.constraint(equalTo: safe.bottomAnchor, constant: -Theme.gutter),
+            column.leadingAnchor.constraint(equalTo: panel.contentView.leadingAnchor, constant: pad),
+            column.trailingAnchor.constraint(equalTo: panel.contentView.trailingAnchor, constant: -pad),
+            column.topAnchor.constraint(equalTo: panel.contentView.topAnchor, constant: pad),
+            column.bottomAnchor.constraint(equalTo: panel.contentView.bottomAnchor, constant: -pad),
+        ])
+    }
+
+    private func buildScanSection() {
+        netWidth = cubeNet.widthAnchor.constraint(equalToConstant: 144)
+        netHeight = cubeNet.heightAnchor.constraint(equalToConstant: 108)
+        NSLayoutConstraint.activate([netWidth, netHeight])
+        cubeNet.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        for text in ["一次只对准一个面，整个面都露出来", "保持 20–30 厘米，光线均匀", "任意顺序；六个面都要扫到"] {
+            let label = UILabel()
+            label.text = text
+            label.font = Theme.font(12)
+            label.textColor = Theme.textTertiary
+            label.numberOfLines = 0
+            tips.addArrangedSubview(label)
+        }
+        tips.axis = .vertical
+        tips.spacing = 6
+        tips.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
+        scanSpacer.setContentHuggingPriority(UILayoutPriority(1), for: .horizontal)
+        scanSection.addArrangedSubview(cubeNet)
+        scanSection.addArrangedSubview(tips)
+        scanSection.addArrangedSubview(scanSpacer)
+        scanSection.axis = .horizontal
+        scanSection.alignment = .center
+        scanSection.spacing = 16
+    }
+
+    private func buildGuideSection() {
+        stepProgress.heightAnchor.constraint(equalToConstant: 6).isActive = true
+
+        moveBig.font = Theme.font(52, .bold)
+        moveBig.textColor = Theme.mint
+        moveBig.adjustsFontSizeToFitWidth = true
+        moveBig.minimumScaleFactor = 0.6
+        moveBig.setContentHuggingPriority(.required, for: .horizontal)
+        moveBig.setContentCompressionResistancePriority(.required, for: .horizontal)
+        moveBig.widthAnchor.constraint(greaterThanOrEqualToConstant: 84).isActive = true
+
+        swatch.layer.cornerRadius = 7
+        swatch.layer.borderWidth = 1
+        swatch.layer.borderColor = UIColor(argb: 0x66FF_FFFF).cgColor
+        swatch.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            swatch.widthAnchor.constraint(equalToConstant: 14),
+            swatch.heightAnchor.constraint(equalToConstant: 14),
+        ])
+        moveDesc.font = Theme.font(17, .medium)
+        moveDesc.textColor = Theme.textPrimary
+        moveDesc.numberOfLines = 2
+        let descRow = UIStackView(arrangedSubviews: [swatch, moveDesc])
+        descRow.axis = .horizontal
+        descRow.alignment = .center
+        descRow.spacing = 8
+
+        moveNext.font = Theme.font(12)
+        moveNext.textColor = Theme.textTertiary
+        moveNext.lineBreakMode = .byTruncatingTail
+
+        let words = UIStackView(arrangedSubviews: [descRow, moveNext])
+        words.axis = .vertical
+        words.alignment = .leading
+        words.spacing = 4
+
+        let moveRow = UIStackView(arrangedSubviews: [moveBig, words])
+        moveRow.axis = .horizontal
+        moveRow.alignment = .center
+        moveRow.spacing = 12
+
+        prevButton.addAction(UIAction { [weak self] _ in self?.session.stepBy(-1) }, for: .touchUpInside)
+        nextButton.addAction(UIAction { [weak self] _ in self?.session.stepBy(+1) }, for: .touchUpInside)
+        let buttons = UIStackView(arrangedSubviews: [prevButton, nextButton])
+        buttons.axis = .horizontal
+        buttons.spacing = 10
+        nextButton.widthAnchor.constraint(equalTo: prevButton.widthAnchor, multiplier: 1.5).isActive = true
+
+        guideSection.addArrangedSubview(stepProgress)
+        guideSection.addArrangedSubview(moveRow)
+        guideSection.addArrangedSubview(buttons)
+        guideSection.axis = .vertical
+        guideSection.setCustomSpacing(10, after: stepProgress)
+        guideSection.setCustomSpacing(16, after: moveRow)
+        guideSection.isHidden = true
+    }
+
+    private func buildActionSection() {
+        secondaryButton.addAction(UIAction { [weak self] _ in self?.session.resetSession() }, for: .touchUpInside)
+        primaryButton.addAction(UIAction { [weak self] _ in self?.onPrimaryAction() }, for: .touchUpInside)
+        actionSection.addArrangedSubview(secondaryButton)
+        actionSection.addArrangedSubview(primaryButton)
+        actionSection.axis = .horizontal
+        actionSection.spacing = 10
+        let ratio = primaryButton.widthAnchor.constraint(equalTo: secondaryButton.widthAnchor, multiplier: 1.5)
+        // 次按钮隐藏时主按钮独占一行,比例约束要能让路。
+        ratio.priority = .defaultHigh
+        ratio.isActive = true
+        actionSection.isHidden = true
+    }
+}
+
+/// 以 AVCaptureVideoPreviewLayer 为底层图层的视图,随视图自动铺满。
+final class PreviewView: UIView {
+    override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
+
+    var previewLayer: AVCaptureVideoPreviewLayer {
+        // layerClass 保证了类型。
+        layer as! AVCaptureVideoPreviewLayer
     }
 }

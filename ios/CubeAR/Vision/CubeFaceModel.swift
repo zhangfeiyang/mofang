@@ -36,14 +36,22 @@ final class CubeFaceModel {
         }
     }
 
-    /// 加载模型(App bundle 内的 cubeface.mlmodelc)。失败返回 nil。
+    /// 加载模型(App bundle 内的 cubeface.mlmodelc)并预热。失败返回 nil,调用方退回锚点搜索。
+    /// 在分析线程上调用:加载与首次推理(Core ML 在这里编译神经引擎计划)都不能落在主线程,
+    /// 也不能落在第一帧上冻住预览。
     static func create() -> CubeFaceModel? {
-        guard let url = Bundle.main.url(forResource: "cubeface", withExtension: "mlmodelc"),
-              let mlModel = try? MLModel(contentsOf: url) else {
+        guard let url = Bundle.main.url(forResource: "cubeface", withExtension: "mlmodelc") else {
+            return nil
+        }
+        let configuration = MLModelConfiguration()
+        configuration.computeUnits = .all
+        guard let mlModel = try? MLModel(contentsOf: url, configuration: configuration) else {
             return nil
         }
         let m = CubeFaceModel()
         m.model = mlModel
+        let blank = [UInt8](repeating: 128, count: INPUT_WIDTH * INPUT_HEIGHT * 4)
+        _ = m.evaluate(blank, width: INPUT_WIDTH, height: INPUT_HEIGHT)
         return m
     }
 

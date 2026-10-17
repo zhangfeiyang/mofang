@@ -28,6 +28,7 @@ SOURCES = CORE_SOURCES + [
     "CubeAR/Views/CubeOverlayView.swift",
     "CubeAR/Views/CubeNetView.swift",
     "CubeAR/Views/GuideCubeView.swift",
+    "CubeAR/Views/HudViews.swift",
 ]
 for rel in SOURCES:
     if not os.path.isfile(os.path.join(IOS, rel)):
@@ -39,7 +40,7 @@ if not os.path.isdir(os.path.join(IOS, MLMODEL)):
 
 _bundle_id = "com.mofang.cubear"  # 与安卓 applicationId 一致
 _marketing_version = "1.0.0"               # 与安卓 versionName 一致
-_build_number = "5"                        # TestFlight 每次上传需递增
+_build_number = "6"                        # TestFlight 每次上传需递增
 
 _counter = [0]
 _prefix = "C0"
@@ -125,7 +126,8 @@ def main():
     g_ui = add_group("grp:UI", "Views", "Views",
                      [file_refs["CubeAR/Views/CubeOverlayView.swift"].uuid,
                       file_refs["CubeAR/Views/CubeNetView.swift"].uuid,
-                      file_refs["CubeAR/Views/GuideCubeView.swift"].uuid])
+                      file_refs["CubeAR/Views/GuideCubeView.swift"].uuid,
+                      file_refs["CubeAR/Views/HudViews.swift"].uuid])
     g_res = add_group("grp:Resources", "Resources", "Resources", [assets_ref.uuid, mlmodel_ref.uuid])
     g_game = add_group("grp:CubeAR", "CubeAR", "CubeAR",
                        [g_app.uuid, g_vision.uuid, g_ui.uuid, g_res.uuid])
