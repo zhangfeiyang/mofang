@@ -22,6 +22,7 @@ CORE_SOURCES = sorted(
 
 SOURCES = CORE_SOURCES + [
     "CubeAR/App/CubeARApp.swift",
+    "CubeAR/App/AppStrings.swift",
     "CubeAR/App/CubeARViewController.swift",
     "CubeAR/Vision/CubeFaceModel.swift",
     "CubeAR/Vision/CameraManager.swift",
@@ -34,13 +35,20 @@ for rel in SOURCES:
     if not os.path.isfile(os.path.join(IOS, rel)):
         raise SystemExit(f"source file missing: {rel}")
 
+# 各语言的 .lproj(由 ios/tools/gen_strings.py 从 ios/l10n/*.json 生成)
+RESOURCES = os.path.join(IOS, "CubeAR", "Resources")
+LANGS = sorted(d[: -len(".lproj")] for d in os.listdir(RESOURCES) if d.endswith(".lproj"))
+STRING_TABLES = ["Localizable.strings", "InfoPlist.strings"]
+if "en" not in LANGS:
+    raise SystemExit("missing en.lproj —— 先运行 python3 ios/tools/gen_strings.py")
+
 MLMODEL = "CubeAR/Resources/cubeface.mlpackage"
 if not os.path.isdir(os.path.join(IOS, MLMODEL)):
     raise SystemExit(f"missing {MLMODEL} —— 先运行 ONNX→CoreML 转换(见 IOS_PORT_NOTES.md)")
 
 _bundle_id = "com.mofang.cubear"  # 与安卓 applicationId 一致
 _marketing_version = "1.0.0"               # 与安卓 versionName 一致
-_build_number = "6"                        # TestFlight 每次上传需递增
+_build_number = "8"                        # TestFlight 每次上传需递增
 
 _counter = [0]
 _prefix = "C0"
@@ -105,6 +113,21 @@ def main():
                       path=q("cubeface.mlpackage"), sourceTree='"<group>"')
     objects.append(mlmodel_ref)
 
+    # 多语言文案:每张表一个 PBXVariantGroup,每种语言一个文件引用
+    variant_groups = []
+    for table in STRING_TABLES:
+        children = []
+        for lang in LANGS:
+            fr = Obj("PBXFileReference", uuid=uid(f"fr:{lang}:{table}"), comment=lang,
+                     lastKnownFileType="text.plist.strings", name=q(lang),
+                     path=q(f"{lang}.lproj/{table}"), sourceTree='"<group>"')
+            objects.append(fr)
+            children.append(fr.uuid)
+        vg = Obj("PBXVariantGroup", uuid=uid("vg:" + table), comment=table,
+                 children=lst(children), name=q(table), sourceTree='"<group>"')
+        objects.append(vg)
+        variant_groups.append(vg)
+
     groups = {}
 
     def add_group(tag, name, path, children):
@@ -118,6 +141,7 @@ def main():
     g_core = add_group("grp:Core", "Core", "Core", [file_refs[r].uuid for r in CORE_SOURCES])
     g_app = add_group("grp:App", "App", "App",
                       [file_refs["CubeAR/App/CubeARApp.swift"].uuid,
+                       file_refs["CubeAR/App/AppStrings.swift"].uuid,
                        file_refs["CubeAR/App/CubeARViewController.swift"].uuid,
                        info_ref.uuid])
     g_vision = add_group("grp:Vision", "Vision", "Vision",
@@ -128,7 +152,8 @@ def main():
                       file_refs["CubeAR/Views/CubeNetView.swift"].uuid,
                       file_refs["CubeAR/Views/GuideCubeView.swift"].uuid,
                       file_refs["CubeAR/Views/HudViews.swift"].uuid])
-    g_res = add_group("grp:Resources", "Resources", "Resources", [assets_ref.uuid, mlmodel_ref.uuid])
+    g_res = add_group("grp:Resources", "Resources", "Resources",
+                      [assets_ref.uuid, mlmodel_ref.uuid] + [vg.uuid for vg in variant_groups])
     g_game = add_group("grp:CubeAR", "CubeAR", "CubeAR",
                        [g_app.uuid, g_vision.uuid, g_ui.uuid, g_res.uuid])
     g_products = add_group("grp:Products", "Products", None, [app_ref.uuid])
@@ -161,9 +186,15 @@ def main():
     assets_bf = Obj("PBXBuildFile", uuid=uid("bf:assets"), comment="Assets.xcassets in Resources",
                     fileRef=assets_ref.uuid)
     objects.append(assets_bf)
+    strings_bfs = []
+    for vg in variant_groups:
+        bf = Obj("PBXBuildFile", uuid=uid("bf:" + comment_for(vg.uuid)), comment=comment_for(vg.uuid) + " in Resources",
+                 fileRef=vg.uuid)
+        objects.append(bf)
+        strings_bfs.append(bf.uuid)
     resources_phase = Obj("PBXResourcesBuildPhase", uuid=uid("phase:resources"), comment="Resources",
                           buildActionMask=2147483647,
-                          files=lst([assets_bf.uuid]),
+                          files=lst([assets_bf.uuid] + strings_bfs),
                           runOnlyForDeploymentPostprocessing=0)
     objects.append(resources_phase)
 
@@ -230,7 +261,7 @@ def main():
                          defaultConfigurationIsVisible=0, defaultConfigurationName=q("Release"))
     objects.append(cfglist_target)
 
-    known_regions = lst([q("en"), q("zh-Hans")], indent=6)
+    known_regions = lst([q("Base")] + [q(lang) for lang in LANGS], indent=6)
 
     # OpenStep 格式里每个字典条目都必须以 ';' 结尾——嵌套字典最容易漏
     attributes_value = (
@@ -249,7 +280,7 @@ def main():
                   attributes=attributes_value,
                   buildConfigurationList=uid("cfglist:project"),
                   compatibilityVersion=q("Xcode 14.0"),
-                  developmentRegion=q("zh-Hans"), hasScannedForEncodings=0,
+                  developmentRegion=q("en"), hasScannedForEncodings=0,
                   knownRegions=known_regions, mainGroup=g_main.uuid,
                   productRefGroup=g_products.uuid, projectDirPath=q(""),
                   projectRoot=q(""), targets=lst([target.uuid]))
@@ -348,15 +379,16 @@ def main():
     print(f"wrote {scheme_path}")
 
     # ---- Info.plist ----
-    # 界面文案为中文,开发区域 zh-Hans;相机权限 purpose string 必填(缺失会被 App Store 拒审)
+    # 开发区域 en:App 不支持的语言退回英文。主屏名称与相机权限说明在各语言 InfoPlist.strings 里,
+    # 这里的值是兜底;相机权限 purpose string 必填(缺失会被 App Store 拒审)
     info_plist = f"""<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>zh-Hans</string>
+	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Cube AR</string>
+	<string>Cube AR Solver</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -376,7 +408,7 @@ def main():
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>需要使用相机拍摄魔方,识别六个面的颜色后生成还原步骤。</string>
+	<string>The camera is used to read the colours of your cube so the app can show you how to solve it. Images stay on your device.</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIRequiresFullScreen</key>

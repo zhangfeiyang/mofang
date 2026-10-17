@@ -30,7 +30,7 @@ final class CubeNetView: UIView {
         highlightLayer.isHidden = true
         layer.addSublayer(highlightLayer)
         isAccessibilityElement = true
-        accessibilityLabel = "已扫描的六个面"
+        accessibilityLabel = L10n.t("a11y.net")
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) is not supported") }

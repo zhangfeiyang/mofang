@@ -40,17 +40,8 @@ enum CubeColor: Int, CaseIterable {
     /// 0xFFRRGGBB,不透明;绘制用(安卓 argb)。
     var argb: UInt32 { 0xFF00_0000 | rgb }
 
-    var chinese: String {
-        switch self {
-        case .white: return "白"
-        case .red: return "红"
-        case .green: return "绿"
-        case .yellow: return "黄"
-        case .orange: return "橙"
-        case .blue: return "蓝"
-        case .unknown: return "未知"
-        }
-    }
+    /// 界面上的颜色名(随系统语言),键 color.<英文名>。
+    var localizedName: String { L10n.t("color.\(self)") }
 
     static func fromFace(_ face: Character) -> CubeColor {
         allCases.first { $0.face == face } ?? .unknown

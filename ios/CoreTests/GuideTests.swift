@@ -21,6 +21,11 @@ struct SeededRandom {
 }
 
 final class GuideTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        TestL10n.use("zh-Hans")
+    }
+
     static let SOLVED = GuideCubeModel.solved()
     static let MOVES = ["U", "U2", "U'", "R", "R2", "R'", "F", "F2", "F'",
                         "D", "D2", "D'", "L", "L2", "L'", "B", "B2", "B'"]

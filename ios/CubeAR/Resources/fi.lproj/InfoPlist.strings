@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Kuutio AR Ratkaisija";
+"NSCameraUsageDescription" = "Kamera lukee kuutiosi värit, jotta sovellus voi näyttää, miten se ratkaistaan. Kuvat pysyvät laitteellasi.";

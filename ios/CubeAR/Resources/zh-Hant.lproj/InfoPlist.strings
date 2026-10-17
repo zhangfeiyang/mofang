@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "魔術方塊AR還原";
+"NSCameraUsageDescription" = "需要使用相機拍攝魔術方塊，辨識六個面的顏色後產生還原步驟。";

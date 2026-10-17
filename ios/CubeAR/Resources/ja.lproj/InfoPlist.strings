@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "キューブAR解法";
+"NSCameraUsageDescription" = "キューブの色を読み取って解き方を表示するためにカメラを使います。映像は端末の外に出ません。";

@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "큐브 AR 풀이";
+"NSCameraUsageDescription" = "큐브의 색을 읽어 맞추는 방법을 보여 주기 위해 카메라를 사용합니다. 영상은 기기 밖으로 나가지 않습니다.";

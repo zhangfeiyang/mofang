@@ -26,7 +26,8 @@ final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSyn
 
     // --- 语音
     private let synthesizer = AVSpeechSynthesizer()
-    private let voice = AVSpeechSynthesisVoice(language: "zh-CN")
+    /// 与界面语言一致的系统语音;这种语言没有语音时为 nil,语音按钮隐藏。
+    private let voice = AppStrings.speechVoice()
     private var voiceOn = true
     private let defaults = UserDefaults.standard
 
@@ -43,10 +44,10 @@ final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSyn
 
     private let phaseChip = PaddedLabel()
     private let progressLabel = UILabel()
-    private let voiceButton = IconButton(symbol: "speaker.wave.2.fill", label: "语音播报")
-    private let torchButton = IconButton(symbol: "bolt", label: "补光灯")
-    private let helpButton = IconButton(symbol: "questionmark.circle", label: "使用帮助")
-    private let restartButton = IconButton(symbol: "arrow.clockwise", label: "重新扫描")
+    private let voiceButton = IconButton(symbol: "speaker.wave.2.fill", label: L10n.t("a11y.voice"))
+    private let torchButton = IconButton(symbol: "bolt", label: L10n.t("a11y.torch"))
+    private let helpButton = IconButton(symbol: "questionmark.circle", label: L10n.t("a11y.help"))
+    private let restartButton = IconButton(symbol: "arrow.clockwise", label: L10n.t("a11y.restart"))
 
     private let guideCard = GlassView(radius: Theme.radiusPanel)
     private let guideCube = GuideCubeView()
@@ -71,12 +72,12 @@ final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSyn
     private let swatch = UIView()
     private let moveDesc = UILabel()
     private let moveNext = UILabel()
-    private let prevButton = PillButton.secondary("上一步", leadingSymbol: "chevron.left")
-    private let nextButton = PillButton.primary("下一步", trailingSymbol: "chevron.right")
+    private let prevButton = PillButton.secondary(L10n.t("button.prev"), leadingSymbol: "chevron.left")
+    private let nextButton = PillButton.primary(L10n.t("button.next"), trailingSymbol: "chevron.right")
 
     private let actionSection = UIStackView()
-    private let secondaryButton = PillButton.secondary("重新扫描")
-    private let primaryButton = PillButton.primary("开始还原")
+    private let secondaryButton = PillButton.secondary(L10n.t("button.rescan"))
+    private let primaryButton = PillButton.primary(L10n.t("button.start"))
 
     private var helpSheet: HelpSheet?
     private var lastPhase: CubeUiState.Phase?
@@ -192,7 +193,7 @@ final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSyn
         session.resetSession()
         camera.start { [weak self] ok in
             guard let self = self else { return }
-            if !ok { self.session.showError("相机启动失败", "没有可用的后置摄像头") }
+            if !ok { self.session.showError(L10n.t("error.camera.title"), L10n.t("error.camera.detail")) }
             self.publish()
         }
     }
@@ -309,9 +310,9 @@ final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSyn
             }
             return
         }
-        let alert = UIAlertController(title: "重新扫描？", message: "当前的还原进度会被放弃。", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
-        alert.addAction(UIAlertAction(title: "重新扫描", style: .destructive) { [weak self] _ in
+        let alert = UIAlertController(title: L10n.t("restart.title"), message: L10n.t("restart.message"), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: L10n.t("button.cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n.t("restart.confirm"), style: .destructive) { [weak self] _ in
             self?.session.resetSession()
         })
         present(alert, animated: true)
@@ -397,11 +398,11 @@ final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSyn
         voiceButton.isHidden = !((guiding || ready) && voice != nil)
         voiceButton.setSymbol(voiceOn ? "speaker.wave.2.fill" : "speaker.slash.fill")
         voiceButton.isActivated = voiceOn
-        voiceButton.accessibilityValue = voiceOn ? "开" : "关"
+        voiceButton.accessibilityValue = L10n.t(voiceOn ? "a11y.on" : "a11y.off")
         torchButton.isHidden = !camera.hasTorch
         torchButton.setSymbol(camera.torchOn ? "bolt.fill" : "bolt")
         torchButton.isActivated = camera.torchOn
-        torchButton.accessibilityValue = camera.torchOn ? "开" : "关"
+        torchButton.accessibilityValue = L10n.t(camera.torchOn ? "a11y.on" : "a11y.off")
 
         setText(titleLabel, s.title)
         setText(detailLabel, s.detail)
@@ -434,16 +435,16 @@ final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSyn
             // 要拧那层的中心色:核对 App 与手上对魔方的拿法是否一致。中间层没有。
             swatch.isHidden = step.face == " "
             if step.face != " " { swatch.backgroundColor = UIColor(argb: CubeColor.fromFace(step.face).argb) }
-            setText(moveNext, s.upcoming.isEmpty ? "最后一步"
-                : "接下来" + s.upcoming.map { "   " + $0 }.joined())
+            setText(moveNext, s.upcoming.isEmpty ? L10n.t("guide.last")
+                : L10n.t("guide.upcoming") + s.upcoming.map { "   " + $0 }.joined())
             prevButton.isEnabled = s.moveIndex > 0
         }
 
         let actions = ready || s.phase == .solved || s.phase == .error || s.phase == .permission
         actionSection.isHidden = !actions
         secondaryButton.isHidden = !ready
-        PillButton.setTitle(primaryButton, ready ? "开始还原" : s.phase == .solved ? "再来一次"
-            : s.phase == .permission ? "授权相机" : "重新扫描")
+        PillButton.setTitle(primaryButton, L10n.t(ready ? "button.start" : s.phase == .solved ? "button.again"
+            : s.phase == .permission ? "button.grant" : "button.rescan"))
 
         if phaseChanged && view.window != nil {
             UIView.animate(withDuration: 0.25) { self.view.layoutIfNeeded() }
@@ -626,7 +627,7 @@ final class CubeARViewController: UIViewController, CubeSessionHost, AVSpeechSyn
         NSLayoutConstraint.activate([netWidth, netHeight])
         cubeNet.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-        for text in ["一次只对准一个面，整个面都露出来", "保持 20–30 厘米，光线均匀", "任意顺序；六个面都要扫到"] {
+        for text in [L10n.t("tip.1"), L10n.t("tip.2"), L10n.t("tip.3")] {
             let label = UILabel()
             label.text = text
             label.font = Theme.font(12)

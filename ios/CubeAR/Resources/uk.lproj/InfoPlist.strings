@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Кубик AR: складання";
+"NSCameraUsageDescription" = "Камера зчитує кольори вашого кубика, щоб показати, як його скласти. Зображення залишаються на пристрої.";

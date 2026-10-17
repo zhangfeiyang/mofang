@@ -4,6 +4,11 @@ import XCTest
 // Port of com.mofang.cubear.CubeCoreTest.java
 
 final class CubeCoreTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        TestL10n.use("zh-Hans")
+    }
+
     private static let SOLVED =
         "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 
@@ -222,7 +227,7 @@ final class CubeCoreTests: XCTestCase {
             }
         }
         for (color, count) in counts {
-            XCTAssertEqual(count, 9, color.chinese)
+            XCTAssertEqual(count, 9, "\(color)")
         }
     }
 

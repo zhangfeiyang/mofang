@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Κύβος AR Λύση";
+"NSCameraUsageDescription" = "Η κάμερα διαβάζει τα χρώματα του κύβου σας ώστε η εφαρμογή να σας δείξει πώς να τον λύσετε. Οι εικόνες μένουν στη συσκευή σας.";

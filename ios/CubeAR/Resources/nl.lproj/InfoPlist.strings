@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Cube AR Oplosser";
+"NSCameraUsageDescription" = "De camera leest de kleuren van je kubus zodat de app kan laten zien hoe je hem oplost. Beelden blijven op je apparaat.";

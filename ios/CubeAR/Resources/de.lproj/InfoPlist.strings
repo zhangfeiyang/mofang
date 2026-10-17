@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Cube AR Löser";
+"NSCameraUsageDescription" = "Die Kamera liest die Farben deines Würfels, damit die App dir zeigen kann, wie du ihn löst. Die Bilder bleiben auf deinem Gerät.";

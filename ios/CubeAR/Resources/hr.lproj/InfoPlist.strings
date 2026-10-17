@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Kocka AR Slagalica";
+"NSCameraUsageDescription" = "Kamera očitava boje vaše kocke kako bi aplikacija pokazala kako je složiti. Slike ostaju na vašem uređaju.";

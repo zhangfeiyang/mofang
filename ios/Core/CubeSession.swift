@@ -192,7 +192,7 @@ final class CubeSession {
                     // 六个都看清了的面仍然互相矛盾:扫描中途魔方变了(拧过某层),
                     // 再多看也救不回混在一起的池。
                     resetSession()
-                    lastFailure = "读数互相矛盾，已重新开始。扫描时请不要拧动魔方的层"
+                    lastFailure = L10n.t("scan.poisoned")
                 }
             }
             host?.sessionChanged()
@@ -215,7 +215,7 @@ final class CubeSession {
         } else {
             phase = .ready
         }
-        host?.speak(solution.isEmpty ? "魔方已经是还原状态" : "识别完成，共 \(solution.count) 步")
+        host?.speak(solution.isEmpty ? L10n.t("speech.alreadySolved") : L10n.t("speech.recognized", solution.count))
         host?.sessionChanged()
     }
 
@@ -273,7 +273,7 @@ final class CubeSession {
             solvedAfterMillis = clock() - guideStartedAt
             host?.celebrate()
             host?.pulse(strong: true)
-            host?.speak("还原完成")
+            host?.speak(L10n.t("speech.solved"))
         } else {
             if forward { host?.pulse(strong: false) }
             speakCurrentMove()
@@ -285,9 +285,9 @@ final class CubeSession {
     func speakCurrentMove() {
         guard let step = currentStep else { return }
         spokenStep = "\(step.first):\(step.caption())"
-        host?.speak(CubeSession.stepTitle(step).replacingOccurrences(of: "–", with: " 到 ")
-            + "，" + step.caption()
-            + (step.seen ? "" : isLastStep(step) ? "，拧完把魔方转个面给镜头看" : "，拧完点下一步"))
+        let instruction = step.seen ? step.caption()
+            : L10n.t(isLastStep(step) ? "speech.thenShowSide" : "speech.thenPressNext", step.caption())
+        host?.speak(L10n.t("speech.step", CubeSession.stepTitle(step, spoken: true), instruction))
     }
 
     /// 换了握法让指令措辞变了、步骤没变时,重新读一遍。
@@ -296,9 +296,10 @@ final class CubeSession {
         if spokenStep != "\(step.first):\(step.caption())" { speakCurrentMove() }
     }
 
-    static func stepTitle(_ step: GuideStep) -> String {
-        step.count == 1 ? "第 \(step.first + 1) 步"
-            : "第 \(step.first + 1)–\(step.first + step.count) 步"
+    /// "第 3 步"、"第 3–4 步";播报时说成"第 3 到 4 步"。
+    static func stepTitle(_ step: GuideStep, spoken: Bool = false) -> String {
+        step.count == 1 ? L10n.t("step.single", step.first + 1)
+            : L10n.t(spoken ? "step.range.spoken" : "step.range", step.first + 1, step.first + step.count)
     }
 
     /// 之后再无步骤。
@@ -384,27 +385,27 @@ final class CubeSession {
         b.busy(busy)
         switch phase {
         case .permission:
-            b.text("需要相机权限", "相机只用于在本机实时识别魔方，不保存、不上传画面")
+            b.text(L10n.t("permission.title"), L10n.t("permission.detail"))
         case .scanning:
             let faces = assembler.size
-            let title = faces == 0 ? "对准魔方的一个面"
-                : faces < 5 ? "转到下一个面"
-                : faces == 5 ? "再转出最后一个面" : "正在核对颜色"
+            let title = L10n.t(faces == 0 ? "scan.title.first"
+                : faces < 5 ? "scan.title.next"
+                : faces == 5 ? "scan.title.last" : "scan.title.checking")
             let detail: String
             if !lastFailure.isEmpty && !busy {
                 detail = lastFailure
             } else if busy {
-                detail = "六个面已集齐，正在校验…"
+                detail = L10n.t("scan.detail.busy")
             } else if faces == 0 {
-                detail = "整个面露出来，保持不动，边框走满一圈就采好了"
+                detail = L10n.t("scan.detail.first")
             } else {
-                detail = "已采集 \(faces) 个面，顺序随意"
+                detail = L10n.t("scan.detail.progress", faces)
             }
             b.text(title, detail)
             b.hint(scanHint())
         case .ready:
-            b.text(inferredColor == nil ? "识别完成" : "识别完成 · 第六面已推算",
-                   "核对一下展开图的颜色，然后开始还原。共 \(solution.count) 步")
+            b.text(L10n.t(inferredColor == nil ? "ready.title" : "ready.title.inferred"),
+                   L10n.t("ready.detail", solution.count))
         case .guiding:
             guard let guide = guide else { break }
             b.moves(guide.trackerValue.moves, guide.trackerValue.currentIndex)
@@ -414,18 +415,18 @@ final class CubeSession {
             b.text(CubeSession.stepTitle(step), guideDetail(step, plan.count > 1 ? plan[1] : nil))
             // 拧到一半的注视什么都匹配不上;只有停稳在意料之外的状态才说明拧错了。
             if guide.settledMismatches >= 3 && clock() - lastMatchAt > CubeSession.MISMATCH_GRACE_MS {
-                b.hint("画面和预期不一致：拧错了可以点“上一步”")
+                b.hint(L10n.t("hint.mismatch"))
             } else if !guide.isFrameKnown {
-                b.hint("先把魔方任意一面对准镜头，提示会按你手里的朝向来说")
+                b.hint(L10n.t("hint.findFace"))
             } else if !step.seen {
                 // 写在灰色正文里会被忽略:有人一直拧一层却不前进。要放在视线本来就在的地方。
-                b.hint(isLastStep(step) ? "最后一下镜头看不出来：拧完把魔方转到旁边一面给镜头看"
-                    : "这一步镜头看不出来，拧完点“下一步”")
+                b.hint(L10n.t(isLastStep(step) ? "hint.lastUnseen" : "hint.unseen"))
             }
         case .solved:
-            b.text("还原完成！", solution.isEmpty ? "魔方本来就是还原状态"
-                : "共 \(solution.count) 步" + (solvedAfterMillis > 0
-                    ? " · 用时 " + CubeSession.formatDuration(solvedAfterMillis) : ""))
+            b.text(L10n.t("solved.title"), solution.isEmpty ? L10n.t("solved.detail.already")
+                : solvedAfterMillis > 0
+                    ? L10n.t("solved.detail.time", solution.count, CubeSession.formatDuration(solvedAfterMillis))
+                    : L10n.t("solved.detail", solution.count))
         case .error:
             b.text(errorTitle, errorDetail)
         }
@@ -434,10 +435,10 @@ final class CubeSession {
 
     /// 扫描时的情境提示,最紧要的在前。
     private func scanHint() -> String? {
-        if tooFar { return "再靠近一点，色块会读得更准" }
-        if liveDetection != nil && gate.struggling() { return "让整个面露出来，手指别挡住色块" }
+        if tooFar { return L10n.t("hint.closer") }
+        if liveDetection != nil && gate.struggling() { return L10n.t("hint.occluded") }
         if liveDetection == nil && clock() - lastSeenAt > 3000 {
-            return "把魔方放在画面中间，离镜头 20–30 厘米"
+            return L10n.t("hint.center")
         }
         return nil
     }
@@ -448,28 +449,26 @@ final class CubeSession {
     private func guideDetail(_ step: GuideStep, _ next: GuideStep?) -> String {
         if !step.seen && isLastStep(step) {
             // 魔方出来就是复原的,每一面都看得出来,镜头看到哪面都行。
-            return "拧完魔方就复原了，但朝你这面看不出变化。把魔方转到旁边任意一面给镜头看，或点“下一步”"
+            return L10n.t("detail.lastUnseen")
         }
         if step.then != nil {
-            return step.seen ? "第一下镜头看不出来，两下连着拧完，会自动进入下一步"
-                : "两下连着拧完点“下一步”"
+            return L10n.t(step.seen ? "detail.chain.seen" : "detail.chain.unseen")
         }
         if step.isWide {
-            return "等于拧后层：捏住最后面那层不动，前面两层一起拧。这样镜头看得到，拧完自动进入下一步"
+            return L10n.t("detail.wide")
         }
         if !step.seen {
             // 跟踪器会往前看:下一个看得见的动作也证明这一步做过了。
-            let onward = next.map { $0.seen ? "；也可以直接接着做「\($0.caption())」，会自动跟上" : "" } ?? ""
-            if !step.isBack { return "这一步镜头看不出变化，拧完点“下一步”" + onward }
-            let how = step.isHalfTurn ? "拧半圈"
-                : "顶上那排往" + (step.direction() == "向左" ? "左" : "右") + "推"
-            return "后层离你最远，" + how + "。镜头看不到后层，拧完点“下一步”" + onward
+            let onward = next.map { $0.seen ? L10n.t("detail.onward", $0.caption()) : "" } ?? ""
+            if !step.isBack { return L10n.t("detail.unseen", onward) }
+            let how = L10n.t(step.isHalfTurn ? "detail.back.half"
+                : step.directionKey() == "left" ? "detail.back.left" : "detail.back.right")
+            return L10n.t("detail.back", how, onward)
         }
         if step.isMiddle {
-            return (step.viewAxis()[0] != 0 ? "左右两层不动，只拧中间那一列" : "上下两层不动，只拧中间那一行")
-                + "。拧完朝你的中心块会换颜色，这是正常的"
+            return L10n.t(step.viewAxis()[0] != 0 ? "detail.middle.column" : "detail.middle.row")
         }
-        return "保持这一面朝着镜头，按箭头拧，拧完自动进入下一步"
+        return L10n.t("detail.default")
     }
 
     /// 实时画面上的面能否承载步骤箭头:它是步骤持法的前面,且足够正,角点按学到持法时
@@ -485,21 +484,21 @@ final class CubeSession {
 
     var phaseLabel: String {
         switch phase {
-        case .scanning: return "扫描"
-        case .ready: return "就绪"
-        case .guiding: return "还原"
-        case .solved: return "完成"
-        case .error: return "出错"
-        case .permission: return "授权"
+        case .scanning: return L10n.t("phase.scanning")
+        case .ready: return L10n.t("phase.ready")
+        case .guiding: return L10n.t("phase.guiding")
+        case .solved: return L10n.t("phase.solved")
+        case .error: return L10n.t("phase.error")
+        case .permission: return L10n.t("phase.permission")
         }
     }
 
     func progressText(_ s: CubeUiState) -> String {
         switch s.phase {
-        case .scanning: return "已采集 \(s.scannedCount) / 6 面"
-        case .ready: return "共 \(solution.count) 步"
-        case .guiding: return "\(s.moveIndex + 1) / \(s.moves.count) 步"
-        case .solved: return solvedAfterMillis > 0 ? "用时 " + CubeSession.formatDuration(solvedAfterMillis) : ""
+        case .scanning: return L10n.t("progress.scan", s.scannedCount)
+        case .ready: return L10n.t("progress.ready", solution.count)
+        case .guiding: return L10n.t("progress.guide", s.moveIndex + 1, s.moves.count)
+        case .solved: return solvedAfterMillis > 0 ? L10n.t("progress.time", CubeSession.formatDuration(solvedAfterMillis)) : ""
         default: return ""
         }
     }

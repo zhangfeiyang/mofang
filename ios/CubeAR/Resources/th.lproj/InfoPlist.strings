@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "แก้ลูกบาศก์ AR";
+"NSCameraUsageDescription" = "ใช้กล้องอ่านสีของลูกบาศก์เพื่อแสดงวิธีแก้ ภาพจะอยู่ในเครื่องของคุณเท่านั้น";

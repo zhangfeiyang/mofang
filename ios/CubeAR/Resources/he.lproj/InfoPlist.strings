@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "פתרון הקובייה AR";
+"NSCameraUsageDescription" = "המצלמה קוראת את צבעי הקובייה שלך כדי להראות לך איך לפתור אותה. התמונות נשארות במכשיר.";

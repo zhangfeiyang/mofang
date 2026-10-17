@@ -322,33 +322,43 @@ final class GuideStep {
         return clockwise == 2 ? letter + "2" : clockwise == 3 ? letter + "′" : letter
     }
 
-    /// 手中的层位描述。
-    func place() -> String {
+    /// 手中的层位,作 L10n 键 place.<键>:R L U D F B(外层)、Rw…Bw(两层)、M E S(中间层)。
+    func placeKey() -> String {
         let n = viewAxis()
         if layer == GuideStep.MIDDLE {
-            return n[0] != 0 ? "中间竖层" : n[1] != 0 ? "中间横层" : "中间夹层"
+            return n[0] != 0 ? "M" : n[1] != 0 ? "E" : "S"
         }
-        let side = n[0] != 0 ? (n[0] > 0 ? "右" : "左") : n[1] != 0 ? (n[1] > 0 ? "顶" : "底")
-            : n[2] > 0 ? "前" : "后"
-        if layer == GuideStep.WIDE {
-            return (side == "顶" ? "上" : side == "底" ? "下" : side) + "两层"
-        }
-        return side + "层"
+        let side = n[0] != 0 ? (n[0] > 0 ? "R" : "L") : n[1] != 0 ? (n[1] > 0 ? "U" : "D")
+            : n[2] > 0 ? "F" : "B"
+        return layer == GuideStep.WIDE ? side + "w" : side
     }
 
-    /// 方向描述。
-    func direction() -> String {
-        if isHalfTurn { return "半圈" }
-        if turnsFrontFace() { return quarters < 0 ? "顺时针" : "逆时针" }
+    /// 方向,作 L10n 键 dir.<键>:half、cw、ccw、left、right、up、down。
+    func directionKey() -> String {
+        if isHalfTurn { return "half" }
+        if turnsFrontFace() { return quarters < 0 ? "cw" : "ccw" }
         let n = viewAxis()
         let moving = motion(n[2] == 0 ? GuideStep.VIEW_FRONT : GuideStep.VIEW_UP)
-        if moving[0] != 0 { return moving[0] > 0 ? "向右" : "向左" }
-        return moving[1] > 0 ? "向上" : "向下"
+        if moving[0] != 0 { return moving[0] > 0 ? "right" : "left" }
+        return moving[1] > 0 ? "up" : "down"
     }
 
+    /// 手中的层位描述:"顶层"、"前两层"、"中间竖层"。
+    func place() -> String { L10n.t("place." + placeKey()) }
+
+    /// 方向描述:"向左"、"顺时针"。
+    func direction() -> String { L10n.t("dir." + directionKey()) }
+
     /// 完整指令:"顶层向左拧"、"前两层顺时针拧"等,链式用"再"连接。
-    func caption() -> String {
-        let own = place() + (isHalfTurn ? "拧半圈" : direction() + "拧")
-        return then == nil ? own : own + "，再" + then!.caption()
+    /// 句式由各语言的模板决定(turn.quarter / turn.half / turn.then),语序可以不同。
+    func caption() -> String { caption(leading: true) }
+
+    private func caption(leading: Bool) -> String {
+        let suffix = leading ? "" : ".next"
+        let own = isHalfTurn ? L10n.t("turn.half" + suffix, place())
+            : L10n.t("turn.quarter" + suffix, place(), direction())
+        let sentence = then == nil ? own : L10n.t("turn.then", own, then!.caption(leading: false))
+        // 句首大写:有的语言句子以层名开头(土耳其语"üst katmanı sola çevirin");无大小写的文字不受影响。
+        return leading ? sentence.prefix(1).uppercased() + sentence.dropFirst() : sentence
     }
 }

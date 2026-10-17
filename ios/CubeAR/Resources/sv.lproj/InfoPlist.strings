@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Kub AR Lösare";
+"NSCameraUsageDescription" = "Kameran läser färgerna på din kub så att appen kan visa hur du löser den. Bilderna stannar på din enhet.";

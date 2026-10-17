@@ -26,6 +26,7 @@ final class CubeSessionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        TestL10n.use("zh-Hans")
         now = 1_000
         allowed = true
         // 后台与主线程都同步执行:组装在 handleFrame 返回前就完成。

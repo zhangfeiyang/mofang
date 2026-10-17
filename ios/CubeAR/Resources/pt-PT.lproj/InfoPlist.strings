@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Cube AR Resolvedor";
+"NSCameraUsageDescription" = "A câmara lê as cores do seu cubo para lhe mostrar como resolvê-lo. As imagens ficam no seu dispositivo.";

@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Kocka AR Kirakó";
+"NSCameraUsageDescription" = "A kamera leolvassa a kockád színeit, hogy megmutassa, hogyan rakhatod ki. A képek a készülékeden maradnak.";

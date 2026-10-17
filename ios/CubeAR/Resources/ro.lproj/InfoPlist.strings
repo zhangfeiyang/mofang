@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Cub AR Rezolvare";
+"NSCameraUsageDescription" = "Camera citește culorile cubului tău ca aplicația să îți arate cum să-l rezolvi. Imaginile rămân pe dispozitivul tău.";

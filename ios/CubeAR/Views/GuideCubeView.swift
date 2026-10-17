@@ -19,7 +19,7 @@ final class GuideCubeView: UIView {
         backgroundColor = .clear
         isOpaque = false
         isAccessibilityElement = true
-        accessibilityLabel = "当前步骤的三维动画"
+        accessibilityLabel = L10n.t("a11y.guideCube")
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) is not supported") }
@@ -82,10 +82,13 @@ final class GuideCubeView: UIView {
             now = local.truncatingRemainder(dividingBy: GuideCubeModel.CYCLE_MS)
         }
 
+        // 说明条先排:放不下一行时折成两行,魔方让出位置。
+        let caption = captionLayout(box, step, label + step.caption())
+        let region = CGRect(x: box.minX, y: box.minY, width: box.width, height: caption.chip.minY - box.minY)
         let cx = box.midX
-        let cy = box.midY - box.height * 0.09
-        // 这个偏航与俯仰下魔方轮廓约 4.0 × 4.4 个单位;这样缩放能装进方框并在下方留出说明条。
-        let scale = min(box.width, box.height) * 0.165
+        let cy = region.minY + region.height * 0.5125
+        // 这个偏航与俯仰下魔方轮廓约 4.0 × 4.4 个单位;这样缩放能装进说明条上方的区域。
+        let scale = min(box.width * 0.165, region.height * 0.206)
         let phase = Float(now.truncatingRemainder(dividingBy: GuideCubeModel.CYCLE_MS) / GuideCubeModel.CYCLE_MS)
         let count = model.collectFaces(cube, step.frame, step.axis, step.layer,
                                        GuideCubeModel.twistAngle(phase, step.quarters))
@@ -118,7 +121,7 @@ final class GuideCubeView: UIView {
         drawArrow(ctx, cx, cy, scale, box.width, step, phase)
         ctx.restoreGState()
 
-        drawCaption(ctx, box, step, label)
+        drawCaption(ctx, caption, step)
     }
 
     /// 视图空间的点投到屏幕,与小块用同一台相机。
@@ -216,34 +219,66 @@ final class GuideCubeView: UIView {
         text.draw(at: CGPoint(x: at.x - size.width / 2, y: at.y - size.height / 2), withAttributes: attributes)
     }
 
-    /// 底部的说明条:要转那层的中心色圆点 + 指令。
-    private func drawCaption(_ ctx: CGContext, _ box: CGRect, _ step: GuideStep, _ label: String) {
+    private struct Caption {
+        let chip: CGRect
+        let text: NSString
+        let attributes: [NSAttributedString.Key: Any]
+        let textRect: CGRect
+        let dot: Bool
+    }
+
+    /// 底部的说明条:要转那层的中心色圆点 + 指令。一行放不下(长语言)时折成两行,
+    /// 而不是把字缩到看不清。
+    private func captionLayout(_ box: CGRect, _ step: GuideStep, _ text: String) -> Caption {
         let pad = box.width * 0.06
-        let chip = CGRect(x: box.minX + pad, y: box.maxY - box.height * 0.20,
-                          width: box.width - pad * 2, height: box.height * 0.20 - pad * 0.35)
-        ctx.setFillColor(UIColor(argb: 0xE610_1C18).cgColor)
-        ctx.addPath(UIBezierPath(roundedRect: chip, cornerRadius: chip.height / 2).cgPath)
-        ctx.fillPath()
+        let lineChip = box.height * 0.20 - pad * 0.35
         let dot = step.face != " "
-        let textLeft = chip.minX + chip.height * (dot ? 0.95 : 0.45)
-        let textRight = chip.maxX - chip.height * 0.45
-        if dot {
-            let r = chip.height * 0.22
-            let c = CGPoint(x: chip.minX + chip.height * 0.52, y: chip.midY)
+        let textInset = lineChip * (dot ? 0.95 : 0.45)
+        let textWidth = box.width - pad * 2 - textInset - lineChip * 0.45
+        let string = text as NSString
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        paragraph.lineBreakMode = .byWordWrapping
+        func attributes(_ size: CGFloat) -> [NSAttributedString.Key: Any] {
+            [.font: Theme.font(size, .bold), .foregroundColor: UIColor.white, .paragraphStyle: paragraph]
+        }
+        func measure(_ size: CGFloat) -> CGSize {
+            string.boundingRect(with: CGSize(width: textWidth, height: .greatestFiniteMagnitude),
+                                options: [.usesLineFragmentOrigin], attributes: attributes(size), context: nil).size
+        }
+        var size = lineChip * 0.40
+        var chipHeight = lineChip
+        if string.size(withAttributes: attributes(size)).width > textWidth {
+            // 两行:字略小,条加高;还放不下就继续缩,但不小于单行字号的一半。
+            size = lineChip * 0.34
+            while size > lineChip * 0.2, measure(size).height > Theme.font(size, .bold).lineHeight * 2.05 {
+                size *= 0.92
+            }
+            chipHeight = max(lineChip, measure(size).height + lineChip * 0.36)
+        }
+        let chip = CGRect(x: box.minX + pad, y: box.maxY - pad * 0.35 - chipHeight,
+                          width: box.width - pad * 2, height: chipHeight)
+        let measured = measure(size)
+        let textRect = CGRect(x: chip.minX + textInset, y: chip.midY - measured.height / 2,
+                              width: textWidth, height: measured.height)
+        return Caption(chip: chip, text: string, attributes: attributes(size), textRect: textRect, dot: dot)
+    }
+
+    private func drawCaption(_ ctx: CGContext, _ caption: Caption, _ step: GuideStep) {
+        let chip = caption.chip
+        let radius = min(chip.height / 2, chip.width * 0.08 + 8)
+        ctx.setFillColor(UIColor(argb: 0xE610_1C18).cgColor)
+        ctx.addPath(UIBezierPath(roundedRect: chip, cornerRadius: radius).cgPath)
+        ctx.fillPath()
+        if caption.dot {
+            let line = caption.textRect.minX - chip.minX
+            let r = line * 0.23
+            let c = CGPoint(x: chip.minX + line * 0.55, y: chip.midY)
             ctx.setFillColor(UIColor(argb: CubeColor.fromFace(step.face).argb).cgColor)
             ctx.fillEllipse(in: CGRect(x: c.x - r, y: c.y - r, width: r * 2, height: r * 2))
         }
-        let text = (label + step.caption()) as NSString
-        var size = chip.height * 0.40
-        var attributes: [NSAttributedString.Key: Any] = [.font: Theme.font(size, .bold), .foregroundColor: UIColor.white]
-        var measured = text.size(withAttributes: attributes)
-        if measured.width > textRight - textLeft {
-            size *= (textRight - textLeft) / measured.width
-            attributes[.font] = Theme.font(size, .bold)
-            measured = text.size(withAttributes: attributes)
-        }
-        text.draw(at: CGPoint(x: (textLeft + textRight - measured.width) / 2, y: chip.midY - measured.height / 2),
-                  withAttributes: attributes)
+        caption.text.draw(with: caption.textRect, options: [.usesLineFragmentOrigin],
+                          attributes: caption.attributes, context: nil)
     }
 }
 

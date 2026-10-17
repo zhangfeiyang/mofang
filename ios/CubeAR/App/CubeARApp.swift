@@ -2,6 +2,10 @@ import SwiftUI
 
 @main
 struct CubeARApp: App {
+    init() {
+        AppStrings.install()
+    }
+
     var body: some Scene {
         WindowGroup {
             CubeARWrapperView()

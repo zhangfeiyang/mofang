@@ -149,7 +149,8 @@ enum PillButton {
         }
         if let symbol = symbol {
             config.image = UIImage(systemName: symbol,
-                                   withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold))
+                                   withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .bold))?
+                .imageFlippedForRightToLeftLayoutDirection()
             config.imagePlacement = trailing ? .trailing : .leading
             config.imagePadding = 6
         }
@@ -202,18 +203,6 @@ final class HelpSheet: UIView {
     var onClose: (() -> Void)?
     var onPrivacy: (() -> Void)?
 
-    static let body = """
-    1  扫描：把魔方的一个面正对镜头，网格变绿、边框走满一圈就采好了。依次露出其余各面，顺序随意，六个面都要扫到。
-
-    2  核对：识别完成后会展示整个魔方的展开图，颜色对上了就点“开始还原”。
-
-    3  还原：哪一面朝着镜头都行，不用来回找颜色面。提示按你手里魔方的朝向来说，比如“顶层向左拧”“右层向上拧”，右上角的小魔方也和你手里的摆得一样。镜头看到动作完成会自动进入下一步；个别镜头看不出变化的步骤会提示你怎么做，也可以点“下一步”。
-
-    转动记号：按你拿着的朝向，R L U D F B 分别是右、左、顶、底、前、后层，M 是中间竖层，E 是中间横层。不带符号是顺时针（正对那一层看），′ 是逆时针，2 是转半圈。
-
-    小技巧：别用手指挡住色块；光线暗时点右上角的补光灯。
-    """
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(argb: 0xB300_0000)
@@ -223,7 +212,7 @@ final class HelpSheet: UIView {
         addSubview(card)
 
         let title = UILabel()
-        title.text = "怎么用"
+        title.text = L10n.t("help.title")
         title.font = Theme.font(21, .bold)
         title.textColor = Theme.textPrimary
 
@@ -231,12 +220,12 @@ final class HelpSheet: UIView {
         text.numberOfLines = 0
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineSpacing = 3
-        text.attributedText = NSAttributedString(string: HelpSheet.body, attributes: [
+        text.attributedText = NSAttributedString(string: L10n.t("help.body"), attributes: [
             .font: Theme.font(14), .foregroundColor: Theme.textPrimary, .paragraphStyle: paragraph,
         ])
 
         let privacy = UIButton(type: .system)
-        privacy.setTitle("隐私政策：相机画面只在本机处理，不收集任何数据 ›", for: .normal)
+        privacy.setTitle(L10n.t("help.privacy"), for: .normal)
         privacy.setTitleColor(Theme.mint, for: .normal)
         privacy.titleLabel?.font = Theme.font(12)
         privacy.titleLabel?.numberOfLines = 0
@@ -253,7 +242,7 @@ final class HelpSheet: UIView {
         scrollContent.translatesAutoresizingMaskIntoConstraints = false
         scroll.addSubview(scrollContent)
 
-        let close = PillButton.primary("知道了")
+        let close = PillButton.primary(L10n.t("button.gotIt"))
         close.addAction(UIAction { [weak self] _ in self?.onClose?() }, for: .touchUpInside)
 
         let column = UIStackView(arrangedSubviews: [scroll, close])

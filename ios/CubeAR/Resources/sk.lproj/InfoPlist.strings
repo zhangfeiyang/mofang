@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Kocka AR – skladanie";
+"NSCameraUsageDescription" = "Fotoaparát číta farby vašej kocky, aby vám aplikácia ukázala, ako ju poskladať. Snímky zostávajú vo vašom zariadení.";

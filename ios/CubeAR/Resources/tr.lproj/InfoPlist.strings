@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "Küp AR Çözücü";
+"NSCameraUsageDescription" = "Kamera, küpünüzü nasıl çözeceğinizi göstermek için renklerini okur. Görüntüler cihazınızda kalır.";

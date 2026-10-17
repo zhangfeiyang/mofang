@@ -1,0 +1,3 @@
+/* 由 ios/tools/gen_strings.py 从 ios/l10n 生成,勿手改 */
+"CFBundleDisplayName" = "क्यूब AR सॉल्वर";
+"NSCameraUsageDescription" = "कैमरा आपके क्यूब के रंग पढ़ता है ताकि उसे हल करने का तरीका दिखाया जा सके। तस्वीरें आपके डिवाइस पर ही रहती हैं।";

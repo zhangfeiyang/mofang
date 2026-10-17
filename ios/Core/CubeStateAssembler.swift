@@ -391,7 +391,7 @@ final class CubeStateAssembler {
     func assemble() -> String? {
         suspect = nil
         if !isComplete {
-            lastFailure = "还没有六个面"
+            lastFailure = L10n.t("fail.notSix")
             return nil
         }
         deadlineNanos = nowNanos() + CubeStateAssembler.SIX_FACE_BUDGET_NANOS
@@ -400,7 +400,7 @@ final class CubeStateAssembler {
         let six = assembleLegalState()
         if six == nil && expired {
             timedOut = true
-            lastFailure = "核对超时，继续采集后会再试"
+            lastFailure = L10n.t("fail.timeout")
         }
         return six
     }
@@ -445,7 +445,7 @@ final class CubeStateAssembler {
         // 使用与进度报告相同的分组。把五个真实面强行分裂成六个会发明一个仍能通过求解器
         // 奇偶校验的重复——错误的魔方。
         guard let raw = groupsOf(6) else {
-            lastFailure = "分组不是 6 个独立面"
+            lastFailure = L10n.t("fail.groups")
             return nil
         }
 
@@ -489,8 +489,8 @@ final class CubeStateAssembler {
         state = repairBySwaps(chosen.compactMap { $0 })
         if state != nil { return state }
 
-        lastFailure = suspect == nil ? "六面色块对不上魔方结构"
-            : "有色块读得不准，请把\(suspect!.chinese)色中心那面再正对镜头看一眼"
+        lastFailure = suspect == nil ? L10n.t("fail.illegal")
+            : L10n.t("fail.suspect", suspect!.localizedName)
         return nil
     }
 
@@ -618,7 +618,7 @@ final class CubeStateAssembler {
     func assembleFromFiveFaces() -> String? {
         searchBudget = 120
         guard var groups = groupsOf(5) else {
-            lastFailure = "还没有 5 个独立面"
+            lastFailure = L10n.t("fail.notFive")
             return nil
         }
         for i in 0..<groups.count { groups[i] = CubeStateAssembler.largestCluster(groups[i]) }
@@ -659,7 +659,7 @@ final class CubeStateAssembler {
             }
             chosen[face] = original
         }
-        lastFailure = "五面推算不出第六面，色块读数有歧义"
+        lastFailure = L10n.t("fail.fiveAmbiguous")
         return nil
     }
 
