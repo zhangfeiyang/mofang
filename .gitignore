@@ -14,3 +14,6 @@ data/backgrounds/
 keystore.properties
 *.jks
 *.keystore
+
+# iOS IPA pulled back from the Mac mini by ios/mac_release.sh
+ios/dist/

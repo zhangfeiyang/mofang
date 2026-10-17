@@ -10,8 +10,29 @@
   (Debug 模拟器 + Release 真机架构,新文件零警告),模拟器里三个演示画面与首次启动截图正常。
   尚未在真机上跑过相机。
 - **模型**:cubeface.mlpackage(ONNX→onnx2torch→CoreML mlprogram,数值一致误差 ~1e-6)。
-- **CI/发布**:ios-ci.yml(编译验证)、ios-release.yml(签名→归档→TestFlight→提审);
-  bundle com.mofang.cubear,ASC App ID 6820316386。build 号已升到 6(build 5 是旧 UI)。
+- **TestFlight**:2026-10-17 新 UI 的 1.0.0 (6) 从 Mac mini 上传,Apple 处理完成(VALID),
+  已加入"内部测试"组(IN_BETA_TESTING)。版本 1.0 仍是 PREPARE_FOR_SUBMISSION,附的还是 build 5,未提审。
+- **CI/发布**:ios-ci.yml(编译验证)、ios-release.yml(签名→归档→TestFlight→**提审**,还会吊销证书、
+  往 main 推标记——只想进 TestFlight 时别用它);bundle com.mofang.cubear,ASC App ID 6820316386。
+
+## 从 Mac mini 发 TestFlight(2026-10-17 起的做法,与 Crystal Grid 同一套签名材料)
+
+```bash
+# 0) ios/tools/gen_xcodeproj.py 里 _build_number +1,重新生成工程(已上传过 3、4、5、6)
+# 1) 编译 + 导出 IPA(落在 ios/dist/,已 gitignore)
+bash ios/mac_release.sh
+# 2) 上传(只进 TestFlight,等 Apple 处理完)
+export AC_API_KEY_ID=X8P2F2J3V8 AC_API_ISSUER_ID=a22499f7-085a-434f-a6c7-4cc995f1cec6
+export AC_API_KEY_P8=$(base64 -w0 /home/zhangfy/secrets-backup/AuthKey_X8P2F2J3V8.p8)
+bash ios/mac_release.sh --upload
+```
+
+- 签名:Mac 上 `cgbuild.keychain` 里的持久分发证书 62RDFCGTWC(2027-10-08 到期)+ 描述文件
+  "CubeAR AppStore (mac mini)"(AV9JM8BA6X,`~/buildkeys/cubear_appstore.mobileprovision`)。
+  失效时 `python3 ios/tools/asc_create_profile.py --out x.mobileprovision` 重建再 scp 过去。
+  ASC 上那些 "com.mofang.cubear AppStore 17921…" 描述文件是 CI 建的,绑的证书私钥已随 runner 销毁,Mac 上用不了。
+- "内部测试"组不会自动拿到新构建,要把构建加进组(POST /v1/betaGroups/{id}/relationships/builds)。
+- 本机走代理访问 ASC 偶尔 SSL EOF,重跑即可;只读请求失败不会留下半成品。
 
 ## 2026-10-17 对齐安卓版(App 层重做)
 
