@@ -10,10 +10,29 @@
   (Debug 模拟器 + Release 真机架构,新文件零警告),模拟器里三个演示画面与首次启动截图正常。
   尚未在真机上跑过相机。
 - **模型**:cubeface.mlpackage(ONNX→onnx2torch→CoreML mlprogram,数值一致误差 ~1e-6)。
-- **TestFlight**:2026-10-17 新 UI 的 1.0.0 (6) 从 Mac mini 上传,Apple 处理完成(VALID),
-  已加入"内部测试"组(IN_BETA_TESTING)。版本 1.0 仍是 PREPARE_FOR_SUBMISSION,附的还是 build 5,未提审。
+- **已提审**(2026-10-17 17:33):1.0 (build 8) WAITING_FOR_REVIEW,批准后自动发布,175 个国家和地区
+  (含中国大陆,未填 ICP 备案号——晶彩方块同样没填,2026-10-12 起在大陆正常销售)。
+  商店名 魔方AR还原(zh-Hans,主语言),另有 38 个商店语言;截图 4 张取自用户真机录屏 1017_1.mp4;
+  审核附件为同一录屏的压缩版(CubeAR_1017_demo.mp4,26 MB)。
 - **CI/发布**:ios-ci.yml(编译验证)、ios-release.yml(签名→归档→TestFlight→**提审**,还会吊销证书、
   往 main 推标记——只想进 TestFlight 时别用它);bundle com.mofang.cubear,ASC App ID 6820316386。
+
+## 多语言(2026-10-17,34 种)
+
+- 文案唯一来源:`ios/l10n/<语言>.json`(App 文案 + `plist.*` 主屏名/相机说明 + `store.*` 商品页)。
+  改完跑 `python3 ios/tools/gen_strings.py`(检查键、占位符、商店字数上限,并生成各 .lproj),
+  语言列表变了再跑 `gen_xcodeproj.py`。Core 经 `L10n.t("键", 参数…)` 取文案,占位符 `{0}{1}`。
+- 指令句子由各语言模板拼:`turn.quarter`/`turn.half`/`turn.then` × `place.*`(层位,含该语言需要的冠词/格)
+  × `dir.*`;句首自动大写。新增语言时用 `L10nTests` 和 gen_strings 的检查兜底。
+- 商品页:`python3 ios/tools/asc_fill_locales.py`(39 个 ASC 语言,映射见脚本;新建 App 信息本地化时
+  ASC 会自动建同语言的版本本地化)。截图只传主语言,其余语言沿用。
+- 关键词/名称别用 Rubik(商标):曾在 ja/ko/th/vi/id 里误用,已删。
+
+## 提审的坑
+
+- API 的 `POST /v1/reviewSubmissionItems` 2026-10-17 返回 500(UNEXPECTED_ERROR);网页版本页
+  「添加以供审核」→ 选已有草稿 →「提交以供审核」一次成功。网页也会列出缺失项,比 API 好查。
+- 首个版本不能写 whatsNew(PATCH 409),asc_submit_and_verify.py 里那条报错可忽略。
 
 ## 从 Mac mini 发 TestFlight(2026-10-17 起的做法,与 Crystal Grid 同一套签名材料)
 
